@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+    <!-- MathJax — renders $...$ inline and $$...$$ block LaTeX math. -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+    <!--
+      Mermaid.js — renders ```mermaid fenced code blocks.
+      Jekyll/kramdown outputs: <code class="language-mermaid">…</code>
+      Mermaid v10+ expects:   <pre class="mermaid">…</pre>
+      The script below transforms the DOM before Mermaid initialises.
+    -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+      // Disable auto-start so we control exactly when rendering happens.
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+      // Jekyll/kramdown renders ```mermaid as <code class="language-mermaid">.
+      // Mermaid v10+ expects <pre class="mermaid">. Transform before calling run().
+      document.querySelectorAll('code.language-mermaid').forEach(function (codeEl) {
+        const outer = codeEl.closest('pre') || codeEl.parentElement;
+        const mermaidPre = document.createElement('pre');
+        mermaidPre.classList.add('mermaid');
+        // trim() removes leading/trailing whitespace that causes "Syntax error in text"
+        mermaidPre.textContent = codeEl.textContent.trim();
+        outer.parentElement.replaceChild(mermaidPre, outer);
+      });
+
+      // Render all .mermaid elements now that the DOM is ready.
+      mermaid.run();
+    </script>
+
+  </body>
+
+</html>

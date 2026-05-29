@@ -1,0 +1,27 @@
+---
+layout: default
+title: Knowledge Base
+---
+
+<h1>Knowledge Base</h1>
+<p>AI-maintained personal knowledge base. Browse by confidence layer or explore the logs.</p>
+
+<h2>Confidence Layers</h2>
+<ul>
+  <li><a href="/layer_0/">Layer 0</a> — High-confidence facts directly supported by source material.</li>
+  <li><a href="/layer_1/">Layer 1</a> — Medium-confidence synthesis and interpretation.</li>
+  <li><a href="/layer_2/">Layer 2</a> — Low-confidence notes, open questions, and tentative conclusions.</li>
+</ul>
+
+<h2>Logs</h2>
+<ul>
+  <li><a href="/logs/index">Index</a> — Categorised index of all docs pages.</li>
+  <li><a href="/logs/log">Change Log</a> — Chronological record of every ingest and edit.</li>
+</ul>
+
+<h2>Recent Layer 0 Pages</h2>
+<ul>
+  {% for page in site.layer_0 %}
+    <li><a href="{{ page.url }}">{{ page.title | default: page.name }}</a></li>
+  {% endfor %}
+</ul>

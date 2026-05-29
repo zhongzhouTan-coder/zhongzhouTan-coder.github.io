@@ -39,6 +39,26 @@ Your job is to read source material from raw/, convert it into markdown knowledg
 - Use fenced code blocks only when source formatting matters.
 - Preserve readability in plain markdown first; use Jekyll conventions to support structure and navigation, not decorative markup.
 
+## Mermaid Diagram Rules
+
+The site renders Mermaid diagrams via Mermaid.js v11. Follow these rules exactly or the diagram will fail with "Syntax error in text":
+
+- **Subgraph IDs must not contain spaces.** Use a camelCase ID and put the display label in quotes: `subgraph AgentSide["Agent Side"]`, never `subgraph Agent Side`.
+- **No `\n` inside quoted node labels.** A literal backslash-n is not a line break inside a label string; it is a parse error. Write all label text on one line, using commas or dashes to separate items.
+- **No Unicode special characters in labels.** Avoid `·`, `→`, `⊨`, `⊭`, `…`, `&`, and similar characters inside node or edge labels. Replace them with plain ASCII equivalents (`,`, `->`, `satisfies`, `does not satisfy`, `...`, `and`).
+- **Hexagon shape uses single curly braces.** Use `V{"label"}` for a decision diamond/hexagon; the double-brace form `V{{"label"}}` is a parse error in v11.
+- **No nested bracket shapes.** `CT(["label"])` is invalid. Use `CT["label"]` for a rectangle or `CT(["label"])` — pick one bracket style per node.
+- **`trim()` whitespace.** Leading or trailing whitespace around diagram content causes "Syntax error in text". Keep diagram source tightly bounded.
+
+## Math Syntax Rules
+
+The site renders LaTeX math via MathJax 3 loaded in the default layout, with kramdown configured as `math_engine: mathjax`.
+
+- Use `$...$` for inline math and `$$...$$` for display (block) math.
+- Standard LaTeX commands are supported: `\text{}`, `\frac{}{}`, `^{}`, `_{}`, `\{`, `\}`, etc.
+- Do not use `\\(...\\)` or `\\[...\\]` delimiters; the site is configured for `$` delimiters only.
+- MathJax skips content inside `<code>` and `<pre>` tags, so math inside fenced code blocks will not render — write math as prose with `$...$` instead.
+
 ## Constraints
 
 - DO NOT modify or normalize files in raw/.

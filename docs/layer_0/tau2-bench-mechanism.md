@@ -60,19 +60,19 @@ sequenceDiagram
 
 ```mermaid
 graph TB
-    subgraph Agent Side
+    subgraph AgentSide["Agent Side"]
         AP[Domain Policy] --> AG[AI Agent LLM]
-        AG --> AT["Agent Tools\n(6 write · 7 read)\nCRM, billing, line mgmt"]
+        AG --> AT["Agent Tools - 6 write, 7 read - CRM, billing, line mgmt"]
     end
 
-    subgraph User Side
+    subgraph UserSide["User Side"]
         SI[Scenario Instruction] --> US[User Simulator LLM]
-        US --> UT["User Tools\n(15 write · 15 read)\nPhone: airplane mode, SIM,\ndata toggle, speed test…"]
+        US --> UT["User Tools - 15 write, 15 read - Phone: airplane mode, SIM, data toggle, speed test"]
     end
 
-    subgraph Shared World State
-        ADB[(Agent DB\nCustomers · Lines\nPlans · Devices · Bills)]
-        UDB[(User DB\nPhone status · Signal\nSIM · Data · APN)]
+    subgraph SharedWorld["Shared World State"]
+        ADB[(Agent DB - Customers, Lines, Plans, Devices, Bills)]
+        UDB[(User DB - Phone status, Signal, SIM, Data, APN)]
         HIS[Interaction History]
     end
 
@@ -105,11 +105,11 @@ The primary new domain models a telecom technical-support interaction. Key stati
 
 ```mermaid
 flowchart LR
-    S1["1. Agent DB & Tools\nLLM generates PRD\n→ schema + tool sigs\n→ unit tests + refine"]
-    S2["2. User DB & Tools\nMocked phone device\n→ readable state\n→ write tools + refine"]
-    S3["3. Task Generation\nAtomic subtasks:\ninit · sol · assert\n→ composite tasks"]
-    S4["4. Agent Policy\nTroubleshooting doc\n+ flowcharts\n→ system prompt"]
-    S5["5. Manual Refinement\nJoint review of tools,\npolicy & subtasks"]
+    S1["1. Agent DB and Tools - LLM generates PRD, schema, tool sigs, unit tests"]
+    S2["2. User DB and Tools - Mocked phone device, readable state, write tools"]
+    S3["3. Task Generation - Atomic subtasks: init, sol, assert - composite tasks"]
+    S4["4. Agent Policy - Troubleshooting doc and flowcharts for system prompt"]
+    S5["5. Manual Refinement - Joint review of tools, policy and subtasks"]
 
     S1 --> S2 --> S3 --> S4 --> S5
 ```
@@ -128,23 +128,23 @@ Atomic subtasks are grouped into mutually-exclusive groups. A **composite task**
 
 ```mermaid
 flowchart TD
-    subgraph Group A ["Subtask Group A (e.g. airplane mode)"]
+    subgraph GroupA["Subtask Group A - airplane mode"]
         A1[airplane_on]
         A2[airplane_off]
     end
-    subgraph Group B ["Subtask Group B (e.g. SIM)"]
+    subgraph GroupB["Subtask Group B - SIM"]
         B1[sim_removed]
         B2[sim_locked]
     end
-    subgraph Group C ["Subtask Group C (e.g. data toggle)"]
+    subgraph GroupC["Subtask Group C - data toggle"]
         C1[data_disabled]
     end
 
     A1 -->|pick one| CT
     B2 -->|pick one| CT
     C1 -->|pick one| CT
-    CT(["Composite Task\n= concat inits · sols · asserts"])
-    CT --> V{{"Auto-verify:\ninit+sol ⊨ asserts?\ninit alone ⊭ asserts?"}}
+    CT["Composite Task = concat inits + sols + asserts"]
+    CT --> V{"Auto-verify: init+sol satisfies asserts? init alone does not?"}
     V -->|pass| OK[Valid task]
     V -->|fail| DRP[Discard]
 ```
@@ -207,7 +207,7 @@ flowchart LR
     end
 
     subgraph NoUser ["No-User (reasoning only)"]
-        NA[Agent] --> NAT["All Tools\n(agent + user)"]
+        NA[Agent] --> NAT["All Tools - agent and user"]
         NAT --> NSW[(World)]
         TKT[Ticket description] --> NA
     end

@@ -1,0 +1,40 @@
+title: Knowledge Base
+description: AI-maintained personal knowledge base by zhongzhouTan
+url: "https://zhongzhouTan-coder.github.io"
+baseurl: ""
+
+theme: minima
+
+# GitHub Pages settings
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  math_engine: mathjax
+
+# Exclude from Jekyll build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - "*.gemspec"
+  - vendor/
+
+# Collections for layered docs
+collections:
+  layer_0:
+    output: true
+    permalink: /layer_0/:name/
+  layer_1:
+    output: true
+    permalink: /layer_1/:name/
+  layer_2:
+    output: true
+    permalink: /layer_2/:name/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
