@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/lint-docs.sh",
+        "cwd": ".",
+        "timeout": 20
+      }
+    ]
+  }
+}

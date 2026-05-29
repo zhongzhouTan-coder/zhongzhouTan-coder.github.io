@@ -1,0 +1,79 @@
+name: Docs Lint
+
+on:
+  push:
+    paths:
+      - "docs/**"
+      - "logs/**"
+      - "raw/**"
+      - "scripts/lint-docs.sh"
+      - ".github/workflows/docs-lint.yml"
+      - ".github/instructions/**"
+      - ".github/agents/**"
+      - ".github/prompts/**"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "logs/**"
+      - "raw/**"
+      - "scripts/lint-docs.sh"
+      - ".github/workflows/docs-lint.yml"
+      - ".github/instructions/**"
+      - ".github/agents/**"
+      - ".github/prompts/**"
+
+jobs:
+  docs-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run docs lint
+        run: |
+          chmod +x scripts/lint-docs.sh
+          ./scripts/lint-docs.sh
+
+  docs-lint-report:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Collect docs lint findings
+        id: lint_report
+        run: |
+          chmod +x scripts/lint-docs.sh
+          status=0
+          ./scripts/lint-docs.sh > docs-lint-report.txt 2>&1 || status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          cat docs-lint-report.txt
+          exit 0
+
+      - name: Publish docs lint summary
+        if: always()
+        run: |
+          {
+            echo "## Docs Lint Report"
+            echo
+            if [[ "${{ steps.lint_report.outputs.status }}" == "0" ]]; then
+              echo "No docs lint findings."
+            else
+              echo "Docs lint reported findings. See details below."
+              echo
+              echo '```text'
+              cat docs-lint-report.txt
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload docs lint artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-lint-report
+          path: docs-lint-report.txt
+          if-no-files-found: error
