@@ -2,6 +2,7 @@
 
 ## 2026-05-30
 
+- Added [τ-Voice: Full-Duplex Voice Agent Benchmark](../docs/layer_0/tau-voice.md) to `docs/layer_0/tau-voice.md` as `layer_0` / high confidence, sourced from the τ-Voice preprint (arXiv:2603.13686v1, Mar 2026). Covers tick-based orchestrator design, voice user simulator pipeline (7 personas, audio environment, turn-taking policy), three domains (278 total tasks), three audio-native providers, Clean vs Realistic conditions, acoustic ablation results (accents most damaging at -10pp avg), voice interaction quality metrics, qualitative error analysis (79-90% agent errors), and key conclusions. Classified layer_0 because all numerical results, architecture details, and error annotations are directly stated in the paper.
 - Added [τ-bench: Tool-Agent-User Interaction Benchmark](../docs/layer_0/tau-bench.md) to `docs/layer_0/tau-bench.md` as `layer_0` / high confidence, sourced from `raw/benchmark/tau-bench.pdf` (arXiv:2406.12045v1). Covers benchmark architecture, two domains (τ-retail 115 tasks, τ-airline 50 tasks), three-stage construction, pass^k metric definition, full empirical results table for 12 models, method comparison, domain policy ablation, and failure analysis. Classified layer_0 because all facts are directly stated in the paper with quantitative support.
 
 ## 2026-05-29
