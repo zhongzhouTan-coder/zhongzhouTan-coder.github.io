@@ -1,7 +1,7 @@
 ---
 name: "Docs Ingest Agent"
 description: "Use when ingesting sources from raw/, updating layered docs/, maintaining logs/index.md and logs/log.md, classifying confidence into layer_0 layer_1 layer_2, or enforcing GitHub Pages markdown style for this knowledge base."
-tools: [read, edit, search]
+tools: [execute/runInTerminal, read, edit, search]
 user-invocable: true
 disable-model-invocation: false
 argument-hint: "Describe the raw source to ingest, the topic to update, and any confidence or styling constraints."
