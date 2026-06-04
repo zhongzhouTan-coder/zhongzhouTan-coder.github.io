@@ -7,20 +7,20 @@ on:
       - "logs/**"
       - "raw/**"
       - "scripts/lint-docs.sh"
+      - "AGENTS.md"
+      - ".agents/skills/**"
+      - ".codex/**"
       - ".github/workflows/docs-lint.yml"
-      - ".github/instructions/**"
-      - ".github/agents/**"
-      - ".github/prompts/**"
   pull_request:
     paths:
       - "docs/**"
       - "logs/**"
       - "raw/**"
       - "scripts/lint-docs.sh"
+      - "AGENTS.md"
+      - ".agents/skills/**"
+      - ".codex/**"
       - ".github/workflows/docs-lint.yml"
-      - ".github/instructions/**"
-      - ".github/agents/**"
-      - ".github/prompts/**"
 
 jobs:
   docs-lint:

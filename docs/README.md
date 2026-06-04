@@ -55,7 +55,7 @@ Run the docs lint check at any time:
 ./scripts/lint-docs.sh
 ```
 
-Or use the `/Lint Docs Cleanup` prompt to have the agent fix safe issues and report deletion candidates.
+Or invoke the `lint-docs-cleanup` Codex skill to have the agent fix safe issues and report deletion candidates.
 
 ## Related Pages
 

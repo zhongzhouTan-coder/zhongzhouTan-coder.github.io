@@ -1,5 +1,10 @@
+# Project Codex Profile
 
-# Personal docs Rules
+This file mirrors the repository guidance for workflows that launch Codex with `CODEX_HOME=$(pwd)/.codex`.
+
+The repository root `AGENTS.md` remains the documented project-scope discovery file. Keep the two files aligned unless you intentionally want different global-vs-project behavior.
+
+## Personal docs Rules
 
 ## Directory structure
 

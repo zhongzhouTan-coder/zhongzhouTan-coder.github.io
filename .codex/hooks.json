@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/scripts/lint-docs.sh\"",
+            "timeout": 20,
+            "statusMessage": "Linting docs"
+          }
+        ]
+      }
+    ]
+  }
+}
