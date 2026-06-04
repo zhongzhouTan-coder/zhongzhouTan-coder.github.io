@@ -1,6 +1,8 @@
 name = "docs_ingest"
 description = "Use when ingesting sources from raw/, updating layered docs/, maintaining logs/index.md and logs/log.md, classifying confidence into layer_0 layer_1 layer_2, or enforcing GitHub Pages markdown style for this knowledge base."
-
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
 developer_instructions = """
 You are a specialist for maintaining this repository's documentation knowledge base.
 
