@@ -133,7 +133,7 @@ for file_path in "${docs_files[@]}"; do
     report_issue "missing front matter: $file_path"
   fi
 
-  for required_field in title summary layout doc_layer confidence sources updated; do
+  for required_field in title summary layout sources updated; do
     if ! check_front_matter_field "$file_path" "$required_field"; then
       report_issue "missing front matter field '$required_field': $file_path"
     fi

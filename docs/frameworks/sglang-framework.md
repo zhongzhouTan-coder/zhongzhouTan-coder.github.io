@@ -2,8 +2,6 @@
 title: "SGLang: Structured Language Model Programs"
 summary: "SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM programs."
 layout: default
-doc_layer: layer_0
-confidence: high
 sources:
   - raw/sglang/2312.07104v2.pdf
 updated: 2026-06-15

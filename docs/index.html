@@ -4,13 +4,14 @@ title: Knowledge Base
 ---
 
 <h1>Knowledge Base</h1>
-<p>AI-maintained personal knowledge base. Browse by confidence layer or explore the logs.</p>
+<p>AI-maintained personal knowledge base. Browse by topic category or explore the logs.</p>
 
-<h2>Confidence Layers</h2>
+<h2>Categories</h2>
 <ul>
-  <li><a href="/layer_0/">Layer 0</a> — High-confidence facts directly supported by source material.</li>
-  <li><a href="/layer_1/">Layer 1</a> — Medium-confidence synthesis and interpretation.</li>
-  <li><a href="/layer_2/">Layer 2</a> — Low-confidence notes, open questions, and tentative conclusions.</li>
+  <li><a href="/benchmarks/">Benchmarks</a> — Benchmark designs, tasks, metrics, and empirical findings.</li>
+  <li><a href="/frameworks/">Frameworks</a> — LLM serving and language-model programming systems.</li>
+  <li><a href="/algorithms/">Algorithms</a> — Inference algorithms and kernel-level methods.</li>
+  <li><a href="/hardware/">Hardware</a> — Numerics, hardware features, and accelerator-specific notes.</li>
 </ul>
 
 <h2>Logs</h2>
@@ -19,9 +20,16 @@ title: Knowledge Base
   <li><a href="/logs/log">Change Log</a> — Chronological record of every ingest and edit.</li>
 </ul>
 
-<h2>Recent Layer 0 Pages</h2>
+<h2>Current Pages</h2>
 <ul>
-  {% for page in site.layer_0 %}
-    <li><a href="{{ page.url }}">{{ page.title | default: page.name }}</a></li>
-  {% endfor %}
+  <li><a href="/benchmarks/tau-bench/">τ-bench: Tool-Agent-User Interaction Benchmark</a></li>
+  <li><a href="/benchmarks/tau2-bench-mechanism/">τ²-Bench: Mechanism and Design</a></li>
+  <li><a href="/benchmarks/tau-voice/">τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains</a></li>
+  <li><a href="/frameworks/sglang-framework/">SGLang: Structured Language Model Programs</a></li>
+  <li><a href="/frameworks/vllm-framework/">vLLM: PagedAttention Serving Framework</a></li>
+  <li><a href="/algorithms/flashattention/">FlashAttention: IO-Aware Exact Attention</a></li>
+  <li><a href="/algorithms/flashattention-2/">FlashAttention-2: Better Parallelism and Work Partitioning</a></li>
+  <li><a href="/algorithms/flashattention-3/">FlashAttention-3: Hopper Asynchrony and FP8 Attention</a></li>
+  <li><a href="/algorithms/flashattention-4/">FlashAttention-4: Blackwell Attention Kernel Co-Design</a></li>
+  <li><a href="/hardware/nvfp4/">NVFP4: Blackwell 4-Bit Floating Point</a></li>
 </ul>

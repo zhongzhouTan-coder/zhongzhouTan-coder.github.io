@@ -2,8 +2,6 @@
 title: "vLLM: PagedAttention Serving Framework"
 summary: "vLLM framework design, PagedAttention memory management, scheduling, decoding support, and serving performance results."
 layout: default
-doc_layer: layer_0
-confidence: high
 sources:
   - raw/vllm/2309.06180v1.pdf
 updated: 2026-06-15

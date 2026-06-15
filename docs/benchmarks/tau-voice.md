@@ -2,8 +2,6 @@
 title: "τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains"
 summary: "τ-Voice extends τ²-bench to full-duplex voice: 278 tasks across retail, airline, and telecom; tick-based orchestrator; controllable voice user simulator; empirical results for Google, OpenAI, and xAI voice models."
 layout: default
-doc_layer: layer_0
-confidence: high
 sources:
   - raw/benchmark/tau-voice.pdf
 updated: 2026-05-30

@@ -8,6 +8,7 @@ theme: minima
 # GitHub Pages settings
 markdown: kramdown
 highlighter: rouge
+permalink: pretty
 
 kramdown:
   input: GFM
@@ -20,18 +21,6 @@ exclude:
   - Gemfile.lock
   - "*.gemspec"
   - vendor/
-
-# Collections for layered docs
-collections:
-  layer_0:
-    output: true
-    permalink: /layer_0/:name/
-  layer_1:
-    output: true
-    permalink: /layer_1/:name/
-  layer_2:
-    output: true
-    permalink: /layer_2/:name/
 
 defaults:
   - scope:

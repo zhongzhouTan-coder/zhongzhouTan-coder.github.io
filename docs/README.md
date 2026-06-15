@@ -1,12 +1,10 @@
 ---
 title: "Knowledge Base Introduction"
-summary: "Overview of this repository's documentation structure, confidence layers, and how to navigate or contribute to the knowledge base."
+summary: "Overview of this repository's documentation structure, category organization, and how to navigate or contribute to the knowledge base."
 layout: default
-doc_layer: layer_0
-confidence: high
 sources:
-  - AGENTS.md
-updated: 2026-05-29
+  - .codex/AGENTS.md
+updated: 2026-06-15
 ---
 
 # Knowledge Base Introduction
@@ -16,23 +14,25 @@ This repository is an AI-maintained personal knowledge base published on GitHub 
 ## Directory Structure
 
 - `raw/` — Source files. Never modified by the agent.
-- `docs/` — AI-maintained markdown knowledge pages, divided into confidence layers.
-  - `layer_0/` — High-confidence facts directly supported by source material.
-  - `layer_1/` — Medium-confidence synthesis and summaries that involve interpretation.
-  - `layer_2/` — Low-confidence notes, open questions, contradictions, and tentative conclusions.
+- `docs/` — AI-maintained markdown knowledge pages, divided into topic categories.
+  - `benchmarks/` — Benchmark designs, tasks, metrics, and empirical findings.
+  - `frameworks/` — LLM serving and language-model programming systems.
+  - `algorithms/` — Inference algorithms and kernel-level methods.
+  - `hardware/` — Numerics, hardware features, and accelerator-specific notes.
 - `logs/`
   - `index.md` — Categorised index of all docs pages.
   - `log.md` — Chronological record of every ingest and edit.
 
-## Confidence Layers
+## Categories
 
-| Layer | Confidence | When to use |
-|---|---|---|
-| `layer_0` | High | Fact is directly and unambiguously supported by a raw source. |
-| `layer_1` | Medium | Synthesis or summary that is likely correct but involves interpretation. |
-| `layer_2` | Low | Open question, contradiction, tentative conclusion, or information that still needs confirmation. |
+| Category | When to use |
+|---|---|
+| `benchmarks` | Papers or notes about benchmark construction, domains, metrics, task generation, or evaluation results. |
+| `frameworks` | Runtime systems, serving engines, programming frameworks, and application orchestration systems. |
+| `algorithms` | Inference algorithms, kernel implementations, scheduling methods, and mathematical procedures. |
+| `hardware` | Hardware formats, accelerator features, precision recipes, and numerics-focused notes. |
 
-When evidence quality improves, pages move to a higher layer. When a page mixes confidence levels, it is either kept in the lowest required layer or split into separate pages.
+Create a new category only when an existing one would make the page hard to find.
 
 ## How to Use
 
@@ -40,7 +40,7 @@ When evidence quality improves, pages move to a higher layer. When a page mixes 
 
 1. Start with [logs/index.md](../logs/index.md) to browse by topic, person, concept, or source.
 2. Follow links to the relevant docs page.
-3. Check the `doc_layer` and `confidence` fields in the front matter to understand how much to rely on the content.
+3. Check the page sources in the front matter to understand what evidence supports the content.
 
 **Ingesting a new source**
 
