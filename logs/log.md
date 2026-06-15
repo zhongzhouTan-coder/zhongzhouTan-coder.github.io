@@ -15,3 +15,12 @@
 - Migrated GitHub-only agent guidance into `AGENTS.md` so Codex can read repository rules directly, including docs front matter, confidence-layer handling, logs maintenance, and rendering constraints.
 - Copied the docs ingest agent and instruction files from `.github/` into `.codex/agents/` and `.codex/instructions/` so the repository has a Codex-local agent setup.
 - Copied the PDF skill assets from `.github/skills/pdf/` into `.codex/skills/pdf/` as a Codex-facing repo-local skill mirror.
+
+## 2026-06-11
+
+- Added [NVFP4: Blackwell 4-Bit Floating Point](../docs/layer_0/nvfp4.md) to `docs/layer_0/nvfp4.md` as `layer_0` / high confidence, sourced from NVIDIA's NVFP4 inference blog and Transformer Engine NVFP4 documentation captured in `raw/nvidia/nvfp4-references.md`. Covers E2M1 encoding, FP8 E4M3 block scaling, FP32 tensor scaling, memory reduction claims, Transformer Engine recipe defaults, stochastic rounding, Random Hadamard Transform, GEMM layout, distributed-training behavior, and supported hardware.
+
+## 2026-06-15
+
+- Added [SGLang: Structured Language Model Programs](../docs/layer_0/sglang-framework.md) to `docs/layer_0/sglang-framework.md` as `layer_0` / high confidence, sourced from `raw/sglang/2312.07104v2.pdf`. Covers the SGLang frontend primitives, interpreter/compiler execution modes, RadixAttention KV cache reuse, cache-aware scheduling, compressed finite-state-machine decoding, API speculative execution, evaluation setup, throughput/latency results, production deployment observations, and limitations.
+- Added [vLLM: PagedAttention Serving Framework](../docs/layer_0/vllm-framework.md) to `docs/layer_0/vllm-framework.md` as `layer_0` / high confidence, sourced from `raw/vllm/2309.06180v1.pdf`. Covers the PagedAttention algorithm, KV-cache block tables, virtual-memory analogy, copy-on-write sharing for parallel sampling and beam search, shared-prefix reuse, scheduling/preemption, distributed execution, implementation details, evaluation setup, throughput results, ablations, and limitations.

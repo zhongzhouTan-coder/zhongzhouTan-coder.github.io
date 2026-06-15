@@ -1,31 +1,25 @@
-# Project Codex Profile
+# Docs Ingest Agent
 
-This file mirrors the repository guidance for workflows that launch Codex with `CODEX_HOME=$(pwd)/.codex`.
+Maintain this repository's markdown knowledge base. Read sources from `raw/`, write AI-maintained pages under `docs/`, and keep `logs/index.md` plus `logs/log.md` in sync.
 
-The repository root `AGENTS.md` remains the documented project-scope discovery file. Keep the two files aligned unless you intentionally want different global-vs-project behavior.
+## Core Rules
 
-## Personal docs Rules
+- Never modify files in `raw/`.
+- Update existing docs pages instead of creating duplicates.
+- Keep each page focused on one topic and use internal relative links when useful.
+- Record contradictions explicitly instead of smoothing them over.
+- Do not answer from memory when the task depends on repository content. Read the relevant raw and docs files first.
 
-## Directory structure
+## Confidence Layers
 
-- raw/ stores original source files. Never modify them.
-- docs/ stores AI-maintained markdown knowledge pages.
-- logs/index.md stores the docs page index.
-- logs/log.md stores chronological change logs.
+- `docs/layer_0/`: directly supported, stable facts. Front matter must use `doc_layer: layer_0` and `confidence: high`.
+- `docs/layer_1/`: supported synthesis or interpretation. Front matter must use `doc_layer: layer_1` and `confidence: medium`.
+- `docs/layer_2/`: tentative notes, contradictions, open questions, or low-confidence claims. Front matter must use `doc_layer: layer_2` and `confidence: low`.
+- If a page mixes confidence levels, either place it in the lowest necessary layer or split it.
 
-## Writing rules
+## Docs Page Format
 
-- Use markdown only.
-- Keep each page focused on one topic.
-- Add internal links whenever related pages already exist.
-- Update existing pages instead of creating duplicates.
-- If new information conflicts with old information, note the contradiction explicitly.
-- We can draw some images with mermaid syntax, and prefer images when they clarify complex relationships or processes better than text alone.
-
-## Docs page requirements
-
-- Apply these rules to every page under `docs/`.
-- Every docs page must begin with Jekyll front matter using this schema:
+Every page under `docs/` must start with Jekyll front matter:
 
 ```yaml
 ---
@@ -40,35 +34,29 @@ updated: 2026-05-28
 ---
 ```
 
-- Required fields: `title`, `summary`, `layout`, `doc_layer`, `confidence`, `sources`, `updated`.
-- `doc_layer` must match the containing folder: `layer_0`, `layer_1`, or `layer_2`.
-- `confidence` must match the layer: `high` for `layer_0`, `medium` for `layer_1`, `low` for `layer_2`.
-- `sources` must list the relevant `raw/` source files using repo-relative paths.
-- `updated` must use `YYYY-MM-DD`.
-- After the front matter, start the page body with one `#` heading that matches the page title in meaning.
+Then start the body with one `#` heading that matches the title in meaning. Use the current date for `updated`.
 
-## Logs requirements
+## Logs
 
-- `logs/index.md` must keep the top-level title `# Wiki Index`.
-- Keep `logs/index.md` grouped by category headings with concise bullets linking to pages in `docs/` using relative links.
-- `logs/log.md` must keep the top-level title `# Wiki Log`.
-- Append changes to `logs/log.md` in chronological order, using `## YYYY-MM-DD` headings and flat bullet lists under each date.
-- Each log bullet should briefly state what changed, which source or topic it came from, and which docs page or layer was updated.
+- `logs/index.md`: keep `# Wiki Index`, grouped category headings, and concise bullets linking to `docs/` pages with relative links.
+- `logs/log.md`: keep `# Wiki Log`, append chronological entries under `## YYYY-MM-DD`, and group same-day changes under one heading.
+- Log bullets should state what changed, the source or topic, and the docs page or layer updated.
 
-## Ingest workflow
+## Markdown Style
 
-When a new source is added:
+- Use plain markdown that renders cleanly on GitHub Pages.
+- Prefer short headings, concise paragraphs, and flat bullet lists.
+- Avoid raw HTML, embedded scripts, and complex markdown extensions.
+- Use Mermaid diagrams only when they clarify relationships or processes.
+- Mermaid labels must be ASCII-safe, with no spaces in subgraph IDs and no `\n` inside quoted labels.
+- Use `$...$` for inline math and `$$...$$` for display math. Do not use `\(...\)` or `\[...\]`.
 
-1. Read the source from raw/
-2. Create or update relevant pages in docs/
-3. Update logs/index.md
-4. Append a new entry to logs/log.md
+## Workflow
 
-## Query workflow
-
-When answering questions:
-
-1. Read logs/index.md first
-2. Find relevant docs pages
-3. Synthesize the answer from docs/
-4. If the answer is valuable, save it as a new page in docs/
+1. Read the relevant files in `raw/`.
+2. Read `logs/index.md` and relevant existing docs pages.
+3. Choose the target confidence layer based on evidence.
+4. Create or update focused pages in `docs/`.
+5. Update `logs/index.md`.
+6. Append a dated entry to `logs/log.md`.
+7. Return a brief summary: source read, pages changed, layer chosen, logs updated, and remaining ambiguity.
