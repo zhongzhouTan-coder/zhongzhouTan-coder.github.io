@@ -30,3 +30,11 @@
 - Added [FlashAttention-4: Blackwell Attention Kernel Co-Design](../docs/algorithms/flashattention-4.md) to `docs/algorithms/flashattention-4.md`, sourced from `raw/infer-algorithm/2603.05451v1.pdf`. Covers FA4's Blackwell hardware motivation, forward pipeline, software-emulated exponentials, conditional online-softmax rescaling, backward TMEM pipeline, 2-CTA MMA mode, deterministic backward pass, LPT scheduling, CuTe-DSL implementation, benchmark results, and the source's B200/B100 hardware-name inconsistency.
 - Refactored [Wiki Index](../logs/index.md) categories, grouping benchmark pages, inference systems/frameworks, attention/kernel algorithms, and hardware/numerics.
 - Refactored `docs/` from the previous layer folders into category folders: `docs/benchmarks/`, `docs/frameworks/`, `docs/algorithms/`, and `docs/hardware/`; added category index pages, removed legacy classification front matter, and updated Jekyll navigation/configuration.
+
+## 2026-06-16
+
+- Added [FlatQuant: Fast Learnable Affine Quantization](../docs/hardware/flatquant.md) to `docs/hardware/flatquant.md`, sourced from `raw/quantization/2410.09426v4.pdf`. Covers FlatQuant's flatness motivation, learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping thresholds, Transformer integration, fused Triton kernel design, W4A4 accuracy results, latency speedups, ablations, and limitations.
+
+## 2026-06-24
+
+- Added [Matrix Exponentiation for Linear Transitions](../docs/layer_0/matrix-exponentiation.md) to `docs/layer_0/matrix-exponentiation.md`, sourced from `raw/algorithm/Matrix exponentiation | HackerEarth.pdf`. Covers binary matrix exponentiation, row-vector transition-matrix construction, Fibonacci and general linear recurrences, prefix sums, coupled sequences, fixed linear dynamic-programming transitions, modular arithmetic, and repeated-query optimization in layer 0.

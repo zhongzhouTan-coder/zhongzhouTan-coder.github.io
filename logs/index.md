@@ -17,9 +17,10 @@
 - [SGLang: Structured Language Model Programs](../docs/frameworks/sglang-framework.md) — Framework architecture, Python-embedded programming model, RadixAttention KV cache reuse, compressed FSM decoding, API speculative execution, and performance results.
 - [vLLM: PagedAttention Serving Framework](../docs/frameworks/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 
-## Attention and Kernel Algorithms
+## Algorithms
 
 - [Algorithms](../docs/algorithms/index.md) — Category overview for inference algorithm and kernel pages.
+- [Matrix Exponentiation for Linear Transitions](../docs/layer_0/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
 - [FlashAttention: IO-Aware Exact Attention](../docs/algorithms/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../docs/algorithms/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, and A100/H100 performance results.
 - [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../docs/algorithms/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, GEMM-softmax overlap, FP8 block quantization, incoherent processing, and speed/accuracy results.
@@ -28,6 +29,7 @@
 ## Hardware and Numerics
 
 - [Hardware and Numerics](../docs/hardware/index.md) — Category overview for hardware and numerics pages.
+- [FlatQuant: Fast Learnable Affine Quantization](../docs/hardware/flatquant.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [NVFP4: Blackwell 4-Bit Floating Point](../docs/hardware/nvfp4.md) — NVIDIA Blackwell NVFP4 format, hierarchical FP8/FP32 scaling, memory benefits, Transformer Engine training recipe, RHT, stochastic rounding, and hardware support.
 
 ## Sources
