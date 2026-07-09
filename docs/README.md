@@ -3,8 +3,8 @@ title: "Knowledge Base Introduction"
 summary: "Overview of this repository's documentation structure, category organization, and how to navigate or contribute to the knowledge base."
 layout: default
 sources:
-  - .codex/AGENTS.md
-updated: 2026-06-15
+  - AGENTS.md
+updated: 2026-07-09
 ---
 
 # Knowledge Base Introduction
@@ -45,7 +45,7 @@ Create a new category only when an existing one would make the page hard to find
 **Ingesting a new source**
 
 1. Add the source file to `raw/`.
-2. Use the Docs Ingest Agent to read the source, create or update docs pages, and update `logs/index.md` and `logs/log.md`.
+2. Follow the repo rules in `AGENTS.md` to read the source, create or update docs pages, and update `logs/index.md` and `logs/log.md`.
 
 **Maintaining quality**
 

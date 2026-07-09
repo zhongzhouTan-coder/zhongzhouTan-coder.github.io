@@ -23,7 +23,7 @@ updated: 2026-07-09
 
 **Codebase inspected:** local `harbor` repository
 **Official framing:** Harbor is a framework for evaluating and optimizing agents and models in container environments.
-**Related pages:** [Frameworks](index.md), [Pier: Coding-Agent Evaluation Harness](../benchmarks/pier.md)
+**Related pages:** [Frameworks](../index.md), [Pier: Coding-Agent Evaluation Harness](../../benchmarks/pier/index.md)
 
 ## Summary
 
@@ -42,7 +42,7 @@ Everything else in Harbor is built around executing that task format repeatedly 
 
 The diagram below summarizes Harbor's design philosophy and runtime architecture.
 
-![Harbor design philosophy and runtime architecture](assets/harbor-architecture.svg)
+![Harbor design philosophy and runtime architecture](../assets/harbor-architecture.svg)
 
 The Mermaid diagram below shows the same runtime flow in a more compressed form:
 
@@ -83,7 +83,7 @@ That is why Harbor is a framework, not just a benchmark.
 
 This second diagram is complementary to the runtime architecture visual above. It focuses on Harbor's design logic: the pressures that led to the framework, the principles Harbor adopts, the architectural consequences of those principles, and the outcomes the framework is trying to optimize for.
 
-![Harbor design philosophy map](assets/harbor-design-philosophy.svg)
+![Harbor design philosophy map](../assets/harbor-design-philosophy.svg)
 
 ### 1. The task is the atomic unit
 
@@ -144,7 +144,7 @@ The framework therefore treats runtime policy as part of the benchmark definitio
 
 The diagram below shows Harbor as layered architecture: task authoring and policy define the portable unit, distribution sources materialize tasks, orchestration fans jobs into trials, the trial runtime combines agent and environment adapters, and evidence flows into review and sharing surfaces.
 
-![Harbor layered runtime architecture](assets/harbor-runtime-architecture.svg)
+![Harbor layered runtime architecture](../assets/harbor-runtime-architecture.svg)
 
 ### Layer 1: Authoring and packaging
 

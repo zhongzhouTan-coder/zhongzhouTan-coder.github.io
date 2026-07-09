@@ -16,7 +16,7 @@ updated: 2026-07-09
 **Updated benchmark snapshot:** July 1, 2026
 **Code / benchmark:** <https://github.com/datacurve-ai/deep-swe>
 
-**Related pages:** [DeepSWE: Long-Horizon Software Engineering Benchmark](deepswe.md), [τ-bench: Tool-Agent-User Interaction Benchmark](tau-bench.md)
+**Related pages:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../deepswe/index.md), [τ-bench: Tool-Agent-User Interaction Benchmark](../tau-bench.md)
 
 ## Summary
 
@@ -26,14 +26,14 @@ DeepSWE v1.1 keeps the same 113 long-horizon tasks as v1, but changes how agent 
 
 The diagram below summarizes why DeepSWE v1.1 was introduced, how the committed-diff scoring path works, and why the source treats the updated results as a cleaner measurement rather than a new benchmark.
 
-![DeepSWE v1.1 benchmark explainer](assets/deepswe-v1-1-explainer.svg)
+![DeepSWE v1.1 benchmark explainer](../assets/deepswe-v1-1-explainer.svg)
 
-[Editable draw.io source](assets/deepswe-v1-1-explainer.drawio)
+[Editable draw.io source](../assets/deepswe-v1-1-explainer.drawio)
 
 ## What Stayed the Same
 
 - The benchmark still uses the same **113 tasks**.
-- The long-horizon task design and general benchmark objective are unchanged from [DeepSWE v1](deepswe.md).
+- The long-horizon task design and general benchmark objective are unchanged from [DeepSWE v1](../deepswe/index.md).
 - The source claims top-level ordering remains broadly similar to v1 even after the execution and scoring changes.
 
 ## Main v1.1 Changes

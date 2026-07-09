@@ -16,6 +16,7 @@
 - Update existing pages instead of creating duplicates.
 - If new information conflicts with old information, note the contradiction explicitly.
 - We can draw some images with mermaid syntax, and prefer images when they clarify complex relationships or processes better than text alone.
+- If a docs page references local sibling assets such as images or draw.io files, prefer a folder-backed page at `topic/index.md` so relative asset links render in both VS Code Markdown preview and GitHub Pages.
 
 ## Docs page requirements
 

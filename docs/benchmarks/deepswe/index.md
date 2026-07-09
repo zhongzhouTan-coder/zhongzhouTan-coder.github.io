@@ -16,7 +16,7 @@ updated: 2026-07-09
 **Publication snapshot:** May 26, 2026
 **Code / benchmark:** <https://github.com/datacurve-ai/deep-swe>
 
-**Related pages:** [DeepSWE v1.1: Execution and Scoring Changes](deepswe-v1-1.md), [τ-bench: Tool-Agent-User Interaction Benchmark](tau-bench.md), [τ²-Bench: Mechanism and Design](tau2-bench-mechanism.md)
+**Related pages:** [DeepSWE v1.1: Execution and Scoring Changes](../deepswe-v1-1/index.md), [τ-bench: Tool-Agent-User Interaction Benchmark](../tau-bench.md), [τ²-Bench: Mechanism and Design](../tau2-bench-mechanism.md)
 
 ## Summary
 
@@ -26,9 +26,9 @@ DeepSWE is a software-engineering benchmark built to measure long-horizon coding
 
 The diagram below summarizes both why DeepSWE was introduced and how its task-plus-verifier design is intended to produce a cleaner benchmark signal.
 
-![DeepSWE benchmark explainer](assets/deepswe-explainer.svg)
+![DeepSWE benchmark explainer](../assets/deepswe-explainer.svg)
 
-[Editable draw.io source](assets/deepswe-explainer.drawio)
+[Editable draw.io source](../assets/deepswe-explainer.drawio)
 
 ## What DeepSWE Tries to Fix
 
