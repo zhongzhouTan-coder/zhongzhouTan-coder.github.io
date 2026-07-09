@@ -25,7 +25,7 @@ DeepSWE is a software-engineering benchmark built to measure long-horizon coding
 
 The diagram below summarizes both why DeepSWE was introduced and how its task-plus-verifier design is intended to produce a cleaner benchmark signal.
 
-![DeepSWE benchmark explainer](../assets/deepswe-explainer.png)
+![DeepSWE benchmark explainer](../assets/deepswe-explainer.svg)
 
 ## What DeepSWE Tries to Fix
 

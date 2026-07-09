@@ -25,7 +25,7 @@ DeepSWE v1.1 keeps the same 113 long-horizon tasks as v1, but changes how agent 
 
 The diagram below summarizes why DeepSWE v1.1 was introduced, how the committed-diff scoring path works, and why the source treats the updated results as a cleaner measurement rather than a new benchmark.
 
-![DeepSWE v1.1 benchmark explainer](../assets/deepswe-v1-1-explainer.png)
+![DeepSWE v1.1 benchmark explainer](../assets/deepswe-v1-1-explainer.svg)
 
 ## What Stayed the Same
 

@@ -29,8 +29,6 @@ The diagram below summarizes why Pier exists, how its runtime architecture is wi
 
 ![Pier architecture and mini-swe-agent execution path](../assets/pier-explainer.svg)
 
-[Editable draw.io source](../assets/pier-explainer.drawio)
-
 ## Why Pier Exists
 
 According to the inspected `README.md`, Pier is a **smaller, more opinionated Harbor fork**. The explicit motivation is that Harbor already defines a useful task format, but Pier wants stronger support for the parts that matter when the evaluated agent is itself an installed CLI running inside the sandbox.
