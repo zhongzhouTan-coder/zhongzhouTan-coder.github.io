@@ -1,3 +1,16 @@
 [agents]
 max_threads = 6
 max_depth = 1
+
+[mcp_servers.drawio]
+command = "npx"
+args = ["-y", "@drawio/mcp"]
+
+[mcp_servers.drawio.tools.open_drawio_xml]
+approval_mode = "approve"
+
+[mcp_servers.drawio.tools.list_pages]
+approval_mode = "approve"
+
+[mcp_servers.drawio.tools.get_page]
+approval_mode = "approve"
