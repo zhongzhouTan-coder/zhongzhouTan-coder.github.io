@@ -2,6 +2,7 @@
 title: "τ²-Bench: Mechanism and Design"
 summary: "How τ²-Bench evaluates conversational AI agents in a dual-control environment, covering its Dec-POMDP formalism, domain construction, task generation, and evaluation methodology."
 layout: default
+confidence: high
 sources:
   - raw/benchmark/tau2-bench.pdf
 updated: 2026-05-29

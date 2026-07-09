@@ -2,7 +2,6 @@
 title: "DeepSWE: Long-Horizon Software Engineering Benchmark"
 summary: "Original long-horizon coding benchmark covering DeepSWE task design, verifier methodology, leaderboard snapshot, qualitative failure analysis, and limitations."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/benchmark/deepswe.md

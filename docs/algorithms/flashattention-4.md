@@ -2,6 +2,7 @@
 title: "FlashAttention-4: Blackwell Attention Kernel Co-Design"
 summary: "FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs."
 layout: default
+confidence: high
 sources:
   - raw/infer-algorithm/2603.05451v1.pdf
 updated: 2026-06-15

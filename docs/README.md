@@ -2,6 +2,7 @@
 title: "Knowledge Base Introduction"
 summary: "Overview of this repository's documentation structure, category organization, and how to navigate or contribute to the knowledge base."
 layout: default
+confidence: high
 sources:
   - AGENTS.md
 updated: 2026-07-09

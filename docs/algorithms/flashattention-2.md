@@ -2,6 +2,7 @@
 title: "FlashAttention-2: Better Parallelism and Work Partitioning"
 summary: "FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and A100/H100 performance results."
 layout: default
+confidence: high
 sources:
   - raw/infer-algorithm/2307.08691v1.pdf
 updated: 2026-06-15

@@ -2,6 +2,7 @@
 title: "FlashAttention: IO-Aware Exact Attention"
 summary: "Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension, and empirical results."
 layout: default
+confidence: high
 sources:
   - raw/infer-algorithm/2205.14135v2.pdf
 updated: 2026-06-15

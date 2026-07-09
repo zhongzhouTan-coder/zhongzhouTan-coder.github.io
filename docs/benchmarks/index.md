@@ -2,7 +2,6 @@
 title: "Benchmarks"
 summary: "Benchmark pages covering task design, domains, metrics, and empirical evaluation results."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - logs/index.md

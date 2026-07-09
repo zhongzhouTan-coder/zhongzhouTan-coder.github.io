@@ -4,7 +4,7 @@
 ## Directory structure
 
 - raw/ stores original source files. Never modify them.
-- docs/ stores AI-maintained markdown knowledge pages.
+- docs/ stores AI-maintained markdown knowledge pages, organized by topic categories such as `benchmarks/`, `frameworks/`, `algorithms/`, and `hardware/`.
 - logs/index.md stores the docs page index.
 - logs/log.md stores chronological change logs.
 
@@ -28,7 +28,6 @@
 title: "Short page title"
 summary: "One-sentence description of what the page covers."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/example-source.md
@@ -36,9 +35,9 @@ updated: 2026-05-28
 ---
 ```
 
-- Required fields: `title`, `summary`, `layout`, `doc_layer`, `confidence`, `sources`, `updated`.
-- `doc_layer` must match the containing folder: `layer_0`, `layer_1`, or `layer_2`.
-- `confidence` must match the layer: `high` for `layer_0`, `medium` for `layer_1`, `low` for `layer_2`.
+- Required fields: `title`, `summary`, `layout`, `confidence`, `sources`, `updated`.
+- Store pages in the most relevant topic folder under `docs/`; do not create folder structure based on confidence layers.
+- `confidence` records evidentiary strength directly: use `high` for facts directly supported by the source, `medium` for synthesis or interpretation, and `low` for tentative notes, contradictions, or open questions.
 - `sources` must list the relevant `raw/` source files using repo-relative paths.
 - `updated` must use `YYYY-MM-DD`.
 - After the front matter, start the page body with one `#` heading that matches the page title in meaning.
@@ -49,7 +48,7 @@ updated: 2026-05-28
 - Keep `logs/index.md` grouped by category headings with concise bullets linking to pages in `docs/` using relative links.
 - `logs/log.md` must keep the top-level title `# Wiki Log`.
 - Append changes to `logs/log.md` in chronological order, using `## YYYY-MM-DD` headings and flat bullet lists under each date.
-- Each log bullet should briefly state what changed, which source or topic it came from, and which docs page or layer was updated.
+- Each log bullet should briefly state what changed, which source or topic it came from, and which docs page or confidence level was updated.
 
 ## Ingest workflow
 

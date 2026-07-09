@@ -2,6 +2,7 @@
 title: "FlashAttention-3: Hopper Asynchrony and FP8 Attention"
 summary: "FlashAttention-3 algorithm: Hopper-specific asynchronous pipeline, warp specialization, WGMMA-softmax overlap, FP8 support, and performance results."
 layout: default
+confidence: high
 sources:
   - raw/infer-algorithm/2407.08608v2.pdf
 updated: 2026-06-15

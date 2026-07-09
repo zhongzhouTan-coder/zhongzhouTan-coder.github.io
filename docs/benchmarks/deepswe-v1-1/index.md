@@ -2,7 +2,6 @@
 title: "DeepSWE v1.1: Execution and Scoring Changes"
 summary: "DeepSWE v1.1 keeps the same task set as v1 but changes execution and grading to committed-patch isolated verification, structured test reporting, and a cleaner git environment."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/benchmark/deepswev1dot1.md

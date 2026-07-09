@@ -2,18 +2,17 @@
 title: "Matrix Exponentiation for Linear Transitions"
 summary: "How binary matrix exponentiation accelerates linear recurrences and fixed linear dynamic-programming transitions."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/algorithm/Matrix exponentiation | HackerEarth.pdf
-updated: 2026-06-24
+updated: 2026-07-09
 ---
 
 # Matrix Exponentiation for Linear Transitions
 
 Matrix exponentiation turns many repeated linear updates into logarithmic-time computations. The method is useful when a state vector advances through the same linear transition at every step, including linear recurrences, prefix sums of recurrences, coupled sequences, and dynamic programs with fixed transition rules.
 
-**Related page:** [Algorithms](../algorithms/index.md)
+**Related page:** [Algorithms](index.md)
 
 ## Matrix multiplication
 

@@ -37,7 +37,7 @@
 
 ## 2026-06-24
 
-- Added [Matrix Exponentiation for Linear Transitions](../docs/layer_0/matrix-exponentiation.md) to `docs/layer_0/matrix-exponentiation.md`, sourced from `raw/algorithm/Matrix exponentiation | HackerEarth.pdf`. Covers binary matrix exponentiation, row-vector transition-matrix construction, Fibonacci and general linear recurrences, prefix sums, coupled sequences, fixed linear dynamic-programming transitions, modular arithmetic, and repeated-query optimization in layer 0.
+- Added [Matrix Exponentiation for Linear Transitions](../docs/algorithms/matrix-exponentiation.md) at the time under the legacy path `docs/layer_0/matrix-exponentiation.md`, sourced from `raw/algorithm/Matrix exponentiation | HackerEarth.pdf`. Covers binary matrix exponentiation, row-vector transition-matrix construction, Fibonacci and general linear recurrences, prefix sums, coupled sequences, fixed linear dynamic-programming transitions, modular arithmetic, and repeated-query optimization in layer 0.
 
 ## 2026-07-06
 
@@ -59,3 +59,5 @@
 - Updated [Harbor: Agent Evaluation Framework Design](../docs/frameworks/harbor-framework/index.md) with a second, philosophy-first visual explainer and added complementary assets at `docs/frameworks/assets/harbor-design-philosophy.drawio` and `docs/frameworks/assets/harbor-design-philosophy.svg` to show Harbor's motivating pressures, core principles, architecture consequences, and intended outcomes without replacing the existing runtime architecture visual.
 - Refactored [Pier: Coding-Agent Evaluation Harness](../docs/benchmarks/pier/index.md), [DeepSWE: Long-Horizon Software Engineering Benchmark](../docs/benchmarks/deepswe/index.md), [DeepSWE v1.1: Execution and Scoring Changes](../docs/benchmarks/deepswe-v1-1/index.md), and [Harbor: Agent Evaluation Framework Design](../docs/frameworks/harbor-framework/index.md) into folder-backed `index.md` pages so VS Code Markdown preview can resolve relative image paths while GitHub Pages keeps pretty trailing-slash URLs.
 - Removed the repo-local Codex mirror files `.codex/AGENTS.md` and `.codex/agents/docs-ingest.toml`, and updated [Knowledge Base Introduction](../docs/README.md) to point back to `AGENTS.md` for the docs workflow source of truth.
+- Moved [Matrix Exponentiation for Linear Transitions](../docs/algorithms/matrix-exponentiation.md) from the legacy `docs/layer_0/` path into `docs/algorithms/`, updated [Algorithms](../docs/algorithms/index.md) and [Wiki Index](../logs/index.md) to match the category-based layout, and revised `AGENTS.md` plus the `.github` docs-ingest/front-matter instructions so `doc_layer` now consistently represents confidence rather than folder placement.
+- Simplified the docs front matter schema to use `confidence: high|medium|low` directly, removed the redundant `doc_layer` field from pages and instructions, and updated the docs lint script so every page under `docs/` now requires an explicit readable confidence value.

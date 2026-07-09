@@ -24,7 +24,7 @@ Use this instruction when updating the knowledge-base index or the chronological
 - Append new entries in chronological order with the newest entry at the end of the file.
 - Start each entry with a `## YYYY-MM-DD` heading.
 - Under each date heading, use flat bullet lists for individual updates.
-- Each bullet should briefly state what changed, which source or topic it came from, and which docs page or layer was updated.
+- Each bullet should briefly state what changed, which source or topic it came from, and which docs page or confidence level was updated.
 - Keep log entries factual and concise.
 - If multiple related changes happen on the same date, group them under the same date heading instead of repeating the heading.
 
@@ -41,7 +41,7 @@ Use this instruction when updating the knowledge-base index or the chronological
 Example `logs/index.md` entry:
 
 ```md
-- [Topic Name](../docs/layer_0/topic-name.md)
+- [Topic Name](../docs/algorithms/topic-name.md)
 ```
 
 Example `logs/log.md` entry:
@@ -49,5 +49,5 @@ Example `logs/log.md` entry:
 ```md
 ## 2026-05-28
 
-- Ingested `raw/example.md` into [Example Topic](../docs/layer_1/example-topic.md) and classified it as medium confidence.
+- Ingested `raw/example.md` into [Example Topic](../docs/benchmarks/example-topic.md) and classified it as medium confidence.
 ```

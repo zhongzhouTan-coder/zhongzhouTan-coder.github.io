@@ -2,7 +2,6 @@
 title: "Pier: Coding-Agent Evaluation Harness"
 summary: "Pier is a Harbor-compatible coding-agent evaluation harness focused on installed agents in sandboxed tasks, stricter ATIF trajectories, and practical support for mini-swe-agent-style benchmark runs."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/benchmark/pier.md

@@ -2,6 +2,7 @@
 title: "vLLM Code Learning Path and Request Flow"
 summary: "A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini vLLM step by step."
 layout: default
+confidence: high
 sources:
   - ../vllm/vllm/entrypoints/openai/chat_completion/api_router.py
   - ../vllm/vllm/entrypoints/openai/chat_completion/serving.py

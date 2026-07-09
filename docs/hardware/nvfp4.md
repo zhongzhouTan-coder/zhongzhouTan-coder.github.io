@@ -2,6 +2,7 @@
 title: "NVFP4: Blackwell 4-Bit Floating Point"
 summary: "NVIDIA NVFP4 format, hierarchical scaling, memory benefits, and Transformer Engine training recipe details."
 layout: default
+confidence: high
 sources:
   - raw/nvidia/nvfp4-references.md
 updated: 2026-06-11

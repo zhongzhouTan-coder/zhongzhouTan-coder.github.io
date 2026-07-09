@@ -2,6 +2,7 @@
 title: "τ-bench: Tool-Agent-User Interaction Benchmark"
 summary: "Original τ-bench paper: benchmark design, two customer-service domains (retail and airline), pass^k metric, empirical results, and failure analysis for language agents."
 layout: default
+confidence: high
 sources:
   - raw/benchmark/tau-bench.pdf
 updated: 2026-05-30

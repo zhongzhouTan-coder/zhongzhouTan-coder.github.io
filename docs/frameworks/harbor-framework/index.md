@@ -2,7 +2,6 @@
 title: "Harbor: Agent Evaluation Framework Design"
 summary: "Harbor's design philosophy, runtime architecture, and the reasons it exists as a framework for agent evaluation in container environments."
 layout: default
-doc_layer: layer_0
 confidence: high
 sources:
   - raw/harbor/README.md

@@ -25,7 +25,7 @@
 ## Algorithms
 
 - [Algorithms](../docs/algorithms/index.md) — Category overview for inference algorithm and kernel pages.
-- [Matrix Exponentiation for Linear Transitions](../docs/layer_0/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
+- [Matrix Exponentiation for Linear Transitions](../docs/algorithms/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
 - [FlashAttention: IO-Aware Exact Attention](../docs/algorithms/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../docs/algorithms/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, and A100/H100 performance results.
 - [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../docs/algorithms/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, GEMM-softmax overlap, FP8 block quantization, incoherent processing, and speed/accuracy results.

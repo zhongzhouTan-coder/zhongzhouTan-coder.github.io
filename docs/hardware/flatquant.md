@@ -2,6 +2,7 @@
 title: "FlatQuant: Fast Learnable Affine Quantization"
 summary: "FlatQuant post-training quantization: learnable affine transformations, Kronecker factorization, clipping, fused kernels, and low-bit LLM accuracy/latency results."
 layout: default
+confidence: high
 sources:
   - raw/quantization/2410.09426v4.pdf
 updated: 2026-06-16
