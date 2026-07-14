@@ -31,6 +31,11 @@
 - [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../docs/algorithms/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, GEMM-softmax overlap, FP8 block quantization, incoherent processing, and speed/accuracy results.
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](../docs/algorithms/flashattention-4.md) — Exact attention algorithm and Blackwell kernel design: asynchronous MMA/TMEM pipeline, exponential emulation, conditional softmax rescaling, 2-CTA backward pass, LPT scheduling, and performance results.
 
+## Training
+
+- [Training](../docs/training/index.md) — Category overview for model training, fine-tuning, transfer learning, and generalization pages.
+- [Intrinsic Dimensionality and Language Model Fine-Tuning](../docs/training/intrinsic-dimensionality-fine-tuning/index.md) — Intrinsic-dimension view of pretrained language model fine-tuning: DID/SAID subspace training, low `d90` task dimensions, pretraining as downstream task compression, model-size trends, generalization correlations, and an editable Draw.io explainer.
+
 ## Hardware and Numerics
 
 - [Hardware and Numerics](../docs/hardware/index.md) — Category overview for hardware and numerics pages.

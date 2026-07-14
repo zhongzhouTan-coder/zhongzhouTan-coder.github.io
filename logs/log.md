@@ -61,3 +61,8 @@
 - Removed the repo-local Codex mirror files `.codex/AGENTS.md` and `.codex/agents/docs-ingest.toml`, and updated [Knowledge Base Introduction](../docs/README.md) to point back to `AGENTS.md` for the docs workflow source of truth.
 - Moved [Matrix Exponentiation for Linear Transitions](../docs/algorithms/matrix-exponentiation.md) from the legacy `docs/layer_0/` path into `docs/algorithms/`, updated [Algorithms](../docs/algorithms/index.md) and [Wiki Index](../logs/index.md) to match the category-based layout, and revised `AGENTS.md` plus the `.github` docs-ingest/front-matter instructions so `doc_layer` now consistently represents confidence rather than folder placement.
 - Simplified the docs front matter schema to use `confidence: high|medium|low` directly, removed the redundant `doc_layer` field from pages and instructions, and updated the docs lint script so every page under `docs/` now requires an explicit readable confidence value.
+
+## 2026-07-14
+
+- Added [Intrinsic Dimensionality and Language Model Fine-Tuning](../docs/training/intrinsic-dimensionality-fine-tuning/index.md) to `docs/training/intrinsic-dimensionality-fine-tuning/index.md`, sourced from `raw/training/2012.13255v1.pdf`. Covers DID/SAID intrinsic-dimension fine-tuning, MRPC/QQP `d90` findings, pretraining as task compression, model-size trends, generalization correlations, the intrinsic-dimension compression bound, and an editable Draw.io explainer at `docs/training/intrinsic-dimensionality-fine-tuning/intrinsic-dimensionality-fine-tuning.drawio`.
+- Added the new [Training](../docs/training/index.md) category and updated [Wiki Index](../logs/index.md), [Knowledge Base Introduction](../docs/README.md), and the site landing page to include training and fine-tuning pages.

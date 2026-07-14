@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - AGENTS.md
-updated: 2026-07-09
+updated: 2026-07-14
 ---
 
 # Knowledge Base Introduction
@@ -19,6 +19,7 @@ This repository is an AI-maintained personal knowledge base published on GitHub 
   - `benchmarks/` — Benchmark designs, tasks, metrics, and empirical findings.
   - `frameworks/` — LLM serving and language-model programming systems.
   - `algorithms/` — Inference algorithms and kernel-level methods.
+  - `training/` — Model training, fine-tuning, transfer learning, and generalization.
   - `hardware/` — Numerics, hardware features, and accelerator-specific notes.
 - `logs/`
   - `index.md` — Categorised index of all docs pages.
@@ -31,6 +32,7 @@ This repository is an AI-maintained personal knowledge base published on GitHub 
 | `benchmarks` | Papers or notes about benchmark construction, domains, metrics, task generation, or evaluation results. |
 | `frameworks` | Runtime systems, serving engines, programming frameworks, and application orchestration systems. |
 | `algorithms` | Inference algorithms, kernel implementations, scheduling methods, and mathematical procedures. |
+| `training` | Training dynamics, fine-tuning methods, transfer learning, and generalization analysis. |
 | `hardware` | Hardware formats, accelerator features, precision recipes, and numerics-focused notes. |
 
 Create a new category only when an existing one would make the page hard to find.
