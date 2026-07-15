@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2603.05451v1.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # FlashAttention-4: Blackwell Attention Kernel Co-Design
@@ -16,13 +16,17 @@ updated: 2026-06-15
 
 **Related pages:** [FlashAttention](flashattention.md), [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md), [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md)
 
-## Summary
+## TL;DR
 
-FlashAttention-4 (FA4) is an exact attention algorithm and GPU-kernel implementation designed for NVIDIA Blackwell datacenter GPUs. Its core premise is that Blackwell changes the bottleneck: tensor core BF16/FP16 throughput roughly doubles versus Hopper, while shared-memory bandwidth and exponential-function throughput scale much less. As a result, a Blackwell attention kernel cannot focus only on matrix multiplication. It must also reduce or hide softmax work, shared-memory traffic, atomics, and scheduling imbalance.
+**What:** FlashAttention-4 redesigns exact attention for NVIDIA Blackwell GPUs, where tensor cores have doubled but softmax and shared-memory throughput have not.
+**How:** It uses TMEM-based pipelining to overlap matmul and softmax, software-emulated exponentials to bypass the MUFU bottleneck, 2-CTA cooperative MMA for backward, and load-balanced tile scheduling for causal attention.
+**The number:** Up to 2.4× faster forward than FA3 on B200, with backward speedups from reduced shared-memory traffic and fewer dQ atomics.
 
-FA4 keeps the FlashAttention family goal of computing exact attention without materializing the full attention matrix in HBM, but redesigns the forward and backward pipelines around Blackwell features: asynchronous MMA into tensor memory (TMEM), larger MMA tiles, 2-CTA tensor core mode, software-emulated exponentials, conditional online-softmax rescaling, and load-balanced tile scheduling.
+## The Core Idea
 
-## Hardware Motivation
+Blackwell breaks the assumption that tensor cores are the bottleneck. With BF16 MMA throughput doubling to 8192 ops/clock/SM but exponential throughput stuck at 16 ops/clock/SM, attention becomes limited by softmax and shared-memory bandwidth. FA4 co-designs the algorithm and kernel pipeline around this asymmetric scaling — partly emulating exponentials, partly overlapping the remaining softmax under asynchronous MMA.
+
+## Why This Exists
 
 The paper describes Blackwell B200 / GB200 as asymmetrically scaled relative to Hopper:
 
@@ -228,6 +232,26 @@ FA4 sits after FlashAttention-1/2/3:
 - **FlashAttention-4:** targets Blackwell asymmetry by reducing non-matmul bottlenecks and exploiting TMEM, asynchronous MMA, larger tiles, and 2-CTA mode.
 
 Compared with [vLLM](../frameworks/vllm-framework.md), FA4 is a lower-level attention-kernel algorithm. vLLM manages KV-cache memory and serving throughput at the system level, while FA4 optimizes the exact attention forward/backward kernels themselves.
+
+## Where It Breaks
+
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Blackwell-only | Non-Blackwell GPUs lack TMEM, 2-CTA MMA, and larger tiles | Implementation does not transfer; FA3 is the fallback |
+| Exponential emulation error | When BF16-tolerant softmax error is unacceptable | Requires FP32 softmax path, losing some speedup |
+| CuTe-DSL complexity | Kernel developers unfamiliar with CuTe | Steeper learning curve than raw CUDA, though compile times are faster |
+| LPT scheduling overhead | Very short sequences where tile count is low | Load balancing adds negligible benefit while introducing scheduling logic |
+
+## One Thing to Remember
+
+FA4's core contribution is recognizing that **Blackwell's asymmetric hardware scaling makes softmax and shared-memory bandwidth the new attention bottlenecks** — the solution is algorithm-kernel co-design, not just faster matmul.
+
+## Go Deeper
+
+- **Read:** [FlashAttention-4 paper (arXiv:2603.05451)](https://arxiv.org/abs/2603.05451)
+- **Build on:** [FlashAttention](flashattention.md), [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md)
+- **Understand the context:** [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md)
+- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways
 

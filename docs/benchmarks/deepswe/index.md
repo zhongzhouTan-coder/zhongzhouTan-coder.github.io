@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/deepswe.md
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # DeepSWE: Long-Horizon Software Engineering Benchmark
@@ -17,17 +17,17 @@ updated: 2026-07-09
 
 **Related pages:** [DeepSWE v1.1: Execution and Scoring Changes](../deepswe-v1-1/index.md), [τ-bench: Tool-Agent-User Interaction Benchmark](../tau-bench.md), [τ²-Bench: Mechanism and Design](../tau2-bench-mechanism.md)
 
-## Summary
+## TL;DR
 
-DeepSWE is a software-engineering benchmark built to measure long-horizon coding ability on original tasks rather than mined historical fixes. The source emphasizes four claims: contamination resistance, broader repository diversity, larger and less overspecified tasks, and more reliable hand-written behavioral verifiers. On its publication snapshot, the benchmark separates frontier models more sharply than public SWE-bench-style leaderboards, and the authors argue that this better matches day-to-day developer experience with coding agents.
+**What:** DeepSWE is a software-engineering benchmark for long-horizon coding on original tasks — not mined historical fixes.
+**How:** Tasks are sourced from real open-source repositories with hand-written behavioral verifiers, contamination-resistant design, and broader repository diversity than SWE-bench variants.
+**The number:** Frontier models show larger practical performance gaps on DeepSWE than on SWE-Bench Pro, with the best model achieving ~30% resolve rate on the publication snapshot.
 
-## Visual Explainer
+## The Core Idea
 
-The diagram below summarizes both why DeepSWE was introduced and how its task-plus-verifier design is intended to produce a cleaner benchmark signal.
+Existing SWE benchmarks suffer from contamination (models trained on test sets), narrow repository coverage, overspecified task descriptions, and unreliable verifiers. DeepSWE addresses all four by sourcing original tasks, hand-writing behavioral verifiers, and designing tasks that require long-horizon reasoning across multiple files.
 
-![DeepSWE benchmark explainer](../assets/deepswe-explainer.svg)
-
-## What DeepSWE Tries to Fix
+## Why This Exists
 
 The benchmark is positioned as a response to three weaknesses in existing public coding benchmarks:
 
@@ -147,15 +147,26 @@ According to the source, realism comes from three linked choices:
 
 This pushes the benchmark toward codebase exploration, design judgment, and regression avoidance instead of public-patch recall.
 
-## Limitations
+## Where It Breaks
 
-The source also lists several limitations:
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Shared harness limits realism | mini-swe-agent is less realistic than model-native products | Benchmark signal is cleaner but less representative of real deployment |
+| Star count filter | Repositories under 500 GitHub stars excluded | Small but important projects may be missed |
+| Underrepresented task types | Bug localization and refactoring | Benchmark skews toward long-horizon feature work |
+| Language concentration | Limited to 5 languages, concentrated in TypeScript, Go, Python | Non-covered languages not evaluated |
+| Overly specific prompts | Verifiable grading needs specificity | Prompts longer than real developer instructions |
 
-- The shared `mini-swe-agent` harness is less realistic than model-native products.
-- The benchmark only covers repositories with at least 500 GitHub stars.
-- Bug localization and refactoring are underrepresented relative to long-horizon feature work.
-- Language coverage is limited to five languages and is concentrated in TypeScript, Go, and Python.
-- Prompts are still longer than many real developer instructions because verifiable behavioral grading needs some specificity.
+## One Thing to Remember
+
+DeepSWE's strongest methodological claim is **verifier quality, not just task difficulty** — hand-written behavioral verifiers produce a cleaner benchmark signal that separates frontier models more sharply than existing SWE-bench variants.
+
+## Go Deeper
+
+- **Read:** [DeepSWE benchmark site](https://github.com/datacurve-ai/deep-swe)
+- **Build on:** [DeepSWE v1.1: Execution and Scoring Changes](../deepswe-v1-1/index.md)
+- **Understand the context:** [τ-bench](../tau-bench.md), [Pier: Coding-Agent Evaluation Harness](../pier/index.md)
+- **Reproduce:** [github.com/datacurve-ai/deep-swe](https://github.com/datacurve-ai/deep-swe)
 
 ## Key Takeaways
 

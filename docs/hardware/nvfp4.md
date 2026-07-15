@@ -5,14 +5,21 @@ layout: default
 confidence: high
 sources:
   - raw/nvidia/nvfp4-references.md
-updated: 2026-06-11
+updated: 2026-07-15
 ---
 
 # NVFP4: Blackwell 4-Bit Floating Point
 
-NVFP4 is NVIDIA's Blackwell-generation 4-bit floating-point format for low-precision inference and training workflows. It keeps the compact E2M1 FP4 value format but improves accuracy through finer and higher-precision scaling: every local block gets an FP8 E4M3 scale, and the full tensor gets a second FP32 scale.
+**Source:** NVIDIA Transformer Engine documentation and NVFP4 blog posts
+**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention-4.md)
 
-The important distinction is that NVFP4 is not just "FP4 values." It is FP4 plus a hierarchical scaling scheme designed to reduce quantization error while keeping memory and bandwidth close to 4-bit operation.
+## TL;DR
+
+**What:** NVFP4 is NVIDIA's Blackwell-generation 4-bit floating-point format with hierarchical scaling for low-precision inference and training.
+**How:** It pairs compact E2M1 FP4 element values with FP8 E4M3 block scales (16 elements per block) and an FP32 global tensor scale — giving fractional scaling that reduces quantization error versus power-of-two MXFP4.
+**The number:** About 3.5× smaller than FP16, about 1.8× smaller than FP8, with 1 percentage point or less degradation versus FP8 on key evaluations.
+
+NVFP4 is not just "FP4 values." It is FP4 plus a hierarchical scaling scheme designed to reduce quantization error while keeping memory and bandwidth close to 4-bit operation.
 
 ## Format
 
@@ -126,6 +133,17 @@ Transformer Engine lists support as:
 | Inference | SM 10.0+ |
 
 The NVIDIA blog frames NVFP4 as part of Blackwell Tensor Core support for ultra-low precision inference. In practice, assume Blackwell-class hardware is required unless a specific framework or deployment stack documents broader support.
+
+## One Thing to Remember
+
+NVFP4's key distinction from MXFP4 is **fractional scaling via FP8 E4M3 block scales** — smaller 16-element blocks with non-power-of-two scales reduce quantization error, and the hierarchical FP32 global scale adds another layer of precision.
+
+## Go Deeper
+
+- **Read:** NVIDIA Transformer Engine NVFP4 documentation and Blackwell blog posts
+- **Build on:** [FlatQuant: Fast Learnable Affine Quantization](flatquant.md)
+- **Understand the context:** [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention-4.md)
+- **Reproduce:** TensorRT Model Optimizer, LLM Compressor, TensorRT-LLM, vLLM (early support)
 
 ## Practical Takeaways
 

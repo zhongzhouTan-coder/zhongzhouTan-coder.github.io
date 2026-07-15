@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/vllm/2309.06180v1.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # vLLM: PagedAttention Serving Framework
@@ -16,24 +16,17 @@ updated: 2026-06-15
 
 **Related page:** [SGLang: Structured Language Model Programs](sglang-framework.md)
 
-## Summary
+## TL;DR
 
-vLLM is a high-throughput LLM serving framework built around PagedAttention, an attention algorithm and memory-management design that stores KV cache in non-contiguous fixed-size blocks. The paper argues that LLM serving is primarily limited by KV-cache memory, not model weights or transient activations. vLLM improves serving throughput by making KV-cache allocation behave more like operating-system virtual memory: allocate blocks on demand, map logical sequence blocks to physical GPU blocks, and share blocks where decoding algorithms permit it.
+**What:** vLLM is a high-throughput LLM serving framework that reframes KV-cache memory management as a virtual-memory problem.
+**How:** PagedAttention stores KV cache in non-contiguous fixed-size blocks, with logical-to-physical block mapping, on-demand allocation, and copy-on-write sharing — analogous to OS paging.
+**The number:** 2-4× throughput improvement over FasterTransformer and Orca, with gains largest for long sequences, large models, and shared-prefix workloads.
 
-The paper reports 2-4x throughput improvements over state-of-the-art serving systems such as FasterTransformer and Orca at comparable latency. Gains are larger for long sequences, larger models, shared-prefix workloads, and decoding methods such as parallel sampling or beam search.
+## The Core Idea
 
-```mermaid
-flowchart LR
-    API["OpenAI-compatible API frontend"] --> S["Central scheduler"]
-    S --> K["KV cache manager"]
-    K --> G["GPU block allocator"]
-    K --> C["CPU block allocator for swap"]
-    S --> W["Distributed GPU workers"]
-    W --> P["PagedAttention kernels"]
-    P --> M["Transformer model shards"]
-```
+LLM serving is memory-bound by KV cache, not compute-bound by model weights. Existing systems waste 60-80% of KV-cache memory through reserved-but-unused slots and fragmentation. vLLM applies operating-system virtual memory principles — paging, block tables, and copy-on-write — to KV cache, turning that wasted memory into larger effective batch sizes.
 
-## Problem Framing
+## Why This Exists
 
 Autoregressive LLM serving has two phases:
 
@@ -202,16 +195,26 @@ Orca and vLLM are complementary. Orca improves throughput through iteration-leve
 
 Compared with [SGLang](sglang-framework.md), vLLM is lower in the stack. vLLM is an inference-serving engine centered on paged KV-cache memory management. SGLang is a programming and runtime framework for structured multi-call language-model programs, and its RadixAttention generalizes KV-cache reuse around prefix trees and cache-aware scheduling.
 
-## Limitations and Design Boundaries
+## Where It Breaks
 
-The paper is explicit that paging is valuable here because LLM serving has dynamic memory allocation, unknown output lengths, and memory-bound execution. The same technique may not help static or compute-bound GPU workloads, such as many DNN training jobs or non-LLM inference services. In those cases, block-table indirection and non-contiguous memory access can add overhead without improving throughput.
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Compute-bound workloads | Short sequences, small models, or training workloads | Block-table indirection adds overhead without throughput gain |
+| PagedAttention kernel overhead | Isolation comparison against FasterTransformer's attention kernel | 20-26% higher attention-kernel latency; system-level gains compensate |
+| Block size sensitivity | Too small or too large relative to sequence length | Too small: poor GPU utilization; too large: increased fragmentation, reduced sharing |
+| Swapping with small blocks | Many small CPU-GPU transfers during preemption | PCIe bandwidth wasted on overhead; recomputation often more efficient |
+| Static prefix sharing only | Known system prompts, not dynamic or learned prefix reuse | SGLang's RadixAttention provides automatic radix-tree KV reuse as a complement |
 
-Other boundaries:
+## One Thing to Remember
 
-- PagedAttention's attention kernel is slower in isolation than FasterTransformer's kernel.
-- Block size is workload-sensitive; too small hurts GPU utilization, too large increases fragmentation and reduces sharing.
-- Swapping can be expensive with small blocks due to many small CPU-GPU transfers.
-- vLLM's shared-prefix mechanism in this paper is convenient for known prefixes but is not the same as fully automatic multi-level prefix reuse.
+vLLM's core contribution is **treating KV cache as virtual memory** — PagedAttention enables block-level allocation, sharing, and copy-on-write for attention states, turning 60-80% wasted KV-cache memory into 2-4× higher serving throughput.
+
+## Go Deeper
+
+- **Read:** [vLLM paper (arXiv:2309.06180)](https://arxiv.org/abs/2309.06180)
+- **Build on:** [SGLang: Structured Language Model Programs](sglang-framework.md), [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md)
+- **Understand the context:** [vLLM Code Learning Path](vllm-code-learning-path.md), [FlashAttention](../algorithms/flashattention.md)
+- **Reproduce:** [Official implementation at github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
 
 ## Key Takeaways
 

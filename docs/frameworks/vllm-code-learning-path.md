@@ -16,14 +16,20 @@ sources:
   - ../vllm/vllm/v1/worker/gpu_worker.py
   - ../vllm/vllm/v1/worker/gpu_model_runner.py
   - ../vllm/vllm/v1/worker/gpu/input_batch.py
-updated: 2026-07-06
+updated: 2026-07-15
 ---
 
 # vLLM Code Learning Path and Request Flow
 
 **Related page:** [vLLM: PagedAttention Serving Framework](vllm-framework.md)
 
-## Why this page exists
+## TL;DR
+
+**What:** A code-oriented map of the vLLM serving stack from API entrypoint to GPU worker, plus an achievement-driven path to build a mini vLLM step by step.
+**How:** Traces the full request lifecycle through 11 steps across 7 component layers, then provides three stages to build a progressively more capable serving engine.
+**The number:** The guide covers the complete v1 serving path, from `api_router.py` through `gpu_model_runner.py`.
+
+## Why This Page Exists
 
 The existing [vLLM framework page](vllm-framework.md) explains the original paper design. This page explains the current codebase from the serving path downward, with one practical goal: learn vLLM by building a smaller version in stages.
 

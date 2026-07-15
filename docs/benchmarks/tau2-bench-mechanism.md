@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/tau2-bench.pdf
-updated: 2026-05-29
+updated: 2026-07-15
 ---
 
 # τ²-Bench: Mechanism and Design
@@ -245,12 +245,21 @@ Each telecom task is randomly assigned one of three user personas:
 - **Easy** — office administrator; average technical skill; patient and communicative.
 - **Hard** — 64-year-old retired librarian; limited technical knowledge; gets flustered easily; needs constant reassurance.
 
-## Limitations
+## Where It Breaks
 
-- Does not model the **expert-novice gap**: the agent never needs to adapt its explanations to the user's mental model.
-- Domain expansion still requires significant human expertise.
-- The tool-augmented user simulator approach has not yet been applied to the existing retail and airline domains.
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| No expert-novice gap | Agent never needs to adapt explanations to user's mental model | Real-world communication difficulty underestimated |
+| Domain construction cost | Each new domain requires schema design, tool implementation, DB population, and user simulator authoring | Slower benchmark expansion than template-based approaches |
+| Tool-augmented simulator not yet applied to retail/airline | Existing τ-bench domains | Simulator design validated on telecom only |
 
-## Related Pages
+## One Thing to Remember
 
-- [Knowledge Base Introduction](../README.md)
+τ²-Bench's key contribution is formalizing conversational evaluation as a **dual-control Dec-POMDP where the user is also a language model agent** — this makes the benchmark a game between two LLMs, not a static test set.
+
+## Go Deeper
+
+- **Read:** [τ²-Bench paper](https://arxiv.org/abs/2505.12345)
+- **Build on:** [τ-bench](tau-bench.md), [τ-Voice: Full-Duplex Voice Benchmark](tau-voice.md)
+- **Understand the context:** [DeepSWE: Long-Horizon Software Engineering Benchmark](deepswe/index.md)
+- **Reproduce:** Check τ-bench repository

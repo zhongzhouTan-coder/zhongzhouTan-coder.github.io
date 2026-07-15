@@ -15,7 +15,7 @@ sources:
   - raw/harbor/trial.py
   - raw/harbor/agents-base.py
   - raw/harbor/environments-base.py
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # Harbor: Agent Evaluation Framework Design
@@ -24,9 +24,17 @@ updated: 2026-07-09
 **Official framing:** Harbor is a framework for evaluating and optimizing agents and models in container environments.
 **Related pages:** [Frameworks](../index.md), [Pier: Coding-Agent Evaluation Harness](../../benchmarks/pier/index.md)
 
-## Summary
+## TL;DR
 
-Harbor exists because modern agent evaluation is not just "call a model and score the text." It requires a reproducible task package, an isolated runtime, an agent adapter, a verifier, artifact collection, and a way to scale the same setup from one local Docker run to thousands of cloud sandboxes.
+**What:** Harbor is a framework for evaluating and optimizing agents in container environments, treating the task as the atomic portable unit.
+**How:** Each task bundles instruction, container environment, verifier, and runtime policy in `task.toml`; everything else — jobs, trials, sandboxes — is built around executing that task format consistently.
+**The number:** Supports local Docker runs through thousands of cloud sandboxes with the same task format.
+
+## The Core Idea
+
+Modern agent evaluation is not just "call a model and score the text." It requires reproducible task packaging, isolated runtimes, agent adapters, verifiers, artifact collection, and scaling — Harbor provides all of these as a framework rather than a benchmark.
+
+## Why This Exists
 
 The core design choice is to treat the **task** as the atomic portable unit. A Harbor task bundles:
 
@@ -322,3 +330,14 @@ That layered structure is why Harbor can serve multiple use cases at once:
 - The core runtime architecture is `Job -> TrialQueue -> Trial -> Agent + Environment + Verifier`.
 - Harbor achieves flexibility by separating task packaging, sandbox control, agent integration, verification, and distribution.
 - Its strongest architectural feature is probably the combination of **portable task format + provider abstraction + explicit verification and artifact flow**.
+
+## One Thing to Remember
+
+Harbor's design philosophy is that **the task is the atomic portable unit** — everything else (jobs, trials, sandboxes, verifiers) is built around executing that task format in a reproducible, evidence-producing way.
+
+## Go Deeper
+
+- **Read:** Harbor documentation in `raw/harbor/`
+- **Build on:** [Pier: Coding-Agent Evaluation Harness](../../benchmarks/pier/index.md)
+- **Understand the context:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../../benchmarks/deepswe/index.md)
+- **Reproduce:** Harbor framework setup from its repository

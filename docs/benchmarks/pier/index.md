@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/pier.md
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # Pier: Coding-Agent Evaluation Harness
@@ -191,6 +191,17 @@ There is also a small documentation mismatch:
 - but `EnvironmentFactory` also registers a `daytona` implementation.
 
 The safest reading is that Daytona exists in code, but the README only treats Docker and Modal as the primary supported paths today.
+
+## One Thing to Remember
+
+Pier's most distinctive contribution is its insistence on **high-quality, analyzable trajectories** — the harness trades some execution convenience for the ability to inspect exactly what the agent did, which is essential for debugging and improving coding agents.
+
+## Go Deeper
+
+- **Read:** [Pier repository](https://github.com/datacurve-ai/pier)
+- **Build on:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../deepswe/index.md), [DeepSWE v1.1](../deepswe-v1-1/index.md)
+- **Understand the context:** [Harbor: Agent Evaluation Framework Design](../../frameworks/harbor-framework/index.md)
+- **Reproduce:** [github.com/datacurve-ai/pier](https://github.com/datacurve-ai/pier)
 
 ## Key Takeaways
 

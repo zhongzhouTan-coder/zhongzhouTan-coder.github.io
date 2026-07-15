@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2407.08608v2.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # FlashAttention-3: Hopper Asynchrony and FP8 Attention
@@ -16,13 +16,17 @@ updated: 2026-06-15
 
 **Related pages:** [FlashAttention](flashattention.md), [FlashAttention-2](flashattention-2.md), [FlashAttention-4](flashattention-4.md)
 
-## Summary
+## TL;DR
 
-FlashAttention-3 (FA3) adapts FlashAttention to NVIDIA Hopper GPUs. FlashAttention and FlashAttention-2 minimize HBM reads/writes, but FA3 argues that newer GPUs also require explicit use of hardware asynchrony and low precision. On Hopper H100, tensor cores and Tensor Memory Accelerator (TMA) can run asynchronously from ordinary CUDA-core work. FA3 restructures the attention kernel so data movement, matrix multiplication, and softmax overlap more effectively.
+**What:** FlashAttention-3 adapts exact attention to NVIDIA Hopper GPUs by exploiting hardware asynchrony (TMA, WGMMA) and low-precision FP8.
+**How:** It uses warp specialization to overlap data movement with compute, ping-pong scheduling to hide softmax latency, and a two-stage WGMMA-softmax pipeline with FP8 layout engineering.
+**The number:** 1.5-2.0× faster than FlashAttention-2 in FP16/BF16, up to 740 TFLOPs/s, and nearly 1.2 PFLOPs/s for FP8 forward attention.
 
-The paper reports FP16/BF16 forward speedups of 1.5-2.0x over FlashAttention-2, backward speedups of 1.5-1.75x, up to 740 TFLOPs/s for FP16/BF16, and nearly 1.2 PFLOPs/s for FP8 forward attention.
+## The Core Idea
 
-## Hopper Motivation
+FlashAttention-2 reaches only about 35% utilization on H100, while optimized GEMM kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement (TMA), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
+
+## Why This Exists
 
 FA3 targets Hopper features:
 
@@ -121,15 +125,25 @@ Main reported results:
 
 The paper reports that FP16 FA3 has the same numerical error as FlashAttention-2 and lower error than standard attention because intermediate values such as softmax rescaling remain in FP32.
 
-## Limitations
+## Where It Breaks
 
-The paper focuses on Hopper. The authors state the algorithmic ideas apply to architectures with robust asynchronous execution and low-precision hardware, but the concrete implementation is architecture-specific.
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Hopper-only | Non-Hopper GPUs (A100, AMD, Intel) lack TMA/WGMMA | Implementation does not transfer; FA2 is the fallback |
+| FP8 precision risk | When attention accuracy is critical and FP8 errors accumulate | Requires careful layout engineering and accuracy controls |
+| Inference not optimized | Training-focused pipeline design | Persistent kernel design for inference not yet integrated |
+| Large-scale training unknown | FP8 attention at scale | Low-precision attention behavior in large-scale training still under-explored |
 
-Noted future directions include:
+## One Thing to Remember
 
-- optimizing for LLM inference;
-- integrating persistent kernel design into FP8 kernels;
-- understanding low-precision attention in large-scale training.
+FA3's key insight is that **on Hopper GPUs, attention becomes an asynchrony problem, not just an IO problem** — overlapping TMA data movement, WGMMA matmul, and softmax through warp specialization is what unlocks the next 2× speedup over FA2.
+
+## Go Deeper
+
+- **Read:** [FlashAttention-3 paper (arXiv:2407.08608)](https://arxiv.org/abs/2407.08608)
+- **Build on:** [FlashAttention](flashattention.md), [FlashAttention-2](flashattention-2.md), [FlashAttention-4](flashattention-4.md)
+- **Understand the context:** [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md)
+- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways
 

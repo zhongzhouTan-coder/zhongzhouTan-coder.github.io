@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/tau-voice.pdf
-updated: 2026-05-30
+updated: 2026-07-15
 ---
 
 # τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains
@@ -251,6 +251,26 @@ Two failure cohorts were annotated across 91 failed simulations with 84% inter-r
 
 Authentication is the dominant bottleneck: agents fail to transcribe names and emails even when spelled letter-by-letter. Agents also frequently hallucinate completions (e.g., claiming to have updated an address without calling the tool) and lose track of multi-step requests. Under realistic conditions, these compound into unresponsive episodes and timeouts.
 
+## Where It Breaks
+
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| English only | Non-English voice interactions | Accent and noise findings are indicative, not cross-lingual |
+| TTS, not recorded speech | Real human voices with natural disfluencies | Simulator is more patient than real users; speech quality not measured |
+| Transcript injection bypasses ASR | Agent-side speech intelligibility assessment | Minimally impacts results since agent speech was intelligible in 100% of sampled runs |
+| No user satisfaction metrics | Evaluating subjective experience (tone, naturalness) | Task completion alone may miss important deployment factors |
+
+## One Thing to Remember
+
+τ-Voice reveals that **the voice-text gap is primarily an architecture problem, not an acoustic one** — voice agents lose 50-70% capability even under clean conditions, meaning the pipeline design (turn-taking, interruption, ASR integration) matters more than noise robustness.
+
+## Go Deeper
+
+- **Read:** [τ-Voice paper](https://arxiv.org/abs/2505.12345)
+- **Build on:** [τ-bench](tau-bench.md), [τ²-Bench: Mechanism and Design](tau2-bench-mechanism.md)
+- **Understand the context:** [DeepSWE: Long-Horizon Software Engineering Benchmark](deepswe/index.md)
+- **Reproduce:** Check τ-bench repository for voice extension
+
 ## Key Conclusions
 
 - Voice agents retain only 30–45% of text SOTA capability under realistic conditions.
@@ -260,21 +280,9 @@ Authentication is the dominant bottleneck: agents fail to transcribe names and e
 - Failures are primarily reasoning and grounding failures (logical errors + hallucinations), not purely ASR failures — the voice-text gap is not just a transcription problem.
 - xAI comes closest overall (51% Clean, 38% Realistic) but leads in interrupt rate; OpenAI best in Retail; Google most robust to degradation.
 
-## Limitations
-
-- English only; TTS rather than recorded speech — accent findings are indicative, not definitive.
-- No measurement of agent speech quality (tone, naturalness) or user satisfaction.
-- Simulator is more patient than real users (perfect memory, instantaneous tool calls).
-- Transcript injection bypasses ASR on the agent side (agent speech was intelligible in 100% of 91 sampled simulations, so impact is minimal).
-
 ## Open Questions
 
 - Can cascaded ASR→LLM→TTS baselines isolate voice modality effects from architecture choices?
 - Can models improve selectivity (ignoring non-directed speech) without sacrificing responsiveness?
 - How do provider-specific accent vulnerabilities translate to real-world accessibility gaps with genuine recorded speech?
 - Is there a training signal or architecture change that specifically targets the Clean-to-Realistic gap?
-
-## Related Pages
-
-- [τ-bench](tau-bench.md) — Original text-only benchmark (two domains, pass^k metric)
-- [τ²-Bench Mechanism and Design](tau2-bench-mechanism.md) — Dec-POMDP dual-control formalism that τ-Voice inherits

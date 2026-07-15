@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/tau-bench.pdf
-updated: 2026-05-30
+updated: 2026-07-15
 ---
 
 # τ-bench: Tool-Agent-User Interaction Benchmark
@@ -16,11 +16,17 @@ updated: 2026-05-30
 
 **Related page:** [τ²-Bench Mechanism and Design](tau2-bench-mechanism.md)
 
-## Summary
+## TL;DR
 
-τ-bench benchmarks language agents that must interact with a simulated human user over multiple turns, use domain-specific API tools, and follow policy guidelines — all simultaneously. Evaluation compares the final database state against a ground-truth annotated state. The benchmark exposes that even state-of-the-art agents succeed on fewer than 50 % of tasks and are highly inconsistent across repeated trials.
+**What:** τ-bench benchmarks language agents that must interact with simulated users over multiple turns, use domain-specific API tools, and follow policy guidelines — all simultaneously.
+**How:** Two customer-service domains (retail and airline) with database-backed state, a three-stage task construction pipeline, and the pass^k metric that measures consistency across repeated trials.
+**The number:** Even state-of-the-art agents succeed on fewer than 50% of tasks at pass^1, and pass^k drops sharply — gpt-4o achieves 61.2% on τ-retail but only 35.2% on τ-airline.
 
-## Problem Framing
+## The Core Idea
+
+Real-world agent deployment requires multi-turn interaction, policy adherence, and consistency at scale — but existing benchmarks test these properties in isolation. τ-bench combines all three in a single evaluation framework and shows that current models fail most dramatically on consistency (pass^k), not just average success.
+
+## Why This Exists
 
 Real-world agent deployment requires three properties simultaneously:
 
@@ -175,6 +181,17 @@ Two dominant failure categories:
 **Failure 1 — Wrong information (~55 % of failures):** The agent omits user-required information, calculates incorrect values, or provides inaccurate information that diverts the conversation. Weak models also hallucinate non-existent IDs (gpt-3.5-turbo FC: 2.08 bad ID calls per task vs. gpt-4o FC: 0.46).
 
 **Failure 2 — Wrong decision-making (~25 % of failures):** The agent fails to understand domain-specific rules. Example: the policy states exchange tools can only be called once; the agent exchanges one item first, then cannot exchange the second.
+
+## One Thing to Remember
+
+τ-bench's most important finding is that **consistency (pass^k) is a qualitatively harder challenge than average success (pass^1)** — even models that occasionally succeed fail to do so reliably, and this reliability gap is what makes real-world deployment risky.
+
+## Go Deeper
+
+- **Read:** [τ-bench paper (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045)
+- **Build on:** [τ²-Bench: Mechanism and Design](tau2-bench-mechanism.md), [τ-Voice: Full-Duplex Voice Benchmark](tau-voice.md)
+- **Understand the context:** [DeepSWE: Long-Horizon Software Engineering Benchmark](deepswe/index.md)
+- **Reproduce:** [github.com/sierra-research/tau-bench](https://github.com/sierra-research/tau-bench)
 
 ## Key Conclusions
 

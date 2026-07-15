@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/benchmark/deepswev1dot1.md
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # DeepSWE v1.1: Execution and Scoring Changes
@@ -129,11 +129,24 @@ The source points to two concrete shortcut classes that v1.1 is meant to shut do
 1. **Test-environment tampering:** modifying the test framework or runtime environment in the agent container no longer helps, because only the committed patch is transferred into the verifier container.
 2. **Silent test dropping or early exits:** CTRF reporting makes missing task-defining tests visible rather than allowing them to disappear into a noisy pass/fail boundary.
 
-## Limitations and Interpretation
+## Where It Breaks
 
-The source does not present v1.1 as a new benchmark corpus. It is still the same DeepSWE task set, so the main interpretation is about **measurement quality**, not broader task coverage.
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Same task set, same blind spots | v1.1 does not add new tasks | Language, star-count, and task-type limitations from v1 persist |
+| Model-native harness still excluded | Standardized comparison prioritized | Realistic deployment performance differences not captured |
+| v1-vs-v1.1 comparisons are sensitivity checks | Interpreting small leaderboard differences | Differences reflect measurement noise, not task difficulty changes |
 
-One implication is that comparisons between v1 and v1.1 should be read as **environment and scoring sensitivity checks**. The fact that results stay close is itself part of the benchmark's evidence: the leaderboard signal appears fairly robust to the cleaner grading setup.
+## One Thing to Remember
+
+DeepSWE v1.1 is fundamentally about **measurement quality, not new content** — the modest leaderboard differences confirm the original benchmark signal is robust, not that models improved.
+
+## Go Deeper
+
+- **Read:** DeepSWE v1.1 release notes (see DeepSWE repository)
+- **Build on:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../deepswe/index.md)
+- **Understand the context:** [Pier: Coding-Agent Evaluation Harness](../pier/index.md)
+- **Reproduce:** [github.com/datacurve-ai/deep-swe](https://github.com/datacurve-ai/deep-swe)
 
 ## Key Takeaways
 

@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2307.08691v1.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # FlashAttention-2: Better Parallelism and Work Partitioning
@@ -16,13 +16,17 @@ updated: 2026-06-15
 
 **Related pages:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md)
 
-## Summary
+## TL;DR
 
-FlashAttention-2 (FA2) keeps FlashAttention's exact, IO-aware attention algorithm but improves how the work is arranged on GPUs. The paper observes that the first FlashAttention implementation is already much faster than standard attention, yet it reaches only about 25-40% of theoretical peak FLOPs/s on A100. FA2 raises utilization by reducing non-matmul operations, adding more parallelism for long sequences, and changing how warps split work inside each thread block.
+**What:** FlashAttention-2 keeps the exact, IO-aware attention algorithm but reorganizes GPU work for higher utilization.
+**How:** It reduces non-matmul operations, adds sequence-level parallelism for long contexts, and re-partitions work across warps to avoid inter-warp reductions.
+**The number:** About 2× faster than FlashAttention, reaching 50-73% of theoretical peak FLOPs/s on A100 and up to 225 TFLOPs/s for end-to-end GPT training.
 
-The reported result is about 2x speedup over FlashAttention, 50-73% of theoretical maximum FLOPs/s on A100 for attention kernels, and up to 225 TFLOPs/s per A100 GPU for end-to-end GPT-style training.
+## The Core Idea
 
-## Motivation
+FlashAttention already avoids the $N \times N$ HBM bottleneck, but on A100 it only reaches 25-40% of peak FLOPs/s. The remaining gap comes from non-matmul work (softmax, reductions, masking) which is much slower than tensor-core matmul. FA2 reorganizes parallelism and work partitioning to close this gap without changing the attention algorithm itself.
+
+## Why This Exists
 
 FlashAttention avoids materializing the full attention matrix in HBM, but attention still contains operations that tensor cores do not accelerate well:
 
@@ -131,16 +135,27 @@ FA2 sits between the original IO-aware algorithm and later architecture-specific
 
 Compared with [vLLM](../frameworks/vllm-framework.md), FA2 is a kernel-level attention optimization. vLLM manages serving-time KV-cache memory and scheduling, while FA2 makes exact attention kernels faster for training, finetuning, and inference.
 
-## Limitations and Future Directions
+## Where It Breaks
 
-The paper points to several follow-up directions:
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Architecture lock-in | Implementation tied to NVIDIA A100/H100 CUDA; AMD or other GPUs | Requires separate porting effort |
+| Small batch sizes with short sequences | When $N$ is short and batch size is already large | Sequence parallelism adds no benefit; overhead dominates |
+| Compiler dependency | Manual tuning of block sizes per head dimension | Fragile across models; autotuning not yet available |
+| Non-matmul bottleneck persists | FP32 softmax still limits throughput on newer architectures | Future GPUs (H100, B200) shift bottleneck; motivates FA3 and FA4 |
 
-- optimize specifically for H100 features such as TMA, fourth-generation tensor cores, and FP8;
-- extend support to AMD GPUs and other devices;
-- combine low-level kernel optimization with higher-level attention variants such as local, dilated, and block-sparse attention;
-- improve compiler support so these optimizations are easier to program.
+These boundaries directly motivate the later FlashAttention-3 (Hopper asynchrony) and FlashAttention-4 (Blackwell co-design) papers.
 
-These directions are directly connected to the later FlashAttention-3 and FlashAttention-4 papers.
+## One Thing to Remember
+
+FlashAttention-2's speedup comes **not from a better algorithm but from better GPU work organization** — it reaches 2× the throughput of FlashAttention by reducing non-matmul overhead and increasing parallelism, while computing exactly the same attention.
+
+## Go Deeper
+
+- **Read:** [FlashAttention-2 paper (arXiv:2307.08691)](https://arxiv.org/abs/2307.08691)
+- **Build on:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
+- **Understand the context:** [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md)
+- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways
 

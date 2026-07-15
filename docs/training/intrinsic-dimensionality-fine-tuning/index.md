@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/training/2012.13255v1.pdf
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 
 # Intrinsic Dimensionality and Language Model Fine-Tuning
@@ -114,13 +114,25 @@ L0(f) <= Lhat0(f) + O(sqrt(d / m))
 
 The important point is that the bound depends on the intrinsic dimension `d`, not the full pretrained parameter count `D`. This only directly applies to models trained with the intrinsic subspace method, and the paper leaves open the theoretical question of why ordinary SGD fine-tuning appears to find similarly low-dimensional solutions.
 
-## Limitations
+## Where It Breaks
 
-- The intrinsic dimension estimates are upper bounds produced by random projection heuristics, not exact intrinsic dimensions.
-- The method still requires repeated subspace training and search over `d`, making measurement expensive.
-- The generalization bound is most direct for SAID/DID-style training, not standard full-parameter fine-tuning.
-- The paper shows correlations among pretraining, size, intrinsic dimension, and generalization, but does not prove that pretraining causally minimizes intrinsic dimension for all tasks.
-- The experiments focus on NLP classification-style tasks available at the time; later instruction tuning, RLHF, adapters, LoRA, and modern long-context workloads are outside the source's scope.
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Upper bound, not exact | Intrinsic dimension estimates via random projection heuristics | True intrinsic dimension may be lower; estimates are conservative |
+| Measurement cost | Repeated subspace training and search over $d$ | Expensive to estimate for new tasks or models |
+| Generalization bound scope | Bound applies to SAID/DID-style training, not standard fine-tuning | Results are suggestive but not directly causal for all fine-tuning methods |
+| Task era limited | NLP classification tasks available at the time | Modern instruction tuning, RLHF, LoRA, and long-context workloads not covered |
+
+## One Thing to Remember
+
+The central finding is that **pretraining compresses tasks into low-dimensional manifolds** — larger pretrained models need fewer task-specific degrees of freedom, which explains why fine-tuning works with surprisingly few parameters.
+
+## Go Deeper
+
+- **Read:** [Intrinsic Dimensionality paper (arXiv:2012.13255)](https://arxiv.org/abs/2012.13255)
+- **Build on:** LoRA, adapters, and other parameter-efficient fine-tuning methods
+- **Understand the context:** Training dynamics and generalization in large models
+- **Reproduce:** Check paper for code repository
 
 ## Key Takeaways
 

@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/sglang/2312.07104v2.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # SGLang: Structured Language Model Programs
@@ -14,26 +14,17 @@ updated: 2026-06-15
 **Authors:** Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Sun, Jeff Huang, Cody Hao Yu, Shiyi Cao, Christos Kozyrakis, Ion Stoica, Joseph E. Gonzalez, Clark Barrett, Ying Sheng
 **arXiv:** 2312.07104v2 - 6 Jun 2024
 
-## Summary
+## TL;DR
 
-SGLang is a framework for programming and executing structured language model programs: workflows that involve multiple generation calls, control flow, parallel branches, multimodal inputs, and structured outputs. It has two co-designed parts:
+**What:** SGLang is a framework for programming and executing structured LLM programs — workflows with multiple generation calls, control flow, parallel branches, and structured outputs.
+**How:** A Python-embedded frontend language exposes prompt state, generation, and parallelism primitives; a backend runtime exploits repeated calls through RadixAttention KV cache reuse, compressed FSM constrained decoding, and API-call speculation.
+**The number:** Up to 5× higher throughput than state-of-the-art serving systems on multi-call LLM workloads like tree-of-thought and self-consistency.
 
-- A Python-embedded frontend language with primitives for prompt state, generation, selection, multimodal inputs, and parallelism.
-- A backend runtime that accelerates repeated and structured calls through KV cache reuse, constrained decoding optimizations, and API-call speculation.
+## The Core Idea
 
-The paper's central claim is that complex LLM applications expose structure that ordinary OpenAI-like completion APIs and general inference servers do not exploit. SGLang makes that structure explicit in the frontend and uses it in the runtime.
+Complex LLM applications expose structure (repeated prefixes, branching, constrained outputs) that ordinary completion APIs and inference servers do not exploit. SGLang makes that structure explicit in the frontend and uses it in the runtime to avoid redundant computation.
 
-```mermaid
-flowchart LR
-    P["SGLang program"] --> I["Frontend interpreter or compiler"]
-    I --> R["SGLang Runtime"]
-    R --> K["RadixAttention KV cache reuse"]
-    R --> F["Compressed FSM constrained decoding"]
-    R --> A["API speculative execution"]
-    R --> M["Open-weight or API model"]
-```
-
-## Problem Framing
+## Why This Exists
 
 Modern LLM applications increasingly look like programs rather than single prompts. Agent control, tree-of-thought, skeleton-of-thought, self-consistency, LLM judges, retrieval-augmented generation, multimodal question answering, JSON generation, and multi-turn chat all require repeated model calls with dependencies between calls.
 
@@ -155,16 +146,25 @@ SGLang is positioned as a low-level LLM programming system, closer to Guidance a
 
 The main distinction is runtime co-design. SGLang keeps low-level prompt control while adding a runtime designed for KV cache reuse, structured decoding, and parallel execution.
 
-## Limitations and Future Directions
+## Where It Breaks
 
-The paper lists several future directions:
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Simple single-call workloads | When the application is just one prompt→one response | RadixAttention and speculative execution add no benefit |
+| Cache starvation | RadixAttention cache-aware scheduling favors popular prefixes | Unpopular prefixes may experience higher latency |
+| FSM overhead for simple constraints | When constraints are trivial (e.g., just a JSON wrapper) | Compressed FSM adds memory overhead without meaningful speedup |
+| Open-weight only for full benefits | API speculative execution helps black-box APIs, but RadixAttention and FSM require model access | Full performance requires open-weight models |
 
-- support additional output modalities;
-- extend RadixAttention across more memory hierarchy levels such as DRAM and disk;
-- support fuzzy semantic matching in RadixAttention;
-- add higher-level primitives on top of SGLang;
-- address starvation in cache-aware scheduling;
-- improve the compiler with static scheduling and memory planning.
+## One Thing to Remember
+
+SGLang's key insight is that **LLM applications are structured programs, not isolated API calls** — exposing that structure to the runtime through RadixAttention, compressed FSMs, and API speculation unlocks 5× throughput gains that no general-purpose serving system can match.
+
+## Go Deeper
+
+- **Read:** [SGLang paper (arXiv:2312.07104)](https://arxiv.org/abs/2312.07104)
+- **Build on:** [vLLM: PagedAttention Serving Framework](vllm-framework.md), [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md)
+- **Understand the context:** [vLLM Code Learning Path](vllm-code-learning-path.md)
+- **Reproduce:** [Official implementation at github.com/sgl-project/sglang](https://github.com/sgl-project/sglang)
 
 ## Key Takeaways
 

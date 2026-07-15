@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/algorithm/Matrix exponentiation | HackerEarth.pdf
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # Matrix Exponentiation for Linear Transitions

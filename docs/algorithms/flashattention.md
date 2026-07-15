@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2205.14135v2.pdf
-updated: 2026-06-15
+updated: 2026-07-15
 ---
 
 # FlashAttention: IO-Aware Exact Attention
@@ -16,13 +16,30 @@ updated: 2026-06-15
 
 **Related pages:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md)
 
-## Summary
+## TL;DR
 
-FlashAttention is an exact attention algorithm designed around GPU memory hierarchy. Standard attention materializes the attention score matrix `S = QK^T` and probability matrix `P = softmax(S)` in HBM, causing quadratic memory traffic in sequence length. FlashAttention avoids writing those large intermediate matrices to HBM by tiling `Q`, `K`, and `V`, computing softmax statistics block by block in SRAM, and recomputing attention blocks during backward instead of saving the full attention matrix.
+**What:** FlashAttention is an exact attention algorithm that avoids materializing the $N \times N$ attention matrix in GPU HBM.
+**How:** It tiles Q, K, V into SRAM-sized blocks, uses online softmax to compute exact attention block-by-block, and recomputes intermediates during backward instead of storing them.
+**The number:** Up to 3× faster than standard attention, with up to 20× less memory — training speed records for BERT-large and GPT-2.
 
-The central idea is IO-awareness: optimize reads and writes between slow GPU HBM and fast on-chip SRAM, not just FLOPs.
+## The Core Idea
 
-## Problem
+The central insight is **IO-awareness**: optimize reads and writes between slow GPU HBM and fast on-chip SRAM, not just FLOPs. Standard attention is memory-bound — masking, softmax, dropout, and intermediate reads/writes dominate wall-clock time. By keeping computation in SRAM and only writing final results to HBM, FlashAttention turns a memory-bound operation into a compute-bound one.
+
+## The Big Picture
+
+```mermaid
+flowchart LR
+    K["Load K block"] --> S["Compute Q block x K block"]
+    V["Load V block"] --> O["Update output block"]
+    S --> M["Update row max and sum"]
+    M --> O
+    O --> H["Write O, m, l to HBM"]
+```
+
+*① Load K and V blocks from HBM into SRAM. ② Compute local Q×K scores. ③ Update running softmax statistics (row max and sum). ④ Rescale and accumulate output. ⑤ Write only final O and statistics back to HBM — the N×N attention matrix never leaves SRAM.*
+
+## Why This Exists
 
 For one attention head:
 
@@ -32,11 +49,11 @@ P = softmax(S)
 O = P V
 ```
 
-With sequence length `N` and head dimension `d`, standard attention uses `O(N^2)` memory for intermediate matrices. This is expensive because many attention operations are memory-bound: masking, softmax, dropout, and intermediate reads/writes dominate wall-clock time even when FLOPs are not reduced.
+With sequence length `N` and head dimension `d`, standard attention uses $O(N^2)$ memory for intermediate matrices. This is expensive because many attention operations are memory-bound: masking, softmax, dropout, and intermediate reads/writes dominate wall-clock time even when FLOPs are not reduced.
 
 Approximate attention methods reduce theoretical compute, but the paper argues many fail to produce practical speedups because they do not reduce memory movement enough.
 
-## Algorithm
+### Tiling and Online Softmax
 
 FlashAttention splits inputs into blocks sized to fit in SRAM:
 
@@ -65,7 +82,7 @@ flowchart LR
     O --> H["Write O, m, l to HBM"]
 ```
 
-## Recomputation in Backward
+### Recomputation in Backward
 
 Standard training stores `S` or `P` for backward, which costs quadratic memory. FlashAttention instead stores:
 
@@ -77,7 +94,7 @@ During backward, it reloads blocks of `Q`, `K`, and `V`, recomputes local attent
 
 The paper frames this as selective gradient checkpointing that saves memory without the usual speed penalty.
 
-## IO Complexity
+### IO Complexity
 
 For SRAM size `M`, sequence length `N`, and head dimension `d`, with `d <= M <= Nd`:
 
@@ -96,7 +113,7 @@ The paper reports a GPT-2 medium example where forward plus backward attention h
 | HBM read/write | 40.3 GB | 4.4 GB |
 | Runtime | 41.7 ms | 7.3 ms |
 
-## Block-Sparse FlashAttention
+### Block-Sparse FlashAttention
 
 The paper extends FlashAttention to block-sparse attention by skipping zero blocks under a predefined block sparsity mask. The algorithm is otherwise the same tiled exact-attention procedure over nonzero blocks.
 
@@ -108,7 +125,9 @@ Theta(Nd + N^2 d^2 s / M)
 
 The paper uses a fixed butterfly sparsity pattern in downstream experiments and reports block-sparse FlashAttention is 2-4x faster than dense FlashAttention for long sparse workloads.
 
-## Empirical Results
+## What This Buys You
+
+### Empirical Results
 
 Key reported results:
 
@@ -124,14 +143,25 @@ Key reported results:
 | Attention runtime benchmark | Up to 3x faster than PyTorch exact attention |
 | Memory footprint | Linear in sequence length and up to 20x more memory-efficient than exact attention baselines |
 
-## Limitations
+## Where It Breaks
 
-The paper identifies several limits and future directions:
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Kernel engineering overhead | Writing new IO-aware CUDA kernels per architecture | High maintenance cost; implementations don't transfer cleanly across GPU generations |
+| Single-GPU focus | Multi-GPU attention with cross-device communication | Adds another communication layer not addressed by this work |
+| Small SRAM or short sequences | When head dimension $d$ exceeds SRAM size or $N$ is very small | Tiling benefits diminish; standard attention may be competitive |
+| Fixed sparsity patterns only | Block-sparse variant uses predefined butterfly mask | Dynamic or learned sparsity not supported |
 
-- Writing new IO-aware kernels in CUDA requires substantial engineering effort.
-- Implementations may not transfer cleanly across GPU architectures.
-- The paper focuses on single-GPU IO optimality; multi-GPU attention adds another communication layer.
-- The authors call for compiler support that lets users write high-level attention variants while still generating IO-aware kernels.
+## One Thing to Remember
+
+FlashAttention achieves its speedup **by reducing HBM traffic, not by approximating attention** — it's exact attention made faster through IO-awareness. The algorithm never writes the $N \times N$ attention matrix to HBM.
+
+## Go Deeper
+
+- **Read:** [FlashAttention paper (arXiv:2205.14135)](https://arxiv.org/abs/2205.14135)
+- **Build on:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
+- **Understand the context:** [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md), [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md)
+- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways
 
