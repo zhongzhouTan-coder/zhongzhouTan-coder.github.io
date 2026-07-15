@@ -1,0 +1,240 @@
+---
+description: "Use when creating or updating paper-insight docs pages under docs/. Enforces a deep-dive, memory-optimized body structure designed for fast comprehension and long-term retention of technical papers."
+applyTo: "docs/**/*.md"
+---
+
+# Docs Content Structure Rules
+
+Use this instruction together with `docs-front-matter.instructions.md` for every page under `docs/`. The front matter rules handle metadata; this file handles body content structure.
+
+## Cognitive Principles
+
+Every page should follow these principles for fast understanding and retention:
+
+- **Big picture first.** The brain needs a mental scaffold before attaching details. Start with the one-sentence idea, then zoom in.
+- **Progressive disclosure.** Layer information: must-know → should-know → nice-to-know.
+- **Concrete before abstract.** Show an example or analogy before math and formalism.
+- **Contrast encodes better than description.** "X does Y, unlike Z which does W" sticks better than "X does Y."
+- **Visuals are memory anchors.** A diagram with numbered annotations is recalled far better than equivalent prose.
+- **Section headings as retrieval cues.** A reader should be able to scan headings alone and reconstruct the paper's argument.
+- **Each section answers exactly one question the reader is naturally asking at that point.**
+
+## Required Body Structure
+
+Every paper-insight page must follow this section order. Each section has a specific cognitive purpose.
+
+### 1. Paper Header (after the `#` title)
+
+```markdown
+**Paper:** [Full paper title]
+**Authors:** [Author list]
+**arXiv:** [ID and date]
+
+**Related pages:** [Internal links]
+```
+
+### 2. TL;DR
+
+Three distinct sentences answering three distinct questions. These serve as retrieval cues for the rest of the page.
+
+```markdown
+## TL;DR
+
+**What:** [One sentence — the contribution.]
+**How:** [One sentence — the mechanism.]
+**The number:** [One sentence — the headline result.]
+```
+
+### 3. The Big Picture
+
+A diagram placed **before** any explanatory prose. The diagram should tell the full story: inputs, outputs, data flow, and where the novelty lives.
+
+Add numbered annotation captions so the reader can reconstruct the method from the diagram alone:
+
+```markdown
+## The Big Picture
+
+![Diagram](./diagram.svg)
+
+*① [Step one.] ② [Step two.] ③ [Step three.]*
+```
+
+Prefer Mermaid diagrams for pipelines, architectures, and evolutionary trees. Prefer SVG/Draw.io for complex annotated figures.
+
+### 4. Why This Exists
+
+Concrete failure example that makes the reader feel the pain. Walk through a specific scenario showing what breaks without this paper's contribution. The example should be reusable — referenced again in the Deep Dive sections as spaced repetition.
+
+### 5. The Landscape
+
+An evolutionary tree, not a flat list. Show which prior ideas are parents, siblings, or dead ends. A Mermaid flowchart is strongly preferred.
+
+```markdown
+## The Landscape
+
+[Mermaid diagram showing the phylogenetic relationship between prior work and this paper.]
+```
+
+### 6. The Core Idea
+
+One paragraph. The unifying insight in plain language. No equations, no jargon. A reader who remembers only this paragraph should still understand the paper's contribution.
+
+### 7. Deep Dive
+
+Each mechanism gets its own subsection following this mini-template:
+
+```markdown
+### [Mechanism Name]
+
+**What it does:** [One sentence.]
+
+**Why it matters:** [One sentence connecting back to the problem from "Why This Exists."]
+
+**How it works:** [Step-by-step. Prefer tables over walls of text. Use equations only when necessary.]
+
+**The intuition:** [One sentence in plain language. Non-negotiable for every subsection.]
+
+**A concrete example:** [Reuse the same scenario from "Why This Exists." Show how this mechanism fixes it.]
+
+**Remember:** [One bullet — the single most important fact about this mechanism.]
+```
+
+Rules for Deep Dive subsections:
+- Each subsection must teach exactly one new concept, building on the previous one.
+- If a subsection has more than one "aha" moment, split it.
+- The "intuition" sentence is mandatory. If you cannot state it in plain language, you do not understand the mechanism well enough to write the section.
+- Reuse the same concrete example across subsections for spaced repetition.
+
+### 8. Putting It Together
+
+A numbered end-to-end trace showing all mechanisms interacting in one scenario. Answers: "how do the pieces actually interact at runtime?"
+
+```markdown
+## Putting It Together
+
+[A numbered walkthrough: ① draft → ② schedule → ③ verify → result.]
+```
+
+### 9. What This Buys You
+
+Results as a narrative, not a data dump. Structure:
+
+```markdown
+## What This Buys You
+
+### The headline claim
+[One sentence stating the main empirical takeaway.]
+
+### How we know: [evidence category]
+[One compact table. Only the headline result plus one nuance.]
+
+### The mechanism behind the numbers
+[Explain WHY the numbers look the way they do. Teach the reader how to interpret them.]
+
+### ⚠️ How to read these numbers
+[If any result is easily misinterpreted, call it out explicitly.]
+```
+
+Rules:
+- Show only the numbers that answer a specific question. Link to the paper for full tables.
+- Explicitly teach the reader how to interpret results, especially counterintuitive ones.
+- Use caution markers (⚠️) to flag results that are commonly misinterpreted.
+
+### 10. Where It Breaks
+
+Failure modes as a table with conditions. Not a prose list.
+
+```markdown
+## Where It Breaks
+
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| [Mode 1] | [Condition] | [Consequence] |
+| [Mode 2] | [Condition] | [Consequence] |
+```
+
+Rules:
+- Frame each failure mode around the reader's perspective: "when should I NOT trust this?"
+- Each row must include a concrete condition, not a vague caveat.
+- Include failure modes the paper acknowledges AND failure modes you infer.
+
+### 11. One Thing to Remember
+
+A single paragraph that encodes the entire paper into a memorable frame. Not a bullet list. Bold the key retrieval phrase.
+
+```markdown
+## One Thing to Remember
+
+[One paragraph. Bold the phrase a reader should recall six months later.]
+```
+
+The brain encodes a single paragraph as one chunk, making it more memorable than a bullet list. This section is the "if you forget everything else" takeaway.
+
+### 12. Go Deeper
+
+Curated links grouped by reader intent:
+
+```markdown
+## Go Deeper
+
+- **Read:** [Paper link]
+- **Build on:** [Baselines, competitors, follow-up work]
+- **Understand the context:** [Related internal pages]
+- **Reproduce:** [Code link or "not available at time of writing"]
+```
+
+## Comparison Tables
+
+When comparing methods, formats, or systems, prefer this table style:
+
+```markdown
+| Aspect | Baseline A | Baseline B | This work |
+|---|---:|---:|---:|
+| [Dimension 1] | ... | ... | ... |
+| [Dimension 2] | ... | ... | ... |
+```
+
+Rules:
+- Always include at least one baseline column for contrast.
+- Use right-aligned number columns for numeric comparisons.
+- Keep rows to the dimensions that actually differ.
+
+## Diagrams
+
+- Use Mermaid for pipelines, flowcharts, evolutionary trees, and sequence diagrams.
+- Use SVG/Draw.io for complex annotated architecture figures. Store the editable `.drawio` source alongside the `.svg`.
+- Every diagram must have a caption explaining what the reader should see.
+- Prefer numbered annotations (①, ②, ③) that are referenced in surrounding prose.
+- Place diagrams before the text that explains them.
+
+## Style Rules
+
+- **Section headings must be scannable.** A reader scanning only headings should reconstruct the paper's argument.
+- **One concept per paragraph.** If a paragraph makes two distinct points, split it.
+- **Tables over prose for comparisons.** If you find yourself writing "X does A, while Y does B, and Z does C," use a table.
+- **Bold the single most important phrase in each section.** This creates visual retrieval anchors for re-readers.
+- **Reuse concrete examples across sections.** The same scenario appearing in "Why This Exists," "Deep Dive," and "Putting It Together" creates spaced repetition.
+- **No embedded scripts or raw HTML.** Keep it GitHub Pages friendly.
+- **Relative links for internal references.**
+
+## Self-Test Checklist
+
+Before publishing a page, verify:
+
+1. **Scan headings only.** Can you reconstruct the paper's argument? If not, headings are too generic.
+2. **Read only TL;DR + One Thing to Remember.** Do you understand the contribution? If not, those sections are too vague.
+3. **Cover the diagram and read the text.** Can you redraw the diagram? If yes, the text is too verbose — the diagram should carry the visual load.
+4. **Is there a concrete example in "Why This Exists"?** If not, add one.
+5. **Does every Deep Dive subsection have an "intuition" sentence?** If not, you don't understand it well enough yet.
+6. **Are limitations framed as failure modes with conditions?** If not, rewrite as a table.
+7. **Does the results section teach interpretation, not just report numbers?** If not, add "how to read these numbers" guidance.
+
+## Confidence Mapping
+
+This instruction file does not modify the confidence mapping from `docs-front-matter.instructions.md`. Confidence (`high`/`medium`/`low`) is a front matter concern. The body structure described here applies regardless of confidence level.
+
+## Exceptions
+
+- Shorter reference pages (pure data, glossary entries) may omit sections 5 (The Landscape) and 8 (Putting It Together) if they add no value.
+- Pages that are not paper insights (e.g., framework overviews, learning paths) should adapt this structure rather than follow it rigidly. The cognitive principles still apply.
+- If a page has no visual content, section 3 (The Big Picture) may be omitted, but this should be rare — nearly every technical concept benefits from a diagram.

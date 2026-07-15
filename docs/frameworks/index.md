@@ -5,11 +5,12 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-09
+updated: 2026-07-15
 ---
 
 # Frameworks
 
+- [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md)
 - [Harbor: Agent Evaluation Framework Design](harbor-framework/index.md)
 - [SGLang: Structured Language Model Programs](sglang-framework.md)
 - [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)
