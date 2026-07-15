@@ -17,6 +17,7 @@
 ## Inference Systems and Frameworks
 
 - [Frameworks](../docs/frameworks/index.md) — Category overview for LLM serving and programming framework pages.
+- [DSpark: Confidence-Scheduled Speculative Decoding](../docs/frameworks/dspark/index.md) — DeepSeek speculative decoding framework that combines semi-autoregressive draft generation, calibrated confidence estimates, hardware-aware verification scheduling, production DeepSeek-V4 deployment results, and an editable Draw.io decoding-cycle visual.
 - [Harbor: Agent Evaluation Framework Design](../docs/frameworks/harbor-framework/index.md) — Why Harbor exists beyond Terminal-Bench, its task-centric design philosophy, `Job -> Trial -> Agent/Environment/Verifier` architecture, artifact and verifier isolation model, and the editable draw.io architecture asset.
 - [SGLang: Structured Language Model Programs](../docs/frameworks/sglang-framework.md) — Framework architecture, Python-embedded programming model, RadixAttention KV cache reuse, compressed FSM decoding, API speculative execution, and performance results.
 - [vLLM Code Learning Path and Request Flow](../docs/frameworks/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.

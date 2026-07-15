@@ -66,3 +66,8 @@
 
 - Added [Intrinsic Dimensionality and Language Model Fine-Tuning](../docs/training/intrinsic-dimensionality-fine-tuning/index.md) to `docs/training/intrinsic-dimensionality-fine-tuning/index.md`, sourced from `raw/training/2012.13255v1.pdf`. Covers DID/SAID intrinsic-dimension fine-tuning, MRPC/QQP `d90` findings, pretraining as task compression, model-size trends, generalization correlations, the intrinsic-dimension compression bound, and an editable Draw.io explainer at `docs/training/intrinsic-dimensionality-fine-tuning/intrinsic-dimensionality-fine-tuning.drawio`.
 - Added the new [Training](../docs/training/index.md) category and updated [Wiki Index](../logs/index.md), [Knowledge Base Introduction](../docs/README.md), and the site landing page to include training and fine-tuning pages.
+
+## 2026-07-15
+
+- Added [DSpark: Confidence-Scheduled Speculative Decoding](../docs/frameworks/dspark/index.md) to `docs/frameworks/dspark/index.md`, sourced from `raw/sp-infer/2607.05147v1.pdf`. Covers DSpark's semi-autoregressive drafter, Markov/RNN sequential heads, calibrated confidence head, hardware-aware prefix scheduler, offline accepted-length results, DeepSeek-V4 production deployment, live traffic throughput/interactivity results, limitations, and an editable Draw.io asset at `docs/frameworks/dspark/dspark-decoding-cycle.drawio`.
+- Updated [Frameworks](../docs/frameworks/index.md) and [Wiki Index](../logs/index.md) to include the new DSpark speculative decoding page.

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="620" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">DSpark decoding cycle</title>
+  <desc id="desc">A flow diagram showing DSpark speculative decoding from prompt context to target anchor, semi-autoregressive drafting, confidence scheduling, target verification, accepted prefix, and the next round.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333333"/>
+    </marker>
+    <style>
+      .title { font: 700 22px Arial, sans-serif; fill: #222; }
+      .box { stroke-width: 2; rx: 8; ry: 8; }
+      .text { font: 700 15px Arial, sans-serif; fill: #222; text-anchor: middle; }
+      .small { font: 12px Arial, sans-serif; fill: #333; text-anchor: middle; }
+      .line { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 7 5; }
+      .label { font: 12px Arial, sans-serif; fill: #333; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect width="1180" height="620" fill="#ffffff"/>
+  <text x="40" y="46" class="title">DSpark decoding cycle</text>
+
+  <rect x="40" y="100" width="140" height="70" class="box" fill="#e8f4f8" stroke="#6c8ebf"/>
+  <text x="110" y="128" class="text"><tspan x="110">Prompt context</tspan><tspan x="110" dy="20">A B C</tspan></text>
+
+  <rect x="220" y="100" width="150" height="70" class="box" fill="#d5e8d4" stroke="#82b366"/>
+  <text x="295" y="128" class="text"><tspan x="295">Target model</tspan><tspan x="295" dy="20">one step</tspan></text>
+
+  <ellipse cx="465" cy="137" rx="48" ry="34" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+  <text x="465" y="132" class="text"><tspan x="465">Anchor token</tspan><tspan x="465" dy="19">D</tspan></text>
+
+  <rect x="560" y="85" width="210" height="100" class="box" fill="#dae8fc" stroke="#6c8ebf"/>
+  <text x="665" y="115" class="text"><tspan x="665">DSpark drafter</tspan><tspan x="665" dy="21">parallel backbone</tspan><tspan x="665" dy="21">+ sequential head</tspan></text>
+
+  <path d="M845 90 H1000 L985 180 H830 Z" fill="#f8cecc" stroke="#b85450" stroke-width="2"/>
+  <text x="915" y="120" class="text"><tspan x="915">Draft block</tspan><tspan x="915" dy="21">E F G H</tspan><tspan x="915" dy="21">confidence c1..c4</tspan></text>
+
+  <rect x="830" y="250" width="220" height="95" class="box" fill="#e1d5e7" stroke="#9673a6"/>
+  <text x="940" y="281" class="text"><tspan x="940">Hardware-aware</tspan><tspan x="940" dy="20">prefix scheduler</tspan><tspan x="940" dy="20">survival + SPS(B)</tspan></text>
+
+  <rect x="590" y="255" width="170" height="75" class="box" fill="#d5e8d4" stroke="#82b366"/>
+  <text x="675" y="285" class="text"><tspan x="675">Keep prefix</tspan><tspan x="675" dy="21">E F G</tspan></text>
+
+  <rect x="590" y="365" width="170" height="70" class="box" fill="#f8cecc" stroke="#b85450" stroke-dasharray="7 5"/>
+  <text x="675" y="393" class="text"><tspan x="675">Drop suffix</tspan><tspan x="675" dy="21">H</tspan></text>
+
+  <rect x="350" y="255" width="180" height="80" class="box" fill="#d5e8d4" stroke="#82b366"/>
+  <text x="440" y="285" class="text"><tspan x="440">Target verification</tspan><tspan x="440" dy="21">parallel prefix check</tspan></text>
+
+  <rect x="60" y="255" width="220" height="90" class="box" fill="#fff2cc" stroke="#d6b656"/>
+  <text x="170" y="286" class="text"><tspan x="170">Accept longest prefix</tspan><tspan x="170" dy="21">E F accepted</tspan><tspan x="170" dy="21">G corrected to G*</tspan></text>
+
+  <rect x="550" y="480" width="260" height="60" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="680" y="504" class="small"><tspan x="680">Semi-autoregression reduces suffix decay</tspan><tspan x="680" dy="16">without making the heavy backbone sequential.</tspan></text>
+
+  <rect x="830" y="480" width="280" height="60" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="970" y="504" class="small"><tspan x="970">Confidence scheduling spends target capacity</tspan><tspan x="970" dy="16">only where expected return is positive.</tspan></text>
+
+  <path class="line" d="M180 135 H220"/>
+  <path class="line" d="M370 135 H418"/>
+  <text x="395" y="124" class="label">anchor</text>
+  <path class="line" d="M513 137 H560"/>
+  <path class="line" d="M770 135 H830"/>
+  <text x="800" y="123" class="label">logits + confidence</text>
+  <path class="line" d="M915 180 V250"/>
+  <text x="955" y="220" class="label">rank prefixes</text>
+  <path class="line" d="M830 298 H760"/>
+  <text x="792" y="286" class="label">scheduled prefix</text>
+  <path class="line dash" d="M830 330 C790 360 770 383 760 400" stroke="#b85450"/>
+  <text x="800" y="376" class="label" fill="#b85450">prune</text>
+  <path class="line" d="M590 294 H530"/>
+  <text x="560" y="282" class="label">verify</text>
+  <path class="line" d="M350 297 H280"/>
+  <text x="316" y="285" class="label">lossless step</text>
+  <path class="line dash" d="M170 255 C170 210 245 188 295 170"/>
+  <text x="226" y="213" class="label">next round</text>
+</svg>
