@@ -25,6 +25,9 @@ updated: 2026-07-17
 - [τ²-Bench: Mechanism and Design](../benchmarks/tau2-bench-mechanism.md) — Dec-POMDP formalism, dual-control domain, task generation, and evaluation methodology.
 - [τ-Voice: Full-Duplex Voice Agent Benchmark](../benchmarks/tau-voice.md) — Extends τ²-bench to voice: tick-based orchestrator, controllable voice user simulator, 278 tasks across retail/airline/telecom, empirical results for Google/OpenAI/xAI, acoustic ablations, and error analysis.
 - [EvalScope Perf: LLM Inference Stress Testing](../benchmarks/evalscope-perf.md) — Comprehensive model inference stress-testing tool: closed-loop and open-loop modes, SLA binary-search auto-tuning, multi-turn conversation benchmarking, embedding/rerank/multi-modal dataset support, vLLM bench parity comparison, and metrics coverage analysis.
+- [AISBench Benchmark vs. EvalScope Perf](../benchmarks/aisbench-vs-evalscope-perf.md) — Competitive analysis for AISBench across load semantics, traffic and trace workloads, metrics, extensibility, operations, product gaps, validation methodology, and prioritized roadmap.
+- [AISBench First-Class Performance Roadmap](../benchmarks/aisbench-first-class-roadmap/index.md) — Presentation-ready decision document defining five core AISBench implementation priorities, detailed EvalScope feature lessons, architecture, acceptance criteria, and phased delivery plan.
+- [AISBench First-Class 性能能力路线图（中文）](../benchmarks/aisbench-first-class-roadmap/zh-cn.md) — 中文汇报版本，完整说明五项 First-Class 能力、EvalScope 功能分析、实现契约、验收标准、架构和分阶段交付计划。
 
 ## Inference Systems and Frameworks
 

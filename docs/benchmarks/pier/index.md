@@ -27,7 +27,7 @@ The codebase is especially opinionated about three things:
 
 The diagram below summarizes why Pier exists, how its runtime architecture is wired, and what the `mini-swe-agent` path looks like for a DeepSWE-style evaluation setup.
 
-![Pier architecture and mini-swe-agent execution path](../assets/pier-explainer.svg)
+![Pier architecture and mini-swe-agent execution path](../assets/pier-explainer.drawio.svg)
 
 ## Why Pier Exists
 
