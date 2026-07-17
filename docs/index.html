@@ -3,36 +3,82 @@ layout: default
 title: Knowledge Base
 ---
 
-<h1>Knowledge Base</h1>
-<p>AI-maintained personal knowledge base. Browse by topic category or explore the logs.</p>
+<section class="kb-home" aria-labelledby="kb-home-title">
+  <header class="kb-hero">
+    <div class="kb-hero__copy">
+      <p class="kb-eyebrow">AI systems research notebook</p>
+      <h1 id="kb-home-title">Knowledge Base</h1>
+      <p class="kb-hero__lede">
+        A curated map of papers, frameworks, benchmarks, algorithms, and hardware notes for
+        long-term learning and engineering reference.
+      </p>
+      <div class="kb-actions" aria-label="Primary navigation">
+        <a class="kb-button" href="/logs/index/">Browse the index</a>
+        <a class="kb-button" href="/logs/log/">See recent changes</a>
+      </div>
+    </div>
+  </header>
 
-<h2>Categories</h2>
-<ul>
-  <li><a href="/benchmarks/">Benchmarks</a> — Benchmark designs, tasks, metrics, and empirical findings.</li>
-  <li><a href="/frameworks/">Frameworks</a> — LLM serving and language-model programming systems.</li>
-  <li><a href="/algorithms/">Algorithms</a> — Inference algorithms and kernel-level methods.</li>
-  <li><a href="/training/">Training</a> — Model training, fine-tuning, transfer learning, and generalization.</li>
-  <li><a href="/hardware/">Hardware</a> — Numerics, hardware features, and accelerator-specific notes.</li>
-</ul>
+  <section class="kb-section" aria-labelledby="topic-map-title">
+    <div class="kb-section__header">
+      <p class="kb-eyebrow">Topic map</p>
+      <h2 id="topic-map-title">Start from the problem domain</h2>
+    </div>
+    <div class="kb-card-grid">
+      <a class="kb-topic-card" href="/benchmarks/">
+        <span class="kb-topic-card__icon" aria-hidden="true">B</span>
+        <span class="kb-topic-card__title">Benchmarks</span>
+        <span class="kb-topic-card__body">Task designs, domains, metrics, scoring methods, and empirical findings.</span>
+      </a>
+      <a class="kb-topic-card" href="/frameworks/">
+        <span class="kb-topic-card__icon" aria-hidden="true">F</span>
+        <span class="kb-topic-card__title">Frameworks</span>
+        <span class="kb-topic-card__body">LLM serving systems, agent evaluation frameworks, and programming runtimes.</span>
+      </a>
+      <a class="kb-topic-card" href="/algorithms/">
+        <span class="kb-topic-card__icon" aria-hidden="true">A</span>
+        <span class="kb-topic-card__title">Algorithms</span>
+        <span class="kb-topic-card__body">Inference algorithms, attention kernels, scheduling methods, and reusable patterns.</span>
+      </a>
+      <a class="kb-topic-card" href="/training/">
+        <span class="kb-topic-card__icon" aria-hidden="true">T</span>
+        <span class="kb-topic-card__title">Training</span>
+        <span class="kb-topic-card__body">Fine-tuning, transfer learning, intrinsic dimension, and generalization notes.</span>
+      </a>
+      <a class="kb-topic-card" href="/hardware/">
+        <span class="kb-topic-card__icon" aria-hidden="true">H</span>
+        <span class="kb-topic-card__title">Hardware</span>
+        <span class="kb-topic-card__body">Precision formats, accelerator features, numerics, and implementation details.</span>
+      </a>
+    </div>
+  </section>
 
-<h2>Logs</h2>
-<ul>
-  <li><a href="/logs/index">Index</a> — Categorised index of all docs pages.</li>
-  <li><a href="/logs/log">Change Log</a> — Chronological record of every ingest and edit.</li>
-</ul>
+  <section class="kb-section kb-section--split" aria-labelledby="featured-title">
+    <div class="kb-featured">
+      <div class="kb-section__header">
+        <p class="kb-eyebrow">Featured paths</p>
+        <h2 id="featured-title">High-value reading trails</h2>
+      </div>
+      <div class="kb-reading-list">
+        <a href="/frameworks/vllm-code-learning-path/">vLLM Code Learning Path and Request Flow</a>
+        <a href="/algorithms/flashattention-4/">FlashAttention-4: Blackwell Attention Kernel Co-Design</a>
+        <a href="/benchmarks/pier/">Pier: Coding-Agent Evaluation Harness</a>
+        <a href="/frameworks/harbor-framework/">Harbor: Agent Evaluation Framework Design</a>
+        <a href="/hardware/nvfp4/">NVFP4: Blackwell 4-Bit Floating Point</a>
+      </div>
+    </div>
 
-<h2>Current Pages</h2>
-<ul>
-  <li><a href="/benchmarks/tau-bench/">τ-bench: Tool-Agent-User Interaction Benchmark</a></li>
-  <li><a href="/benchmarks/tau2-bench-mechanism/">τ²-Bench: Mechanism and Design</a></li>
-  <li><a href="/benchmarks/tau-voice/">τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains</a></li>
-  <li><a href="/frameworks/sglang-framework/">SGLang: Structured Language Model Programs</a></li>
-  <li><a href="/frameworks/vllm-framework/">vLLM: PagedAttention Serving Framework</a></li>
-  <li><a href="/algorithms/flashattention/">FlashAttention: IO-Aware Exact Attention</a></li>
-  <li><a href="/algorithms/flashattention-2/">FlashAttention-2: Better Parallelism and Work Partitioning</a></li>
-  <li><a href="/algorithms/flashattention-3/">FlashAttention-3: Hopper Asynchrony and FP8 Attention</a></li>
-  <li><a href="/algorithms/flashattention-4/">FlashAttention-4: Blackwell Attention Kernel Co-Design</a></li>
-  <li><a href="/training/intrinsic-dimensionality-fine-tuning/">Intrinsic Dimensionality and Language Model Fine-Tuning</a></li>
-  <li><a href="/hardware/flatquant/">FlatQuant: Fast Learnable Affine Quantization</a></li>
-  <li><a href="/hardware/nvfp4/">NVFP4: Blackwell 4-Bit Floating Point</a></li>
-</ul>
+    <aside class="kb-log-panel" aria-labelledby="ops-title">
+      <p class="kb-eyebrow">Operations</p>
+      <h2 id="ops-title">Keep the map fresh</h2>
+      <p>
+        The index is the navigational source of truth. The changelog records each ingest,
+        synthesis pass, and structural edit.
+      </p>
+      <div class="kb-log-links">
+        <a href="/logs/index/">Categorized index</a>
+        <a href="/logs/log/">Chronological log</a>
+      </div>
+    </aside>
+  </section>
+</section>

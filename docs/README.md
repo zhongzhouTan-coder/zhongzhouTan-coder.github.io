@@ -41,7 +41,7 @@ Create a new category only when an existing one would make the page hard to find
 
 **Finding information**
 
-1. Start with [logs/index.md](../logs/index.md) to browse by topic, person, concept, or source.
+1. Start with [logs/index.md](logs/index.md) to browse by topic, person, concept, or source.
 2. Follow links to the relevant docs page.
 3. Check the page sources in the front matter to understand what evidence supports the content.
 
@@ -62,5 +62,5 @@ Or invoke the `lint-docs-cleanup` Codex skill to have the agent fix safe issues 
 
 ## Related Pages
 
-- [Wiki Index](../logs/index.md)
-- [Wiki Log](../logs/log.md)
+- [Wiki Index](logs/index.md)
+- [Wiki Log](logs/log.md)

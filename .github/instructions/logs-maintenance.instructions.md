@@ -1,6 +1,6 @@
 ---
 description: "Use when creating or updating logs/index.md or logs/log.md. Enforces the repository's wiki index structure, chronological log entry format, and concise markdown conventions for ingest tracking."
-applyTo: "logs/index.md, logs/log.md"
+applyTo: "docs/logs/index.md, docs/logs/log.md"
 ---
 
 # Logs Maintenance Rules
