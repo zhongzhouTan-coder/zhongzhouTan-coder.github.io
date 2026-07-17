@@ -24,6 +24,7 @@ updated: 2026-07-17
 - [τ-bench: Tool-Agent-User Interaction Benchmark](../benchmarks/tau-bench.md) — Original benchmark: two customer-service domains (retail and airline), pass^k metric, empirical results across 12 models, and failure analysis.
 - [τ²-Bench: Mechanism and Design](../benchmarks/tau2-bench-mechanism.md) — Dec-POMDP formalism, dual-control domain, task generation, and evaluation methodology.
 - [τ-Voice: Full-Duplex Voice Agent Benchmark](../benchmarks/tau-voice.md) — Extends τ²-bench to voice: tick-based orchestrator, controllable voice user simulator, 278 tasks across retail/airline/telecom, empirical results for Google/OpenAI/xAI, acoustic ablations, and error analysis.
+- [EvalScope Perf: LLM Inference Stress Testing](../benchmarks/evalscope-perf.md) — Comprehensive model inference stress-testing tool: closed-loop and open-loop modes, SLA binary-search auto-tuning, multi-turn conversation benchmarking, embedding/rerank/multi-modal dataset support, vLLM bench parity comparison, and metrics coverage analysis.
 
 ## Inference Systems and Frameworks
 

@@ -11,6 +11,10 @@ updated: 2026-07-17
 
 # Wiki Log
 
+## 2026-07-17
+
+- Added [EvalScope Perf: LLM Inference Stress Testing](../benchmarks/evalscope-perf.md) to `docs/benchmarks/evalscope-perf.md`, sourced from the EvalScope documentation at evalscope.readthedocs.io. Covers the full stress-testing tool architecture: closed-loop vs. open-loop load generation, SLA binary-search auto-tuning with AND/OR constraint logic, multi-turn conversation benchmarking with cache-hit metrics, dataset flexibility (random, ShareGPT, OpenQA, embedding, rerank, multi-modal), comprehensive metrics coverage (TTFT/TPOT/ITL/latency with full percentile breakdowns), parameter-aligned vLLM bench comparison showing statistical consistency, warmup support, WandB/SwanLab/ClearML visualization, and documented failure modes.
+
 ## 2026-05-30
 
 - Added [τ-Voice: Full-Duplex Voice Agent Benchmark](../benchmarks/tau-voice.md) to `docs/benchmarks/tau-voice.md`, sourced from the τ-Voice preprint (arXiv:2603.13686v1, Mar 2026). Covers tick-based orchestrator design, voice user simulator pipeline (7 personas, audio environment, turn-taking policy), three domains (278 total tasks), three audio-native providers, Clean vs Realistic conditions, acoustic ablation results (accents most damaging at -10pp avg), voice interaction quality metrics, qualitative error analysis (79-90% agent errors), and key conclusions.

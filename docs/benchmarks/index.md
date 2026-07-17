@@ -16,3 +16,4 @@ updated: 2026-07-15
 - [τ-bench: Tool-Agent-User Interaction Benchmark](tau-bench.md)
 - [τ²-Bench: Mechanism and Design](tau2-bench-mechanism.md)
 - [τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains](tau-voice.md)
+- [EvalScope Perf: LLM Inference Stress Testing](evalscope-perf.md)
