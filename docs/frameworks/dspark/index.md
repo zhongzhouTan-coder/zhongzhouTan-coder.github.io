@@ -24,11 +24,11 @@ updated: 2026-07-15
 
 ## The Big Picture
 
-![DSpark decoding cycle](./dspark-decoding-cycle.svg)
+![DSpark decoding cycle](./dspark-decoding-cycle.drawio.svg)
 
 *1. A parallel backbone proposes a multi-token draft block. 2. A lightweight sequential head corrects the suffix using the sampled draft prefix. 3. A calibrated confidence scheduler decides how much of each request is worth verifying on the target model.*
 
-The editable Draw.io source is [dspark-decoding-cycle.drawio](./dspark-decoding-cycle.drawio). The diagram's key point is that **DSpark is not just a better drafter**: it also decides when verifying an extra draft token is a good use of scarce target-model batch capacity.
+The diagram's key point is that **DSpark is not just a better drafter**: it also decides when verifying an extra draft token is a good use of scarce target-model batch capacity.
 
 ## Why This Exists
 

@@ -28,7 +28,7 @@ The broader interpretation is that pretraining creates a representation framewor
 
 The image below summarizes the paper's mechanism and interpretation.
 
-![Visual Explainer](./intrinsic-dimensionality-fine-tuning.svg)
+![Visual Explainer](./intrinsic-dimensionality-fine-tuning.drawio.svg)
 
 ## Intrinsic Dimension Setup
 
