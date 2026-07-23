@@ -6,6 +6,7 @@ This repository is a markdown knowledge base.
 ## Source Locations
 
 - `raw/` stores original source files. Never modify them.
+- `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats. These files are derived from `raw/` sources and may be regenerated.
 - `docs/` stores AI-maintained markdown knowledge pages by topic.
 - `docs/logs/index.md` is the wiki index.
 - `docs/logs/log.md` is the chronological change log.
@@ -19,9 +20,18 @@ This repository is a markdown knowledge base.
 ## Workflow Triggers
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
+- When a new PDF source is added: convert it to Markdown with the MinerU API before reading it. Prefer the official MinerU API directly because the MCP server can be blocked by SSL or transport errors; use the MCP server only as an optional convenience when it is already connected and healthy. Save the generated Markdown under `derived/pdf-markdown/` as the primary source for docs synthesis. Keep the original PDF in `raw/` unchanged, and cite the original `raw/` PDF path in docs front matter.
+- If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.
 - When answering knowledge-base questions: read `docs/logs/index.md` first, inspect the relevant `docs/` pages, synthesize from the docs, and save valuable reusable answers as docs pages.
 - Prefer updating existing pages over creating duplicates.
 - Use internal links when related pages already exist.
 - If a docs page references sibling assets such as images or Draw.io files, prefer a folder-backed page at `topic/index.md`.
+
+## Diagram Conventions
+
+- **Always save diagrams locally** in the docs folder (e.g., `docs/topic/assets/`) — never only open them in a browser. Use `.drawio` for complex architecture diagrams, `.mmd` for Mermaid flowcharts, and `.excalidraw` for hand-drawn explainers.
+- **Avoid opening diagrams in the browser.** Generate the diagram content and save it directly to a local file via `create_file`. Do not use tools that open a browser tab (e.g., `open_drawio_*`); use the MCP tools only to obtain the XML/JSON content, then write it to disk.
+- **Mermaid for simple flows.** Use Mermaid (`.mmd`) for straightforward flowcharts, decision trees, and sequence diagrams — keep Draw.io for diagrams that need swimlanes, rich shapes, containers, custom positioning, or industry-specific icons.
+- **Link all diagram files** from the docs page so they are discoverable and editable.
 
 Run `./scripts/lint-docs.sh` after docs or logs changes.

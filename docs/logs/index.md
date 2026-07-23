@@ -28,6 +28,7 @@ updated: 2026-07-23
 - [AISBench Benchmark vs. EvalScope Perf](../benchmarks/aisbench-vs-evalscope-perf.md) — Competitive analysis for AISBench across load semantics, traffic and trace workloads, metrics, extensibility, operations, product gaps, validation methodology, and prioritized roadmap.
 - [AISBench First-Class Performance Roadmap](../benchmarks/aisbench-first-class-roadmap/index.md) — Presentation-ready decision document defining five core AISBench implementation priorities, detailed EvalScope feature lessons, architecture, acceptance criteria, and phased delivery plan.
 - [AISBench First-Class 性能能力路线图（中文）](../benchmarks/aisbench-first-class-roadmap/zh-cn.md) — 中文汇报版本，完整说明五项 First-Class 能力、EvalScope 功能分析、实现契约、验收标准、架构和分阶段交付计划。
+- [AutoJudger: Agent-Driven Efficient MLLM Benchmarking](../benchmarks/autojudger.md) — Agent-driven framework for adaptive MLLM evaluation using IRT difficulty estimation and semantic-aware retrieval, achieving 90%+ ranking accuracy at ~4% data usage.
 
 ## Inference Systems and Frameworks
 
