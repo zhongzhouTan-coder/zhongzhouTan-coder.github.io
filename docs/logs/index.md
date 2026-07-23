@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-17
+updated: 2026-07-23
 ---
 
 # Wiki Index
@@ -51,6 +51,7 @@ updated: 2026-07-17
 
 - [Training](../training/index.md) — Category overview for model training, fine-tuning, transfer learning, and generalization pages.
 - [Intrinsic Dimensionality and Language Model Fine-Tuning](../training/intrinsic-dimensionality-fine-tuning/index.md) — Intrinsic-dimension view of pretrained language model fine-tuning: DID/SAID subspace training, low `d90` task dimensions, pretraining as downstream task compression, model-size trends, generalization correlations, and an editable Draw.io explainer.
+- [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/socratic-swe/index.md) — Closed-loop self-evolution framework: trace-derived Agent Skill Registry, skill-guided Generator with four-stage Verifier Gate, gradient-aligned Generator reward via cosine similarity to validation gradient, GDPO-normalized Solver reward, and 50.40% on SWE-bench Verified across three iterations.
 
 ## Hardware and Numerics
 

@@ -6,10 +6,14 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-17
+updated: 2026-07-23
 ---
 
 # Wiki Log
+
+## 2026-07-23
+
+- Added [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/socratic-swe/index.md) to `docs/training/socratic-swe/index.md`, sourced from `raw/training/2606.07412v1.pdf` (arXiv:2606.07412v1, Jun 2026). Covers the closed-loop self-evolution framework: Agent Skill Registry (trace collection → skill extraction → deduplication), skill-guided task Generator with four-stage Verifier Gate (format/grounding/execution/semantics), gradient-aligned Generator reward ($R_G = \cos(g_\tau, G_v)$), GDPO-normalized three-component Solver reward, role-specific GRPO+GDPO training with shared weights, evolutionary landscape from static pipelines through self-play to skill-guided methods, benchmark results (50.40% SWE-bench Verified, 52.33% Lite, 47.20% Pro, 35.60% Terminal-Bench 2.0), Generator reward ablation, and an editable Draw.io big-picture diagram.
 
 ## 2026-07-17
 
