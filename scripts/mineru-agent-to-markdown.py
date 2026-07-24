@@ -117,9 +117,9 @@ def parse_args() -> argparse.Namespace:
         help="Polling interval in seconds. Default: 3.",
     )
     parser.add_argument(
-        "--no-proxy",
+        "--use-proxy",
         action="store_true",
-        help="Ignore HTTP(S)_PROXY/ALL_PROXY environment variables for this run.",
+        help="Honor HTTP(S)_PROXY/ALL_PROXY environment variables (disabled by default).",
     )
     return parser.parse_args()
 
@@ -433,7 +433,7 @@ def main() -> int:
     assets_dir = (args.assets_dir or default_assets_dir(output_path)).resolve()
 
     session = requests.Session()
-    if args.no_proxy:
+    if not args.use_proxy:
         session.trust_env = False
 
     try:

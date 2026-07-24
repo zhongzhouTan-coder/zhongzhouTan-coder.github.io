@@ -239,25 +239,109 @@ Both roles use the same clipped surrogate objective with KL regularization towar
 
 ---
 
-## Results Summary
+## What This Buys You
 
-All self-evolving methods used identical Solver architecture (Qwen3.5-9B), agent harness (mini-swe-agent), and training budget (12k instances × 3 iterations = 36k total).
+### The headline claim
 
-| Method | SWE-bench Verified | SWE-bench Lite | SWE-bench Pro | TB2 | Overall |
+Trace-derived skill curricula produce stronger and more sustained self-evolution than any prior self-play method. Socratic-SWE reaches **50.40% on SWE-bench Verified** after 3 iterations (+7.80 over the base agent and +3.40 over SSR), while baselines either saturate early or regress.
+
+### How we know: head-to-head at Iteration 3
+
+All methods use identical Solver (Qwen3.5-9B), harness (mini-swe-agent for SWE, little-coder for TB2), and budget (12k instances × 3 iterations = 36k total).
+
+| Method | SWE-bench Verified | SWE-bench Lite | SWE-bench Pro | Terminal-Bench 2.0 | Overall |
 |---|---|---|---|---|---|
-| Base Agent | 44.40 | 46.00 | 41.60 | 29.20 | 40.30 |
-| SPIRAL | 46.80 | 49.33 | 45.60 | 32.00 | 43.43 |
-| R-Zero | 47.00 | 49.67 | 44.40 | 31.60 | 43.17 |
-| Absolute-Zero | 46.60 | 49.00 | 44.00 | 32.80 | 43.10 |
-| Socratic-Zero | 48.60 | 51.00 | 46.40 | 34.40 | 45.10 |
-| SSR | 47.80 | 50.33 | 45.20 | 33.60 | 44.23 |
-| **Socratic-SWE** | **50.40** | **52.33** | **47.20** | **35.60** | **46.38** |
+| Base Agent | 42.60 | 29.67 | 17.24 | 10.11 | 24.91 |
+| R-Zero | 41.80 | 29.00 | 16.28 | 8.99 | 24.02 |
+| SPIRAL | 44.00 | 31.00 | 17.78 | 10.11 | 25.72 |
+| Absolute-Zero | 44.40 | 31.33 | 18.19 | 10.11 | 26.01 |
+| Socratic-Zero | 45.80 | 32.67 | 19.43 | 12.36 | 27.57 |
+| SSR | 47.00 | 34.00 | 20.66 | 12.36 | 28.51 |
+| **Socratic-SWE** | **50.40** | **36.67** | **22.85** | **14.61** | **31.13** |
 
-Key takeaways:
+### The mechanism behind the numbers
 
-- Socratic-SWE beats all baselines across all four benchmarks.
-- The improvement over the strongest baseline (Socratic-Zero) is +1.8pp on Verified, +1.33pp on Lite, +0.8pp on Pro, and +1.2pp on TB2.
-- The skill-guided approach particularly helps on Terminal-Bench 2.0 (+6.4pp over Base), suggesting that skill-derived task designs transfer well to terminal-native environments.
+Three patterns explain why Socratic-SWE pulls ahead:
+
+1. **R-Zero degrades after Iteration 1** (−0.80 vs. Base). Majority-vote rewards are too noisy for partial SWE repairs — the Challenger learns to propose tasks the Solver sometimes flukes, rather than tasks that teach transferable skills.
+
+2. **SPIRAL and Absolute-Zero peak at Iteration 2 then regress.** Self-play without execution-grounded validation leads to reward hacking: the Generator learns to produce tasks that look hard but whose verifiers are gamed by surface-level patches.
+
+3. **Socratic-Zero saturates despite a 397B Teacher.** The Teacher's domain understanding bounds what tasks can be generated, and distilling the Teacher into a smaller Generator loses information at each iteration. Socratic-SWE avoids this bottleneck by extracting skills directly from the Solver's own traces — no external Teacher needed.
+
+4. **SSR improves steadily but plateaus earlier.** Bug injection via code removal/revert produces valid tasks, but without skill-guided targeting, it exhausts low-hanging bug patterns and can't sustain acceleration.
+
+### ⚠️ How to read these numbers
+
+The base agent here (Qwen3.5-9B + mini-swe-agent) starts at 42.60% on Verified — substantially below the 50%+ reported by stronger base models. The +7.80 gain is measured against this starting point. Gains are likely smaller when starting from a stronger base policy. The Overall column is a simple mean across four benchmarks; it does not weight by benchmark importance.
+
+The scaling analysis (Figure 4) shows that Socratic-SWE still gains +1.20 in Iteration 4 (reaching 51.60%) and plateaus only at Iteration 5 (52.00%), while SSR plateaus at Iteration 4 (48.00%). Socratic-SWE saturates later and higher.
+
+### Ablation: what each component contributes
+
+On SWE-bench Verified at Iteration 3:
+
+| Variant | Verified (%) | $\Delta$ vs. Full |
+|---|---|---|
+| Socratic-SWE (full) | 50.40 | – |
+| w/o Skill Registry | 46.20 | ↓4.20 |
+| w/o Trace Distillation (manual skills) | 48.00 | ↓2.40 |
+| w/o GDPO (use GRPO) | 48.60 | ↓1.80 |
+| Qwen3.5-9B self-extraction | 49.80 | ↓0.60 |
+| Claude Opus 4.5 extraction | 51.00 | ↑0.60 |
+
+The Skill Registry is the single largest contributor (−4.20), confirming that curriculum design drives the gains. Skill extraction is robust to the extractor model — even 9B self-extraction reaches 49.80%.
+
+---
+
+## Putting It Together
+
+A walk through one complete iteration of Socratic-SWE:
+
+1. **Start of iteration $t$.** The Solver $\pi_\theta$ has just finished training on curriculum $D_t$. The Generator needs to produce $D_{t+1}$: 12k validated tasks for the next round.
+
+2. **Trace collection.** Deploy the Solver on $D_t$ in repository sandboxes. Collect all trajectories — both passes ($T^+$) and failures ($T^-$). A failed trajectory on `oauthlib` might show: the Solver searched for `scope_to_list`, found the right file, but applied generic `sorted()` that broke OAuthLib's scope ordering contract.
+
+3. **Skill distillation.** $M_{\text{distill}}$ (Qwen3.6-27B) processes the trace corpus. It extracts a skill: `scope-helper-contract-violation` — "Solver repairs scope conversion by adding sorting/filtering that violates OAuthLib's exact-order contract. Condition: task involves `list_to_scope`/`scope_to_list`. Operations: inject a mutation that breaks exact scope ordering while keeping syntax valid."
+
+4. **Task generation.** The Generator samples skill $s \sim S$ and repository $r \sim R$. Conditioned on $s$, it navigates `oauthlib/oauth2/rfc6749/utils.py`, injects a targeted mutation in `scope_to_list` that reorders tokens during conversion, and writes a verifier using existing pytest tests. The Generator proposes 8 candidates per repository (group size $K=8$).
+
+5. **Verifier Gate.** Each $(task, verifier)$ pair runs through the four-stage pipeline in the sandbox: (1) format — is the task JSON parseable? ✓ (2) grounding — does `scope_to_list` exist in the repo? ✓ (3) execution — does `pytest tests/test_scope.py` run without crashing, and are results stable across 3 reruns? ✓ (4) semantics — does the test fail on the buggy code and pass on the reference fix? ✓
+
+6. **Gradient scoring.** For surviving candidates, roll out the Solver $K$ times, compute the task-specific policy gradient $g_\tau$, and compare against the pre-computed validation gradient $G_v$ via cosine similarity. The `scope-helper` candidate gets $\cos = 0.82$ — strongly aligned, because the validation set also contains scope-manipulation tasks.
+
+7. **Curriculum update.** Accepted and high-scoring tasks enter $D_{t+1}$. The Generator receives its reward $R_G = \cos(g_\tau, G_v)$ and updates via GRPO. Meanwhile, accepted tasks are queued for the Solver phase.
+
+8. **Solver training.** The Solver consumes $D_{t+1}$, producing patches evaluated by the three-component reward (full pass, partial repair, regression avoidance). GDPO normalizes these components and updates $\pi_\theta$. New traces are collected — and the next iteration begins.
+
+---
+
+## Where It Breaks
+
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| **Closed-world saturation** | After ~5 iterations with a fixed repository pool. The Skill Registry covers most gaps, and novel tasks become redundant. | Gains plateau (52.00% ceiling in experiments). Expand the repository pool or enable cross-repo transfer to sustain improvement. |
+| **Validation set bias** | The held-out $V_{\text{val}}$ is not representative of the target deployment distribution (e.g., all Python when target includes JS/TS). | $G_v$ points in the wrong direction, and gradient-aligned tasks optimize for the wrong skills. Stratify $V_{\text{val}}$ by language and domain. |
+| **Verifier quality collapse** | Generated verifiers are too weak — e.g., a test that passes on both buggy and correct code because it only checks surface behavior. | Invalid tasks pass the semantics gate ($f_4$) and enter the curriculum, providing zero learning signal. Stronger verifier design (e.g., requiring behavior delta) mitigates this. |
+| **Skill extraction noise** | $M_{\text{distill}}$ produces overly generic skills ("fix bugs better") that don't constrain the Generator. | Generator produces untargeted tasks, reverting to static-mutation quality. Deduplication and coverage filtering (Eq. 4) help, but extraction quality is the bottleneck. |
+| **Mode collapse in self-play** | The Generator and Solver co-adapt to a narrow task distribution — e.g., both optimize for single-function string-manipulation bugs. | Performance on diverse real-world SWE tasks degrades even as training metrics improve. Diversity in the repository pool and periodic resampling of skills help. |
+| **Compute overhead of gradient alignment** | Every candidate task requires $K$ Solver rollouts and gradient computation, adding ~8.4% wall-clock time. | Acceptable at current scale (1.3 h/iteration vs. 15 h total). Becomes prohibitive if $K$ or $\|V_{\text{val}}\|$ must scale significantly. |
+| **No executable verification available** | The target domain lacks deterministic, sandboxed tests (e.g., UI tasks, open-ended code review). | The entire pipeline — verifier gate, gradient alignment, Solver reward — collapses. Not applicable outside SWE-like settings with reliable test suites. |
+
+---
+
+## One Thing to Remember
+
+Socratic-SWE proves that **an agent's own solving traces are a richer training signal than any static task pipeline.** By distilling traces into structured skills, generating tasks that target the Solver's actual capability gaps, and scoring those tasks by whether their gradients point toward better validation performance, the framework creates a curriculum that adapts as the agent improves. The key insight is not that self-play works — it's that *what you measure determines what you learn*: gradient alignment beats difficulty heuristics, execution-grounded validation beats majority vote, and trace-derived skills beat hand-designed taxonomies. Six months from now, remember: **close the loop from trace to skill to task, and align the task gradient with the validation gradient.**
+
+---
+
+## Go Deeper
+
+- **Read:** [arXiv 2606.07412v1](https://arxiv.org/abs/2606.07412v1)
+- **Build on:** [SSR](https://arxiv.org/abs/2505.21521) (strongest baseline, bug injection via code removal/revert), [SWE-smith](https://arxiv.org/abs/2505.21211) (static mutation baseline), [SWE-Gym](https://arxiv.org/abs/2505.19171) (software evolution training data)
+- **Understand the context:** [Intrinsic Dimensionality Fine-Tuning](../intrinsic-dimensionality-fine-tuning/index.md), [SWE-bench](https://www.swebench.com/)
+- **Reproduce:** Code not available at time of writing.
 
 ## Self-Test
 
@@ -266,3 +350,5 @@ Key takeaways:
 - [ ] Can I articulate why cosine similarity (not inner product) is the right Generator reward?
 - [ ] Can I explain how GDPO normalizes the Solver's three-component reward?
 - [ ] Can I name the five self-evolving baselines and Socratic-SWE's advantage over each?
+- [ ] Can I explain when Socratic-SWE's closed-world assumption breaks and what happens?
+- [ ] Can I trace one full iteration from trace collection through curriculum update?
