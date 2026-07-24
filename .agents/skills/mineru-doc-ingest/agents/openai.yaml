@@ -1,0 +1,4 @@
+interface:
+  display_name: "MinerU Doc Ingest"
+  short_description: "Ingest PDFs into this docs knowledge base"
+  default_prompt: "Use $mineru-doc-ingest to convert a new raw PDF with MinerU and update the related docs and logs."
