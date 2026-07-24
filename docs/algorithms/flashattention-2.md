@@ -5,7 +5,8 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2307.08691v1.pdf
-updated: 2026-07-15
+  - derived/pdf-markdown/infer-algorithm/2307.08691v1.md
+updated: 2026-07-24
 ---
 
 # FlashAttention-2: Better Parallelism and Work Partitioning
@@ -26,6 +27,59 @@ updated: 2026-07-15
 
 FlashAttention already avoids the $N \times N$ HBM bottleneck, but on A100 it only reaches 25-40% of peak FLOPs/s. The remaining gap comes from non-matmul work (softmax, reductions, masking) which is much slower than tensor-core matmul. FA2 reorganizes parallelism and work partitioning to close this gap without changing the attention algorithm itself.
 
+## The Big Picture
+
+```mermaid
+flowchart TD
+    subgraph FA1["FlashAttention v1"]
+        O1["Outer: K,V blocks"]
+        I1["Inner: Q blocks"]
+        W1["Warps: split K,V"]
+        M1["Store: m, l"]
+    end
+
+    subgraph FA2["FlashAttention-2"]
+        O2["Outer: Q blocks"]
+        I2["Inner: K,V blocks"]
+        W2["Warps: split Q"]
+        M2["Store: L (logsumexp)"]
+        P2["+ Sequence parallelism"]
+    end
+
+    FA1 -->|"2× speedup"| FA2
+```
+
+*① FA2 swaps the loop order: outer over Q blocks (not K,V) so different query rows can be parallelized independently. ② Warps split Q instead of K,V — each warp owns its own output slice, eliminating inter-warp reductions. ③ Stores a single logsumexp value L instead of two statistics (m and l). ④ Adds sequence-level parallelism for long-context, small-batch regimes.*
+
+## The Landscape
+
+FlashAttention-2 addresses a specific gap left by FlashAttention v1:
+
+```mermaid
+flowchart TD
+    A["FlashAttention v1"] --> B["Problem: 25-40% GPU utilization"]
+    B --> C1["Non-matmul bottleneck"]
+    B --> C2["Low occupancy on long seqs"]
+    B --> C3["Inter-warp reduction overhead"]
+
+    C1 --> D1["FA2: Reduce rescaling ops"]
+    C2 --> D2["FA2: Sequence parallelism"]
+    C3 --> D3["FA2: Q-split warps"]
+
+    D1 --> E["50-73% utilization on A100"]
+    D2 --> E
+    D3 --> E
+
+    E --> F["FA3: Hopper asynchrony"]
+    E --> G["FA4: Blackwell co-design"]
+```
+
+**Parent:** FlashAttention v1 — FA2 preserves the exact same attention output and IO-aware tiling foundation but restructures GPU work partitioning.
+
+**Siblings (contemporary):** xFormers memory-efficient attention, Triton attention kernels — all targeting similar utilization gaps but with different partitioning strategies.
+
+**What FA2 uniquely does:** It identifies that *how* you parallelize attention matters as much as *what* you compute. By swapping loop order and warp assignments, it doubles throughput without changing the attention formula.
+
 ## Why This Exists
 
 FlashAttention avoids materializing the full attention matrix in HBM, but attention still contains operations that tensor cores do not accelerate well:
@@ -40,21 +94,90 @@ On A100, FP16/BF16 tensor-core matmul peak is far higher than FP32 non-matmul th
 
 ## Algorithm Changes
 
-FA2 changes the forward pass bookkeeping around online softmax:
+FA2 makes two specific algorithmic tweaks to FlashAttention's online softmax that reduce non-matmul FLOPs while producing the exact same output.
 
-- It keeps an unscaled output accumulator and applies the final scaling only at the end.
-- It stores the row-wise logsumexp value `L = m + log(l)` instead of storing both the running row max `m` and exponential sum `l`.
-- The backward pass uses `L` directly when recomputing probabilities.
+### Tweak 1: Unscaled Output Accumulator
 
-This reduces rescaling and other non-matmul work while preserving exact attention:
+FlashAttention v1 rescales the output at every step by dividing by the running normalizer $\ell$. FA2 defers the division to the very end by maintaining an **unscaled** accumulator $\tilde{O}$:
+
+**FlashAttention v1** (rescales both terms at each step):
+$$O^{(2)} = \text{diag}(\ell^{(1)} / \ell^{(2)})^{-1} \, O^{(1)} + \text{diag}(\ell^{(2)})^{-1} \, e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
+
+**FlashAttention-2** (keeps unscaled accumulator, divides once at the end):
+$$\tilde{O}^{(2)} = \text{diag}(e^{m^{(1)} - m^{(2)}})^{-1} \, \tilde{O}^{(1)} + e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
+
+Only at the very end: $O = \text{diag}(\ell^{(\text{last})})^{-1} \, \tilde{O}^{(\text{last})}$
+
+This eliminates one elementwise division per block per row — each of which is a non-matmul FLOP running at 1/16th the speed of tensor-core matmul on A100.
+
+### Tweak 2: Logsumexp Instead of Separate m and ℓ
+
+FlashAttention v1 stores both the row max $m$ and the exponential sum $\ell$ for the backward pass. FA2 stores a single scalar per row:
+
+$$L = m + \log(\ell)$$
+
+During backward, the softmax probabilities are recomputed directly from $L$:
+
+$$P_{ij} = \exp(S_{ij} - L_i)$$
+
+This saves memory bandwidth (one scalar per row instead of two) and simplifies the backward pass — the softmax gradient computation no longer needs to track two separate statistics.
+
+### Forward Pass in Detail
+
+![](./assets/flash-attention-2.jpg)
+
+The full FA2 forward pass (Algorithm 1 from the paper) works as follows:
 
 ```text
-O = softmax(Q K^T) V
+1. Divide Q into T_r row blocks, K and V into T_c column blocks.
+2. For each row block i (1 to T_r):
+   a. Load Q_i into SRAM.
+   b. Initialize Õ_i = 0, ℓ_i = 0, m_i = -∞ on chip.
+   c. For each column block j (1 to T_c):
+      - Load K_j, V_j into SRAM.
+      - Compute S_i^{(j)} = Q_i K_j^T           ← matmul (fast)
+      - Update m_i = max(m_i, rowmax(S_i^{(j)}))
+      - Compute P̃_i^{(j)} = exp(S_i^{(j)} - m_i)
+      - Update ℓ_i = e^{m_i_old - m_i} · ℓ_i + rowsum(P̃_i^{(j)})
+      - Update Õ_i = diag(e^{m_i_old - m_i})^{-1} · Õ_i + P̃_i^{(j)} V_j   ← matmul (fast)
+   d. Finalize: O_i = diag(ℓ_i)^{-1} · Õ_i     ← one division at the end
+   e. Compute L_i = m_i + log(ℓ_i)              ← store one scalar per row
+   f. Write O_i and L_i to HBM.
 ```
 
-As in FlashAttention, FA2 uses `O(N^2 d)` FLOPs and only `O(N)` extra memory beyond inputs and output.
+The key insight: steps (c) spend the vast majority of time in two matmul operations ($Q_i K_j^T$ and $\tilde{P}_i^{(j)} V_j$), which run at full tensor-core speed. The rescaling operations are kept minimal.
 
-For causal masking, the block structure lets the kernel skip blocks where all keys are to the future of all queries. The paper reports about 1.7-1.8x speedup from this skip relative to the same attention shape without exploiting causal structure.
+### Backward Pass
+
+The backward pass in FA2 is similar to FlashAttention v1 but uses $L$ to recompute probabilities:
+
+```text
+For each column block j:
+  Load K_j, V_j into SRAM.
+  For each row block i:
+    Load Q_i, O_i, dO_i, L_i from HBM.
+    Recompute S_i^{(j)} = Q_i K_j^T
+    Recompute P_i^{(j)} = exp(S_i^{(j)} - L_i)   ← using logsumexp, not separate m,ℓ
+    Compute dV_j += (P_i^{(j)})^T dO_i
+    Compute dP_i^{(j)} = dO_i V_j^T
+    Compute dS_i^{(j)} = P_i^{(j)} ∘ (dP_i^{(j)} - D_i)   ← D = rowsum(dO ∘ O)
+    Update dQ_i += dS_i^{(j)} K_j   (with atomic adds across thread blocks)
+    Update dK_j += (dS_i^{(j)})^T Q_i
+  Write dK_j, dV_j to HBM.
+```
+
+The backward pass performs **5 matmuls** per inner iteration (vs 2 in forward), which is why it's harder to optimize. FA2's sequence-level parallelism and Q-split warp partitioning are especially important here.
+
+### Multi-Query and Grouped-Query Attention
+
+FA2 natively supports MQA and GQA — where multiple query heads share the same KV head. Instead of duplicating K and V in memory, FA2 manipulates head indices to implicitly share them. In the backward pass, gradients dK and dV are summed across the heads that share them.
+
+### Causal Mask Optimization
+
+For causal (autoregressive) attention, FA2 exploits the block structure:
+
+- **Block skip:** Any block where all column indices exceed all row indices is entirely masked out — skip it completely. For large $N$, this skips approximately half the blocks, yielding 1.7-1.8× speedup.
+- **Partial mask:** Only the diagonal block needs actual masking; all blocks with row indices guaranteed $<$ column indices need no mask at all.
 
 ## Sequence-Level Parallelism
 

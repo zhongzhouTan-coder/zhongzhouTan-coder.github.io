@@ -5,7 +5,8 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2603.05451v1.pdf
-updated: 2026-07-15
+  - derived/pdf-markdown/infer-algorithm/2603.05451v1.md
+updated: 2026-07-24
 ---
 
 # FlashAttention-4: Blackwell Attention Kernel Co-Design
@@ -25,6 +26,43 @@ updated: 2026-07-15
 ## The Core Idea
 
 Blackwell breaks the assumption that tensor cores are the bottleneck. With BF16 MMA throughput doubling to 8192 ops/clock/SM but exponential throughput stuck at 16 ops/clock/SM, attention becomes limited by softmax and shared-memory bandwidth. FA4 co-designs the algorithm and kernel pipeline around this asymmetric scaling — partly emulating exponentials, partly overlapping the remaining softmax under asynchronous MMA.
+
+## The Landscape
+
+FlashAttention-4 responds to a fundamental hardware trend: **asymmetric scaling** where tensor cores double every generation but other units (shared memory, exponentials, ALUs) barely change:
+
+```mermaid
+flowchart TD
+    A["FlashAttention-3<br/>(Hopper H100)"] --> B["Blackwell Generation<br/>(B200/GB200)"]
+
+    B --> C1["MMA: 2× throughput<br/>8192 ops/clock/SM"]
+    B --> C2["Exponential: unchanged<br/>16 ops/clock/SM"]
+    B --> C3["SMEM bw: unchanged<br/>128 B/clock/SM"]
+    B --> C4["New: TMEM 256KB<br/>Fully async MMA"]
+    B --> C5["New: 2-CTA MMA<br/>128×128 tiles"]
+
+    C1 --> D["Bottleneck shifts from MMA → non-MMA"]
+    C2 --> D
+    C3 --> D
+
+    D --> E1["FA4: Exponential emulation"]
+    D --> E2["FA4: Conditional rescaling"]
+    D --> E3["FA4: TMEM pipelines"]
+    D --> E4["FA4: 2-CTA backward"]
+    D --> E5["FA4: LPT scheduling"]
+
+    E1 --> F["1613 TFLOPs<br/>71% utilization<br/>1.3× vs cuDNN"]
+    E2 --> F
+    E3 --> F
+    E4 --> F
+    E5 --> F
+```
+
+**Parent:** FlashAttention-3 — FA4 adopts FA3's warp-specialization and async execution model but completely redesigns the pipeline for Blackwell's larger tiles, TMEM accumulator storage, and 2-CTA cooperative MMA.
+
+**Siblings:** SageAttention (INT8/INT4/FP4 quantization for consumer GPUs), cuDNN 9.13 (NVIDIA's closed-source attention library), Triton attention kernels.
+
+**What FA4 uniquely does:** It is the first attention kernel to treat *non-matmul units as the primary bottleneck* rather than tensor cores. By emulating exponentials on FMA units and conditionally skipping rescaling, it effectively *increases the throughput of bottlenecked hardware units through software*.
 
 ## Why This Exists
 

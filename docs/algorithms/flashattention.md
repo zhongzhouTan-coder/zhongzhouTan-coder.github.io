@@ -5,7 +5,8 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2205.14135v2.pdf
-updated: 2026-07-15
+  - derived/pdf-markdown/infer-algorithm/2205.14135v2.md
+updated: 2026-07-24
 ---
 
 # FlashAttention: IO-Aware Exact Attention
@@ -38,6 +39,36 @@ flowchart LR
 ```
 
 *① Load K and V blocks from HBM into SRAM. ② Compute local Q×K scores. ③ Update running softmax statistics (row max and sum). ④ Rescale and accumulate output. ⑤ Write only final O and statistics back to HBM — the N×N attention matrix never leaves SRAM.*
+
+## The Landscape
+
+FlashAttention sits at the intersection of three lines of work:
+
+```mermaid
+flowchart TD
+    A["GPU Memory Hierarchy"] --> B["IO-Aware Algorithms"]
+    C["Online Softmax"] --> B
+    D["Approximate Attention"] --> E["Exact Attention Problem"]
+    B --> F["FlashAttention"]
+    E --> F
+    G["Kernel Fusion"] --> F
+    H["Gradient Checkpointing"] --> F
+
+    D --> D1["Sparse (Sparse Transformer)"]
+    D --> D2["Low-Rank (Linformer)"]
+    D --> D3["Kernel-Based (Performer)"]
+
+    F --> I["Block-Sparse FlashAttention"]
+    F --> J["FlashAttention-2"]
+    F --> K["FlashAttention-3"]
+    F --> L["FlashAttention-4"]
+```
+
+**Parents:** IO-aware algorithms (database joins, image processing), online softmax (Milakov & Gimelshein 2018; Rabe & Staats 2021), kernel fusion compilers.
+
+**Siblings (approximate attention):** Sparse Transformer, Reformer, Linformer, Performer, Big Bird — all reduce FLOPs but often fail to deliver wall-clock speedup because they ignore memory access costs.
+
+**What FlashAttention uniquely does:** It combines online softmax tiling with recomputation-based backward to compute *exact* attention with dramatically fewer HBM accesses. It proved that the right optimization target is memory bandwidth, not FLOP count.
 
 ## Why This Exists
 
@@ -81,6 +112,40 @@ flowchart LR
     M --> O
     O --> H["Write O, m, l to HBM"]
 ```
+
+#### How Online Softmax Works
+
+The key question: how can you compute softmax — which normally needs *all* scores at once — in blocks?
+
+**The answer: maintain two running statistics ($m$, $\ell$) and rescale when the max changes.**
+
+Say you've processed block 1 and have $(m^{(1)}, \ell^{(1)}, O^{(1)})$. Now block 2 arrives.
+
+**Step 1 — Check if the max changes:**
+
+$$m_{new} = \max(m^{(1)}, \max(S^{(2)}))$$
+
+**Step 2 — Rescale old statistics if needed.** If $m_{new} > m^{(1)}$, the old exponentials were computed relative to a smaller max, so multiply by a correction factor $\exp(m^{(1)} - m_{new})$:
+
+$$\ell_{new} = \underbrace{\ell^{(1)} \cdot \exp(m^{(1)} - m_{new})}_{\text{rescaled old sum}} + \underbrace{\sum_{j \in \text{block 2}} \exp(S_j^{(2)} - m_{new})}_{\text{new contributions}}$$
+
+$$O_{new} = \underbrace{O^{(1)} \cdot \exp(m^{(1)} - m_{new})}_{\text{rescaled old output}} + \underbrace{\sum_{j \in \text{block 2}} P_j^{(2)} V_j^{(2)}}_{\text{new contributions}}$$
+
+If $m_{new} = m^{(1)}$ (max unchanged), no rescaling needed — just add.
+
+**Why $O$ is stored unnormalized and divided by $\ell$ only at the end.** The running output $O$ accumulates $\sum \exp(S_j - m) \cdot V_j$ **without** dividing by $\ell$. This is deliberate: if you tried to maintain the already-normalized $O/\ell$ incrementally, rescaling when the max changes becomes messy — both numerator and denominator shift. By keeping $O$ and $\ell$ separate, you rescale both by the *same factor* and the ratio stays correct:
+
+$$\frac{O_{old} \cdot \exp(m_{old} - m_{new})}{\ell_{old} \cdot \exp(m_{old} - m_{new})} = \frac{O_{old}}{\ell_{old}}$$
+
+The final division $O / \ell$ happens once at the end, yielding the exact softmax attention output with zero approximation error.
+
+**Concrete example.** Scores `[2, 5, 1, 8]` processed in two blocks:
+
+*Block 1 `[2, 5]`:* $m^{(1)} = 5, \ell^{(1)} = e^{-3} + 1 \approx 1.05$
+
+*Block 2 `[1, 8]`:* $m_{new} = 8$ (max ↑). Rescale old by $e^{5-8} = e^{-3} \approx 0.05$. New $\ell = 1.05 \cdot 0.05 + e^{-7} + 1 \approx 1.052$. Final output $O / \ell$ matches computing softmax over all 4 scores at once.
+
+**Intuition:** Think of it as voting with adjustable weights. You tally votes as they arrive. If a much more popular candidate appears later, you **deflate** all previous vote counts proportionally. The final normalization preserves the exact proportions.
 
 ### Recomputation in Backward
 

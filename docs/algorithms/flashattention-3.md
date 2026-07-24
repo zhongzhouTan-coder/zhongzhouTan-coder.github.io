@@ -5,7 +5,8 @@ layout: default
 confidence: high
 sources:
   - raw/infer-algorithm/2407.08608v2.pdf
-updated: 2026-07-15
+  - derived/pdf-markdown/infer-algorithm/2407.08608v2.md
+updated: 2026-07-24
 ---
 
 # FlashAttention-3: Hopper Asynchrony and FP8 Attention
@@ -25,6 +26,76 @@ updated: 2026-07-15
 ## The Core Idea
 
 FlashAttention-2 reaches only about 35% utilization on H100, while optimized GEMM kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement (TMA), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
+
+## The Big Picture
+
+```mermaid
+flowchart TD
+    subgraph HBM["GPU HBM (Global Memory)"]
+        Q["Q tiles"]
+        K["K tiles"]
+        V["V tiles"]
+        O["Output O"]
+    end
+
+    subgraph SM["Streaming Multiprocessor"]
+        subgraph PROD["Producer Warpgroup"]
+            TMA_L["TMA Load: K,V → SMEM"]
+        end
+        subgraph CONS1["Consumer WG 1"]
+            MMA1["WGMMA: QK^T"]
+            SM1["Softmax"]
+            MMA2["WGMMA: PV"]
+        end
+        subgraph CONS2["Consumer WG 2"]
+            MMA3["WGMMA: QK^T"]
+            SM2["Softmax"]
+            MMA4["WGMMA: PV"]
+        end
+    end
+
+    HBM -->|"TMA (async)"| PROD
+    PROD -->|"Circular SMEM Buffer"| CONS1
+    PROD -->|"Circular SMEM Buffer"| CONS2
+    CONS1 -->|"Ping-pong handoff"| CONS2
+    CONS1 -->|"Accumulate"| O
+    CONS2 -->|"Accumulate"| O
+```
+
+*① Producer warpgroup issues asynchronous TMA loads from HBM into a circular shared-memory buffer. ② Two consumer warpgroups (WG1, WG2) operate in ping-pong: while WG1 runs softmax on the current tile, WG2 runs WGMMA matmul for the next tile. ③ Within each consumer warpgroup, the WGMMA for QK^T and PV are further overlapped with softmax via a two-stage pipeline. ④ All softmax intermediate values stay in FP32 for accuracy. ⑤ Only final output O is written back to HBM.*
+
+## The Landscape
+
+FlashAttention-3 is the first version to exploit a GPU generation's *new hardware capabilities* rather than just reorganizing existing primitives:
+
+```mermaid
+flowchart TD
+    A["FlashAttention v1<br/>(IO-awareness)"] --> B["FlashAttention-2<br/>(Better parallelism)"]
+    B --> C["FA3: Hopper Generation"]
+
+    C --> D1["Warp Specialization<br/>Producer/Consumer split"]
+    C --> D2["Async WGMMA<br/>Tensor Core offload"]
+    C --> D3["TMA<br/>Async memory movement"]
+    C --> D4["FP8<br/>Double throughput"]
+
+    D1 --> E1["Ping-pong scheduling"]
+    D2 --> E2["GEMM-softmax overlap"]
+    D3 --> E3["Circular SMEM buffer"]
+    D4 --> E4["Block quantization<br/>+ Incoherent processing"]
+
+    E1 --> F["75% H100 utilization<br/>740 TFLOPs (FP16)<br/>1.2 PFLOPs (FP8)"]
+    E2 --> F
+    E3 --> F
+    E4 --> F
+
+    F --> G["FA4: Blackwell co-design"]
+```
+
+**Parent:** FlashAttention-2 — FA3 keeps the Q-outer loop and sequence-parallel structure but replaces the synchronous execution model with asynchronous, warp-specialized pipelines.
+
+**Siblings:** ThunkerKitten, cuDNN 9 — both showed that Hopper-specific instructions and tile-based abstractions could speed up attention, but FA3 is the first open-source implementation combining all Hopper features.
+
+**What FA3 uniquely does:** It recognizes that on Hopper, attention is *not just an IO problem but also an asynchrony problem* — the GPU has hardware units (TMA, Tensor Cores) that can run independently of CUDA cores, and FA3 designs a software pipeline to keep all of them busy simultaneously.
 
 ## Why This Exists
 

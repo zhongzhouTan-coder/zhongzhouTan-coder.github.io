@@ -11,6 +11,15 @@ updated: 2026-07-23
 
 # Wiki Log
 
+## 2026-07-24
+
+- Converted all four `raw/infer-algorithm/` PDFs to markdown via MinerU precise mode, saving results to `derived/pdf-markdown/infer-algorithm/` (2205.14135v2, 2307.08691v1, 2407.08608v2, 2603.05451v1).
+- Re-insighted all four FlashAttention docs pages with complete paper-derived content: added The Landscape evolutionary-tree sections with Mermaid diagrams showing the phylogenetic relationship between FlashAttention versions and related work, added The Big Picture diagrams for FlashAttention-2 and FlashAttention-3, and updated all front matter `sources` to include the derived pdf-markdown paths and `updated` dates to 2026-07-24.
+- [FlashAttention v1](../algorithms/flashattention.md): Added The Landscape section with Mermaid evolutionary tree linking GPU memory hierarchy, online softmax, approximate attention methods, and kernel fusion to FlashAttention's unique combination of IO-aware tiling with exact computation.
+- [FlashAttention-2](../algorithms/flashattention-2.md): Added The Big Picture diagram comparing FA1 vs FA2 loop/warp structure, and The Landscape section showing how FA2 addresses FA1's 25-40% utilization gap through parallelism restructuring without changing the attention formula.
+- [FlashAttention-3](../algorithms/flashattention-3.md): Added The Big Picture diagram showing the warp-specialized producer-consumer pipeline with TMA, circular SMEM buffer, and ping-pong consumer warpgroups, and The Landscape section positioning FA3 as the first version to exploit generation-specific hardware capabilities (async WGMMA, TMA, FP8).
+- [FlashAttention-4](../algorithms/flashattention-4.md): Added The Landscape section showing asymmetric Blackwell scaling (MMA 2× but exponential/SMEM unchanged) and FA4's response through exponential emulation, conditional rescaling, TMEM pipelines, 2-CTA backward, and LPT scheduling.
+
 ## 2026-07-23
 
 - Added [AutoJudger: Agent-Driven Efficient MLLM Benchmarking](../benchmarks/autojudger.md) to `docs/benchmarks/autojudger.md`, sourced from `raw/benchmark/2505.21389v1.pdf` (arXiv:2505.21389, May 2025). Restructured to full paper-insight template: added Landscape evolutionary tree, Deep Dive subsections with mini-template (What/Why/How/Intuition/Example/Remember), Putting It Together end-to-end trace, What This Buys You with narrative results, Where It Breaks failure modes table, One Thing to Remember, and Go Deeper. Covers IRT Rasch difficulty estimation, real-time ability tracking, max-min semantic retrieval, agent-driven question selection (Qwen2.5-VL-7B), dynamic category-aware memory, and results: 92.06% MMT-Bench ranking accuracy at 5% compression.

@@ -43,10 +43,10 @@ updated: 2026-07-23
 
 - [Algorithms](../algorithms/index.md) — Category overview for inference algorithm and kernel pages.
 - [Matrix Exponentiation for Linear Transitions](../algorithms/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
-- [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, and training/runtime results.
-- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, and A100/H100 performance results.
-- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../algorithms/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, GEMM-softmax overlap, FP8 block quantization, incoherent processing, and speed/accuracy results.
-- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention-4.md) — Exact attention algorithm and Blackwell kernel design: asynchronous MMA/TMEM pipeline, exponential emulation, conditional softmax rescaling, 2-CTA backward pass, LPT scheduling, and performance results.
+- [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, landscape evolutionary tree, and training/runtime results.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, Big Picture FA1→FA2 comparison diagram, landscape of GPU utilization gap closure, and A100/H100 performance results.
+- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../algorithms/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, GEMM-softmax overlap, FP8 block quantization, incoherent processing, Big Picture async pipeline diagram, landscape of generation-specific hardware exploitation, and speed/accuracy results.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention-4.md) — Exact attention algorithm and Blackwell kernel design: asymmetric scaling response, exponential emulation, conditional softmax rescaling, TMEM-based pipelining, 2-CTA backward pass, LPT scheduling, landscape of shifting hardware bottlenecks, and performance results.
 
 ## Training
 
