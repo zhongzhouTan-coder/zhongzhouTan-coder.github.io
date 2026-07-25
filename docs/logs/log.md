@@ -11,6 +11,13 @@ updated: 2026-07-23
 
 # Wiki Log
 
+## 2026-07-25
+
+- Converted `raw/infer-algorithm/attention-is-all-you-need.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/attention-is-all-you-need.md`.
+- Added [The Transformer: Attention Is All You Need](../algorithms/transformer.md) to `docs/algorithms/transformer.md`, sourced from `raw/infer-algorithm/attention-is-all-you-need.pdf` (Vaswani et al. 2017, NeurIPS). Full paper-insight structure: The Big Picture encoder-decoder Mermaid diagram, The Landscape evolutionary tree from RNNs through modern LLMs, Why This Exists (sequential bottleneck motivation), Deep Dive subsections covering scaled dot-product attention and the $\sqrt{d_k}$ scaling, multi-head attention, three flavors of attention (encoder self, decoder masked self, cross), position-wise FFN, sinusoidal positional encoding, residual connections and layer normalization, and the training recipe (Adam warmup, dropout, label smoothing, checkpoint averaging), Putting It Together end-to-end translation trace, What This Buys You with BLEU and ablation tables, Where It Breaks ($O(n^2)$ complexity, post-norm instability, etc.), One Thing to Remember, and Go Deeper.
+- Converted `raw/infer-algorithm/2006.16362v2.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/2006.16362v2.md`.
+- Added [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](../algorithms/collaborative-attention.md) to `docs/algorithms/collaborative-attention.md`, sourced from `raw/infer-algorithm/2006.16362v2.pdf` (Cordonnier, Loukas, Jaggi, EPFL). Full paper-insight structure: The Big Picture Mermaid diagram comparing standard vs. collaborative MHA, The Landscape evolutionary tree, Why This Exists (PCA redundancy motivation), Deep Dive subsections covering PCA redundancy discovery, collaborative MHA with shared projections and per-head mixing vectors, content-vs-context decomposition, and post-hoc CP tensor decomposition re-parametrization, Putting It Together end-to-end conversion walkthrough, What This Buys You with NMT/GLUE/vision results tables, Where It Breaks failure modes, One Thing to Remember, and Go Deeper.
+
 ## 2026-07-24
 
 - Converted all four `raw/infer-algorithm/` PDFs to markdown via MinerU precise mode, saving results to `derived/pdf-markdown/infer-algorithm/` (2205.14135v2, 2307.08691v1, 2407.08608v2, 2603.05451v1).

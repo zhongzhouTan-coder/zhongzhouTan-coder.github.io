@@ -10,6 +10,8 @@ updated: 2026-07-15
 
 # Algorithms
 
+- [The Transformer: Attention Is All You Need](transformer.md) — The foundational architecture that replaces recurrence with multi-head self-attention: scaled dot-product attention, multi-head parallelism, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that birthed modern LLMs.
+- [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](collaborative-attention.md) — Redesigns MHA with shared key/query projections and per-head mixing vectors, enabling 4× compression of Q/K dimensions; CP tensor decomposition for post-hoc conversion of pretrained models.
 - [Matrix Exponentiation for Linear Transitions](matrix-exponentiation.md)
 - [FlashAttention: IO-Aware Exact Attention](flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, landscape evolutionary tree, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, Big Picture comparison diagram, landscape showing FA1→FA2 utilization gap closure, and A100/H100 performance results.

@@ -8,7 +8,7 @@ declare -A referenced_docs=()
 declare -A reported_links=()
 has_issue=0
 
-mapfile -t markdown_files < <(find docs logs -type f -name '*.md' | sort)
+mapfile -t markdown_files < <(find docs -type f -name '*.md' | sort)
 mapfile -t docs_files < <(find docs -type f -name '*.md' | sort)
 
 if [[ ${#markdown_files[@]} -eq 0 ]]; then
