@@ -22,6 +22,8 @@ updated: 2026-07-25
 - Added [The Transformer: Attention Is All You Need](../algorithms/transformer.md) to `docs/algorithms/transformer.md`, sourced from `raw/infer-algorithm/attention-is-all-you-need.pdf` (Vaswani et al. 2017, NeurIPS). Full paper-insight structure.
 - Converted `raw/infer-algorithm/2006.16362v2.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/2006.16362v2.md`.
 - Added [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](../algorithms/collaborative-attention.md) to `docs/algorithms/collaborative-attention.md`, sourced from `raw/infer-algorithm/2006.16362v2.pdf` (Cordonnier, Loukas, Jaggi, EPFL). Full paper-insight structure.
+- Converted `raw/training/llama-open-and-efficient-foundation-language-models.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/training/llama-open-and-efficient-foundation-language-models.md`.
+- Added [LLaMA: Open and Efficient Foundation Language Models](../training/llama.md) to `docs/training/llama.md`, sourced from `raw/training/llama-open-and-efficient-foundation-language-models.pdf` (Touvron et al., Meta AI, 2023). Covers public-data pretraining, 7B-65B architecture choices, inference-budget scaling motivation, efficient training implementation, benchmark results, instruction-tuning note, safety findings, and limitations.
 
 ## 2026-07-24
 
