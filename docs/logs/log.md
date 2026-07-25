@@ -6,17 +6,22 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-23
+updated: 2026-07-25
 ---
 
 # Wiki Log
 
 ## 2026-07-25
 
+- Converted three new `raw/training/` PDFs to markdown via MinerU precise mode: GPT-1, GPT-2, GPT-3, saving results to `derived/pdf-markdown/training/`.
+- Added [GPT-1: Improving Language Understanding by Generative Pre-Training](../training/gpt-1.md) to `docs/training/gpt-1.md`, sourced from `raw/training/improving-language-understanding-by-generative-pre-training.pdf` (Radford et al., OpenAI, 2018). Full paper-insight structure: architecture comparison with original Transformer, two-stage pre-train + fine-tune paradigm, task-specific input transformations, auxiliary LM objective, ablation results (pre-training matters: −14.8 pts without it), and zero-shot heuristic behaviors.
+- Added [GPT-2: Language Models are Unsupervised Multitask Learners](../training/gpt-2.md) to `docs/training/gpt-2.md`, sourced from `raw/training/language-models-are-unsuperised-multitask-learners.pdf` (Radford et al., OpenAI, 2019). Full paper-insight structure: WebText dataset creation, byte-level BPE tokenizer, four model sizes (117M–1.5B), zero-shot task transfer across 8+ NLP tasks, architectural changes from GPT-1 (pre-norm, initialization scaling), data contamination analysis, and scaling trend evidence.
+- Added [GPT-3: Language Models are Few-Shot Learners](../training/gpt-3.md) to `docs/training/gpt-3.md`, sourced from `raw/training/language-models-are-few-shot-learners.pdf` (Brown et al., OpenAI, 2020). Full paper-insight structure: 175B-parameter scaling, in-context few-shot learning emergent at scale, Common Crawl filtering pipeline, eight model sizes (125M–175B), zero/one/few-shot evaluation across 42 benchmarks, synthetic reasoning tasks, data contamination methodology, and limitations.
+- Expanded [GPT-1](../training/gpt-1.md), [GPT-2](../training/gpt-2.md), and [GPT-3](../training/gpt-3.md), sourced from the derived training Markdown and original raw PDFs, with Big Picture Mermaid diagrams, landscape trees, end-to-end traces, and additional source-backed interpretation around contiguous-text pretraining, byte-level BPE, zero-shot prompting, few-shot prompt formatting, scaling behavior, and context-only adaptation limits.
 - Converted `raw/infer-algorithm/attention-is-all-you-need.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/attention-is-all-you-need.md`.
-- Added [The Transformer: Attention Is All You Need](../algorithms/transformer.md) to `docs/algorithms/transformer.md`, sourced from `raw/infer-algorithm/attention-is-all-you-need.pdf` (Vaswani et al. 2017, NeurIPS). Full paper-insight structure: The Big Picture encoder-decoder Mermaid diagram, The Landscape evolutionary tree from RNNs through modern LLMs, Why This Exists (sequential bottleneck motivation), Deep Dive subsections covering scaled dot-product attention and the $\sqrt{d_k}$ scaling, multi-head attention, three flavors of attention (encoder self, decoder masked self, cross), position-wise FFN, sinusoidal positional encoding, residual connections and layer normalization, and the training recipe (Adam warmup, dropout, label smoothing, checkpoint averaging), Putting It Together end-to-end translation trace, What This Buys You with BLEU and ablation tables, Where It Breaks ($O(n^2)$ complexity, post-norm instability, etc.), One Thing to Remember, and Go Deeper.
+- Added [The Transformer: Attention Is All You Need](../algorithms/transformer.md) to `docs/algorithms/transformer.md`, sourced from `raw/infer-algorithm/attention-is-all-you-need.pdf` (Vaswani et al. 2017, NeurIPS). Full paper-insight structure.
 - Converted `raw/infer-algorithm/2006.16362v2.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/2006.16362v2.md`.
-- Added [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](../algorithms/collaborative-attention.md) to `docs/algorithms/collaborative-attention.md`, sourced from `raw/infer-algorithm/2006.16362v2.pdf` (Cordonnier, Loukas, Jaggi, EPFL). Full paper-insight structure: The Big Picture Mermaid diagram comparing standard vs. collaborative MHA, The Landscape evolutionary tree, Why This Exists (PCA redundancy motivation), Deep Dive subsections covering PCA redundancy discovery, collaborative MHA with shared projections and per-head mixing vectors, content-vs-context decomposition, and post-hoc CP tensor decomposition re-parametrization, Putting It Together end-to-end conversion walkthrough, What This Buys You with NMT/GLUE/vision results tables, Where It Breaks failure modes, One Thing to Remember, and Go Deeper.
+- Added [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](../algorithms/collaborative-attention.md) to `docs/algorithms/collaborative-attention.md`, sourced from `raw/infer-algorithm/2006.16362v2.pdf` (Cordonnier, Loukas, Jaggi, EPFL). Full paper-insight structure.
 
 ## 2026-07-24
 

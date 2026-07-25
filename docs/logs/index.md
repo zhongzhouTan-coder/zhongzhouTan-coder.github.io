@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-23
+updated: 2026-07-25
 ---
 
 # Wiki Index
@@ -54,6 +54,9 @@ updated: 2026-07-23
 ## Training
 
 - [Training](../training/index.md) — Category overview for model training, fine-tuning, transfer learning, and generalization pages.
+- [GPT-1: Improving Language Understanding by Generative Pre-Training](../training/gpt-1.md) — Introduces the decoder-only Transformer, the pre-train + fine-tune paradigm, task-agnostic input transformations, long-contiguous-text motivation, and transfer ablations.
+- [GPT-2: Language Models are Unsupervised Multitask Learners](../training/gpt-2.md) — Scales to 1.5B on WebText; demonstrates zero-shot task transfer, byte-level BPE evaluation, prompt-only task conditioning, and contamination analysis.
+- [GPT-3: Language Models are Few-Shot Learners](../training/gpt-3.md) — Scales to 175B; demonstrates in-context few-shot learning, scaling-law behavior, prompt-format evaluation settings, and limitations of context-only adaptation.
 - [Intrinsic Dimensionality and Language Model Fine-Tuning](../training/intrinsic-dimensionality-fine-tuning/index.md) — Intrinsic-dimension view of pretrained language model fine-tuning: DID/SAID subspace training, low `d90` task dimensions, pretraining as downstream task compression, model-size trends, generalization correlations, and an editable Draw.io explainer.
 - [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/socratic-swe/index.md) — Closed-loop self-evolution framework: trace-derived Agent Skill Registry, skill-guided Generator with four-stage Verifier Gate, gradient-aligned Generator reward via cosine similarity to validation gradient, GDPO-normalized Solver reward, and 50.40% on SWE-bench Verified across three iterations.
 
