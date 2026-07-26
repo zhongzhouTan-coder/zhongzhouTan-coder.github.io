@@ -199,6 +199,17 @@ Rules:
 - Use right-aligned number columns for numeric comparisons.
 - Keep rows to the dimensions that actually differ.
 
+## Related Page Maintenance
+
+When creating or updating a paper-insight page:
+
+- Read `docs/logs/index.md` first, then inspect likely related pages in the target topic folder before writing.
+- Add internal links in the new page's **Related pages**, **The Landscape**, or **Go Deeper** sections when prior pages provide useful context.
+- Update existing related pages when the new paper changes their comparison set, contradicts or refines an older claim, provides a better baseline, or should be mentioned as follow-up work.
+- Prefer small, precise edits to related pages: add a cross-link, adjust confidence, add a comparison row, or clarify a limitation.
+- Do not duplicate the new page's full explanation across older pages. Related pages should point to the new page and summarize only what changes the reader's understanding.
+- If no related page needs changes, leave existing pages untouched and rely on the index/log updates.
+
 ## Diagrams
 
 - Use Mermaid for pipelines, flowcharts, evolutionary trees, and sequence diagrams.
