@@ -13,6 +13,9 @@ updated: 2026-07-25
 
 ## 2026-07-25
 
+- Converted `raw/infer-algorithm/multi-query-attention.pdf` to markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/multi-query-attention.md`.
+- Added [Multi-Query Attention: One Write-Head is All You Need](../algorithms/multi-query-attention.md) to `docs/algorithms/multi-query-attention.md`, sourced from `raw/infer-algorithm/multi-query-attention.pdf` (Shazeer, Google, 2019). Full paper-insight structure: memory-bandwidth bottleneck analysis, MHA vs MQA einsum comparison, landscape evolutionary tree linking to GQA, empirical tables (12× speedup at −0.2 BLEU), and orthogonal composition with local attention.
+
 - Converted three new `raw/training/` PDFs to markdown via MinerU precise mode: GPT-1, GPT-2, GPT-3, saving results to `derived/pdf-markdown/training/`.
 - Added [GPT-1: Improving Language Understanding by Generative Pre-Training](../training/gpt-1.md) to `docs/training/gpt-1.md`, sourced from `raw/training/improving-language-understanding-by-generative-pre-training.pdf` (Radford et al., OpenAI, 2018). Full paper-insight structure: architecture comparison with original Transformer, two-stage pre-train + fine-tune paradigm, task-specific input transformations, auxiliary LM objective, ablation results (pre-training matters: −14.8 pts without it), and zero-shot heuristic behaviors.
 - Added [GPT-2: Language Models are Unsupervised Multitask Learners](../training/gpt-2.md) to `docs/training/gpt-2.md`, sourced from `raw/training/language-models-are-unsuperised-multitask-learners.pdf` (Radford et al., OpenAI, 2019). Full paper-insight structure: WebText dataset creation, byte-level BPE tokenizer, four model sizes (117M–1.5B), zero-shot task transfer across 8+ NLP tasks, architectural changes from GPT-1 (pre-norm, initialization scaling), data contamination analysis, and scaling trend evidence.
@@ -122,3 +125,7 @@ updated: 2026-07-25
 - Updated [Frameworks](../frameworks/index.md) and [Wiki Index](../logs/index.md) to include the new DSpark speculative decoding page.
 
 - Restyled all docs pages to comply with the updated `docs-content-structure.instructions.md`: converted `## Summary` sections to `## TL;DR` with three-sentence (What/How/The number) format, added `## The Core Idea`, `## Why This Exists`, `## Where It Breaks` (failure mode table), `## One Thing to Remember` (bold key phrase paragraph), and `## Go Deeper` sections across all paper-insight pages. Updated all front matter `updated` dates to 2026-07-15. DSpark page already conformed; nvfp4 and vllm-code-learning-path received structural additions appropriate for their format-reference and learning-guide roles.
+
+## 2026-07-26
+
+- Added [Grouped-Query Attention in Llama 2](../algorithms/grouped-query-attention/index.md) to `docs/algorithms/grouped-query-attention/index.md`, sourced from `raw/infer-algorithm/group-query-attention.pdf` and derived Markdown under `derived/pdf-markdown/infer-algorithm/group-query-attention.md`. Covers Llama 2's 8-KV-group GQA choice for 34B/70B models, the 30B MHA/MQA/GQA ablation, throughput and out-of-memory behavior, tensor-parallel serving tradeoffs, and source limitations at medium confidence.

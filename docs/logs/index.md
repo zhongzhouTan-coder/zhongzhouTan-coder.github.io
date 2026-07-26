@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 
 # Wiki Index
@@ -44,6 +44,8 @@ updated: 2026-07-25
 - [Algorithms](../algorithms/index.md) — Category overview for inference algorithm and kernel pages.
 - [The Transformer: Attention Is All You Need](../algorithms/transformer.md) — The foundational architecture: scaled dot-product attention, multi-head self-attention, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that launched modern LLMs.
 - [Collaborative Multi-Head Attention](../algorithms/collaborative-attention.md) — Redesigns MHA with shared key/query projections and per-head mixing vectors, enabling 4× compression of Q/K dimensions; CP tensor decomposition for post-hoc conversion of pretrained models.
+- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/multi-query-attention.md) — Shares one K/V across all attention heads, shrinking incremental decoder memory bandwidth 8× for a 12× inference speedup with negligible quality loss.
+- [Grouped-Query Attention in Llama 2](../algorithms/grouped-query-attention/index.md) — Llama 2's 34B/70B GQA decision: 8 KV groups, 30B MHA/MQA/GQA ablation, higher large-batch throughput, and simpler 8-GPU tensor-parallel serving than MQA.
 - [Matrix Exponentiation for Linear Transitions](../algorithms/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
 - [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, landscape evolutionary tree, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, Big Picture FA1→FA2 comparison diagram, landscape of GPU utilization gap closure, and A100/H100 performance results.

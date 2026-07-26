@@ -1,0 +1,22 @@
+flowchart LR
+    subgraph MHA["MHA: full KV diversity"]
+        Q1["Query heads: h"]
+        K1["KV heads: h"]
+        C1["KV cache size: h groups"]
+    end
+
+    subgraph MQA["MQA: maximum KV sharing"]
+        Q2["Query heads: h"]
+        K2["KV heads: 1"]
+        C2["KV cache size: 1 group"]
+    end
+
+    subgraph GQA["GQA in Llama 2: middle path"]
+        Q3["Query heads: h"]
+        K3["KV heads: 8"]
+        C3["KV cache size: 8 groups"]
+    end
+
+    MHA -->|"share K/V across groups of query heads"| GQA
+    MQA -->|"restore several K/V groups"| GQA
+    GQA -->|"chosen for 34B and 70B"| L2["Llama 2 large models"]

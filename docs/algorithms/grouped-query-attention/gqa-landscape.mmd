@@ -1,0 +1,10 @@
+flowchart TD
+    Transformer["Transformer MHA\nindependent K/V per head"] --> MQA["MQA\none shared K/V head"]
+    Transformer --> LongContext["Longer context windows\nlarger KV cache"]
+    MQA --> GQA["GQA\nseveral shared K/V groups"]
+    LongContext --> GQA
+    GQA --> Llama2["Llama 2 34B/70B\n8 KV projections"]
+    GQA --> KernelSupport["Attention kernels\nMQA/GQA head-index sharing"]
+    GQA --> Serving["Serving systems\nsmaller KV cache, easier batching"]
+    MQA -.-> ShardingIssue["MQA tensor-parallel sharding issue\nwhen KV heads < GPU shards"]
+    ShardingIssue -.-> GQA
