@@ -14,7 +14,7 @@ updated: 2026-07-26
 **Authors:** Hugo Touvron, Louis Martin, Kevin Stone, et al. (Meta)  
 **arXiv:** 2307.09288 - July 18, 2023
 
-**Related pages:** [Multi-Query Attention](../multi-query-attention.md) · [The Transformer](../transformer.md) · [FlashAttention-2](../flashattention-2.md) · [vLLM: PagedAttention Serving Framework](../../frameworks/vllm-framework.md)
+**Related pages:** [Multi-Query Attention](../multi-query-attention.md) · [DeepSeek-V2 Multi-Head Latent Attention](../deepseek-v2-mla.md) · [The Transformer](../transformer.md) · [FlashAttention-2](../flashattention-2.md) · [vLLM: PagedAttention Serving Framework](../../frameworks/vllm-framework.md)
 
 ## TL;DR
 
@@ -70,6 +70,7 @@ flowchart TD
     MQA --> GQA["GQA\nseveral shared K/V groups"]
     LongContext --> GQA
     GQA --> Llama2["Llama 2 34B/70B\n8 KV projections"]
+    GQA --> MLA["DeepSeek-V2 MLA\nlatent K/V cache"]
     GQA --> KernelSupport["Attention kernels\nMQA/GQA head-index sharing"]
     GQA --> Serving["Serving systems\nsmaller KV cache, easier batching"]
     MQA -.-> ShardingIssue["MQA tensor-parallel sharding issue\nwhen KV heads < GPU shards"]

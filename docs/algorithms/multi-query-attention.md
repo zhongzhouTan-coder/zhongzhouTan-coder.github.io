@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/infer-algorithm/multi-query-attention.pdf
   - derived/pdf-markdown/infer-algorithm/multi-query-attention.md
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 
 # Multi-Query Attention: One Write-Head is All You Need
@@ -15,7 +15,7 @@ updated: 2026-07-25
 **Authors:** Noam Shazeer (Google)
 **arXiv:** 1911.02150 - November 7, 2019
 
-**Related pages:** [The Transformer](transformer.md) · [Collaborative Multi-Head Attention](collaborative-attention.md) · [FlashAttention](flashattention.md) · [Algorithms Index](index.md)
+**Related pages:** [The Transformer](transformer.md) · [Collaborative Multi-Head Attention](collaborative-attention.md) · [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) · [DeepSeek-V2 Multi-Head Latent Attention](deepseek-v2-mla.md) · [Algorithms Index](index.md)
 
 ## TL;DR
 
@@ -86,6 +86,7 @@ flowchart TD
     Local --> MQA_Local["MQA + Local (orthogonal)"]
     MQA --> MQA_Local
     MQA --> GQA
+    GQA --> MLA["DeepSeek-V2 MLA\nlatent K/V cache"]
 
     ReduceH["Reduce h (fewer heads)"] -.->|"worse quality than MQA"| MHA
     ReduceD["Reduce d_k, d_v"] -.->|"worse quality than MQA"| MHA
@@ -102,7 +103,7 @@ flowchart TD
 - **Reduce $h$** (fewer heads): dropping from $h=8$ to $h=1$ also shrinks K and V by 8×, but perplexity degrades from 29.9 to 31.2 on Billion-Word LM — much worse than MQA's 30.2.
 - **Reduce $d_k, d_v$** (smaller per-head dimension): shrinking from 128 to 16 (while keeping $h=8$) also degrades to 30.9 perplexity — worse than MQA.
 
-**Descendant:** Grouped-Query Attention (GQA, Ainslie et al., 2023) — generalizes MQA by using $g$ key-value groups where $1 < g < h$, interpolating between MQA ($g=1$) and MHA ($g=h$). GQA is used in Llama 2, Llama 3, and other modern LLMs.
+**Descendant:** Grouped-Query Attention (GQA, Ainslie et al., 2023) — generalizes MQA by using $g$ key-value groups where $1 < g < h$, interpolating between MQA ($g=1$) and MHA ($g=h$). GQA is used in Llama 2, Llama 3, and other modern LLMs. [DeepSeek-V2 Multi-Head Latent Attention](deepseek-v2-mla.md) continues the same KV-cache reduction line, but stores a low-rank latent K/V memory instead of choosing a smaller number of raw K/V heads.
 
 ## The Core Idea
 

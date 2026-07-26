@@ -129,3 +129,5 @@ updated: 2026-07-26
 ## 2026-07-26
 
 - Added [Grouped-Query Attention in Llama 2](../algorithms/grouped-query-attention/index.md) to `docs/algorithms/grouped-query-attention/index.md`, sourced from `raw/infer-algorithm/group-query-attention.pdf` and derived Markdown under `derived/pdf-markdown/infer-algorithm/group-query-attention.md`. Covers Llama 2's 8-KV-group GQA choice for 34B/70B models, the 30B MHA/MQA/GQA ablation, throughput and out-of-memory behavior, tensor-parallel serving tradeoffs, and source limitations at medium confidence.
+- Converted `raw/infer-algorithm/deepseek-v2-mla.pdf` to Markdown via MinerU precise mode, saving result to `derived/pdf-markdown/infer-algorithm/deepseek-v2-mla.md`.
+- Added [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/deepseek-v2-mla.md) to `docs/algorithms/deepseek-v2-mla.md`, sourced from `raw/infer-algorithm/deepseek-v2-mla.pdf` (arXiv:2405.04434, May 2024). Covers MLA's low-rank joint K/V compression, decoupled RoPE, query compression, DeepSeekMoE serving context, MHA/GQA/MQA comparison, ablation results, and reported 93.3% KV-cache reduction with 5.76× maximum generation throughput versus DeepSeek 67B.

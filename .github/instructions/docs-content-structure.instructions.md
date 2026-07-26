@@ -16,6 +16,7 @@ Every page should follow these principles for fast understanding and retention:
 - **Concrete before abstract.** Show an example or analogy before math and formalism.
 - **Contrast encodes better than description.** "X does Y, unlike Z which does W" sticks better than "X does Y."
 - **Visuals are memory anchors.** A diagram with numbered annotations is recalled far better than equivalent prose.
+- **Symbols need names before equations.** Readers should not have to reverse-engineer notation such as `$k_t^C$` or `$W^{DKV}$`; introduce the naming convention and role before leaning on formulas.
 - **Section headings as retrieval cues.** A reader should be able to scan headings alone and reconstruct the paper's argument.
 - **Each section answers exactly one question the reader is naturally asking at that point.**
 
@@ -79,7 +80,32 @@ An evolutionary tree, not a flat list. Show which prior ideas are parents, sibli
 
 One paragraph. The unifying insight in plain language. No equations, no jargon. A reader who remembers only this paragraph should still understand the paper's contribution.
 
-### 7. Deep Dive
+### 7. Symbol Map or Notation Guide
+
+Required when a page uses dense math, architecture notation, tensor names, protocol fields, abbreviations, or paper-specific superscripts/subscripts. Omit only when the page has little or no notation.
+
+Place it before Deep Dive so readers can decode the mechanism sections. Use the following pattern:
+
+```markdown
+## Symbol Map
+
+[One short paragraph explaining naming conventions, e.g. `C = content`, `R = RoPE`, `D = down-projection`.]
+
+| Symbol | Human name | Shape / scope | Plain meaning |
+|---|---|---|---|
+| `$k_t^C$` | content key | per-token/per-head | Semantic key derived from the latent cache. |
+| `$c_t^{KV}$` | K/V latent | per token | Compact state cached instead of full K and V. |
+```
+
+Rules:
+- Explain superscripts, subscripts, and overloaded letters before listing individual symbols.
+- Prefer human names like "content key" or "routing score" over restating the symbol.
+- Include shape, dimension, or scope when it helps distinguish similar symbols.
+- Add a second task-specific table when it improves comprehension, such as "cached vs computed", "training vs inference", or "sender vs receiver".
+- Do not dump every symbol from the paper. Include symbols that appear in the page or are necessary to understand the core mechanism.
+- Keep equations in the Deep Dive; the Symbol Map is for decoding notation, not deriving the method.
+
+### 8. Deep Dive
 
 Each mechanism gets its own subsection following this mini-template:
 
@@ -105,7 +131,7 @@ Rules for Deep Dive subsections:
 - The "intuition" sentence is mandatory. If you cannot state it in plain language, you do not understand the mechanism well enough to write the section.
 - Reuse the same concrete example across subsections for spaced repetition.
 
-### 8. Putting It Together
+### 9. Putting It Together
 
 A numbered end-to-end trace showing all mechanisms interacting in one scenario. Answers: "how do the pieces actually interact at runtime?"
 
@@ -115,7 +141,7 @@ A numbered end-to-end trace showing all mechanisms interacting in one scenario. 
 [A numbered walkthrough: ① draft → ② schedule → ③ verify → result.]
 ```
 
-### 9. What This Buys You
+### 10. What This Buys You
 
 Results as a narrative, not a data dump. Structure:
 
@@ -140,7 +166,7 @@ Rules:
 - Explicitly teach the reader how to interpret results, especially counterintuitive ones.
 - Use caution markers (⚠️) to flag results that are commonly misinterpreted.
 
-### 10. Where It Breaks
+### 11. Where It Breaks
 
 Failure modes as a table with conditions. Not a prose list.
 
@@ -158,7 +184,7 @@ Rules:
 - Each row must include a concrete condition, not a vague caveat.
 - Include failure modes the paper acknowledges AND failure modes you infer.
 
-### 11. One Thing to Remember
+### 12. One Thing to Remember
 
 A single paragraph that encodes the entire paper into a memorable frame. Not a bullet list. Bold the key retrieval phrase.
 
@@ -170,7 +196,7 @@ A single paragraph that encodes the entire paper into a memorable frame. Not a b
 
 The brain encodes a single paragraph as one chunk, making it more memorable than a bullet list. This section is the "if you forget everything else" takeaway.
 
-### 12. Go Deeper
+### 13. Go Deeper
 
 Curated links grouped by reader intent:
 
@@ -236,9 +262,10 @@ Before publishing a page, verify:
 2. **Read only TL;DR + One Thing to Remember.** Do you understand the contribution? If not, those sections are too vague.
 3. **Cover the diagram and read the text.** Can you redraw the diagram? If yes, the text is too verbose — the diagram should carry the visual load.
 4. **Is there a concrete example in "Why This Exists"?** If not, add one.
-5. **Does every Deep Dive subsection have an "intuition" sentence?** If not, you don't understand it well enough yet.
-6. **Are limitations framed as failure modes with conditions?** If not, rewrite as a table.
-7. **Does the results section teach interpretation, not just report numbers?** If not, add "how to read these numbers" guidance.
+5. **If the page uses dense notation, is there a Symbol Map before Deep Dive?** If not, add a naming-convention paragraph and a compact symbol table.
+6. **Does every Deep Dive subsection have an "intuition" sentence?** If not, you don't understand it well enough yet.
+7. **Are limitations framed as failure modes with conditions?** If not, rewrite as a table.
+8. **Does the results section teach interpretation, not just report numbers?** If not, add "how to read these numbers" guidance.
 
 ## Confidence Mapping
 
