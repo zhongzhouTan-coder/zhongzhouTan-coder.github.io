@@ -15,12 +15,12 @@
 
     {%- include footer.html -%}
 
-    <!-- MathJax — renders $...$ inline and $$...$$ block LaTeX math. -->
+    <!-- MathJax — renders inline/block LaTeX math (both $/$$ and kramdown's \(/\[ delimiters). -->
     <script>
       MathJax = {
         tex: {
-          inlineMath: [['$', '$']],
-          displayMath: [['$$', '$$']],
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
           processEscapes: true
         },
         options: {

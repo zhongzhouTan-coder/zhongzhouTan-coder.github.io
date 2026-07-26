@@ -101,9 +101,11 @@ FA2 makes two specific algorithmic tweaks to FlashAttention's online softmax tha
 FlashAttention v1 rescales the output at every step by dividing by the running normalizer $\ell$. FA2 defers the division to the very end by maintaining an **unscaled** accumulator $\tilde{O}$:
 
 **FlashAttention v1** (rescales both terms at each step):
+
 $$O^{(2)} = \text{diag}(\ell^{(1)} / \ell^{(2)})^{-1} \, O^{(1)} + \text{diag}(\ell^{(2)})^{-1} \, e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
 
 **FlashAttention-2** (keeps unscaled accumulator, divides once at the end):
+
 $$\tilde{O}^{(2)} = \text{diag}(e^{m^{(1)} - m^{(2)}})^{-1} \, \tilde{O}^{(1)} + e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
 
 Only at the very end: $O = \text{diag}(\ell^{(\text{last})})^{-1} \, \tilde{O}^{(\text{last})}$

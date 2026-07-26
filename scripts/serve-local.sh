@@ -31,4 +31,4 @@ bundle exec jekyll serve \
   --host 0.0.0.0 \
   --baseurl "" \
   --watch \
-  "$@"
+  "$@" 2>&1 | grep -v "bad Request-Line\|'/favicon.ico' not found" || true
