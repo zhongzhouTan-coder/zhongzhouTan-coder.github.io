@@ -77,6 +77,10 @@ flowchart TD
     D --> E[Benchmark task admitted]
 ```
 
+![DeepSWE benchmark rationale and workflow](../assets/deepswe-explainer.drawio.svg)
+
+*Visual explainer of DeepSWE's design rationale: why contamination resistance, behavioral verifiers, and original task authoring matter, and how the benchmark pipeline connects task creation to model evaluation.*
+
 ## Verifier Reliability Claim
 
 The source reports a cross-benchmark audit comparing verifier verdicts against an LLM-based analyzer reading the trajectory, patch, prompt, and reference solution.

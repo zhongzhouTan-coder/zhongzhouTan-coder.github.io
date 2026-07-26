@@ -149,6 +149,43 @@ for file_path in "${docs_files[@]}"; do
   fi
 done
 
+# --- Orphan image check ---
+# Find image files under docs/ (excluding Jekyll _site/ build output) and verify
+# each is referenced by at least one markdown file.
+mapfile -t image_files < <(find docs -type f \( \
+  -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.gif' \
+  -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.drawio' \
+  -o -iname '*.mmd' -o -iname '*.excalidraw' \
+  \) -not -path 'docs/_site/*' | sort)
+
+if [[ ${#image_files[@]} -gt 0 ]]; then
+  for img_path in "${image_files[@]}"; do
+    img_basename=$(basename "$img_path")
+    img_dir=$(dirname "$img_path")
+
+    # .drawio.svg files are renders of .drawio sources; skip orphan check when
+    # a same-directory .drawio source exists (the source file is canonical).
+    if [[ "$img_basename" == *.drawio.svg ]]; then
+      drawio_source="${img_basename%.drawio.svg}.drawio"
+      if [[ -f "$img_dir/$drawio_source" ]]; then
+        continue
+      fi
+    fi
+
+    referenced=0
+    for md_file in "${markdown_files[@]}"; do
+      if grep -Fq "$img_basename" "$md_file" 2>/dev/null; then
+        referenced=1
+        break
+      fi
+    done
+
+    if [[ $referenced -eq 0 ]]; then
+      report_issue "orphan image: $img_path is not referenced by any docs/ markdown file"
+    fi
+  done
+fi
+
 if (( has_issue != 0 )); then
   printf '%s\n' 'docs lint found issues; review warnings above before keeping or removing pages.'
   exit 1
