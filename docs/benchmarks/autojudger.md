@@ -246,9 +246,9 @@ AutoJudger wins for three reasons:
 | Failure mode | When it happens | Impact |
 |---|---|---|
 | Difficulty estimate drift | As MLLMs improve, previously "hard" questions ($d \gg 0$) become easier — the IRT calibration ages | Selected questions become too easy; ability estimates inflate; ranking degrades |
-| Weak judger agent | Using a 7B agent to evaluate a 70B+ model — the agent may misunderstand question semantics or misjudge difficulty appropriateness | Selection quality degrades; ranking accuracy drops 3–5 points (see 7B vs 32B scaling) |
+| Weak judger agent | Using a 7B agent to evaluate a 70B+ model -- the agent may misunderstand question semantics or misjudge difficulty appropriateness | Selection quality degrades; ranking accuracy drops 3–5 points (see 7B vs 32B scaling) |
 | Sparse offline data | If the 60 reference models are too similar in capability or don't cover the difficulty spectrum | IRT estimates become noisy; difficulty gating selects wrong questions |
-| Very small benchmarks | If $|Q| < 200$, the retrieval module has too few candidates to maintain diversity after difficulty filtering | Max-min diversity degenerates; AutoJudger reduces to IRT-only behavior |
+| Very small benchmarks | If $\lvert Q \rvert < 200$, the retrieval module has too few candidates to maintain diversity after difficulty filtering | Max-min diversity degenerates; AutoJudger reduces to IRT-only behavior |
 | Unseen modalities or task types | Questions in formats not present in the offline training data (e.g., video, audio) | CLIP embeddings and IRT difficulties are uncalibrated; agent has no reference frame |
 | High compression on easy benchmarks | On simple benchmarks like AI2D where most questions are easy, difficulty gating collapses the candidate pool | AutoJudger overfits to the narrow informative band; ranking accuracy plateaus early |
 

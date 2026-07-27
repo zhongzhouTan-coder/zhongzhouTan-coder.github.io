@@ -36,7 +36,7 @@ flowchart LR
     E --> G[Research-release foundation models]
 ```
 
-*1. Public data is filtered into a broad pretraining mixture. 2. Smaller models are trained on far more tokens than older compute-optimal recipes would suggest. 3. The result shifts the frontier from "largest model wins" toward "inference-efficient model trained long enough."*
+1. Public data is filtered into a broad pretraining mixture. 2. Smaller models are trained on far more tokens than older compute-optimal recipes would suggest. 3. The result shifts the frontier from "largest model wins" toward "inference-efficient model trained long enough."
 
 ## Why This Exists
 

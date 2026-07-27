@@ -39,18 +39,18 @@ Create a new category only when an existing one would make the page hard to find
 
 ## How to Use
 
-**Finding information**
+### Finding information
 
 1. Start with [logs/index.md](logs/index.md) to browse by topic, person, concept, or source.
 2. Follow links to the relevant docs page.
 3. Check the page sources in the front matter to understand what evidence supports the content.
 
-**Ingesting a new source**
+### Ingesting a new source
 
 1. Add the source file to `raw/`.
 2. Follow the repo rules in `AGENTS.md` to read the source, create or update docs pages, and update `logs/index.md` and `logs/log.md`.
 
-**Maintaining quality**
+### Maintaining quality
 
 Run the docs lint check at any time:
 

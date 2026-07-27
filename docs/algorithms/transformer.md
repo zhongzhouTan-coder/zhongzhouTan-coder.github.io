@@ -199,7 +199,7 @@ $$\text{head}_i = \operatorname{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
 
 The encoder processes the entire source sentence **in one forward pass** (no autoregression). For source sentence "The cat sat":
 
-```
+```text
 After embedding + positional encoding, we have:
   x₀ = embed("The") + PE₀    [512-dim]
   x₁ = embed("cat") + PE₁    [512-dim]  
@@ -230,7 +230,7 @@ The causal mask is used in **both training and inference** — it's a structural
 
 **During training (teacher forcing):** The entire target sentence is fed to the decoder at once. The causal mask prevents the model from cheating by looking at future tokens. This is the scenario shown below:
 
-```
+```text
 Target: "<SOS> Die Katze saß"    (German translation)
 
 Attention score matrix S (before softmax), shape [4 × 4]:
@@ -259,7 +259,7 @@ All four positions are computed **in parallel** despite the mask — this is why
 
 **During inference (autoregressive generation):** The decoder runs one step at a time. The mask still applies, but the matrix is smaller because you only have the tokens generated so far:
 
-```
+```text
 Step 1: input = ["<SOS>"]           mask: [1×1] — trivial
 Step 2: input = ["<SOS>", "Die"]    mask: [2×2] lower-triangular
 Step 3: input = ["<SOS>", "Die", "Katze"]  mask: [3×3] lower-triangular
@@ -274,7 +274,7 @@ At each step, the newest position can attend to all previous positions but not t
 
 This is where translation actually happens. After the decoder's masked self-attention builds a representation of "what I've generated so far," cross-attention connects it to the source sentence:
 
-```
+```text
 Q comes from:  decoder layer (output of masked self-attention + add & norm)
                → represents "what the decoder currently knows"
 K, V come from: encoder final output (all 6 encoder layers)
@@ -381,7 +381,7 @@ A detailed end-to-end trace through the Transformer during English-to-German tra
 
 This runs exactly once — the encoder output is cached and reused for every decoder step.
 
-```
+```text
 Step 1.1 — Embed + Positional Encode:
   "The" → embed("The") + PE₀  = x₀  [512-dim]
   "cat" → embed("cat") + PE₁  = x₁  [512-dim]
@@ -416,13 +416,13 @@ every token "knows about" every other token.
 
 The decoder generates one token at a time. Each step uses the **same** encoder output but a **growing** decoder input sequence.
 
-```
+```text
 Initial state: decoder_input = ["<SOS>"]   (start-of-sequence token)
 ```
 
 #### Decoder Step 1: Generate the first target token
 
-```
+```text
 Step 2.1 — Embed + Positional Encode the decoder input so far:
   decoder_input = ["<SOS>"]
   y₀ = embed("<SOS>") + PE₀   [512-dim]
@@ -473,7 +473,7 @@ Step 2.4 — Output Projection:
 
 #### Decoder Step 2: Generate the second target token
 
-```
+```text
 Step 3.1 — Embedding + Positional Encoding:
   Now decoder_input = ["<SOS>", "Die"]
   y₀ = embed("<SOS>") + PE₀   [512-dim]
@@ -523,7 +523,7 @@ Step 3.4 — FFN → Output Projection:
 
 #### Decoder Step 3: Generate the third token
 
-```
+```text
 decoder_input = ["<SOS>", "Die", "Katze"]   [3 × 512]
 
 Masked Self-Attention (causal mask grows):
@@ -545,7 +545,7 @@ Generated so far: ["<SOS>", "Die", "Katze", "saß"]
 
 #### Decoder Step 4: Generate the end
 
-```
+```text
 decoder_input = ["<SOS>", "Die", "Katze", "saß"]   [4 × 512]
 
 After all sub-layers and output projection:

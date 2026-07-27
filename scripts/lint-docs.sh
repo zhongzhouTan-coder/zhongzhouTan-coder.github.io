@@ -186,6 +186,23 @@ if [[ ${#image_files[@]} -gt 0 ]]; then
   done
 fi
 
+# --- markdownlint ---
+# Run markdownlint-cli2 if available. This is a best-effort check; the script
+# continues even if markdownlint is not installed.
+markdownlint_cmd=""
+if command -v npx &>/dev/null; then
+  markdownlint_cmd="npx --no-install markdownlint-cli2"
+elif command -v markdownlint-cli2 &>/dev/null; then
+  markdownlint_cmd="markdownlint-cli2"
+fi
+
+if [[ -n "$markdownlint_cmd" ]] && [[ -f "$repo_root/.markdownlint-cli2.jsonc" ]]; then
+  printf '\n%s\n' '--- markdownlint ---'
+  if ! $markdownlint_cmd 2>/dev/null; then
+    has_issue=1
+  fi
+fi
+
 if (( has_issue != 0 )); then
   printf '%s\n' 'docs lint found issues; review warnings above before keeping or removing pages.'
   exit 1

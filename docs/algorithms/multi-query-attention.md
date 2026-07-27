@@ -63,6 +63,7 @@ flowchart LR
 Consider incremental autoregressive decoding of a Transformer with $h = 8$ heads, $d = 1024$, and sequence length $n = 128$.
 
 At each decoding step, the model must:
+
 1. Compute the query $q$ for the current position — a tiny vector.
 2. Load the **entire** keys $K$ and values $V$ tensors from the previous positions — size $b \cdot h \cdot m \cdot k = b \cdot h \cdot n^2 / h = b n^2$ per step.
 3. Compute attention scores, weighted sum, and output projection.
@@ -95,11 +96,13 @@ flowchart TD
 **Parent:** Multi-Head Attention (Vaswani et al., 2017) — the standard Transformer attention mechanism with $h$ independent key, query, value, and output projections per head.
 
 **Siblings (inference-speed optimizations):**
+
 - **Local/Sliding-Window Attention** — restrict each query to attend only to nearby positions, reducing $n$; orthogonal to MQA (they compose).
 - **Average Attention Network** — compress all past key-value pairs into a single running average vector.
 - **Time-Restricted Self-Attention** — limit the temporal span of attention for ASR tasks.
 
 **Dead ends (simpler alternatives that don't work as well):**
+
 - **Reduce $h$** (fewer heads): dropping from $h=8$ to $h=1$ also shrinks K and V by 8×, but perplexity degrades from 29.9 to 31.2 on Billion-Word LM — much worse than MQA's 30.2.
 - **Reduce $d_k, d_v$** (smaller per-head dimension): shrinking from 128 to 16 (while keeping $h=8$) also degrades to 30.9 perplexity — worse than MQA.
 

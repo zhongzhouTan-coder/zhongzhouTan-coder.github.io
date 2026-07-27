@@ -126,7 +126,7 @@ This saves memory bandwidth (one scalar per row instead of two) and simplifies t
 
 ### Forward Pass in Detail
 
-![](./assets/flash-attention-2.jpg)
+![FlashAttention-2 forward pass algorithm](./assets/flash-attention-2.jpg)
 
 The full FA2 forward pass (Algorithm 1 from the paper) works as follows:
 

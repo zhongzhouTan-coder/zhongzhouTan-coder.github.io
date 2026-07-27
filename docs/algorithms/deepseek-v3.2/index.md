@@ -12,7 +12,7 @@ updated: 2026-07-26
 
 **Paper:** DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models  
 **Authors:** DeepSeek-AI  
-**arXiv:** 2026 (research@deepseek.com)  
+**arXiv:** 2026 (<research@deepseek.com>)  
 
 **Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../grouped-query-attention/index.md) · [Multi-Query Attention](../multi-query-attention.md) · [The Transformer](../transformer.md)
 

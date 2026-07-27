@@ -99,7 +99,7 @@ Standard multi-head attention concatenates independent heads, but their key/quer
 | Step | Action |
 |---|---|
 | 1 | For each head $i$, compute $P_i = W_Q^{(i)} W_K^{(i)\top} \in \mathbb{R}^{D_{in} \times D_{in}}$ |
-| 2 | Concatenate: $P = [P_1 | P_2 | \ldots | P_{N_h}] \in \mathbb{R}^{D_{in} \times D_k}$ |
+| 2 | Concatenate: $P = [P_1 \| P_2 \| \ldots \| P_{N_h}] \in \mathbb{R}^{D_{in} \times D_k}$ |
 | 3 | Run PCA on $P$ and plot cumulative explained variance |
 | 4 | Compare against the concatenated raw $W_Q$ and $W_K$ individually |
 

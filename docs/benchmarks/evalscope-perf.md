@@ -93,7 +93,7 @@ EvalScope Perf separates *load generation* from *metric collection* through a mo
 
 **Constraint logic:** Multiple metrics in one JSON object = AND (must all satisfy); separate objects in the array = OR (independent searches).
 
-```
+```bash
 # Find max concurrency where p99 latency <= 2s AND avg TTFT <= 1s
 --sla-params '[{"p99_latency": "<=2", "avg_ttft": "<=1"}]'
 
@@ -107,10 +107,12 @@ EvalScope Perf separates *load generation* from *metric collection* through a mo
 **The intuition:** SLA auto-tune is a capacity planner that asks "how hard can I push this service before it breaks my SLO?" — and answers with a single number.
 
 **A concrete example:** For a production deployment, you might run:
-```
+
+```bash
 evalscope perf --sla-auto-tune --sla-variable parallel \
   --sla-params '[{"p99_latency": "<=2"}]' --sla-upper-bound 256
 ```
+
 This automatically discovers that your service handles 64 concurrent users at p99 < 2s, but breaks at 128.
 
 **Remember:** SLA auto-tune treats any test point with <100% success rate as a failure, so it automatically catches overload regimes where requests start erroring out.

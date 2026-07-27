@@ -1,0 +1,64 @@
+{
+  // markdownlint-cli2 configuration for Jekyll-based GitHub Pages knowledge base.
+  // This repo uses YAML front matter and Liquid templating in markdown files.
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+
+  "config": {
+    // Allow long lines — links and technical terms make 80-char limits impractical.
+    "MD013": false,
+
+    // Allow inline HTML — Jekyll Liquid tags and includes require it.
+    "MD033": false,
+
+    // Don't require a top-level heading on line 1 — front matter comes first.
+    "MD041": false,
+
+    // Allow duplicate headings across files (front matter title = heading).
+    "MD024": { "siblings_only": true },
+
+    // Allow multiple top-level headings — common in Jekyll pages with sections.
+    "MD025": false,
+
+    // Trailing punctuation in headings is fine for question-style headings.
+    "MD026": false,
+
+    // Enforce blank lines around headings for readability.
+    "MD022": true,
+
+    // Enforce blank lines around fenced code blocks.
+    "MD031": true,
+
+    // Fenced code blocks only, no indented.
+    "MD046": { "style": "fenced" },
+
+    // Backtick-style code fences.
+    "MD048": { "style": "backtick" },
+
+    // No bare URLs — wrap in angle brackets or markdown links.
+    "MD034": true,
+
+    // No emphasis-as-headings (bold text used as a heading).
+    "MD036": true,
+
+    // Fenced code blocks must have a language tag.
+    "MD040": true,
+
+    // Allow compact tables without spaces around pipes (|x|y| vs | x | y |).
+    "MD060": false,
+
+    // Ordered list items: allow sequential 1/2/3 (our existing docs use this).
+    "MD029": { "style": "ordered" }
+  },
+
+  // Only lint markdown files under docs/ and the root READMEs.
+  "globs": [
+    "docs/**/*.md",
+    "README.md",
+    "AGENTS.md"
+  ],
+
+  // Ignore Jekyll build output.
+  "ignores": [
+    "docs/_site/**"
+  ]
+}

@@ -105,6 +105,7 @@ graph LR
 ```
 
 Seven voice personas span diverse accents and demographics:
+
 - **Clean** (2): Matt Delaney (American Midwest), Lisa Brenner (suburban, impatient)
 - **Realistic** (5): Mildred Kaplan (elderly US), Arjun Roy (Bengali accent), Wei Lin (Sichuan Mandarin), Mamadou Diallo (French accent), Priya Patil (Maharashtrian accent)
 
@@ -222,6 +223,7 @@ Statistical reliability confirmed by paired permutation tests (Holm-Bonferroni c
 | xAI | 1.15s | 83% | 84% | 57% |
 
 Provider trade-offs:
+
 - **OpenAI**: fastest latency (0.90s), perfect responsiveness (100%), lowest interrupt rate (14%), but worst selectivity (6%) — responds to nearly all backchannels and non-directed speech.
 - **xAI**: best selectivity (57%), high responsiveness (83%), but highest interrupt rate (84%) — interrupts nearly once per turn.
 - **Google**: lowest interrupt rate (21%), best selectivity alongside xAI (54%), but lowest responsiveness (69%) — fails to respond to 31% of user turns.

@@ -100,6 +100,7 @@ Softmax transforms unconstrained real-valued scores into a probability distribut
 **The intuition:** Think of α as a "decisiveness dial." Turn it up, and the agent becomes increasingly certain about the best option. Turn it to zero, and the agent flips a fair coin regardless of preference.
 
 **A concrete example:** For Alex's scores s = ⟨0, 1, 1⟩:
+
 - At α = 0.41: p ≈ ⟨0.25, 0.375, 0.375⟩ (expected score 0.75)
 - At α = 5: p ≈ ⟨0.006, 0.497, 0.497⟩ (almost never picks option 1)
 - At α = −1: p ≈ ⟨0.576, 0.212, 0.212⟩ (favors the *lowest*-scoring option)
@@ -237,6 +238,7 @@ The paper provides rigorous proofs for every claim:
 ### The mechanism behind the numbers
 
 The key mathematical insight is that the exponential function converts additive score differences into multiplicative odds ratios: $s_i - s_j \mapsto \exp(\alpha(s_i - s_j)) = p_i/p_j$. This single property simultaneously explains:
+
 - Why translation invariance holds (differences unchanged)
 - Why IIA holds (odds independent of third alternatives)
 - Why the n=2 case reduces to the logistic function

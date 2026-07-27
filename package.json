@@ -1,0 +1,30 @@
+{
+  "name": "zhongzhoutan-coder.github.io",
+  "version": "1.0.0",
+  "description": "I want to build a long-term personal blog, and all the content will be written by github copilot and hosted on github pages. I want to test that we can change our work style and do knowledge precipitation automatically.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:md": "markdownlint-cli2",
+    "lint:docs": "./scripts/lint-docs.sh",
+    "lint": "npm run lint:md && npm run lint:docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhongzhouTan-coder/zhongzhouTan-coder.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zhongzhouTan-coder/zhongzhouTan-coder.github.io/issues"
+  },
+  "homepage": "https://github.com/zhongzhouTan-coder/zhongzhouTan-coder.github.io#readme",
+  "devDependencies": {
+    "markdownlint-cli2": "^0.23.2"
+  }
+}
