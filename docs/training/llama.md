@@ -152,7 +152,7 @@ Training uses AdamW, cosine learning-rate decay to 10% of the maximum rate, weig
 | Selective activation checkpointing | Save expensive activations such as linear outputs |
 | Manual backward for Transformer layers | Control recomputation more precisely than default autograd |
 | Model and sequence parallelism | Fit large models and long sequences across GPUs |
-| Communication overlap | Hide [all-reduce](../../terms/all-reduce.md) communication behind computation |
+| Communication overlap | Hide [all-reduce](../terms/all-reduce.md) communication behind computation |
 
 For the 65B model, the paper reports about **380 tokens/sec/GPU on 2048 A100 80GB GPUs**, making a 1.4T-token run take about **21 days**.
 

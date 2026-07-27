@@ -125,7 +125,7 @@ At each decoding step:
 
 1. The scheduler sends input token IDs and block tables to workers.
 2. Workers run their model shards and read KV cache according to the shared block table.
-3. Workers synchronize intermediate results through [all-reduce](../../terms/all-reduce.md).
+3. Workers synchronize intermediate results through [all-reduce](../terms/all-reduce.md).
 4. Workers return sampled tokens to the scheduler.
 
 The paper's evaluated configurations include OPT-13B on one A100 40 GB GPU, OPT-66B on four A100 GPUs, and OPT-175B on eight A100 80 GB GPUs.
