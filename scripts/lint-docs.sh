@@ -198,7 +198,7 @@ fi
 
 if [[ -n "$markdownlint_cmd" ]] && [[ -f "$repo_root/.markdownlint-cli2.jsonc" ]]; then
   printf '\n%s\n' '--- markdownlint ---'
-  if ! $markdownlint_cmd 2>/dev/null; then
+  if ! $markdownlint_cmd; then
     has_issue=1
   fi
 fi
