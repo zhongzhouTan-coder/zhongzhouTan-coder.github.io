@@ -347,6 +347,17 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:1811.06965v5",
+      "title": "GPipe: Easy Scaling with Micro-Batch Pipeline Parallelism",
+      "slug": "gpipe-micro-batch-pipeline-parallelism",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf"],
+      "derived_path": "derived/pdf-markdown/training/gpipe-micro-batch-pipeline-parallelism.md",
+      "docs_path": "docs/training/gpipe/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2606.07412v1",
       "title": "Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills",
       "slug": "socratic-swe-self-evolving-coding-agents",
