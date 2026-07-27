@@ -4,7 +4,7 @@ summary: "DeepSWE v1.1 keeps the same task set as v1 but changes execution and g
 layout: default
 confidence: high
 sources:
-  - raw/benchmark/deepswev1dot1.md
+  - raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md
 updated: 2026-07-15
 ---
 

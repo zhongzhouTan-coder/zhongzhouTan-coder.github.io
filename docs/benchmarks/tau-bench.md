@@ -4,7 +4,7 @@ summary: "Original τ-bench paper: benchmark design, two customer-service domain
 layout: default
 confidence: high
 sources:
-  - raw/benchmark/tau-bench.pdf
+  - raw/benchmarks/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf
 updated: 2026-07-15
 ---
 

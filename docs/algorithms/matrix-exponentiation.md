@@ -4,7 +4,7 @@ summary: "How binary matrix exponentiation accelerates linear recurrences and fi
 layout: default
 confidence: high
 sources:
-  - raw/algorithm/Matrix exponentiation | HackerEarth.pdf
+  - raw/algorithms/matrix-exponentiation-hackerearth--web.pdf
 updated: 2026-07-15
 ---
 

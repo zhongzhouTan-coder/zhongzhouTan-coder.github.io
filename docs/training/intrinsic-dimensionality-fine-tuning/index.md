@@ -4,7 +4,7 @@ summary: "Summary of Aghajanyan et al.'s intrinsic-dimension analysis of why pre
 layout: default
 confidence: high
 sources:
-  - raw/training/2012.13255v1.pdf
+  - raw/training/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf
 updated: 2026-07-15
 ---
 

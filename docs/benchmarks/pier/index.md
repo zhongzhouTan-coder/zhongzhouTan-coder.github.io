@@ -4,7 +4,7 @@ summary: "Pier is a Harbor-compatible coding-agent evaluation harness focused on
 layout: default
 confidence: high
 sources:
-  - raw/benchmark/pier.md
+  - raw/benchmarks/pier-coding-agent-evaluation-harness.md
 updated: 2026-07-15
 ---
 

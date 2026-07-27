@@ -1,0 +1,51 @@
+{
+  "categories": {
+    "algorithms": {
+      "description": "Inference algorithms, attention variants, decoding methods, kernels, scheduling, and mathematical procedures.",
+      "raw_prefix": "raw/algorithms/",
+      "derived_prefix": "derived/pdf-markdown/algorithms/",
+      "docs_prefix": "docs/algorithms/"
+    },
+    "benchmarks": {
+      "description": "Benchmark construction, domains, task generation, metrics, evaluation harnesses, and empirical benchmark results.",
+      "raw_prefix": "raw/benchmarks/",
+      "derived_prefix": "derived/pdf-markdown/benchmarks/",
+      "docs_prefix": "docs/benchmarks/"
+    },
+    "frameworks": {
+      "description": "LLM serving systems, programming frameworks, orchestration systems, and runtime architecture.",
+      "raw_prefix": "raw/frameworks/",
+      "derived_prefix": "derived/pdf-markdown/frameworks/",
+      "docs_prefix": "docs/frameworks/"
+    },
+    "hardware": {
+      "description": "Numerics, quantization, accelerator features, precision formats, and hardware-aware implementation details.",
+      "raw_prefix": "raw/hardware/",
+      "derived_prefix": "derived/pdf-markdown/hardware/",
+      "docs_prefix": "docs/hardware/"
+    },
+    "training": {
+      "description": "Pretraining, fine-tuning, RL, scaling, transfer learning, model-parallel training, and generalization.",
+      "raw_prefix": "raw/training/",
+      "derived_prefix": "derived/pdf-markdown/training/",
+      "docs_prefix": "docs/training/"
+    },
+    "codex": {
+      "description": "Codex product notes, agent workflows, skills, hooks, and local automation behavior.",
+      "raw_prefix": "raw/codex/",
+      "derived_prefix": null,
+      "docs_prefix": null
+    }
+  },
+  "aliases": {
+    "algorithm": "algorithms",
+    "infer-algorithm": "algorithms",
+    "benchmark": "benchmarks",
+    "infer-architecture": "training",
+    "nvidia": "hardware",
+    "quantization": "hardware",
+    "sglang": "frameworks",
+    "sp-infer": "frameworks",
+    "vllm": "frameworks"
+  }
+}

@@ -4,7 +4,7 @@ summary: "NVIDIA NVFP4 format, hierarchical scaling, memory benefits, and Transf
 layout: default
 confidence: high
 sources:
-  - raw/nvidia/nvfp4-references.md
+  - raw/hardware/nvfp4-blackwell-4-bit-floating-point-references.md
 updated: 2026-07-15
 ---
 

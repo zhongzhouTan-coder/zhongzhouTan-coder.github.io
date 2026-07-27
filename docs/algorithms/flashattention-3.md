@@ -4,8 +4,8 @@ summary: "FlashAttention-3 algorithm: Hopper-specific asynchronous pipeline, war
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/2407.08608v2.pdf
-  - derived/pdf-markdown/infer-algorithm/2407.08608v2.md
+  - raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf
+  - derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md
 updated: 2026-07-24
 ---
 

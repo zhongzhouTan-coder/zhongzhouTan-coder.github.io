@@ -4,7 +4,8 @@ summary: "The foundational paper that introduced the Transformer architecture, d
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/attention-is-all-you-need.pdf
+  - raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf
+  - derived/pdf-markdown/algorithms/attention-is-all-you-need.md
 updated: 2026-07-25
 ---
 

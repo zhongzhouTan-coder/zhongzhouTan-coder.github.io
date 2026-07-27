@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "naming_policy": {
+    "pdf": "raw/{category}/{slug}--{source_id}.pdf",
+    "markdown": "raw/{category}/{slug}.md",
+    "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md"
+  },
+  "sources": [
+    {
+      "id": "arxiv:1706.03762",
+      "title": "Attention Is All You Need",
+      "slug": "attention-is-all-you-need",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/attention-is-all-you-need.md",
+      "docs_path": "docs/algorithms/transformer.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2006.16362v2",
+      "title": "Multi-Head Attention: Collaborate Instead of Concatenate",
+      "slug": "collaborative-multi-head-attention",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/collaborative-multi-head-attention.md",
+      "docs_path": "docs/algorithms/collaborative-attention.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2405.04434",
+      "title": "DeepSeek-V2 Multi-Head Latent Attention",
+      "slug": "deepseek-v2-multi-head-latent-attention",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md",
+      "docs_path": "docs/algorithms/deepseek-v2-mla.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:deepseek-v3.2",
+      "title": "DeepSeek-V3.2: Pushing the Frontier of Open Large Language Models",
+      "slug": "deepseek-v3.2-sparse-attention-scaled-rl-tool-use",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md",
+      "docs_path": "docs/algorithms/deepseek-v3.2/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2205.14135v2",
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "slug": "flashattention-io-aware-exact-attention",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md",
+      "docs_path": "docs/algorithms/flashattention.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2307.08691v1",
+      "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+      "slug": "flashattention-2-better-parallelism-work-partitioning",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md",
+      "docs_path": "docs/algorithms/flashattention-2.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2407.08608v2",
+      "title": "FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision",
+      "slug": "flashattention-3-asynchrony-low-precision",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md",
+      "docs_path": "docs/algorithms/flashattention-3.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2603.05451v1",
+      "title": "FlashAttention-4: Algorithm and Kernel Pipelining Co-Design for Asymmetric Hardware Scaling",
+      "slug": "flashattention-4-kernel-pipelining-co-design",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/flashattention-4-kernel-pipelining-co-design.md",
+      "docs_path": "docs/algorithms/flashattention-4.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:llama-2",
+      "title": "Grouped-Query Attention in Llama 2",
+      "slug": "grouped-query-attention-llama-2",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/grouped-query-attention-llama-2--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/grouped-query-attention-llama-2.md",
+      "docs_path": "docs/algorithms/grouped-query-attention/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "web:hackerearth",
+      "title": "Matrix Exponentiation for Linear Transitions",
+      "slug": "matrix-exponentiation-hackerearth",
+      "category": "algorithms",
+      "kind": "reference",
+      "raw_paths": ["raw/algorithms/matrix-exponentiation-hackerearth--web.pdf"],
+      "docs_path": "docs/algorithms/matrix-exponentiation.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:multi-query-attention",
+      "title": "Fast Transformer Decoding: One Write-Head is All You Need",
+      "slug": "multi-query-attention-one-write-head",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/multi-query-attention-one-write-head--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md",
+      "docs_path": "docs/algorithms/multi-query-attention.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:franke-degen-softmax",
+      "title": "The Softmax Function: Properties, Motivation, and Interpretation",
+      "slug": "softmax-function-properties-motivation-interpretation",
+      "source_suffix": "franke-degen",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/softmax-function-properties-motivation-interpretation.md",
+      "docs_path": "docs/algorithms/softmax.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2505.21389v1",
+      "title": "AutoJudger: An Agent-Driven Framework for Efficient Benchmarking of MLLMs",
+      "slug": "autojudger-agent-driven-mllm-benchmarking",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": ["raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf"],
+      "derived_path": "derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md",
+      "docs_path": "docs/benchmarks/autojudger.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:tau-bench",
+      "title": "tau-bench: Tool-Agent-User Interaction Benchmark",
+      "slug": "tau-bench-tool-agent-user-interaction-benchmark",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": ["raw/benchmarks/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf"],
+      "docs_path": "docs/benchmarks/tau-bench.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:tau2-bench",
+      "title": "tau2-Bench: Mechanism and Design",
+      "slug": "tau2-bench-mechanism-and-design",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": ["raw/benchmarks/tau2-bench-mechanism-and-design--paper.pdf"],
+      "docs_path": "docs/benchmarks/tau2-bench-mechanism.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:tau-voice",
+      "title": "tau-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains",
+      "slug": "tau-voice-full-duplex-voice-agent-benchmark",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": ["raw/benchmarks/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf"],
+      "docs_path": "docs/benchmarks/tau-voice.md",
+      "status": "ingested"
+    },
+    {
+      "id": "web:deepswe",
+      "title": "DeepSWE: Long-Horizon Software Engineering Benchmark",
+      "slug": "deepswe-long-horizon-software-engineering-benchmark",
+      "category": "benchmarks",
+      "kind": "reference",
+      "raw_paths": ["raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md"],
+      "docs_path": "docs/benchmarks/deepswe/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "web:deepswe-v1.1",
+      "title": "DeepSWE v1.1: Execution and Scoring Changes",
+      "slug": "deepswe-v1.1-execution-and-scoring-changes",
+      "category": "benchmarks",
+      "kind": "reference",
+      "raw_paths": ["raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md"],
+      "docs_path": "docs/benchmarks/deepswe-v1-1/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "web:pier",
+      "title": "Pier: Coding-Agent Evaluation Harness",
+      "slug": "pier-coding-agent-evaluation-harness",
+      "category": "benchmarks",
+      "kind": "reference",
+      "raw_paths": ["raw/benchmarks/pier-coding-agent-evaluation-harness.md"],
+      "docs_path": "docs/benchmarks/pier/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2607.05147v1",
+      "title": "DSpark: Confidence-Scheduled Speculative Decoding",
+      "slug": "dspark-confidence-scheduled-speculative-decoding",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": ["raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"],
+      "docs_path": "docs/frameworks/dspark/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:harbor",
+      "title": "Harbor: Agent Evaluation Framework Design",
+      "slug": "harbor-framework",
+      "category": "frameworks",
+      "kind": "reference",
+      "raw_paths": [
+        "raw/frameworks/harbor/README.md",
+        "raw/frameworks/harbor/index.mdx",
+        "raw/frameworks/harbor/core-concepts.mdx",
+        "raw/frameworks/harbor/tasks-index.mdx",
+        "raw/frameworks/harbor/results-and-artifacts.mdx",
+        "raw/frameworks/harbor/harbor-registry.mdx",
+        "raw/frameworks/harbor/separate-verifier-sandboxes.mdx",
+        "raw/frameworks/harbor/agents-base.py",
+        "raw/frameworks/harbor/environments-base.py",
+        "raw/frameworks/harbor/job.py",
+        "raw/frameworks/harbor/trial.py"
+      ],
+      "docs_path": "docs/frameworks/harbor-framework/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2312.07104v2",
+      "title": "SGLang: Structured Language Model Programs",
+      "slug": "sglang-structured-language-model-programs",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": ["raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf"],
+      "docs_path": "docs/frameworks/sglang-framework.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2309.06180v1",
+      "title": "vLLM: PagedAttention Serving Framework",
+      "slug": "vllm-pagedattention-serving-framework",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": ["raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"],
+      "docs_path": "docs/frameworks/vllm-framework.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2410.09426v4",
+      "title": "FlatQuant: Fast Learnable Affine Quantization",
+      "slug": "flatquant-fast-learnable-affine-quantization",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": ["raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"],
+      "docs_path": "docs/hardware/flatquant.md",
+      "status": "ingested"
+    },
+    {
+      "id": "nvidia:nvfp4-references",
+      "title": "NVFP4: Blackwell 4-Bit Floating Point",
+      "slug": "nvfp4-blackwell-4-bit-floating-point-references",
+      "category": "hardware",
+      "kind": "reference",
+      "raw_paths": ["raw/hardware/nvfp4-blackwell-4-bit-floating-point-references.md"],
+      "docs_path": "docs/hardware/nvfp4.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:gpt-1",
+      "title": "GPT-1: Improving Language Understanding by Generative Pre-Training",
+      "slug": "gpt-1-improving-language-understanding",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/gpt-1-improving-language-understanding--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/gpt-1-improving-language-understanding.md",
+      "docs_path": "docs/training/gpt-1.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:gpt-2",
+      "title": "GPT-2: Language Models are Unsupervised Multitask Learners",
+      "slug": "gpt-2-unsupervised-multitask-learners",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md",
+      "docs_path": "docs/training/gpt-2.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:gpt-3",
+      "title": "GPT-3: Language Models are Few-Shot Learners",
+      "slug": "gpt-3-language-models-few-shot-learners",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/gpt-3-language-models-few-shot-learners--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/gpt-3-language-models-few-shot-learners.md",
+      "docs_path": "docs/training/gpt-3.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2012.13255v1",
+      "title": "Intrinsic Dimensionality and Language Model Fine-Tuning",
+      "slug": "intrinsic-dimensionality-language-model-fine-tuning",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf"],
+      "docs_path": "docs/training/intrinsic-dimensionality-fine-tuning/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:llama",
+      "title": "LLaMA: Open and Efficient Foundation Language Models",
+      "slug": "llama-open-efficient-foundation-language-models",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/llama-open-efficient-foundation-language-models--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/llama-open-efficient-foundation-language-models.md",
+      "docs_path": "docs/training/llama.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:megatron-lm",
+      "title": "Megatron-LM: GPU-Cluster Training Parallelism",
+      "slug": "megatron-lm-gpu-cluster-training-parallelism",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md",
+      "docs_path": "docs/training/megatron-lm/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2606.07412v1",
+      "title": "Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills",
+      "slug": "socratic-swe-self-evolving-coding-agents",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf"],
+      "derived_path": "derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md",
+      "docs_path": "docs/training/socratic-swe/index.md",
+      "status": "ingested"
+    }
+  ]
+}

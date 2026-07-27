@@ -4,8 +4,8 @@ summary: "Original FlashAttention algorithm: tiled exact attention, online softm
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/2205.14135v2.pdf
-  - derived/pdf-markdown/infer-algorithm/2205.14135v2.md
+  - raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf
+  - derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md
 updated: 2026-07-24
 ---
 

@@ -4,7 +4,7 @@ summary: "DeepSeek's DSpark speculative decoding framework, combining semi-autor
 layout: default
 confidence: high
 sources:
-  - raw/sp-infer/2607.05147v1.pdf
+  - raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf
 updated: 2026-07-15
 ---
 
@@ -248,7 +248,7 @@ DSpark's memorable frame is **speculative decoding as batch-capacity allocation*
 
 ## Go Deeper
 
-- **Read:** `raw/sp-infer/2607.05147v1.pdf`
+- **Read:** `raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf`
 - **Build on:** Eagle3, DFlash, and MTP-1 as the main comparison points discussed by the paper.
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md) and [SGLang: Structured Language Model Programs](../sglang-framework.md)
 - **Reproduce:** Code is not listed in this repository at the time of writing.

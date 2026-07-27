@@ -4,8 +4,8 @@ summary: "FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-para
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/2307.08691v1.pdf
-  - derived/pdf-markdown/infer-algorithm/2307.08691v1.md
+  - raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf
+  - derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md
 updated: 2026-07-24
 ---
 

@@ -4,7 +4,8 @@ summary: "Introduces the decoder-only Transformer pretrained with a language mod
 layout: default
 confidence: high
 sources:
-  - raw/training/improving-language-understanding-by-generative-pre-training.pdf
+  - raw/training/gpt-1-improving-language-understanding--paper.pdf
+  - derived/pdf-markdown/training/gpt-1-improving-language-understanding.md
 updated: 2026-07-25
 ---
 

@@ -4,8 +4,8 @@ summary: "An agent-driven framework that adaptively selects informative question
 layout: default
 confidence: high
 sources:
-  - raw/benchmark/2505.21389v1.pdf
-  - derived/pdf-markdown/2505.21389v1.md
+  - raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
+  - derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md
 updated: 2026-07-23
 ---
 

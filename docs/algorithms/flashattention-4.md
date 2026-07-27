@@ -4,8 +4,8 @@ summary: "FlashAttention-4 algorithm and kernel-pipeline techniques for faster e
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/2603.05451v1.pdf
-  - derived/pdf-markdown/infer-algorithm/2603.05451v1.md
+  - raw/algorithms/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf
+  - derived/pdf-markdown/algorithms/flashattention-4-kernel-pipelining-co-design.md
 updated: 2026-07-24
 ---
 

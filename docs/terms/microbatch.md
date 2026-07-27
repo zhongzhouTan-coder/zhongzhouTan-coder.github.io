@@ -6,7 +6,7 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/infer-architecture/megatron-lm.pdf
+  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
 aliases:
   - micro-batch
   - micro batch

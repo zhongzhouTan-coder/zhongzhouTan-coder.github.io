@@ -4,7 +4,7 @@ summary: "vLLM framework design, PagedAttention memory management, scheduling, d
 layout: default
 confidence: high
 sources:
-  - raw/vllm/2309.06180v1.pdf
+  - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
 updated: 2026-07-15
 ---
 

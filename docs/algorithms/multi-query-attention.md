@@ -4,8 +4,8 @@ summary: "Replaces per-head key/value projections with a single shared K/V pair 
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/multi-query-attention.pdf
-  - derived/pdf-markdown/infer-algorithm/multi-query-attention.md
+  - raw/algorithms/multi-query-attention-one-write-head--paper.pdf
+  - derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md
 updated: 2026-07-26
 ---
 

@@ -4,17 +4,17 @@ summary: "Harbor's design philosophy, runtime architecture, and the reasons it e
 layout: default
 confidence: high
 sources:
-  - raw/harbor/README.md
-  - raw/harbor/index.mdx
-  - raw/harbor/core-concepts.mdx
-  - raw/harbor/tasks-index.mdx
-  - raw/harbor/results-and-artifacts.mdx
-  - raw/harbor/harbor-registry.mdx
-  - raw/harbor/separate-verifier-sandboxes.mdx
-  - raw/harbor/job.py
-  - raw/harbor/trial.py
-  - raw/harbor/agents-base.py
-  - raw/harbor/environments-base.py
+  - raw/frameworks/harbor/README.md
+  - raw/frameworks/harbor/index.mdx
+  - raw/frameworks/harbor/core-concepts.mdx
+  - raw/frameworks/harbor/tasks-index.mdx
+  - raw/frameworks/harbor/results-and-artifacts.mdx
+  - raw/frameworks/harbor/harbor-registry.mdx
+  - raw/frameworks/harbor/separate-verifier-sandboxes.mdx
+  - raw/frameworks/harbor/job.py
+  - raw/frameworks/harbor/trial.py
+  - raw/frameworks/harbor/agents-base.py
+  - raw/frameworks/harbor/environments-base.py
 updated: 2026-07-15
 ---
 
@@ -337,7 +337,7 @@ Harbor's design philosophy is that **the task is the atomic portable unit** — 
 
 ## Go Deeper
 
-- **Read:** Harbor documentation in `raw/harbor/`
+- **Read:** Harbor documentation in `raw/frameworks/harbor/`
 - **Build on:** [Pier: Coding-Agent Evaluation Harness](../../benchmarks/pier/index.md)
 - **Understand the context:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../../benchmarks/deepswe/index.md)
 - **Reproduce:** Harbor framework setup from its repository

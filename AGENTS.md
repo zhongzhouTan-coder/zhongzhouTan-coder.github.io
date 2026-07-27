@@ -16,12 +16,13 @@ This repository is a markdown knowledge base.
 - For docs page front matter and topic placement, read `.github/instructions/docs-front-matter.instructions.md`.
 - For paper-insight page body structure, read `.github/instructions/docs-content-structure.instructions.md`.
 - For term glossary pages, read `.github/instructions/docs-terms.instructions.md`.
+- For source categories, raw/derived naming, and manifest maintenance, read `.github/instructions/source-organization.instructions.md`.
 - For `docs/logs/index.md` and `docs/logs/log.md`, read `.github/instructions/logs-maintenance.instructions.md`.
 
 ## Workflow Triggers
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
-- When a new PDF source is added: convert it to Markdown first with `scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under a category subdirectory below `derived/pdf-markdown/` instead of the top level; choose the category from the source topic or target docs topic, for example `scripts/mineru-agent-to-markdown.py --mode precise raw/example.pdf --output-dir derived/pdf-markdown/ai`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF in `raw/` unchanged, and cite the original `raw/` PDF path in docs front matter.
+- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
 - When adding a new paper or docs page, inspect existing related pages from `docs/logs/index.md` and the target topic folder. Update those pages when the new material changes the landscape, supersedes an older claim, adds a needed comparison, or should be linked as related context.
 - Do not rewrite related pages just because a new page exists. Keep related-page edits scoped to factual corrections, changed confidence, cross-links, short comparison notes, or synthesis that improves retrieval.
 - If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.

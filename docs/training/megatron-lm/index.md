@@ -4,7 +4,8 @@ summary: "Explains Megatron-LM's PTD-P recipe for composing pipeline, tensor, an
 layout: default
 confidence: high
 sources:
-  - raw/infer-architecture/megatron-lm.pdf
+  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md
 updated: 2026-07-27
 ---
 

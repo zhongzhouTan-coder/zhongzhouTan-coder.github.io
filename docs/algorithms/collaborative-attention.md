@@ -4,7 +4,8 @@ summary: "Replaces concatenated independent attention heads with shared key/quer
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/2006.16362v2.pdf
+  - raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf
+  - derived/pdf-markdown/algorithms/collaborative-multi-head-attention.md
 updated: 2026-07-25
 ---
 

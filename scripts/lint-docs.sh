@@ -208,4 +208,9 @@ if (( has_issue != 0 )); then
   exit 1
 fi
 
+printf '\n%s\n' '--- kb integrity ---'
+if ! python3 scripts/kb-check-integrity.py; then
+  exit 1
+fi
+
 exit 0

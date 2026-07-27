@@ -4,7 +4,7 @@ summary: "SGLang framework architecture, programming model, runtime optimization
 layout: default
 confidence: high
 sources:
-  - raw/sglang/2312.07104v2.pdf
+  - raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf
 updated: 2026-07-15
 ---
 

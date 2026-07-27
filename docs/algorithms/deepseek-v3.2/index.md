@@ -4,7 +4,8 @@ summary: "DeepSeek-V3.2 introduces DeepSeek Sparse Attention (DSA) for sub-quadr
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/deepseek-v3.2.pdf
+  - raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf
+  - derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md
 updated: 2026-07-26
 ---
 

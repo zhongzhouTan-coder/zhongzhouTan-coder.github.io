@@ -4,7 +4,7 @@ summary: "How τ²-Bench evaluates conversational AI agents in a dual-control en
 layout: default
 confidence: high
 sources:
-  - raw/benchmark/tau2-bench.pdf
+  - raw/benchmarks/tau2-bench-mechanism-and-design--paper.pdf
 updated: 2026-07-15
 ---
 

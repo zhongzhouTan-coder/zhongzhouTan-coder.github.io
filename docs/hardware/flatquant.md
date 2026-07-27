@@ -4,7 +4,7 @@ summary: "FlatQuant post-training quantization: learnable affine transformations
 layout: default
 confidence: high
 sources:
-  - raw/quantization/2410.09426v4.pdf
+  - raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf
 updated: 2026-07-15
 ---
 

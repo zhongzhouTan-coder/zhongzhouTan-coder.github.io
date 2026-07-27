@@ -4,7 +4,8 @@ summary: "Explains DeepSeek-V2's Multi-head Latent Attention: low-rank joint key
 layout: default
 confidence: high
 sources:
-  - raw/infer-algorithm/deepseek-v2-mla.pdf
+  - raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf
+  - derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md
 updated: 2026-07-26
 ---
 
@@ -289,7 +290,7 @@ MLA is **KV-cache compression without giving up the idea of many attention heads
 
 ## Go Deeper
 
-- **Read:** `raw/infer-algorithm/deepseek-v2-mla.pdf` for the DeepSeek-V2 architecture, training, inference, and ablation details.
+- **Read:** `raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf` for the DeepSeek-V2 architecture, training, inference, and ablation details.
 - **Build on:** [Multi-Query Attention](multi-query-attention.md) and [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) for the earlier KV-cache-reduction line.
 - **Understand the context:** [The Transformer](transformer.md) for standard MHA and [FlashAttention-2](flashattention-2.md) for the kernel family DeepSeek-V2 says its MLA implementation builds on.
 - **Reproduce:** DeepSeek reports model checkpoints and code at `https://github.com/deepseek-ai/DeepSeek-V2`; this page only ingests the local PDF source.

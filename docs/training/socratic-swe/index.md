@@ -4,7 +4,8 @@ summary: "Closed-loop self-evolution framework that distills SWE agent solving t
 layout: default
 confidence: high
 sources:
-  - raw/training/2606.07412v1.pdf
+  - raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf
+  - derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md
 updated: 2026-07-23
 ---
 

@@ -4,7 +4,8 @@ summary: "Explains why Llama 2 uses grouped-query attention for its 34B and 70B 
 layout: default
 confidence: medium
 sources:
-  - raw/infer-algorithm/group-query-attention.pdf
+  - raw/algorithms/grouped-query-attention-llama-2--paper.pdf
+  - derived/pdf-markdown/algorithms/grouped-query-attention-llama-2.md
 updated: 2026-07-26
 ---
 
@@ -200,7 +201,7 @@ GQA is **MQA made deployable for large models that still need some K/V diversity
 
 ## Go Deeper
 
-- **Read:** `raw/infer-algorithm/group-query-attention.pdf` for the Llama 2 appendix section that motivates GQA in the 34B and 70B models.
+- **Read:** `raw/algorithms/grouped-query-attention-llama-2--paper.pdf` for the Llama 2 appendix section that motivates GQA in the 34B and 70B models.
 - **Build on:** [Multi-Query Attention](../multi-query-attention.md) for the ancestor mechanism that collapses K/V to a single write head.
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm-framework.md) for a complementary serving-system view of KV-cache pressure.
 - **Reproduce:** The source references the original GQA paper by Ainslie et al. (2023), but that standalone paper is not present in `raw/` at the time of this page.

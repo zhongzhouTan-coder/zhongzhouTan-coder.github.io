@@ -4,7 +4,8 @@ summary: "Scales the decoder-only Transformer to 175 billion parameters and disc
 layout: default
 confidence: high
 sources:
-  - raw/training/language-models-are-few-shot-learners.pdf
+  - raw/training/gpt-3-language-models-few-shot-learners--paper.pdf
+  - derived/pdf-markdown/training/gpt-3-language-models-few-shot-learners.md
 updated: 2026-07-27
 ---
 

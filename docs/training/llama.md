@@ -4,7 +4,8 @@ summary: "Introduces the original LLaMA model family, showing that smaller decod
 layout: default
 confidence: high
 sources:
-  - raw/training/llama-open-and-efficient-foundation-language-models.pdf
+  - raw/training/llama-open-efficient-foundation-language-models--paper.pdf
+  - derived/pdf-markdown/training/llama-open-efficient-foundation-language-models.md
 updated: 2026-07-25
 ---
 
