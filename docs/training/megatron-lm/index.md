@@ -125,6 +125,68 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 **Remember:** **`f` and `g` are conjugates — one does the all-reduce forward, the other does it backward.**
 
+### Paper 1: QKV Column-Parallel Splitting in Detail
+
+**What it does:** Splits the fused $W^{QKV} \in \mathbb{R}^{d \times 3d}$ weight matrix column-wise using a **head-interleaved layout** so each GPU owns complete Q, K, V for exactly $H/t$ attention heads — no cross-GPU communication during the attention computation itself.
+
+**Why it matters:** A naive contiguous column split of $[W^Q \mid W^K \mid W^V]$ would give GPU 0 some Q heads but none of their corresponding K and V, making local attention impossible. The head-interleaved layout fixes this zero-cost at initialization.
+
+**How it works:**
+
+**The fused QKV weight.** Megatron-LM packs Q, K, V into a single $d \times 3d$ matrix for efficiency — one big GEMM beats three separate $d \times d$ matmuls on GPU tensor cores:
+
+$$X_{n \times d} \cdot W^{QKV}_{d \times 3d} = [Q_{n \times d} \mid K_{n \times d} \mid V_{n \times d}]_{n \times 3d}$$
+
+**The head-interleaved layout.** Rather than grouping all Q together, all K together, all V together, Megatron-LM interleaves Q, K, V **per head**:
+
+$$\underbrace{[Q_0, K_0, V_0]}_{\text{head 0}} \mid \underbrace{[Q_1, K_1, V_1]}_{\text{head 1}} \mid \cdots \mid \underbrace{[Q_{H-1}, K_{H-1}, V_{H-1}]}_{\text{head } H-1}$$
+
+Each head's Q, K, V weights are contiguous as a 3-tuple. Now a column-parallel split naturally gives each GPU **self-contained** heads:
+
+| GPU | Columns in $W^{QKV}$ | Heads owned |
+|---|---:|---:|
+| 0 | $[Q_0, K_0, V_0, \dots, Q_3, K_3, V_3]$ | 0–3 |
+| 1 | $[Q_4, K_4, V_4, \dots, Q_7, K_7, V_7]$ | 4–7 |
+| $\vdots$ | $\vdots$ | $\vdots$ |
+
+**Forward pass, step by step:**
+
+```text
+Input X (same on all GPUs, replicated)
+       │
+       ▼
+┌──────────────────────────────────────────────────┐
+│ GPU 0:  Y₀ = X · W₀   →  [Q₀,K₀,V₀] heads 0..3  │
+│ GPU 1:  Y₁ = X · W₁   →  [Q₁,K₁,V₁] heads 4..7  │
+│ ...                                              │
+│ GPU t-1: Yₜ₋₁ = X · Wₜ₋₁                        │
+└──────────────────────────────────────────────────┘
+       │
+       ▼
+  Each GPU runs self-attention on its own heads INDEPENDENTLY
+  (no communication — Q, K, V for each GPU's heads are local)
+       │
+       ▼
+  Output projection W^O split ROW-wise:
+  each GPU produces partial result → all-reduce (g operator)
+```
+
+**Inference-time behavior.** The column split is identical to training, but the motivation shifts:
+
+| Concern | Prefill (prompt) | Decode (generation) |
+|---|---|---|
+| Compute distribution | ✓ Column split helps | ✗ Single-token GEMM is tiny anyway |
+| **KV cache memory** | Evenly split | Evenly split — **this is the key win** |
+| Communication | 2 all-reduces/layer | 2 all-reduces/layer (tensors are small) |
+
+During decode, each GPU appends $K_i, V_i$ to its **local KV cache shard**. The column-parallel split divides KV cache memory by $t$ — the dominant memory consumer in long-context serving — at the cost of all-reducing two small $[1, d]$ vectors per layer per token.
+
+**The intuition:** **The QKV weight is head-interleaved at layout time, not split at runtime.** A one-time reordering at initialization ensures that any contiguous column partition gives each GPU complete, independent attention heads.
+
+**A concrete example:** For a model with $H=32$ heads and $t=8$, each GPU owns 4 complete attention heads. GPU 0's $W^{QKV}$ shard has dimensions $d \times (4 \cdot 3 \cdot d_h) = d \times 1.5d$, containing all Q, K, V weights for heads 0–3. No GPU ever needs to communicate with another during the softmax or attention-weighted sum — the first cross-GPU sync happens at the output projection all-reduce.
+
+**Remember:** **Head-interleaved layout is why Megatron-LM needs zero communication inside the attention block — each GPU's column shard is a self-contained multi-head attention module.**
+
 ### Paper 1: BERT LayerNorm Rearrangement
 
 **What it does:** Moves LayerNorm and the residual connection so that LayerNorm is applied to the *input* of each sublayer, not the output — the "Pre-LN" pattern now standard in most Transformer implementations.
