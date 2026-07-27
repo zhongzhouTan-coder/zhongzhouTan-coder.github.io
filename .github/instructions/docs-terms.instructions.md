@@ -99,7 +99,7 @@ When an agent creates or updates a paper insight page, it MUST also:
 2. **For each term:** check if `docs/terms/{term-slug}.md` exists.
    - If missing: create it following this instruction file.
    - If present: add the new paper to the `appears_in` front matter list and update the "Where It Appears" section.
-3. **Add cross-links** from the paper page to the term pages using a `**Related terms:**` line in the paper header block.
+3. **Add cross-links** from the paper page body to the term pages by linking the first meaningful occurrence of each term in the prose. Do not put related-term links in front matter fields such as `summary` or `description`.
 4. **Update `docs/terms/index.md`** when adding a new term.
 
 ## Terms Index Format
@@ -132,15 +132,15 @@ Keep index summaries to one sentence and reuse the term page `summary` when it i
 
 ## Hover Preview Format
 
-Related paper pages may render term links with hover previews, similar to a compact wiki tooltip. The preview text should come from the term page `tooltip` field, falling back to `summary` when `tooltip` is missing.
+Related paper pages may render term links with hover previews, similar to a compact wiki tooltip. The visible links belong on the first meaningful term occurrences in the Markdown body, not in page description/front matter and not in a detached glossary line unless the page genuinely needs a manual term list. The preview text should come from the term page `tooltip` field, falling back to `summary`, then to a short extract from the rendered term page body when those fields are missing.
 
 Use this style when linking terms from paper pages:
 
 ```markdown
-**Related terms:** {% include term.html slug="microbatch" %} · {% include term.html slug="scatter-gather" %}
+The interleaved schedule keeps [microbatches](../../terms/microbatch.md) in flight.
 ```
 
-The include should look up `docs/terms/{slug}.md`, link to the term page, and expose the selected preview text to the UI. Do not duplicate tooltip text inside paper pages; keep reusable descriptions on the term page.
+Use ordinary Markdown link text when the surrounding sentence needs pluralization, lowercase text, or an acronym. The rendered site enhances links to `docs/terms/{slug}.md` with hover previews by reading `docs/terms.json`, which is generated from term page front matter. Do not duplicate tooltip text inside paper pages; keep reusable descriptions on the term page.
 
 ## Slug Convention
 

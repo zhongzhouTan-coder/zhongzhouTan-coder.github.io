@@ -16,13 +16,12 @@ updated: 2026-07-27
 **arXiv:** 2104.04473, 2021
 
 **Related pages:** [GPT-3](../gpt-3.md) · [LLaMA](../llama.md) · [The Transformer](../../algorithms/transformer.md) · [Training Index](../index.md)
-**Related terms:** [Microbatch](../../terms/microbatch.md) · [Scatter/Gather](../../terms/scatter-gather.md)
 
 ## TL;DR
 
 **What:** Megatron-LM shows how to train very large Transformer language models by composing **pipeline, tensor, and data parallelism** instead of relying on any one scaling axis alone.
 
-**How:** It uses tensor parallelism inside an 8-GPU DGX A100 node, pipeline parallelism across nodes, data parallelism across model replicas, an interleaved 1F1B pipeline schedule, scatter/gather cross-node communication, activation recomputation, and fused Transformer kernels.
+**How:** It uses tensor parallelism inside an 8-GPU DGX A100 node, pipeline parallelism across nodes, data parallelism across model replicas, an interleaved 1F1B pipeline schedule, [scatter/gather](../../terms/scatter-gather.md) cross-node communication, activation recomputation, and fused Transformer kernels.
 
 **The number:** The paper reports **502 petaFLOP/s aggregate throughput** for a 1.008T-parameter GPT model on 3072 A100 GPUs, or 163 teraFLOP/s per GPU, about 52% of theoretical peak.
 
@@ -68,7 +67,7 @@ flowchart TD
 
 ## The Core Idea
 
-**Match each parallelism mode to the hardware link where it is cheapest.** Tensor parallelism is powerful but chatty, so keep it within a node. Pipeline parallelism communicates less often and can cross nodes. Data parallelism is best used after the model shard fits, because gradient synchronization happens once per batch rather than every layer and microbatch.
+**Match each parallelism mode to the hardware link where it is cheapest.** Tensor parallelism is powerful but chatty, so keep it within a node. Pipeline parallelism communicates less often and can cross nodes. Data parallelism is best used after the model shard fits, because gradient synchronization happens once per batch rather than every layer and [microbatch](../../terms/microbatch.md).
 
 ## Symbol Map
 

@@ -30,6 +30,53 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 
+    <script>
+      (function () {
+        function normalizedPath(rawHref) {
+          const url = new URL(rawHref, window.location.href);
+          let path = url.pathname;
+          if (path.endsWith('.md')) {
+            path = path.slice(0, -3);
+          }
+          return path.replace(/\/$/, '');
+        }
+
+        fetch('{{ "/terms.json" | relative_url }}')
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('terms index unavailable');
+            }
+            return response.json();
+          })
+          .then(function (terms) {
+            const termByPath = new Map();
+
+            terms.forEach(function (term) {
+              termByPath.set(normalizedPath(term.url), term);
+            });
+
+            document.querySelectorAll('.page-content a[href*="/terms/"], .page-content a[href^="../../terms/"], .page-content a[href^="../terms/"], .page-content a[href^="terms/"]').forEach(function (link) {
+              const term = termByPath.get(normalizedPath(link.href));
+              if (!term || link.classList.contains('kb-term')) {
+                return;
+              }
+
+              link.classList.add('kb-term');
+              link.href = term.url;
+
+              const tooltip = document.createElement('span');
+              tooltip.className = 'kb-term__tooltip';
+              tooltip.setAttribute('role', 'tooltip');
+              tooltip.textContent = term.tooltip;
+              link.appendChild(tooltip);
+            });
+          })
+          .catch(function () {
+            // Term previews are progressive enhancement; ordinary links still work.
+          });
+      }());
+    </script>
+
     <!--
       Mermaid.js — renders ```mermaid fenced code blocks.
       Jekyll/kramdown outputs: <code class="language-mermaid">…</code>

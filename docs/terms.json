@@ -1,0 +1,23 @@
+---
+layout: null
+permalink: /terms.json
+---
+[
+{%- assign term_pages = site.pages | where_exp: "item", "item.path contains 'terms/'" | sort: "title" -%}
+{%- assign first = true -%}
+{%- for term in term_pages -%}
+  {%- if term.path != "terms/index.md" -%}
+    {%- assign preview = term.tooltip | default: term.summary -%}
+    {%- if preview == nil or preview == "" -%}
+      {%- assign preview = term.content | markdownify | strip_html | normalize_whitespace | truncate: 260 -%}
+    {%- endif -%}
+    {%- unless first -%},{%- endunless -%}
+    {%- assign first = false -%}
+    {
+      "title": {{ term.title | jsonify }},
+      "url": {{ term.url | relative_url | jsonify }},
+      "tooltip": {{ preview | jsonify }}
+    }
+  {%- endif -%}
+{%- endfor -%}
+]
