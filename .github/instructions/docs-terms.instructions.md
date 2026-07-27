@@ -93,14 +93,37 @@ Bullet list of sibling term pages. Keep it short — only directly related conce
 
 ## Agent Auto-Ingestion Rules
 
+### During Paper Ingest
+
 When an agent creates or updates a paper insight page, it MUST also:
 
-1. **Identify key terms** in the paper that are reused across multiple papers and are non-trivial (skip generic words like "model" or "layer").
+1. **Identify key terms** using the signal categories below. A term is "key" if it is non-trivial (not a generic word like "model" or "layer") and satisfies at least one of these signals:
+
+   | Signal                                           | Example candidates                                                  |
+   | ------------------------------------------------ | ------------------------------------------------------------------- |
+   | Named communication primitive                    | all-reduce, all-gather, reduce-scatter, broadcast, P2P send/recv    |
+   | Named parallelism strategy or scheduling pattern | sequence parallelism, pipeline bubble, 1F1B, interleaved schedule   |
+   | Named algorithm or kernel with a canonical paper | Ring Self-Attention, FlashAttention, PagedAttention, RadixAttention |
+   | Cross-paper system pattern with a distinct name  | split/all-gather, activation recomputation, KV cache, microbatch    |
+   | Named hardware format or precision               | FP8, NVFP4, block quantization                                      |
+
+   A term is "cross-paper" if it appears in the current paper AND at least one other paper already in the knowledge base, OR if the term has a well-known name that would appear in a textbook or framework documentation. **Do not skip terms just because they are "infrastructure" or "systems" concepts** — communication primitives, scheduling patterns, and precision formats are first-class term candidates.
+
 2. **For each term:** check if `docs/terms/{term-slug}.md` exists.
    - If missing: create it following this instruction file.
    - If present: add the new paper to the `appears_in` front matter list and update the "Where It Appears" section.
 3. **Add cross-links** from the paper page body to the term pages by linking the first meaningful occurrence of each term in the prose. Do not put related-term links in front matter fields such as `summary` or `description`.
 4. **Update `docs/terms/index.md`** when adding a new term.
+
+### When Creating a Term Outside of Paper Ingest
+
+When an agent creates a new term page for any reason other than ingesting a new paper (e.g., the user asks for a term, or a gap is discovered), the agent MUST also perform these retroactive steps:
+
+1. **Search existing docs pages** for occurrences of the term (and its aliases). Use `grep_search` with the term name as a plain-text query, scoped to `docs/**/*.md` excluding `docs/terms/` and `docs/logs/`.
+2. **For each page that mentions the term:** add it to the term's `appears_in` front matter and its "Where It Appears" section.
+3. **For each page that mentions the term:** add a markdown link from the first meaningful in-content occurrence to the new term page. Do not link from front matter, headings, image captions, or code blocks.
+4. **Update `docs/terms/index.md`** with the new term entry.
+5. **Update `docs/logs/log.md`** with a brief entry recording the term creation and which pages were back-linked.
 
 ## Terms Index Format
 

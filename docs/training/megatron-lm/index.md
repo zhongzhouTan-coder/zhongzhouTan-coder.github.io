@@ -46,7 +46,7 @@ flowchart LR
 
 Imagine training a GPT-3-class model after reading the [GPT-3](../gpt-3.md) page. The 175B model is too large for one GPU, and even if host-device swapping made it fit, a single V100 would take centuries. Plain data parallelism does not solve the problem because every worker still needs a full copy of the model, and the usable worker count is constrained by batch size.
 
-The tempting fix is "just split the model," but each split has a cost. **Tensor parallelism** creates frequent all-reduces and becomes painful across slow inter-node links. **Pipeline parallelism** avoids those all-reduces but creates idle pipeline bubbles. **ZeRO-style sharding** reduces memory but can introduce heavy cross-node parameter traffic. Megatron-LM exists because trillion-parameter training is not a single parallelism trick; it is a placement problem across compute, memory, network topology, and optimizer semantics.
+The tempting fix is "just split the model," but each split has a cost. **Tensor parallelism** creates frequent [all-reduces](../../terms/all-reduce.md) and becomes painful across slow inter-node links. **Pipeline parallelism** avoids those all-reduces but creates idle pipeline bubbles. **ZeRO-style sharding** reduces memory but can introduce heavy cross-node parameter traffic. Megatron-LM exists because trillion-parameter training is not a single parallelism trick; it is a placement problem across compute, memory, network topology, and optimizer semantics.
 
 ## The Landscape
 
@@ -126,7 +126,7 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 ### Scatter/Gather Pipeline Communication
 
-**What it does:** Sends only tensor-parallel chunks across InfiniBand, then all-gathers within the receiving node over faster NVLink.
+**What it does:** Sends only tensor-parallel chunks across InfiniBand, then [all-gathers](../../terms/all-gather.md) within the receiving node over faster NVLink.
 
 **Why it matters:** The interleaved schedule increases communication. Without reducing redundant cross-node sends, the communication cost can erase the bubble savings.
 

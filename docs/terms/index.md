@@ -17,6 +17,9 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 - [Microbatch](microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work injected into a pipeline schedule.
 - [Scatter/Gather](scatter-gather.md) — A cross-node communication optimization in pipeline parallelism that avoids sending redundant activation tensors over slow inter-node links.
+- [All-Gather](all-gather.md) — An NCCL collective that gathers shards across ranks into a full replicated tensor; the split/all-gather pattern reduces cross-node traffic at pipeline boundaries.
+- [All-Reduce](all-reduce.md) — An NCCL collective that sums tensors element-wise across ranks; powers gradient synchronization and tensor-parallel output aggregation.
+- [Sequence Parallelism](sequence-parallelism.md) — A distributed training strategy that splits the input sequence along the length dimension across GPUs, forming a fourth parallelism dimension orthogonal to data, pipeline, and tensor parallelism.
 
 ## Algorithms
 

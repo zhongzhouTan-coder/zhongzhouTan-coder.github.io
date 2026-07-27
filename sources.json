@@ -367,6 +367,17 @@
       "derived_path": "derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md",
       "docs_path": "docs/training/socratic-swe/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2105.13120",
+      "title": "Sequence Parallelism: Long Sequence Training from System Perspective",
+      "slug": "sequence-parallelism-long-sequence-training",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf"],
+      "derived_path": "derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md",
+      "docs_path": "docs/training/sequence-parallelism/index.md",
+      "status": "ingested"
     }
   ]
 }

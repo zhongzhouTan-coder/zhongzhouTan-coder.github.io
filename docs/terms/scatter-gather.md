@@ -42,4 +42,5 @@ Megatron-LM reports up to **11% throughput improvement** for communication-inten
 
 ## Related Terms
 
+- [All-Gather](all-gather.md) — The NCCL collective that reconstructs the full tensor on the receiving side of scatter/gather.
 - [Microbatch](microbatch.md) — Smaller microbatches increase communication frequency, making scatter/gather more important.
