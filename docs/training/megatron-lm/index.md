@@ -15,6 +15,7 @@ updated: 2026-07-27
 **arXiv:** 2104.04473, 2021
 
 **Related pages:** [GPT-3](../gpt-3.md) · [LLaMA](../llama.md) · [The Transformer](../../algorithms/transformer.md) · [Training Index](../index.md)
+**Related terms:** [Microbatch](../../terms/microbatch.md) · [Scatter/Gather](../../terms/scatter-gather.md)
 
 ## TL;DR
 

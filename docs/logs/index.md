@@ -72,4 +72,10 @@ updated: 2026-07-27
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/flatquant.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md) — NVIDIA Blackwell NVFP4 format, hierarchical FP8/FP32 scaling, memory benefits, Transformer Engine training recipe, RHT, stochastic rounding, and hardware support.
 
+## Terms
+
+- [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
+- [Microbatch](../terms/microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work in a pipeline schedule.
+- [Scatter/Gather](../terms/scatter-gather.md) — Cross-node communication optimization that avoids redundant activation transfers over slow inter-node links.
+
 ## Sources

@@ -15,6 +15,7 @@ This repository is a markdown knowledge base.
 
 - For docs page front matter and topic placement, read `.github/instructions/docs-front-matter.instructions.md`.
 - For paper-insight page body structure, read `.github/instructions/docs-content-structure.instructions.md`.
+- For term glossary pages, read `.github/instructions/docs-terms.instructions.md`.
 - For `docs/logs/index.md` and `docs/logs/log.md`, read `.github/instructions/logs-maintenance.instructions.md`.
 
 ## Workflow Triggers
@@ -28,6 +29,7 @@ This repository is a markdown knowledge base.
 - Prefer updating existing pages over creating duplicates.
 - Use internal links when related pages already exist.
 - If a docs page references sibling assets such as images or Draw.io files, prefer a folder-backed page at `topic/index.md`.
+- **When creating or updating a paper insight page:** identify key technical terms that appear across multiple papers (e.g., "microbatch", "pipeline bubble", "KV cache"). For each term, check `docs/terms/{term-slug}.md`. If missing, create a term page following `.github/instructions/docs-terms.instructions.md`. If present, add the new paper to the term's `appears_in` list and "Where It Appears" section. Add a `**Related terms:**` line in the paper page header linking to each term. Update `docs/terms/index.md` when adding a new term.
 
 ## Diagram Conventions
 

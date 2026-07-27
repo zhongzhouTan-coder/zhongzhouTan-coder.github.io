@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Wiki Log
@@ -138,3 +138,5 @@ updated: 2026-07-26
 
 - Converted `raw/infer-architecture/megatron-lm.pdf` to Markdown via MinerU precise mode, saving result to `derived/pdf-markdown/training/megatron-lm.md`.
 - Added [Megatron-LM: GPU-Cluster Training Parallelism](../training/megatron-lm/index.md), sourced from `raw/infer-architecture/megatron-lm.pdf`. Covers PTD-P composition of tensor, pipeline, and data parallelism; interleaved 1F1B scheduling; scatter/gather pipeline communication; microbatch and activation recomputation tradeoffs; fused Transformer kernels; trillion-parameter throughput results; and copied local figure assets.
+- Created `docs/terms/` glossary directory. Added [Terms Glossary](../terms/index.md), [Microbatch](../terms/microbatch.md), and [Scatter/Gather](../terms/scatter-gather.md) term pages with definition-first structure, cross-links to paper pages, and agent auto-ingestion rules in `.github/instructions/docs-terms.instructions.md`. Updated `AGENTS.md` with term-extraction workflow trigger, and added `**Related terms:**` links to the Megatron-LM paper page.
+- Added reusable hover-preview `tooltip` front matter to [Microbatch](../terms/microbatch.md) and [Scatter/Gather](../terms/scatter-gather.md), and normalized their first definition sentence to start with the canonical term title.
