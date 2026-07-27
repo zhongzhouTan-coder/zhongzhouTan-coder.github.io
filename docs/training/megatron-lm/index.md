@@ -1,46 +1,59 @@
 ---
 title: "Megatron-LM: GPU-Cluster Training Parallelism"
-summary: "Explains Megatron-LM's PTD-P recipe for composing pipeline, tensor, and data parallelism to train trillion-parameter GPT models efficiently on thousands of GPUs."
+summary: "Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P recipe composing pipeline, tensor, and data parallelism for trillion-parameter GPT models on thousands of A100 GPUs."
 layout: default
 confidence: high
 sources:
+  - raw/training/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md
   - derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md
 updated: 2026-07-27
 ---
 
 # Megatron-LM: GPU-Cluster Training Parallelism
 
-**Paper:** Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM
+**Megatron-LM spans two papers.** The first (2019) introduces intra-layer tensor model parallelism with `f`/`g` conjugate operators for 8.3B-parameter Transformers on V100 GPUs. The second (PTD-P, 2021) composes pipeline, tensor, and data parallelism for trillion-parameter GPT on A100. This page covers both.
+
+**Paper 1:** Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
+**Authors:** Mohammad Shoeybi, Mostofa Patwary, Raul Puri, Patrick LeGresley, Jared Casper, Bryan Catanzaro
+**arXiv:** 1909.08053, 2019
+
+**Paper 2:** Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM
 **Authors:** Deepak Narayanan, Mohammad Shoeybi, Jared Casper, Patrick LeGresley, Mostofa Patwary, Vijay Korthikanti, Dmitri Vainbrand, Prethvi Kashinkunti, Julie Bernauer, Bryan Catanzaro, Amar Phanishayee, Matei Zaharia
 **arXiv:** 2104.04473, 2021
 
-**Related pages:** [GPT-3](../gpt-3.md) · [LLaMA](../llama.md) · [The Transformer](../../algorithms/transformer.md) · [Training Index](../index.md)
+**Related pages:** [GPT-3](../gpt-3.md) · [LLaMA](../llama.md) · [The Transformer](../../algorithms/transformer.md) · [Training Index](../index.md) · [GPipe](../gpipe/index.md)
 
 ## TL;DR
 
-**What:** Megatron-LM shows how to train very large Transformer language models by composing **pipeline, tensor, and data parallelism** instead of relying on any one scaling axis alone.
+**What:** Megatron-LM introduces intra-layer tensor model parallelism using `f`/`g` conjugate operators that split Transformer attention and MLP blocks across GPUs with only two [all-reduces](../../terms/all-reduce.md) per layer, later extended into PTD-P for trillion-parameter training.
 
-**How:** It uses tensor parallelism inside an 8-GPU DGX A100 node, pipeline parallelism across nodes, data parallelism across model replicas, an interleaved 1F1B pipeline schedule, [scatter/gather](../../terms/scatter-gather.md) cross-node communication, activation recomputation, and fused Transformer kernels.
+**How:** Paper 1 splits GEMMs column-wise and row-wise so nonlinearities (GeLU, softmax) stay local, needing only `f` (forward identity, backward all-reduce) and `g` (forward all-reduce, backward identity). Paper 2 composes tensor, pipeline, and data parallelism with interleaved 1F1B and scatter/gather communication.
 
-**The number:** The paper reports **502 petaFLOP/s aggregate throughput** for a 1.008T-parameter GPT model on 3072 A100 GPUs, or 163 teraFLOP/s per GPU, about 52% of theoretical peak.
+**The number:** Paper 1 achieves **15.1 PFLOP/s** (8.3B parameters, 512 V100 GPUs, 76% scaling efficiency). Paper 2 achieves **502 PFLOP/s** (1.008T parameters, 3072 A100 GPUs, 52% of peak).
 
 ## The Big Picture
 
 ```mermaid
 flowchart LR
-    A[Huge GPT model] --> B[Tensor parallelism inside each 8-GPU node]
-    B --> C[Pipeline stages across nodes]
-    C --> D[Data-parallel replicas]
-    D --> E[Microbatches through interleaved 1F1B schedule]
-    E --> F[Scatter/gather pipeline traffic]
-    E --> G[Fused kernels and activation recomputation]
-    F --> H[Trillion-parameter training iteration]
-    G --> H
-    H --> I[502 PFLOP/s on 3072 A100 GPUs]
+    subgraph Paper1["Paper 1 (2019): Intra-Layer Tensor Parallelism"]
+        A1[Transformer layer] --> B1[Split attention heads column-parallel]
+        A1 --> C1[Split MLP column-parallel]
+        B1 --> D1[f/g operators: 2 all-reduces per layer]
+        C1 --> D1
+        D1 --> E1[8.3B GPT, 512 V100, 15.1 PFLOP/s]
+    end
+    subgraph Paper2["Paper 2 (2021): PTD-P Composition"]
+        A2[Tensor inside node] --> B2[Pipeline across nodes]
+        B2 --> C2[Data-parallel replicas]
+        C2 --> D2[Interleaved 1F1B + scatter/gather]
+        D2 --> E2[1T GPT, 3072 A100, 502 PFLOP/s]
+    end
+    Paper1 --> Paper2
 ```
 
-*1. Tensor parallelism splits each Transformer layer where fast intra-node NVLink can carry all-reduces. 2. Pipeline parallelism splits layer groups across nodes where point-to-point traffic is cheaper than tensor all-reduce. 3. Data parallelism scales replicas once the model-parallel shard fits. 4. The interleaved schedule shrinks idle pipeline bubbles, while scatter/gather avoids redundant inter-node activation sends.*
+*1. Paper 1: Split GEMMs across GPUs so GeLU/softmax stay local; `f` and `g` conjugate ops handle the two all-reduces per layer. 2. Paper 2: Compose tensor (inside node), pipeline (across nodes), and data (across replicas) parallelism. 3. Interleaved 1F1B shrinks pipeline bubbles; scatter/gather avoids redundant cross-node sends. 4. Together: trillion-parameter training at 52% of A100 peak.*
 
 ## Why This Exists
 
@@ -53,21 +66,22 @@ The tempting fix is "just split the model," but each split has a cost. **Tensor 
 ```mermaid
 flowchart TD
     A[Data parallel training] --> B[Sharded data parallelism and ZeRO]
-    C[Transformer tensor parallelism in original Megatron] --> D[PTD-P in Megatron-LM]
-    E[GPipe pipeline parallelism] --> F[PipeDream-Flush 1F1B]
-    F --> D
-    G[Activation recomputation] --> D
-    H[Fused Transformer kernels] --> D
-    B --> I[Alternative memory-first scaling path]
-    D --> J[Large GPT training systems]
-    J --> K[LLaMA and later efficient foundation-model training]
+    C[Mesh-TensorFlow distributed tensor computation] --> D[Megatron-LM Paper 1: intra-layer tensor parallelism]
+    D --> E[PTD-P in Megatron-LM Paper 2]
+    F[GPipe pipeline parallelism] --> G[PipeDream-Flush 1F1B]
+    G --> E
+    H[Activation recomputation] --> E
+    I[Fused Transformer kernels] --> D
+    E --> J[Large GPT training systems]
+    B --> K[Alternative memory-first scaling path]
+    J --> L[LLaMA and later efficient foundation-model training]
 ```
 
-**Megatron-LM is the systems bridge between GPT-style scaling and practical cluster training.** It inherits the Transformer workload, prior tensor-model parallelism, pipeline scheduling ideas, and memory-saving recomputation, then makes their interaction explicit.
+**Megatron-LM spans two papers that together form the systems bridge between GPT-style scaling and practical cluster training.** Paper 1 (2019) inherits the Transformer workload and Mesh-TensorFlow's distributed tensor ideas, but implements them with just a few PyTorch all-reduce insertions — no compiler, no framework rewrite. Paper 2 (PTD-P, 2021) then composes this tensor parallelism with pipeline scheduling and data parallelism, making their interaction explicit.
 
 ## The Core Idea
 
-**Match each parallelism mode to the hardware link where it is cheapest.** Tensor parallelism is powerful but chatty, so keep it within a node. Pipeline parallelism communicates less often and can cross nodes. Data parallelism is best used after the model shard fits, because gradient synchronization happens once per batch rather than every layer and [microbatch](../../terms/microbatch.md).
+**Split Transformer GEMMs so nonlinearities stay local, then compose parallelism modes to match hardware topology.** Paper 1's key insight: split the weight matrix along columns (not rows) so GeLU can be applied independently on each GPU without a synchronization point. The `f`/`g` conjugate operators handle the two all-reduces per layer. Paper 2's key insight: match each parallelism mode to the hardware link where it is cheapest — tensor parallelism on NVLink, pipeline across nodes, data parallelism across replicas.
 
 ## Symbol Map
 
@@ -86,7 +100,53 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 ## Deep Dive
 
-### PTD-P Parallelism
+### Paper 1: The f/g Conjugate Operators
+
+**What it does:** Splits Transformer GEMMs across GPUs with only two communication operations per layer — `f` (identity forward, [all-reduce](../../terms/all-reduce.md) backward) and `g` (all-reduce forward, identity backward).
+
+**Why it matters:** Naive row-wise GEMM splitting puts a synchronization point before every nonlinearity. This paper found that splitting along columns instead lets GeLU and softmax run independently on each GPU's shard.
+
+**How it works:**
+
+**MLP block:** The first GEMM ($Y = XA$) is split column-wise: $A = [A_1, A_2]$, producing $[Y_1, Y_2] = [\text{GeLU}(XA_1), \text{GeLU}(XA_2)]$ with no synchronization before GeLU. The second GEMM is split row-wise and its output is all-reduced ($g$ operator).
+
+**Self-attention block:** The Q, K, V projections are split column-wise so each GPU owns a subset of attention heads. After local self-attention, the output projection is split row-wise and all-reduced.
+
+**Result:** Each Transformer layer needs exactly 2 all-reduces forward + 2 all-reduces backward, regardless of the number of attention heads or hidden size.
+
+| Operator | Forward | Backward |
+|---|---|---|
+| `f` | Identity (pass-through) | All-reduce gradients |
+| `g` | All-reduce activations | Identity (pass-through) |
+
+**The intuition:** Column-parallel splitting pushes the synchronization point past the nonlinearity, eliminating an extra all-reduce between the two GEMMs in each block.
+
+**A concrete example:** For an 8.3B GPT-2 model on 8 V100 GPUs, each GPU handles 4 attention heads (out of 32 total) and 1/8 of the MLP hidden dimension. The two `f`/`g` pairs per layer are the only communication — no parameter server, no compiler, just PyTorch `all_reduce`.
+
+**Remember:** **`f` and `g` are conjugates — one does the all-reduce forward, the other does it backward.**
+
+### Paper 1: BERT LayerNorm Rearrangement
+
+**What it does:** Moves LayerNorm and the residual connection so that LayerNorm is applied to the *input* of each sublayer, not the output — the "Pre-LN" pattern now standard in most Transformer implementations.
+
+**Why it matters:** The original BERT architecture (Post-LN, Figure 7a in the paper) causes training instability as model size increases beyond BERT-Large (336M). Prior work (ALBERT) resorted to parameter sharing to work around this. Megatron-LM showed the architecture itself was the problem.
+
+**How it works:**
+
+```text
+Post-LN (original BERT):  x → Sublayer(x) → LayerNorm → x + ...
+Pre-LN (Megatron-LM):     x → LayerNorm → Sublayer(x) → x + ...
+```
+
+The Pre-LN arrangement ensures the residual path sees normalized inputs, preventing gradient explosion in deeper/wider models.
+
+**The intuition:** LayerNorm after the residual lets unstable activations accumulate before normalization; LayerNorm before the residual keeps the signal bounded at every sublayer input.
+
+**A concrete example:** With the original Post-LN BERT, a 752M model has *higher* training loss than a 336M model. With Pre-LN, the 3.9B BERT model trains stably and achieves SOTA on RACE (90.9% accuracy), surpassing RoBERTa, ALBERT, and XLNet.
+
+**Remember:** **Pre-LN is not just a preference — it is the architectural requirement for scaling BERT beyond ~300M parameters.**
+
+### Paper 2: PTD-P Parallelism
 
 **What it does:** Splits the model with pipeline parallelism (`p`) and tensor parallelism (`t`), then replicates those model-parallel shards with data parallelism (`d`).
 
@@ -106,7 +166,7 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 **Remember:** **Tensor inside nodes, pipeline across nodes, data parallel outside the model shard** is the core placement heuristic.
 
-### Interleaved 1F1B Pipeline Schedule
+### Paper 2: Interleaved 1F1B Pipeline Schedule
 
 **What it does:** Assigns multiple smaller model chunks to each pipeline device so the schedule can flush earlier and reduce idle time.
 
@@ -124,7 +184,7 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 **Remember:** **Interleaving buys less bubble at the price of more pipeline communication.**
 
-### Scatter/Gather Pipeline Communication
+### Paper 2: Scatter/Gather Pipeline Communication
 
 **What it does:** Sends only tensor-parallel chunks across InfiniBand, then [all-gathers](../../terms/all-gather.md) within the receiving node over faster NVLink.
 
@@ -190,11 +250,20 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 
 ## What This Buys You
 
-### The headline claim
+### The headline claims
 
-Megatron-LM makes **trillion-parameter dense GPT training a practical cluster job** rather than a memory experiment or an impractically slow single-device run.
+**Paper 1** makes multi-billion-parameter Transformer training practical on a single DGX node by splitting layers across GPUs with only two all-reduces each. **Paper 2** extends this to trillion-parameter GPT models on thousands of GPUs by composing parallelism modes.
 
-### How we know: scaling and comparison evidence
+### Paper 1: evidence from the original Megatron-LM
+
+| Question | Evidence from the paper |
+|---|---:|
+| Does tensor parallelism scale? | 8-way model parallelism on 512 V100 GPUs achieves 15.1 PFLOP/s with 76% scaling efficiency versus a strong single-GPU baseline (39 TFLOP/s, 30% of peak). |
+| Does model size improve accuracy? | 8.3B GPT-2 achieves WikiText103 perplexity of 10.81 (SOTA, from 15.79) and LAMBADA accuracy of 66.51% (SOTA, from 63.24%). |
+| Does the LayerNorm rearrangement matter for BERT? | Yes — the original Post-LN BERT degrades beyond 336M; Pre-LN enables stable 3.9B BERT training with RACE 90.9% (SOTA). |
+| Does data+model parallelism compound? | 512 GPUs (8-way model × 64-way data) achieves 74% of linear scaling from the single-GPU baseline. |
+
+### Paper 2: evidence from PTD-P
 
 | Question | Evidence from the paper |
 |---|---:|
@@ -216,13 +285,13 @@ Megatron-LM makes **trillion-parameter dense GPT training a practical cluster jo
 
 *Interleaving helps most when default 1F1B still has visible pipeline bubbles; the advantage narrows as batch size grows and communication dominates more of the difference.*
 
-### The mechanism behind the numbers
+### The mechanisms behind the numbers
 
-The throughput numbers come from **aligning communication frequency with network hierarchy**. Tensor parallelism communicates every layer and microbatch, so it stays on NVLink. Pipeline communication crosses nodes but is point-to-point and can be compressed with scatter/gather. Data parallelism synchronizes once per batch, so it scales replicas after the model-parallel shard fits. Kernel fusion then keeps the remaining compute dense enough for A100 tensor cores.
+**Paper 1** achieves its scaling through column-parallel GEMM splitting that eliminates synchronization before nonlinearities. The `f`/`g` operators are the only communication needed — no parameter servers, no compiler rewrites, just PyTorch `all_reduce`. **Paper 2** achieves its scaling through **aligning communication frequency with network hierarchy**. Tensor parallelism communicates every layer and microbatch, so it stays on NVLink. Pipeline communication crosses nodes but is point-to-point and can be compressed with scatter/gather. Data parallelism synchronizes once per batch, so it scales replicas after the model-parallel shard fits. Kernel fusion then keeps the remaining compute dense enough for A100 tensor cores.
 
 ### How to read these numbers
 
-Do not read the paper as proving that PTD-P is always better than ZeRO-style sharding. The comparison is against ZeRO-3 without model parallelism, and the paper explicitly notes ZeRO-3 can be combined with model parallelism. The stronger lesson is that **memory sharding alone is not enough when cross-node communication becomes the bottleneck**.
+Do not read Paper 2 as proving that PTD-P is always better than ZeRO-style sharding. The comparison is against ZeRO-3 without model parallelism, and the paper explicitly notes ZeRO-3 can be combined with model parallelism. The stronger lesson is that **memory sharding alone is not enough when cross-node communication becomes the bottleneck**. Paper 1's lesson is simpler: **column-parallel splitting is the correct split for Transformers.**
 
 ## Where It Breaks
 
@@ -235,14 +304,15 @@ Do not read the paper as proving that PTD-P is always better than ZeRO-style sha
 | Irregular model architecture | Layers differ substantially in cost or memory | Equal layer striping becomes load-imbalanced; the paper does not solve automatic graph partitioning. |
 | Strict optimizer semantics required at tiny batch sizes | The run cannot increase `B` or `m` enough to amortize flushes | Synchronous pipeline flushing can be expensive compared with relaxed-staleness methods. |
 | Checkpoint I/O bottleneck | Trillion-parameter checkpoints are loaded or saved on weaker storage | Multi-terabyte checkpoint operations can dominate operational time outside steady-state training. |
+| Post-LN architecture for BERT scaling | BERT models trained with original LayerNorm placement beyond ~300M params | Training becomes unstable and downstream accuracy degrades; use Pre-LN instead. |
 
 ## One Thing to Remember
 
-**Megatron-LM's durable idea is topology-aware parallelism.** Tensor parallelism, pipeline parallelism, and data parallelism are not interchangeable knobs; they communicate at different frequencies and should be mapped to the hardware links that can carry them. The paper's trillion-parameter result comes from that mapping plus schedule, communication, memory, and kernel work that keeps the whole cluster doing useful Transformer math.
+**Megatron-LM's durable ideas are column-parallel GEMM splitting and topology-aware parallelism.** Column-parallel splitting (f/g operators) is the correct way to split Transformer layers — it pushes synchronization past nonlinearities and reduces communication to two all-reduces per layer. Topology-aware parallelism (tensor inside nodes, pipeline across nodes, data outside the model shard) maps communication frequencies to hardware link speeds. Together, these two ideas span from 8 V100 GPUs to 3072 A100 GPUs.
 
 ## Go Deeper
 
-- **Read:** [arXiv:2104.04473](https://arxiv.org/abs/2104.04473)
-- **Build on:** Megatron-Core, DeepSpeed 3D parallelism, ZeRO combined with model parallelism, sequence parallelism, later large-model training stacks
-- **Understand the context:** [GPT-3](../gpt-3.md) for the 175B model target · [LLaMA](../llama.md) for later efficient model-family training · [The Transformer](../../algorithms/transformer.md) for the layer structure being split
-- **Reproduce:** Code is linked by the paper at `https://github.com/nvidia/megatron-lm`; full trillion-scale reproduction requires a large multi-node GPU cluster with high-bandwidth local and inter-node networking.
+- **Read:** [Paper 1: arXiv:1909.08053](https://arxiv.org/abs/1909.08053) · [Paper 2: arXiv:2104.04473](https://arxiv.org/abs/2104.04473)
+- **Build on:** Megatron-Core, DeepSpeed 3D parallelism, ZeRO combined with model parallelism, [sequence parallelism](../sequence-parallelism/index.md), later large-model training stacks
+- **Understand the context:** [GPT-3](../gpt-3.md) for the 175B model target · [LLaMA](../llama.md) for later efficient model-family training · [The Transformer](../../algorithms/transformer.md) for the layer structure being split · [GPipe](../gpipe/index.md) for the pipeline parallelism that PTD-P builds on
+- **Reproduce:** Code is at `https://github.com/nvidia/megatron-lm`; full trillion-scale reproduction requires a large multi-node GPU cluster with high-bandwidth local and inter-node networking.

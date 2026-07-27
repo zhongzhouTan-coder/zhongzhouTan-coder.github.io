@@ -341,8 +341,23 @@
       "slug": "megatron-lm-gpu-cluster-training-parallelism",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf"],
+      "raw_paths": [
+        "raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md",
+      "docs_path": "docs/training/megatron-lm/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:1909.08053",
+      "title": "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism",
+      "slug": "megatron-lm-tensor-parallelism",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md",
       "docs_path": "docs/training/megatron-lm/index.md",
       "status": "ingested"
     },
