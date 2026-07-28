@@ -488,6 +488,17 @@
       "derived_path": "derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md",
       "docs_path": "docs/hardware/nvfp4.md",
       "status": "ingested"
+    },
+    {
+      "id": "paper:deepseek-v4",
+      "title": "DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence",
+      "slug": "deepseek-v4",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/deepseek-v4--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/deepseek-v4.md",
+      "docs_path": "docs/training/deepseek-v4/index.md",
+      "status": "ingested"
     }
   ]
 }
