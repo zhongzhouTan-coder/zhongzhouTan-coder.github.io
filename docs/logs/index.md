@@ -41,6 +41,7 @@ updated: 2026-07-28
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton-language/triton-in-vllm.md) — Codebase-driven tour: vLLM's triton_utils infrastructure, custom op registration, ~163 kernel files across 12 categories, universal coding patterns with concrete examples, and vllm-ascend's CANN-backend adaptation with dual Triton+AscendC strategy.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek-v4-attention-code-reading.md) — Navigable implementation map of DeepSeek V4's hybrid compressed attention across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU), covering CSA/HCA compressors, sparse MLA backends, heterogeneous KV cache, multi-stream overlap, and platform-specific kernel dispatch.
 
 ## Algorithms
 

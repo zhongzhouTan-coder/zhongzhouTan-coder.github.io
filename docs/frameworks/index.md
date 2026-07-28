@@ -18,3 +18,4 @@ updated: 2026-07-28
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](triton-language/triton-in-vllm.md)
 - [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md)
+- [DeepSeek V4 Attention: Code Reading Map](deepseek-v4-attention-code-reading.md)

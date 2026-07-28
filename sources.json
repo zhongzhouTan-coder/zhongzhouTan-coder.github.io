@@ -288,7 +288,7 @@
       "kind": "repository",
       "raw_paths": ["raw/frameworks/vllm-codebase--github-d18ed2304a27.md"],
       "derived_path": "derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
-      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md"],
+      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md", "docs/frameworks/deepseek-v4-attention-code-reading.md"],
       "status": "ingested"
     },
     {
@@ -301,7 +301,7 @@
       "kind": "repository",
       "raw_paths": ["raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"],
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
-      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md"],
+      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md", "docs/frameworks/deepseek-v4-attention-code-reading.md"],
       "status": "ingested"
     },
     {
