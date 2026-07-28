@@ -315,16 +315,6 @@
       "status": "ingested"
     },
     {
-      "id": "nvidia:nvfp4-references",
-      "title": "NVFP4: Blackwell 4-Bit Floating Point",
-      "slug": "nvfp4-blackwell-4-bit-floating-point-references",
-      "category": "hardware",
-      "kind": "reference",
-      "raw_paths": ["raw/hardware/nvfp4-blackwell-4-bit-floating-point-references.md"],
-      "docs_path": "docs/hardware/nvfp4.md",
-      "status": "ingested"
-    },
-    {
       "id": "paper:gpt-1",
       "title": "GPT-1: Improving Language Understanding by Generative Pre-Training",
       "slug": "gpt-1-improving-language-understanding",
@@ -459,6 +449,44 @@
       "raw_paths": ["raw/frameworks/triton-ascend-codebase--github-41f499924da1.md"],
       "derived_path": "derived/repo-analysis/frameworks/triton-ascend/41f499924da1d58955196c946895597e992127f0/",
       "docs_paths": ["docs/frameworks/triton-ascend/index.md"],
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:nvidia.github.io/nvfp4-te@2026-07-28-6625830e9e9e",
+      "title": "NVFP4 — Transformer Engine 2.19.0.dev0 documentation",
+      "slug": "nvfp4-te",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html",
+      "final_url": "https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html",
+      "captured_at": "2026-07-28T07:33:23.583Z",
+      "revision": "6625830e9e9ee594d10067a0b433c6a1dff08c40ed8c66c9b7c7addd07c74284",
+      "raw_paths": [
+        "raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.html",
+        "raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.md",
+      "docs_path": "docs/hardware/nvfp4.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:developer.nvidia.com/nvfp4-blog@2026-07-28-a2f3eb0ba3bb",
+      "title": "Introducing NVFP4 for Efficient and Accurate Low-Precision Inference | NVIDIA Technical Blog",
+      "slug": "nvfp4-blog",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/",
+      "final_url": "https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/",
+      "captured_at": "2026-07-28T07:34:13.307Z",
+      "revision": "a2f3eb0ba3bb315802edaf2ff95856c8041b8d2e9c7e5f99877f7fc271e140c6",
+      "raw_paths": [
+        "raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html",
+        "raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md",
+      "docs_path": "docs/hardware/nvfp4.md",
       "status": "ingested"
     }
   ]

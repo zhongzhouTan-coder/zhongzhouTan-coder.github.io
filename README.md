@@ -15,7 +15,7 @@ npm run ingest:web -- \
 ```
 
 The command saves immutable HTML and metadata under `raw/`, writes readable
-Markdown under `derived/web-markdown/`, and registers the captured revision in
-`sources.json`. See
+Markdown under `derived/web-markdown/`, preserves inline SVG diagrams as local
+sidecar assets, and registers the captured revision in `sources.json`. See
 [the web source instructions](.github/instructions/web-source.instructions.md)
 for renderer choices and the `captured` to `ingested` workflow.

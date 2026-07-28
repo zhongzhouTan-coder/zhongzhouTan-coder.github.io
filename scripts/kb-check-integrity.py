@@ -174,6 +174,7 @@ def validate_web_entry(
     categories: dict[str, Any],
     errors: list[str],
     manifest_web_markdown_paths: set[str],
+    manifest_web_asset_paths: set[str],
 ) -> None:
     source_id = entry["id"]
     match = WEB_ID_RE.fullmatch(source_id)
@@ -277,6 +278,40 @@ def validate_web_entry(
                     f"{source_id}: derived metadata {key} must be {expected}, "
                     f"got {derived_metadata.get(key)}"
                 )
+        derived_assets = derived_metadata.get("assets", [])
+        if not isinstance(derived_assets, list):
+            errors.append(f"{source_id}: derived assets must be a list")
+            derived_assets = []
+        derived_text = full_derived_path.read_text(encoding="utf-8")
+        for asset_path in derived_assets:
+            if (
+                not isinstance(asset_path, str)
+                or not is_safe_relative_path(asset_path, "derived")
+                or not asset_path.startswith(web_derived_prefix)
+            ):
+                errors.append(f"{source_id}: invalid derived web asset: {asset_path}")
+                continue
+            manifest_web_asset_paths.add(asset_path)
+            full_asset_path = root / asset_path
+            if not full_asset_path.is_file():
+                errors.append(f"{source_id}: missing derived web asset: {asset_path}")
+                continue
+            relative_asset = full_asset_path.relative_to(
+                full_derived_path.parent
+            ).as_posix()
+            if f"]({relative_asset})" not in derived_text:
+                errors.append(
+                    f"{source_id}: derived Markdown does not link asset "
+                    f"{asset_path}"
+                )
+            hash_match = re.search(r"-([0-9a-f]{12})\.[A-Za-z0-9]+$", asset_path)
+            if hash_match:
+                asset_hash = hashlib.sha256(full_asset_path.read_bytes()).hexdigest()
+                if asset_hash[:12] != hash_match.group(1):
+                    errors.append(
+                        f"{source_id}: derived asset hash does not match filename: "
+                        f"{asset_path}"
+                    )
 
     docs_path = entry.get("docs_path")
     if status == "captured":
@@ -500,6 +535,7 @@ def main() -> int:
     manifest_raw_paths: set[str] = set()
     manifest_derived_paths: set[str] = set()
     manifest_web_markdown_paths: set[str] = set()
+    manifest_web_asset_paths: set[str] = set()
     manifest_repo_analysis_paths: set[str] = set()
     repository_consumers: dict[str, tuple[str, set[str]]] = {}
 
@@ -567,6 +603,7 @@ def main() -> int:
                 categories,
                 errors,
                 manifest_web_markdown_paths,
+                manifest_web_asset_paths,
             )
             continue
 
@@ -627,6 +664,14 @@ def main() -> int:
             rel = derived_file.relative_to(root).as_posix()
             if rel not in manifest_web_markdown_paths:
                 errors.append(f"web markdown missing from sources.json: {rel}")
+        for asset_file in sorted(
+            path
+            for path in web_markdown_root.rglob("*")
+            if path.is_file() and path.suffix != ".md"
+        ):
+            rel = asset_file.relative_to(root).as_posix()
+            if rel not in manifest_web_asset_paths:
+                errors.append(f"orphan web markdown asset: {rel}")
 
     repo_analysis_root = root / "derived/repo-analysis"
     if repo_analysis_root.exists():

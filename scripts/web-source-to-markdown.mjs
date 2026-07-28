@@ -5,7 +5,15 @@
 // third_party/MD-This-Page-LICENSE.txt.
 
 import { createHash } from "node:crypto"
-import { access, mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises"
+import {
+  access,
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  unlink,
+  writeFile
+} from "node:fs/promises"
 import { isIP } from "node:net"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -54,6 +62,8 @@ Options:
   --max-bytes NUMBER        Maximum captured HTML bytes (default: 20971520).
   --min-content-chars N     Auto-render fallback threshold (default: 200).
   --allow-private-network   Permit explicit localhost/private IP URLs.
+  --regenerate-derived      Rebuild Markdown/assets from an existing raw HTML
+                            snapshot. Requires --input-html.
   --captured-at ISO_TIME    Override capture time (mainly for reproducible tests).
   --dry-run                 Capture and report paths without writing files.
   --root PATH               Knowledge-base root (defaults to repository root).
@@ -106,6 +116,10 @@ function parseArgs(argv) {
       options.dryRun = true
       continue
     }
+    if (argument === "--regenerate-derived") {
+      options.regenerateDerived = true
+      continue
+    }
     const key = valueOptions.get(argument)
     if (!key) fail(`unknown argument: ${argument}`)
     const value = argv[index + 1]
@@ -134,6 +148,9 @@ function validateOptions(options, categories) {
   }
   if (options.inputHtml && options.renderer === "chromium") {
     fail("--input-html cannot be combined with --renderer chromium")
+  }
+  if (options.regenerateDerived && !options.inputHtml) {
+    fail("--regenerate-derived requires --input-html")
   }
   if (!categories[options.category]) {
     fail(`unknown category: ${options.category}`)
@@ -399,6 +416,135 @@ function makeAbsolute(document, selector, attribute, baseUrl) {
   }
 }
 
+function normalizeImageSources(document, baseUrl) {
+  const lazyAttributes = [
+    "data-src",
+    "data-lazy-src",
+    "data-original",
+    "data-url"
+  ]
+  for (const image of document.querySelectorAll("img")) {
+    const currentSource = image.getAttribute("src") || ""
+    const lazySource = lazyAttributes
+      .map((attribute) => image.getAttribute(attribute))
+      .find(Boolean)
+    if (
+      lazySource &&
+      (!currentSource || currentSource.startsWith("data:image/svg+xml"))
+    ) {
+      image.setAttribute("src", lazySource)
+    }
+    const alt = image.getAttribute("alt")
+    if (alt) image.setAttribute("alt", alt.replace(/\s+/g, " ").trim())
+  }
+
+  for (const source of document.querySelectorAll("source")) {
+    if (!source.getAttribute("src") && source.getAttribute("data-src")) {
+      source.setAttribute("src", source.getAttribute("data-src"))
+    }
+    if (!source.getAttribute("srcset") && source.getAttribute("data-srcset")) {
+      source.setAttribute("srcset", source.getAttribute("data-srcset"))
+    }
+  }
+
+  makeAbsolute(document, "img[src]", "src", baseUrl)
+  makeAbsolute(document, "source[src]", "src", baseUrl)
+  makeAbsolute(document, "image[href]", "href", baseUrl)
+  for (const image of document.querySelectorAll("image")) {
+    const value = image.getAttribute("xlink:href")
+    if (!value || value.startsWith("#") || value.startsWith("data:")) continue
+    try {
+      image.setAttribute("xlink:href", new URL(value, baseUrl).href)
+    } catch {
+      // Preserve malformed source values in the derived SVG.
+    }
+  }
+}
+
+function rewriteSvgCssUrls(document, baseUrl) {
+  for (const style of document.querySelectorAll("svg style")) {
+    style.textContent = (style.textContent || "").replace(
+      /url\(\s*(['"]?)([^'")]+)\1\s*\)/g,
+      (match, quote, value) => {
+        if (value.startsWith("#") || value.startsWith("data:")) return match
+        try {
+          return `url("${new URL(value, baseUrl).href}")`
+        } catch {
+          return match
+        }
+      }
+    )
+  }
+}
+
+function markdownAlt(value, fallback) {
+  const normalized = (value || fallback)
+    .replace(/\s+/g, " ")
+    .replaceAll("[", "\\[")
+    .replaceAll("]", "\\]")
+    .trim()
+  return normalized.length > 240
+    ? `${normalized.slice(0, 237).trimEnd()}...`
+    : normalized
+}
+
+function nearbySvgCaption(node) {
+  let sibling = node.nextElementSibling
+  if (!sibling && node.parentElement?.tagName?.toLowerCase() === "figure") {
+    sibling = node.parentElement.querySelector("figcaption")
+  }
+  const text = sibling?.textContent?.replace(/\s+/g, " ").trim() || ""
+  return /^(figure|diagram)\s*\d*/i.test(text) ? text : ""
+}
+
+function meaningfulSvg(node, caption) {
+  if (node.getAttribute("aria-hidden") === "true") return false
+  if (caption || node.querySelector("title")) return true
+  const viewBox = (node.getAttribute("viewBox") || "")
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number)
+  if (
+    viewBox.length === 4 &&
+    viewBox.every(Number.isFinite) &&
+    (viewBox[2] >= 100 || viewBox[3] >= 100)
+  ) {
+    return true
+  }
+  return node.querySelectorAll("rect, circle, ellipse, path, line, polyline, polygon, text").length >= 5
+}
+
+function detachMeaningfulSvgs(document) {
+  const detached = []
+  for (const node of [...document.querySelectorAll("svg")]) {
+    const caption = nearbySvgCaption(node)
+    if (!meaningfulSvg(node, caption)) continue
+    const token =
+      `__WEB_INGEST_INLINE_SVG_${String(detached.length + 1).padStart(3, "0")}__`
+    detached.push({ token, svg: node.outerHTML })
+    const placeholder = document.createElement("p")
+    placeholder.textContent = token
+    node.replaceWith(placeholder)
+  }
+  return detached
+}
+
+function restoreMeaningfulSvgs(content, detached) {
+  let restored = content
+  for (const { token, svg } of detached) {
+    const wrappedToken = new RegExp(
+      `<([a-z][a-z0-9]*)[^>]*>\\s*${token}\\s*</\\1>`,
+      "i"
+    )
+    if (wrappedToken.test(restored)) {
+      restored = restored.replace(wrappedToken, svg)
+    } else {
+      restored = restored.replace(token, svg)
+    }
+  }
+  return restored
+}
+
 function extractMarkdown(html, finalUrl) {
   const dom = new JSDOM(html, { url: finalUrl, contentType: "text/html" })
   const { document } = dom.window
@@ -413,8 +559,9 @@ function extractMarkdown(html, finalUrl) {
   }
 
   makeAbsolute(document, "a[href]", "href", finalUrl)
-  makeAbsolute(document, "img[src]", "src", finalUrl)
-  makeAbsolute(document, "source[src]", "src", finalUrl)
+  normalizeImageSources(document, finalUrl)
+  rewriteSvgCssUrls(document, finalUrl)
+  const detachedSvgs = detachMeaningfulSvgs(document)
 
   const defuddle = new Defuddle(document, {
     url: finalUrl,
@@ -433,11 +580,44 @@ function extractMarkdown(html, finalUrl) {
       document.body
     content = body?.innerHTML || ""
   }
+  content = restoreMeaningfulSvgs(content, detachedSvgs)
 
   const turndown = new TurndownService({
     bulletListMarker: "-",
     codeBlockStyle: "fenced",
     emDelimiter: "*"
+  })
+  const assets = []
+  turndown.addRule("inline-svg-assets", {
+    filter: (node) => node.nodeName.toLowerCase() === "svg",
+    replacement: (_content, node) => {
+      const caption = nearbySvgCaption(node)
+      if (!meaningfulSvg(node, caption)) return ""
+      const title = node.querySelector("title")?.textContent || ""
+      const token = `__WEB_INGEST_ASSET_${String(assets.length + 1).padStart(3, "0")}__`
+      let svg = node.outerHTML
+      if (!/\sxmlns=/.test(svg)) {
+        svg = svg.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"')
+      }
+      if (!svg.endsWith("\n")) svg += "\n"
+      assets.push({
+        token,
+        mediaType: "image/svg+xml",
+        extension: "svg",
+        content: svg,
+        alt: markdownAlt(caption || title, `Inline diagram ${assets.length + 1}`)
+      })
+      return `\n\n![${assets.at(-1).alt}](${token})\n\n`
+    }
+  })
+  turndown.addRule("normalized-images", {
+    filter: (node) => node.nodeName.toLowerCase() === "img",
+    replacement: (_content, node) => {
+      const source = node.getAttribute("src") || ""
+      if (!source || source.startsWith("data:")) return ""
+      const alt = markdownAlt(node.getAttribute("alt"), "Image")
+      return `![${alt}](${source})`
+    }
   })
   let markdown = turndown.turndown(content).trim()
   markdown = markdown
@@ -453,7 +633,8 @@ function extractMarkdown(html, finalUrl) {
     author: result?.author || "",
     publishedAt: result?.published || "",
     domain: result?.domain || new URL(finalUrl).hostname,
-    canonicalUrl
+    canonicalUrl,
+    assets
   }
 }
 
@@ -498,7 +679,32 @@ function yamlString(value) {
   return JSON.stringify(value ?? "")
 }
 
-function renderDerivedMarkdown(metadata, markdown) {
+function prepareDerivedAssets(extraction, webDerivedPrefix, snapshot) {
+  let markdown = extraction.markdown
+  const assetDirectory = `${snapshot}.assets`
+  const assets = extraction.assets.map((asset, index) => {
+    const sha256 = createHash("sha256").update(asset.content).digest("hex")
+    const filename =
+      `inline-${String(index + 1).padStart(2, "0")}-${sha256.slice(0, 12)}.${asset.extension}`
+    const repositoryPath = `${webDerivedPrefix}${assetDirectory}/${filename}`
+    markdown = markdown.replaceAll(
+      asset.token,
+      `${assetDirectory}/${filename}`
+    )
+    return {
+      ...asset,
+      sha256,
+      repositoryPath,
+      markdownPath: `${assetDirectory}/${filename}`
+    }
+  })
+  return { markdown, assets }
+}
+
+function renderDerivedMarkdown(metadata, markdown, assets) {
+  const assetMetadata = assets.length
+    ? `assets:\n${assets.map((asset) => `  - ${yamlString(asset.repositoryPath)}`).join("\n")}\n`
+    : ""
   return `---
 kind: web-extraction
 source_url: ${yamlString(metadata.requested_url)}
@@ -511,7 +717,7 @@ captured_at: ${yamlString(metadata.captured_at)}
 content_sha256: ${metadata.content_sha256}
 renderer: ${metadata.renderer}
 extractor: ${yamlString(metadata.extractor)}
----
+${assetMetadata}---
 
 ${markdown}
 `
@@ -589,6 +795,30 @@ async function writeManifestAtomically(path, content) {
   await rename(temporaryPath, path)
 }
 
+async function writeAtomically(path, content) {
+  await mkdir(dirname(path), { recursive: true })
+  const temporaryPath = `${path}.web-ingest-${process.pid}.tmp`
+  await writeFile(temporaryPath, content, { encoding: "utf8", flag: "wx" })
+  await rename(temporaryPath, path)
+}
+
+async function removeStaleDerivedAssets(root, assetDirectory, expectedPaths) {
+  const absoluteDirectory = resolve(root, assetDirectory)
+  let entries
+  try {
+    entries = await readdir(absoluteDirectory, { withFileTypes: true })
+  } catch (error) {
+    if (error.code === "ENOENT") return
+    throw error
+  }
+  const expected = new Set(expectedPaths.map((path) => resolve(root, path)))
+  for (const entry of entries) {
+    if (!entry.isFile()) continue
+    const absolutePath = resolve(absoluteDirectory, entry.name)
+    if (!expected.has(absolutePath)) await unlink(absolutePath)
+  }
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2))
   if (options.help) {
@@ -612,6 +842,11 @@ async function main() {
   const rawMetadataPath = `raw/${options.category}/${snapshot}.metadata.json`
   const derivedPath =
     `${categories[options.category].web_derived_prefix}${snapshot}.md`
+  const prepared = prepareDerivedAssets(
+    extraction,
+    categories[options.category].web_derived_prefix,
+    snapshot
+  )
 
   const limitations = []
   if (capture.renderer === "local-html") {
@@ -619,7 +854,7 @@ async function main() {
       "HTML was supplied from a local file; HTTP status and response headers are unavailable."
     )
   }
-  if (extraction.markdown.length < options.minContentChars) {
+  if (prepared.markdown.length < options.minContentChars) {
     limitations.push(
       `Extracted Markdown is shorter than ${options.minContentChars} characters.`
     )
@@ -638,13 +873,22 @@ async function main() {
     renderer: capture.renderer,
     content_sha256: contentSha256,
     raw_html_bytes: Buffer.byteLength(capture.html),
-    extracted_markdown_characters: extraction.markdown.length,
+    extracted_markdown_characters: prepared.markdown.length,
+    extracted_assets: prepared.assets.map((asset) => ({
+      path: asset.repositoryPath,
+      media_type: asset.mediaType,
+      sha256: asset.sha256
+    })),
     extractor: EXTRACTOR,
     upstream_reference: UPSTREAM_REFERENCE,
     response_headers: capture.responseHeaders,
     limitations
   }
-  const derivedMarkdown = renderDerivedMarkdown(metadata, extraction.markdown)
+  const derivedMarkdown = renderDerivedMarkdown(
+    metadata,
+    prepared.markdown,
+    prepared.assets
+  )
   const entry = {
     id: sourceId,
     title: extraction.title || options.slug,
@@ -669,13 +913,61 @@ async function main() {
     raw_html: rawHtmlPath,
     raw_metadata: rawMetadataPath,
     derived_markdown: derivedPath,
-    status: manifestUpdate.reused ? "reused" : options.dryRun ? "dry-run" : "captured"
+    derived_assets: prepared.assets.map((asset) => asset.repositoryPath),
+    status: options.dryRun
+      ? manifestUpdate.reused && options.regenerateDerived
+        ? "dry-run-regenerate"
+        : "dry-run"
+      : manifestUpdate.reused
+        ? options.regenerateDerived
+          ? "regenerated"
+          : "reused"
+        : "captured"
   }
   if (options.dryRun) {
     process.stdout.write(`${JSON.stringify(report, null, 2)}\n`)
     return
   }
   if (manifestUpdate.reused) {
+    if (options.regenerateDerived) {
+      if (resolve(options.inputHtml) !== resolve(options.root, rawHtmlPath)) {
+        fail(
+          "--regenerate-derived input must be the manifest's immutable raw HTML path"
+        )
+      }
+      const storedMetadata = JSON.parse(
+        await readFile(resolve(options.root, rawMetadataPath), "utf8")
+      )
+      if (storedMetadata.content_sha256 !== contentSha256) {
+        fail("raw metadata SHA-256 does not match the input HTML")
+      }
+      const regeneratedMetadata = {
+        ...storedMetadata,
+        extractor: EXTRACTOR
+      }
+      const regeneratedMarkdown = renderDerivedMarkdown(
+        regeneratedMetadata,
+        prepared.markdown,
+        prepared.assets
+      )
+      for (const asset of prepared.assets) {
+        await writeAtomically(
+          resolve(options.root, asset.repositoryPath),
+          asset.content
+        )
+      }
+      await removeStaleDerivedAssets(
+        options.root,
+        `${categories[options.category].web_derived_prefix}${snapshot}.assets`,
+        prepared.assets.map((asset) => asset.repositoryPath)
+      )
+      await writeAtomically(
+        resolve(options.root, derivedPath),
+        regeneratedMarkdown
+      )
+      process.stdout.write(`${JSON.stringify(report, null, 2)}\n`)
+      return
+    }
     for (const relativePath of [rawHtmlPath, rawMetadataPath, derivedPath]) {
       await access(resolve(options.root, relativePath))
     }
@@ -688,6 +980,10 @@ async function main() {
     const outputs = [
       [rawHtmlPath, capture.html],
       [rawMetadataPath, `${JSON.stringify(metadata, null, 2)}\n`],
+      ...prepared.assets.map((asset) => [
+        asset.repositoryPath,
+        asset.content
+      ]),
       [derivedPath, derivedMarkdown]
     ]
     for (const [relativePath, content] of outputs) {

@@ -64,6 +64,7 @@ Immutable web captures should use:
 raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.html
 raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.metadata.json
 derived/web-markdown/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.md
+derived/web-markdown/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.assets/
 ```
 
 Rules:
@@ -80,6 +81,9 @@ Rules:
 - Treat each web capture as an immutable source revision. Hash the rendered
   HTML with SHA-256, use the first 12 characters in filenames and the source
   ID, and store the full hash in `sources.json` and the metadata sidecar.
+- Keep extracted web sidecar assets in the matching `.assets/` directory.
+  Derived Markdown must list those paths in front matter and link each asset
+  with a relative Markdown image reference.
 
 ## Manifest Maintenance
 

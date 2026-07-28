@@ -76,7 +76,7 @@ updated: 2026-07-28
 
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/flatquant.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
-- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md) — NVIDIA Blackwell NVFP4 format, hierarchical FP8/FP32 scaling, memory benefits, Transformer Engine training recipe, RHT, stochastic rounding, and hardware support.
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical FP8/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, GEMM layout constraints, distributed training behavior, and deployment ecosystem.
 
 ## Terms
 

@@ -68,6 +68,8 @@ flowchart TB
 
 *① You write a Triton kernel with `@triton.jit`. ② The Triton frontend lowers it to TTIR, with AscendBackend patching the code generator to target `hacc`. ③ Ascend-specific MLIR passes convert TTIR through Huawei IVM IR, LLVM IR, and Linalg dialect. ④ Huawei's Bisheng compiler compiles the Linalg IR into Ascend NPU binary. ⑤ The ACL runtime loads and launches the binary on the NPU.*
 
+Editable source: [compilation pipeline Mermaid diagram](assets/compilation-pipeline.mmd).
+
 ## Why Triton Ascend Exists
 
 Triton was designed for NVIDIA and AMD GPUs. Its original compilation pipeline targets PTX/LLVM for CUDA and HIP backends. Ascend NPUs use a completely different hardware architecture and toolchain — Huawei's CANN (Compute Architecture for Neural Networks) stack with the Bisheng compiler and ACL runtime.

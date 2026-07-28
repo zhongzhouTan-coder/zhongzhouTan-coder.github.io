@@ -26,6 +26,19 @@ ARTICLE_HTML = """<!doctype html>
         <h1>Automatic Web Capture</h1>
         <p>This article explains a reproducible ingestion workflow.</p>
         <p>Read the <a href="/guide">related guide</a>.</p>
+        <svg viewBox="0 0 200 100">
+          <defs><style>.box { fill: red; }</style></defs>
+          <title>Capture pipeline diagram</title>
+          <rect class="box" x="5" y="5" width="80" height="40"></rect>
+          <path d="M85 25 L115 25"></path>
+          <rect x="115" y="5" width="80" height="40"></rect>
+        </svg>
+        <p><em>Figure 1. Capture pipeline diagram.</em></p>
+        <img
+          src="data:image/svg+xml,%3Csvg%3E%3C/svg%3E"
+          data-src="/diagram.png"
+          alt="A lazily loaded diagram"
+        >
       </article>
     </main>
   </body>
@@ -111,6 +124,13 @@ class WebSourceIngestTests(unittest.TestCase):
         self.assertTrue(raw_html.is_file())
         self.assertTrue(raw_metadata.is_file())
         self.assertTrue(derived_markdown.is_file())
+        self.assertEqual(len(report["derived_assets"]), 1)
+        derived_asset = self.root / report["derived_assets"][0]
+        self.assertTrue(derived_asset.is_file())
+        asset_text = derived_asset.read_text(encoding="utf-8")
+        self.assertIn("<svg", asset_text)
+        self.assertIn("<style>", asset_text)
+        self.assertIn("fill: red", asset_text)
 
         metadata = json.loads(raw_metadata.read_text(encoding="utf-8"))
         self.assertEqual(metadata["requested_url"], self.url)
@@ -123,6 +143,14 @@ class WebSourceIngestTests(unittest.TestCase):
         self.assertIn("Automatic Web Capture", markdown)
         self.assertIn(
             "](https://example.test/guide)",
+            markdown,
+        )
+        self.assertIn(
+            f"]({derived_asset.parent.name}/{derived_asset.name})",
+            markdown,
+        )
+        self.assertIn(
+            "![A lazily loaded diagram](https://example.test/diagram.png)",
             markdown,
         )
 
@@ -168,6 +196,43 @@ class WebSourceIngestTests(unittest.TestCase):
             (self.root / "sources.json").read_text(encoding="utf-8")
         )
         self.assertEqual(len(manifest["sources"]), 1)
+
+    def test_existing_snapshot_can_regenerate_derived_assets(self) -> None:
+        first = self.run_ingest()
+        self.assertEqual(first.returncode, 0, first.stderr)
+        report = json.loads(first.stdout)
+        derived_markdown = self.root / report["derived_markdown"]
+        derived_markdown.write_text("outdated\n", encoding="utf-8")
+
+        regeneration = subprocess.run(
+            [
+                "node",
+                str(INGEST_SCRIPT),
+                "--url",
+                self.url,
+                "--category",
+                "frameworks",
+                "--slug",
+                "automatic-web-capture",
+                "--renderer",
+                "http",
+                "--input-html",
+                str(self.root / report["raw_html"]),
+                "--captured-at",
+                CAPTURED_AT,
+                "--root",
+                str(self.root),
+                "--regenerate-derived",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(regeneration.returncode, 0, regeneration.stderr)
+        self.assertEqual(json.loads(regeneration.stdout)["status"], "regenerated")
+        regenerated = derived_markdown.read_text(encoding="utf-8")
+        self.assertIn("Capture pipeline diagram", regenerated)
+        self.assertIn(".assets/inline-01-", regenerated)
 
     def test_private_network_requires_explicit_opt_in(self) -> None:
         result = subprocess.run(

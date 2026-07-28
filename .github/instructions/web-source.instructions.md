@@ -33,11 +33,30 @@ The command creates one immutable source revision:
 raw/{category}/{slug}--web-{capture-date}-{short-sha256}.html
 raw/{category}/{slug}--web-{capture-date}-{short-sha256}.metadata.json
 derived/web-markdown/{category}/{slug}--web-{capture-date}-{short-sha256}.md
+derived/web-markdown/{category}/{slug}--web-{capture-date}-{short-sha256}.assets/
 ```
 
 It also adds a `kind: "web"` entry with `status: "captured"` to `sources.json`.
 Never edit or replace the raw HTML or metadata. A changed page produces a new
-revision with a new content hash.
+revision with a new content hash. The `.assets/` directory is created only when
+the extractor needs local sidecar files, such as meaningful inline SVG
+diagrams.
+
+To rebuild derived Markdown and sidecar assets after improving the extractor,
+reuse the exact raw snapshot recorded in `sources.json`:
+
+```bash
+npm run ingest:web -- \
+  --url "https://example.com/article" \
+  --category frameworks \
+  --slug example-article \
+  --input-html raw/frameworks/example-article--web-YYYY-MM-DD-SHA.html \
+  --captured-at "YYYY-MM-DDTHH:MM:SS.sssZ" \
+  --regenerate-derived
+```
+
+This mode verifies the raw HTML hash and changes only generated files. It does
+not fetch the live page or modify the immutable raw bundle or manifest.
 
 ## Synthesis
 
@@ -58,9 +77,11 @@ When the resulting docs page is ready:
 - Prefer the HTTP renderer for stable, public, server-rendered pages.
 - Use Chromium for JavaScript-rendered pages and record any missing,
   authenticated, lazy-loaded, or interactive content as a limitation.
-- The extractor keeps links and images by default, but remote assets are not
-  immutable. Save essential figures locally under the docs page's assets
-  directory.
+- The extractor normalizes common lazy-loaded image attributes and preserves
+  meaningful inline SVG diagrams as local files next to the derived Markdown.
+  Ordinary remote raster images remain remote and are not immutable. Save
+  essential figures under the final docs page's assets directory when they
+  must remain reproducible.
 - Do not treat a browser-rendered snapshot as proof of content that was hidden
   behind an inaccessible interaction.
 - Response metadata excludes cookie and proxy-authentication headers so session
