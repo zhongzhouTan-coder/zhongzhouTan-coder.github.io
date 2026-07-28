@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph UserCode["1. User Triton Code"]
+        DSL["@triton.jit kernel
+        (Triton Python DSL)"]
+    end
+
+    subgraph TritonFrontend["2. Triton Frontend"]
+        CG["CodeGenerator
+        (patched: hacc.target)"]
+        TTIR["TTIR
+        (Triton MLIR IR)"]
+    end
+
+    subgraph AscendBackend["3. AscendBackend Compilation Pipeline"]
+        direction TB
+        P1["TTIR Optimizations
+        (inliner, CSE, LICM, unroll)"]
+        P2["TritonToHIVM
+        (Huawei IVM IR)"]
+        P3["TritonToLLVM
+        (LLVM IR lowering)"]
+        P4["TritonToLinalg
+        (Linalg dialect)"]
+    end
+
+    subgraph Bisheng["4. Bisheng Compiler"]
+        BSC["bishengir-compile
+        (Huawei's MLIR compiler)"]
+    end
+
+    subgraph Runtime["5. Ascend Runtime"]
+        ACL["ACL Runtime
+        (rtDevBinary, rtKernelLaunch)"]
+        NPU["Ascend NPU
+        (Atlas A2/A3/950)"]
+    end
+
+    DSL --> CG --> TTIR
+    TTIR --> P1 --> P2 --> P3 --> P4
+    P4 --> BSC --> ACL --> NPU
+
+    style UserCode fill:#e8f4f8,stroke:#6c8ebf
+    style TritonFrontend fill:#dae8fc,stroke:#6c8ebf
+    style AscendBackend fill:#fff2cc,stroke:#d6b656
+    style Bisheng fill:#d5e8d4,stroke:#82b366
+    style Runtime fill:#f8cecc,stroke:#b85450
