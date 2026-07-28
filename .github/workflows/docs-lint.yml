@@ -4,20 +4,34 @@ on:
   push:
     paths:
       - "docs/**"
+      - "derived/**"
       - "logs/**"
       - "raw/**"
-      - "scripts/lint-docs.sh"
+      - "scripts/**"
+      - "tests/**"
+      - "sources.json"
+      - "kb-categories.json"
+      - "package.json"
+      - "package-lock.json"
       - "AGENTS.md"
+      - ".github/instructions/**"
       - ".agents/skills/**"
       - ".codex/**"
       - ".github/workflows/docs-lint.yml"
   pull_request:
     paths:
       - "docs/**"
+      - "derived/**"
       - "logs/**"
       - "raw/**"
-      - "scripts/lint-docs.sh"
+      - "scripts/**"
+      - "tests/**"
+      - "sources.json"
+      - "kb-categories.json"
+      - "package.json"
+      - "package-lock.json"
       - "AGENTS.md"
+      - ".github/instructions/**"
       - ".agents/skills/**"
       - ".codex/**"
       - ".github/workflows/docs-lint.yml"
@@ -42,6 +56,9 @@ jobs:
       - name: Run docs lint
         run: |
           chmod +x scripts/lint-docs.sh
+          npm test
+          python3 scripts/kb-normalize-source-name.py
+          python3 scripts/kb-check-integrity.py
           ./scripts/lint-docs.sh
 
   docs-lint-report:

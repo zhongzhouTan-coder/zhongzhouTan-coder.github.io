@@ -12,6 +12,7 @@ from typing import Any
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def source_id_suffix(source_id: str) -> str:
@@ -27,6 +28,22 @@ def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
     path = Path(raw_path)
     category = entry["category"]
     suffix = path.suffix
+    if entry.get("kind") == "web":
+        captured_at = entry.get("captured_at", "")
+        revision = entry.get("revision", "")
+        if (
+            isinstance(captured_at, str)
+            and len(captured_at) >= 10
+            and SHA256_RE.fullmatch(revision)
+        ):
+            snapshot = (
+                f"{entry['slug']}--web-{captured_at[:10]}-{revision[:12]}"
+            )
+            if raw_path.endswith(".metadata.json"):
+                return f"raw/{category}/{snapshot}.metadata.json"
+            if suffix == ".html":
+                return f"raw/{category}/{snapshot}.html"
+        return None
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
         repo_slug = entry.get("repo_slug")
         revision = entry.get("revision", "")
@@ -56,6 +73,19 @@ def expected_derived_path(entry: dict[str, Any]) -> str | None:
                 f"derived/repo-analysis/{entry['category']}/"
                 f"{repo_slug}/{revision}/"
             )
+        return None
+    if entry.get("kind") == "web":
+        captured_at = entry.get("captured_at", "")
+        revision = entry.get("revision", "")
+        if (
+            isinstance(captured_at, str)
+            and len(captured_at) >= 10
+            and SHA256_RE.fullmatch(revision)
+        ):
+            snapshot = (
+                f"{entry['slug']}--web-{captured_at[:10]}-{revision[:12]}"
+            )
+            return f"derived/web-markdown/{entry['category']}/{snapshot}.md"
         return None
     flat_path = f"derived/pdf-markdown/{entry['category']}/{entry['slug']}.md"
     folder_path = (

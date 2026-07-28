@@ -7,6 +7,7 @@ This repository is a markdown knowledge base.
 
 - `raw/` stores original source files. Never modify them.
 - `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats. These files are derived from `raw/` sources and may be regenerated.
+- `derived/web-markdown/` stores generated Markdown extracted from immutable HTML snapshots under `raw/`. These files may be regenerated from the matching snapshot.
 - `external-repos/` stores local third-party repository checkouts used for code reading. This directory is ignored by git. Agents may inspect files there but must not edit them.
 - `derived/repo-analysis/` stores generated code-reading notes extracted from local repository checkouts. These files are derived from pinned repository commits and may be regenerated.
 - `docs/` stores AI-maintained markdown knowledge pages by topic.
@@ -20,12 +21,14 @@ This repository is a markdown knowledge base.
 - For code repository reading pages and local checkout handling, read `.github/instructions/repo-reading.instructions.md`.
 - For term glossary pages, read `.github/instructions/docs-terms.instructions.md`.
 - For source categories, raw/derived naming, and manifest maintenance, read `.github/instructions/source-organization.instructions.md`.
+- For web capture, rendering, provenance, and synthesis, read `.github/instructions/web-source.instructions.md`.
 - For `docs/logs/index.md` and `docs/logs/log.md`, read `.github/instructions/logs-maintenance.instructions.md`.
 
 ## Workflow Triggers
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
 - When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
+- When a new web page source is added: capture it with `scripts/web-source-to-markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical
   `reuse` / `new revision` / `new repository` workflow in
   `.github/instructions/repo-reading.instructions.md`. Do not automatically

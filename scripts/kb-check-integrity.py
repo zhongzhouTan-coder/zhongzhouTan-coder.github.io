@@ -4,10 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +18,11 @@ SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 REPOSITORY_ID_RE = re.compile(
     r"^github:(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)@"
     r"(?P<commit>[0-9a-f]{40})$"
+)
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+WEB_ID_RE = re.compile(
+    r"^web:(?P<host>.+)/(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)@"
+    r"(?P<captured>\d{4}-\d{2}-\d{2})-(?P<revision>[0-9a-f]{12})$"
 )
 
 
@@ -86,6 +92,22 @@ def source_id_suffix(source_id: str) -> str:
 def expected_raw_name(entry: dict[str, Any], raw_path: str) -> str | None:
     path = Path(raw_path)
     suffix = path.suffix
+    if entry.get("kind") == "web":
+        captured_at = entry.get("captured_at", "")
+        revision = entry.get("revision", "")
+        if (
+            isinstance(captured_at, str)
+            and len(captured_at) >= 10
+            and SHA256_RE.fullmatch(revision)
+        ):
+            snapshot = (
+                f"{entry['slug']}--web-{captured_at[:10]}-{revision[:12]}"
+            )
+            if raw_path.endswith(".metadata.json"):
+                return f"{snapshot}.metadata.json"
+            if suffix == ".html":
+                return f"{snapshot}.html"
+        return None
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
         repo_slug = entry.get("repo_slug")
         revision = entry.get("revision", "")
@@ -134,6 +156,159 @@ def valid_iso_date(value: str) -> bool:
     except ValueError:
         return False
     return True
+
+
+def valid_iso_datetime(value: str) -> bool:
+    if "T" not in value:
+        return False
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
+
+def validate_web_entry(
+    root: Path,
+    entry: dict[str, Any],
+    categories: dict[str, Any],
+    errors: list[str],
+    manifest_web_markdown_paths: set[str],
+) -> None:
+    source_id = entry["id"]
+    match = WEB_ID_RE.fullmatch(source_id)
+    if not match:
+        errors.append(
+            f"{source_id}: web id must be "
+            "web:<host>/<slug>@YYYY-MM-DD-<12-char-sha256>"
+        )
+        return
+
+    category = entry["category"]
+    slug = entry["slug"]
+    captured_at = entry.get("captured_at")
+    revision = entry.get("revision")
+    raw_paths = entry.get("raw_paths", [])
+    derived_path = entry.get("derived_path")
+    status = entry.get("status")
+
+    if match.group("slug") != slug:
+        errors.append(f"{source_id}: web id slug does not match manifest slug")
+    if not isinstance(captured_at, str) or not valid_iso_datetime(captured_at):
+        errors.append(f"{source_id}: captured_at must be an ISO timestamp")
+        return
+    capture_date = captured_at[:10]
+    if match.group("captured") != capture_date:
+        errors.append(f"{source_id}: web id date does not match captured_at")
+    if not isinstance(revision, str) or not SHA256_RE.fullmatch(revision):
+        errors.append(f"{source_id}: revision must be a 64-character SHA-256")
+        return
+    if match.group("revision") != revision[:12]:
+        errors.append(f"{source_id}: web id revision does not match SHA-256")
+    if status not in {"captured", "ingested"}:
+        errors.append(f"{source_id}: web status must be captured or ingested")
+
+    snapshot = f"{slug}--web-{capture_date}-{revision[:12]}"
+    expected_raw_paths = {
+        f"raw/{category}/{snapshot}.html",
+        f"raw/{category}/{snapshot}.metadata.json",
+    }
+    if set(raw_paths) != expected_raw_paths or len(raw_paths) != 2:
+        errors.append(
+            f"{source_id}: web raw_paths must contain the HTML and metadata "
+            f"snapshot for {snapshot}"
+        )
+        return
+
+    html_path = f"raw/{category}/{snapshot}.html"
+    metadata_path = f"raw/{category}/{snapshot}.metadata.json"
+    full_html_path = root / html_path
+    full_metadata_path = root / metadata_path
+    if full_html_path.is_file():
+        actual_revision = hashlib.sha256(full_html_path.read_bytes()).hexdigest()
+        if actual_revision != revision:
+            errors.append(f"{source_id}: revision does not match raw HTML SHA-256")
+
+    metadata: dict[str, Any] = {}
+    if full_metadata_path.is_file():
+        try:
+            metadata = load_json(full_metadata_path)
+        except (json.JSONDecodeError, OSError) as error:
+            errors.append(f"{source_id}: invalid web metadata JSON: {error}")
+    expected_metadata = {
+        "requested_url": entry.get("source_url"),
+        "final_url": entry.get("final_url"),
+        "captured_at": captured_at,
+        "content_sha256": revision,
+    }
+    for key, expected in expected_metadata.items():
+        if metadata and metadata.get(key) != expected:
+            errors.append(
+                f"{source_id}: web metadata {key} must be {expected}, "
+                f"got {metadata.get(key)}"
+            )
+
+    web_derived_prefix = categories[category].get("web_derived_prefix")
+    expected_derived_path = (
+        f"{web_derived_prefix}{snapshot}.md" if web_derived_prefix else None
+    )
+    if derived_path != expected_derived_path:
+        errors.append(
+            f"{source_id}: derived_path must be {expected_derived_path}, "
+            f"got {derived_path}"
+        )
+        return
+    manifest_web_markdown_paths.add(derived_path)
+    full_derived_path = root / derived_path
+    if not full_derived_path.is_file():
+        errors.append(f"{source_id}: missing web Markdown: {derived_path}")
+    else:
+        derived_metadata = parse_front_matter(full_derived_path)
+        expected_derived_metadata = {
+            "kind": "web-extraction",
+            "source_url": entry.get("source_url"),
+            "final_url": entry.get("final_url"),
+            "captured_at": captured_at,
+            "content_sha256": revision,
+        }
+        for key, expected in expected_derived_metadata.items():
+            if derived_metadata.get(key) != expected:
+                errors.append(
+                    f"{source_id}: derived metadata {key} must be {expected}, "
+                    f"got {derived_metadata.get(key)}"
+                )
+
+    docs_path = entry.get("docs_path")
+    if status == "captured":
+        if docs_path and not is_safe_relative_path(docs_path, "docs"):
+            errors.append(f"{source_id}: invalid intended docs path: {docs_path}")
+        docs_prefix = categories[category].get("docs_prefix")
+        if docs_path and docs_prefix and not docs_path.startswith(docs_prefix):
+            errors.append(
+                f"{source_id}: intended docs path outside category prefix: "
+                f"{docs_path}"
+            )
+        return
+
+    if not isinstance(docs_path, str):
+        errors.append(f"{source_id}: ingested web source requires docs_path")
+        return
+    docs_prefix = categories[category].get("docs_prefix")
+    if not is_safe_relative_path(docs_path, "docs"):
+        errors.append(f"{source_id}: invalid web docs path: {docs_path}")
+        return
+    if docs_prefix and not docs_path.startswith(docs_prefix):
+        errors.append(f"{source_id}: docs path outside category prefix: {docs_path}")
+    full_docs_path = root / docs_path
+    if not full_docs_path.is_file():
+        errors.append(f"{source_id}: missing docs path: {docs_path}")
+        return
+    doc_sources = front_matter_sources(full_docs_path)
+    for source_path in (*raw_paths, derived_path):
+        if source_path not in doc_sources:
+            errors.append(
+                f"{source_id}: {docs_path} front matter missing source {source_path}"
+            )
 
 
 def validate_repository_entry(
@@ -324,6 +499,7 @@ def main() -> int:
     seen_ids: set[str] = set()
     manifest_raw_paths: set[str] = set()
     manifest_derived_paths: set[str] = set()
+    manifest_web_markdown_paths: set[str] = set()
     manifest_repo_analysis_paths: set[str] = set()
     repository_consumers: dict[str, tuple[str, set[str]]] = {}
 
@@ -384,6 +560,16 @@ def main() -> int:
                     )
             continue
 
+        if entry.get("kind") == "web":
+            validate_web_entry(
+                root,
+                entry,
+                categories,
+                errors,
+                manifest_web_markdown_paths,
+            )
+            continue
+
         if "docs_paths" in entry:
             errors.append(f"{source_id}: non-repository entries must use docs_path")
         derived_path = entry.get("derived_path")
@@ -434,6 +620,13 @@ def main() -> int:
             rel = derived_file.relative_to(root).as_posix()
             if rel not in manifest_derived_paths:
                 errors.append(f"derived markdown missing from sources.json: {rel}")
+
+    web_markdown_root = root / "derived/web-markdown"
+    if web_markdown_root.exists():
+        for derived_file in sorted(web_markdown_root.rglob("*.md")):
+            rel = derived_file.relative_to(root).as_posix()
+            if rel not in manifest_web_markdown_paths:
+                errors.append(f"web markdown missing from sources.json: {rel}")
 
     repo_analysis_root = root / "derived/repo-analysis"
     if repo_analysis_root.exists():

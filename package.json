@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "python3 -m unittest discover -s tests -p 'test_*.py'",
+    "ingest:web": "node scripts/web-source-to-markdown.mjs",
     "lint:md": "markdownlint-cli2",
     "lint:docs": "./scripts/lint-docs.sh",
     "lint": "npm run lint:md && npm run lint:docs"
@@ -20,11 +21,20 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=20.19"
+  },
   "bugs": {
     "url": "https://github.com/zhongzhouTan-coder/zhongzhouTan-coder.github.io/issues"
   },
   "homepage": "https://github.com/zhongzhouTan-coder/zhongzhouTan-coder.github.io#readme",
   "devDependencies": {
     "markdownlint-cli2": "^0.23.2"
+  },
+  "dependencies": {
+    "defuddle": "0.13.0",
+    "jsdom": "26.1.0",
+    "playwright-core": "1.54.1",
+    "turndown": "7.2.4"
   }
 }

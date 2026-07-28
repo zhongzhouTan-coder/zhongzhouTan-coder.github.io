@@ -1,6 +1,6 @@
 ---
-description: "Use when adding, renaming, classifying, or validating source files under raw/, generated PDF markdown under derived/pdf-markdown/, or generated code-reading notes under derived/repo-analysis/. Maintains canonical categories, readable source filenames, and sources.json manifest entries."
-applyTo: "raw/**/*, derived/pdf-markdown/**/*, derived/repo-analysis/**/*, sources.json, kb-categories.json"
+description: "Use when adding, renaming, classifying, or validating source files under raw/, generated PDF or web markdown, or generated code-reading notes. Maintains canonical categories, readable source filenames, and sources.json manifest entries."
+applyTo: "raw/**/*, derived/pdf-markdown/**/*, derived/web-markdown/**/*, derived/repo-analysis/**/*, sources.json, kb-categories.json"
 ---
 
 # Source Organization Rules
@@ -58,6 +58,14 @@ Generated repository analysis should use:
 derived/repo-analysis/{category}/{repo-slug}/{full-sha}/
 ```
 
+Immutable web captures should use:
+
+```text
+raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.html
+raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.metadata.json
+derived/web-markdown/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.md
+```
+
 Rules:
 
 - Use lowercase ASCII slugs.
@@ -69,6 +77,9 @@ Rules:
 - Treat each repository commit as an immutable source revision. Use the first
   12 commit characters in the raw filename and the full 40-character commit
   in the derived directory.
+- Treat each web capture as an immutable source revision. Hash the rendered
+  HTML with SHA-256, use the first 12 characters in filenames and the source
+  ID, and store the full hash in `sources.json` and the metadata sidecar.
 
 ## Manifest Maintenance
 
@@ -87,6 +98,10 @@ Add `derived_path` when a generated Markdown extraction exists.
 For `kind: "repository"`, require `repo_slug`, `revision`, `docs_paths`, and a
 `derived_path` ending in
 `derived/repo-analysis/{category}/{repo-slug}/{full-sha}/`.
+For `kind: "web"`, require `source_url`, `final_url`, `captured_at`, a
+64-character SHA-256 `revision`, two immutable `raw_paths`, and a
+`derived_path` below `derived/web-markdown/{category}/`. A captured source may
+omit `docs_path`; an ingested source must name and be cited by its docs page.
 
 Run these checks after source or docs changes:
 
@@ -104,4 +119,5 @@ Renaming or moving files under `raw/` is allowed only as repository organization
 - docs page front matter
 - references in `docs/logs/log.md`
 - any related `derived/pdf-markdown/` paths
+- any related `derived/web-markdown/` paths
 - any related `derived/repo-analysis/` paths

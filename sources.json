@@ -4,8 +4,11 @@
     "pdf": "raw/{category}/{slug}--{source_id}.pdf",
     "markdown": "raw/{category}/{slug}.md",
     "repository": "raw/{category}/{repo_slug}-codebase--github-{short_sha}.md",
+    "web_html": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.html",
+    "web_metadata": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.metadata.json",
     "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md",
     "derived_markdown_folder": "derived/pdf-markdown/{category}/{slug}/{slug}.md",
+    "web_markdown": "derived/web-markdown/{category}/{slug}--web-{capture_date}-{short_sha256}.md",
     "repo_analysis": "derived/repo-analysis/{category}/{repo_slug}/{full_sha}/"
   },
   "sources": [

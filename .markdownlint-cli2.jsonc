@@ -57,6 +57,7 @@
     "AGENTS.md",
     ".github/instructions/repo-reading.instructions.md",
     ".github/instructions/source-organization.instructions.md",
+    ".github/instructions/web-source.instructions.md",
     "raw/**/*codebase--github-*.md",
     "derived/repo-analysis/**/*.md"
   ],
