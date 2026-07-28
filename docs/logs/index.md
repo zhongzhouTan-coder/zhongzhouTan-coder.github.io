@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Wiki Index
@@ -67,6 +67,7 @@ updated: 2026-07-27
 - [LLaMA: Open and Efficient Foundation Language Models](../training/llama.md) — Original LLaMA family: 7B-65B decoder-only models trained on 1.0T-1.4T public-data tokens, inference-budget motivation, architecture defaults, efficient training implementation, benchmark comparisons, and safety limitations.
 - [Intrinsic Dimensionality and Language Model Fine-Tuning](../training/intrinsic-dimensionality-fine-tuning/index.md) — Intrinsic-dimension view of pretrained language model fine-tuning: DID/SAID subspace training, low `d90` task dimensions, pretraining as downstream task compression, model-size trends, generalization correlations, and an editable Draw.io explainer.
 - [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/socratic-swe/index.md) — Closed-loop self-evolution framework: trace-derived Agent Skill Registry, skill-guided Generator with four-stage Verifier Gate, gradient-aligned Generator reward via cosine similarity to validation gradient, GDPO-normalized Solver reward, and 50.40% on SWE-bench Verified across three iterations.
+- [MiniMax Sparse Attention (MSA)](../training/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss; 28.4× FLOPs reduction and 14.2× prefill / 7.6× decode speedup at 1M context on a 109B MoE model with native multimodal training.
 
 ## Hardware and Numerics
 

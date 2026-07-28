@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Wiki Log
@@ -135,6 +135,10 @@ updated: 2026-07-27
 - Added [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/deepseek-v2-mla.md) to `docs/algorithms/deepseek-v2-mla.md`, sourced from `raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf` (arXiv:2405.04434, May 2024). Covers MLA's low-rank joint K/V compression, decoupled RoPE, query compression, DeepSeekMoE serving context, MHA/GQA/MQA comparison, ablation results, and reported 93.3% KV-cache reduction with 5.76× maximum generation throughput versus DeepSeek 67B.
 - Converted `raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf` to Markdown via MinerU precise mode, saving result to `derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md`.
 - Added [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/deepseek-v3.2/index.md) to `docs/algorithms/deepseek-v3.2/index.md`, sourced from `raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf` (DeepSeek-AI, 2026). Full paper-insight structure with Big Picture Mermaid diagram, Landscape evolutionary trees, Deep Dive sections covering DSA (lightning indexer, two-stage continued pre-training, MQA-mode instantiation under MLA), scaled GRPO (unbiased KL, off-policy sequence masking, Keep Routing, Keep Sampling Mask), thinking-in-tool-use (context management, cold-start prompting, large-scale agentic task synthesis across code/search/general/code-interpreter domains), What This Buys You with reasoning and agentic benchmark tables, Where It Breaks failure modes, and One Thing to Remember. Includes copied key figures from the original paper (DSA architecture, thinking retention, inference costs, RL curves, context management).
+
+## 2026-07-28
+
+- Added [MiniMax Sparse Attention (MSA)](../training/minimax-sparse-attention/index.md) to `docs/training/minimax-sparse-attention/index.md`, sourced from `raw/training/minimax-sparse-attention--paper.pdf` (Lai et al., MiniMax, 2026). Full paper-insight structure with Big Picture Mermaid diagram, Landscape evolutionary tree (Softmax Attention → MQA → GQA → Native Sparse → MSA), Deep Dive sections covering Index Branch architecture, KL alignment loss, training stability mechanisms (gradient detach, indexer warmup, forced local block), exp-free TopK kernel, KV-outer sparse attention, and sparse KL loss optimization. Covers 109B MoE results: MSA-PT (from scratch) and MSA-CPT (continued pretraining) matching GQA on downstream benchmarks, 28.4× FLOPs reduction, 14.2× prefill and 7.6× decode speedup at 1M context on H800. Converted via MinerU precise mode to `derived/pdf-markdown/training/minimax-sparse-attention.md`. Normalized raw filename from `raw/model/minimax-m3.pdf` to `raw/training/minimax-sparse-attention--paper.pdf`. Copied four renamed figure assets (architecture overview, training LM loss, CPT KL loss, FLOPs reduction).
 
 ## 2026-07-27
 

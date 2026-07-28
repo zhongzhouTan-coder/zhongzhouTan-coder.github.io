@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Training
@@ -19,3 +19,4 @@ updated: 2026-07-27
 - [LLaMA: Open and Efficient Foundation Language Models](llama.md) — Trains 7B-65B decoder-only foundation models on 1.0T-1.4T public-data tokens, showing that smaller long-trained models can rival much larger closed models under practical inference budgets.
 - [Intrinsic Dimensionality and Language Model Fine-Tuning](intrinsic-dimensionality-fine-tuning/index.md)
 - [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](socratic-swe/index.md)
+- [MiniMax Sparse Attention (MSA)](minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per group, Main Branch computes exact block-sparse softmax attention, trained with KL alignment loss. 28.4× FLOPs reduction and 14.2× prefill speedup at 1M context on a 109B MoE model.

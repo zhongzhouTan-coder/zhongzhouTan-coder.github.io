@@ -393,6 +393,17 @@
       "derived_path": "derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md",
       "docs_path": "docs/training/sequence-parallelism/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "paper:minimax-sparse-attention",
+      "title": "MiniMax Sparse Attention (MSA)",
+      "slug": "minimax-sparse-attention",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/minimax-sparse-attention--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/minimax-sparse-attention.md",
+      "docs_path": "docs/training/minimax-sparse-attention/index.md",
+      "status": "ingested"
     }
   ]
 }
