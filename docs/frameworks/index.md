@@ -13,5 +13,6 @@ updated: 2026-07-15
 - [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md)
 - [Harbor: Agent Evaluation Framework Design](harbor-framework/index.md)
 - [SGLang: Structured Language Model Programs](sglang-framework.md)
+- [Triton: Tiled GPU Kernel Language and Compiler](triton-language/index.md)
 - [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md)

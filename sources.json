@@ -262,6 +262,17 @@
       "status": "ingested"
     },
     {
+      "id": "mapl:2019-tillet-kung-cox",
+      "title": "Triton: An Intermediate Language and Compiler for Tiled Neural Network Computations",
+      "slug": "triton-tiled-gpu-kernel-language-compiler",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": ["raw/frameworks/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"],
+      "derived_path": "derived/pdf-markdown/frameworks/triton-tiled-gpu-kernel-language-compiler.md",
+      "docs_path": "docs/frameworks/triton-language/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2410.09426v4",
       "title": "FlatQuant: Fast Learnable Affine Quantization",
       "slug": "flatquant-fast-learnable-affine-quantization",
