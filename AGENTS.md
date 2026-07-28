@@ -7,6 +7,8 @@ This repository is a markdown knowledge base.
 
 - `raw/` stores original source files. Never modify them.
 - `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats. These files are derived from `raw/` sources and may be regenerated.
+- `external-repos/` stores local third-party repository checkouts used for code reading. This directory is ignored by git. Agents may inspect files there but must not edit them.
+- `derived/repo-analysis/` stores generated code-reading notes extracted from local repository checkouts. These files are derived from pinned repository commits and may be regenerated.
 - `docs/` stores AI-maintained markdown knowledge pages by topic.
 - `docs/logs/index.md` is the wiki index.
 - `docs/logs/log.md` is the chronological change log.
@@ -15,6 +17,7 @@ This repository is a markdown knowledge base.
 
 - For docs page front matter and topic placement, read `.github/instructions/docs-front-matter.instructions.md`.
 - For paper-insight page body structure, read `.github/instructions/docs-content-structure.instructions.md`.
+- For code repository reading pages and local checkout handling, read `.github/instructions/repo-reading.instructions.md`.
 - For term glossary pages, read `.github/instructions/docs-terms.instructions.md`.
 - For source categories, raw/derived naming, and manifest maintenance, read `.github/instructions/source-organization.instructions.md`.
 - For `docs/logs/index.md` and `docs/logs/log.md`, read `.github/instructions/logs-maintenance.instructions.md`.
@@ -23,6 +26,7 @@ This repository is a markdown knowledge base.
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
 - When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
+- When a new code repository source is added: require the user-provided checkout to live under `external-repos/`, pin the exact commit SHA, create a canonical `raw/{category}/{repo-slug}-codebase--github.md` source record, add or update `sources.json` with `kind: "repository"`, inspect the local checkout without modifying it, save generated reading notes under `derived/repo-analysis/{category}/{repo-slug}/`, then create or update the relevant code-reading page under `docs/`. Cite the raw source record and any derived repo-analysis files in docs front matter.
 - When adding a new paper or docs page, inspect existing related pages from `docs/logs/index.md` and the target topic folder. Update those pages when the new material changes the landscape, supersedes an older claim, adds a needed comparison, or should be linked as related context.
 - Do not rewrite related pages just because a new page exists. Keep related-page edits scoped to factual corrections, changed confidence, cross-links, short comparison notes, or synthesis that improves retrieval.
 - If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.

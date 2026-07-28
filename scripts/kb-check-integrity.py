@@ -50,12 +50,32 @@ def source_id_suffix(source_id: str) -> str:
 def expected_raw_name(entry: dict, raw_path: str) -> str | None:
     path = Path(raw_path)
     suffix = path.suffix
+    if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
+        return f"{entry['slug']}--github{suffix}"
     if suffix == ".pdf":
         source_suffix = entry.get("source_suffix", source_id_suffix(entry["id"]))
         return f"{entry['slug']}--{source_suffix}.pdf"
     if suffix in {".md", ".mdx"} and len(entry.get("raw_paths", [])) == 1:
         return f"{entry['slug']}{suffix}"
     return None
+
+
+def normalized_path(path: str) -> str:
+    return Path(path.rstrip("/")).as_posix()
+
+
+def cites_file_beneath(doc_sources: set[str], directory: str) -> bool:
+    full_directory = (ROOT / directory).resolve()
+    for source in doc_sources:
+        full_source = (ROOT / source).resolve()
+        if full_source == full_directory or not full_source.is_file():
+            continue
+        try:
+            full_source.relative_to(full_directory)
+        except ValueError:
+            continue
+        return True
+    return False
 
 
 def main() -> int:
@@ -65,6 +85,7 @@ def main() -> int:
     seen_ids: set[str] = set()
     manifest_raw_paths: set[str] = set()
     manifest_derived_paths: set[str] = set()
+    manifest_repo_analysis_paths: set[str] = set()
 
     for entry in manifest:
         source_id = entry["id"]
@@ -79,6 +100,7 @@ def main() -> int:
 
         raw_prefix = categories[category]["raw_prefix"]
         derived_prefix = categories[category]["derived_prefix"]
+        repo_analysis_prefix = categories[category].get("repo_analysis_prefix")
         docs_prefix = categories[category]["docs_prefix"]
 
         for raw_path in entry.get("raw_paths", []):
@@ -96,19 +118,28 @@ def main() -> int:
 
         derived_path = entry.get("derived_path")
         if derived_path:
-            manifest_derived_paths.add(derived_path)
-            if not derived_prefix:
-                errors.append(f"{source_id}: category has no derived prefix: {category}")
-            elif not derived_path.startswith(derived_prefix):
-                errors.append(f"{source_id}: derived path outside category prefix: {derived_path}")
-            if not (ROOT / derived_path).exists():
-                errors.append(f"{source_id}: missing derived path: {derived_path}")
-            expected_derived_name = f"{entry['slug']}.md"
-            if Path(derived_path).name != expected_derived_name:
-                errors.append(
-                    f"{source_id}: derived filename should be {expected_derived_name}, "
-                    f"got {Path(derived_path).name}"
-                )
+            if entry.get("kind") == "repository":
+                manifest_repo_analysis_paths.add(normalized_path(derived_path))
+                if not repo_analysis_prefix:
+                    errors.append(f"{source_id}: category has no repo analysis prefix: {category}")
+                elif not derived_path.startswith(repo_analysis_prefix):
+                    errors.append(f"{source_id}: repo analysis path outside category prefix: {derived_path}")
+                if not (ROOT / derived_path).exists():
+                    errors.append(f"{source_id}: missing repo analysis path: {derived_path}")
+            else:
+                manifest_derived_paths.add(derived_path)
+                if not derived_prefix:
+                    errors.append(f"{source_id}: category has no derived prefix: {category}")
+                elif not derived_path.startswith(derived_prefix):
+                    errors.append(f"{source_id}: derived path outside category prefix: {derived_path}")
+                elif not (ROOT / derived_path).exists():
+                    errors.append(f"{source_id}: missing derived path: {derived_path}")
+                expected_derived_name = f"{entry['slug']}.md"
+                if Path(derived_path).name != expected_derived_name:
+                    errors.append(
+                        f"{source_id}: derived filename should be {expected_derived_name}, "
+                        f"got {Path(derived_path).name}"
+                    )
 
         docs_path = entry.get("docs_path")
         if docs_path:
@@ -122,8 +153,17 @@ def main() -> int:
                 for raw_path in entry.get("raw_paths", []):
                     if raw_path.endswith((".pdf", ".md", ".mdx")) and raw_path not in doc_sources:
                         errors.append(f"{source_id}: docs front matter missing source {raw_path}")
-                if derived_path and derived_path not in doc_sources:
-                    errors.append(f"{source_id}: docs front matter missing derived source {derived_path}")
+                if derived_path:
+                    if entry.get("kind") == "repository":
+                        if not cites_file_beneath(doc_sources, derived_path):
+                            errors.append(
+                                f"{source_id}: docs front matter missing derived source "
+                                f"beneath {derived_path}"
+                            )
+                    elif derived_path not in doc_sources:
+                        errors.append(
+                            f"{source_id}: docs front matter missing derived source {derived_path}"
+                        )
 
     for raw_path in sorted(p for p in (ROOT / "raw").rglob("*") if p.is_file()):
         rel = raw_path.relative_to(ROOT).as_posix()
@@ -134,6 +174,14 @@ def main() -> int:
         rel = derived_path.relative_to(ROOT).as_posix()
         if rel not in manifest_derived_paths:
             errors.append(f"derived markdown missing from sources.json: {rel}")
+
+    repo_analysis_root = ROOT / "derived/repo-analysis"
+    if repo_analysis_root.exists():
+        for category_dir in sorted(p for p in repo_analysis_root.iterdir() if p.is_dir()):
+            for analysis_dir in sorted(p for p in category_dir.iterdir() if p.is_dir()):
+                rel = analysis_dir.relative_to(ROOT).as_posix()
+                if rel not in manifest_repo_analysis_paths:
+                    errors.append(f"repository analysis missing from sources.json: {rel}/")
 
     if errors:
         for error in errors:

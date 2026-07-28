@@ -3,7 +3,10 @@
   "naming_policy": {
     "pdf": "raw/{category}/{slug}--{source_id}.pdf",
     "markdown": "raw/{category}/{slug}.md",
-    "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md"
+    "repository": "raw/{category}/{slug}--github.md",
+    "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md",
+    "derived_markdown_folder": "derived/pdf-markdown/{category}/{slug}/{slug}.md",
+    "repo_analysis": "derived/repo-analysis/{category}/{repo_slug}/"
   },
   "sources": [
     {
