@@ -37,7 +37,7 @@ raw/{category}/{short-title-slug}.md
 Repository source records should use:
 
 ```text
-raw/{category}/{repo-slug}-codebase--github.md
+raw/{category}/{repo-slug}-codebase--github-{short-sha}.md
 ```
 
 Generated Markdown should use:
@@ -55,7 +55,7 @@ derived/pdf-markdown/{category}/{short-title-slug}/{short-title-slug}.md
 Generated repository analysis should use:
 
 ```text
-derived/repo-analysis/{category}/{repo-slug}/
+derived/repo-analysis/{category}/{repo-slug}/{full-sha}/
 ```
 
 Rules:
@@ -66,6 +66,9 @@ Rules:
 - Use a short stable source suffix such as `arxiv-2205.14135v2`, `paper`, `web`, `github`, or a publisher label.
 - Do not use bare arXiv IDs, spaces, pipes, or punctuation-heavy filenames.
 - Do not store full repository checkouts under `raw/`; store them under ignored `external-repos/` and keep only the pinned source record under `raw/`.
+- Treat each repository commit as an immutable source revision. Use the first
+  12 commit characters in the raw filename and the full 40-character commit
+  in the derived directory.
 
 ## Manifest Maintenance
 
@@ -77,11 +80,13 @@ Every ingested source should have an entry in `sources.json` with:
 - `category`
 - `kind`
 - `raw_paths`
-- `docs_path`
+- `docs_path` for non-repository sources, or `docs_paths` for repository revisions
 - `status`
 
 Add `derived_path` when a generated Markdown extraction exists.
-For `kind: "repository"`, `derived_path` may point to a directory under `derived/repo-analysis/{category}/{repo-slug}/`.
+For `kind: "repository"`, require `repo_slug`, `revision`, `docs_paths`, and a
+`derived_path` ending in
+`derived/repo-analysis/{category}/{repo-slug}/{full-sha}/`.
 
 Run these checks after source or docs changes:
 

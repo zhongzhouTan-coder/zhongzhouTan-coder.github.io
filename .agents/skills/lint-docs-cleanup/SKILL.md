@@ -13,7 +13,7 @@ Primary lint commands:
 # Full lint: custom checks + markdownlint
 ./scripts/lint-docs.sh
 
-# Markdownlint only (fast style check)
+# Markdownlint only (configured docs, instructions, and source records)
 npx markdownlint-cli2
 ```
 
@@ -21,7 +21,9 @@ Workflow:
 
 1. Read the relevant files under `docs/`, `logs/`, and `raw/` before changing anything.
 2. Run `./scripts/lint-docs.sh` to identify broken links, orphan docs pages, missing front matter fields, stub pages, placeholder text, and markdownlint violations.
-3. Run `npx markdownlint-cli2` separately for a focused style check on docs/ markdown files.
+3. Run `npx markdownlint-cli2` separately for the configured Markdown scope,
+   including docs, repository-reading instructions, repository source records,
+   and derived repository notes.
 4. Fix safe issues directly when the correct repair is clear.
 5. When fixing markdownlint violations, follow the rules in `.markdownlint-cli2.jsonc`:
    - Fenced code blocks must have a language tag (MD040)

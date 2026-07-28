@@ -3,10 +3,10 @@
   "naming_policy": {
     "pdf": "raw/{category}/{slug}--{source_id}.pdf",
     "markdown": "raw/{category}/{slug}.md",
-    "repository": "raw/{category}/{slug}--github.md",
+    "repository": "raw/{category}/{repo_slug}-codebase--github-{short_sha}.md",
     "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md",
     "derived_markdown_folder": "derived/pdf-markdown/{category}/{slug}/{slug}.md",
-    "repo_analysis": "derived/repo-analysis/{category}/{repo_slug}/"
+    "repo_analysis": "derived/repo-analysis/{category}/{repo_slug}/{full_sha}/"
   },
   "sources": [
     {
@@ -273,6 +273,32 @@
       "raw_paths": ["raw/frameworks/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"],
       "derived_path": "derived/pdf-markdown/frameworks/triton-tiled-gpu-kernel-language-compiler.md",
       "docs_path": "docs/frameworks/triton-language/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@d18ed2304a2703e3211fc384a58607e754f5b723",
+      "title": "vLLM Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "d18ed2304a2703e3211fc384a58607e754f5b723",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": ["raw/frameworks/vllm-codebase--github-d18ed2304a27.md"],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
+      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md"],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@8645122088f5cad1701205310573c5ee05c809f5",
+      "title": "vLLM Ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "8645122088f5cad1701205310573c5ee05c809f5",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": ["raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
+      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md"],
       "status": "ingested"
     },
     {

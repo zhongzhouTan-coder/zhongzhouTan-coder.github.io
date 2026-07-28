@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
+from typing import Any
 
 
-ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 def source_id_suffix(source_id: str) -> str:
@@ -20,12 +23,19 @@ def source_id_suffix(source_id: str) -> str:
     return source_id.replace(":", "-")
 
 
-def expected_raw_path(entry: dict, raw_path: str) -> str | None:
+def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
     path = Path(raw_path)
     category = entry["category"]
     suffix = path.suffix
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
-        return f"raw/{category}/{entry['slug']}--github{suffix}"
+        repo_slug = entry.get("repo_slug")
+        revision = entry.get("revision", "")
+        if repo_slug and SHA_RE.fullmatch(revision):
+            return (
+                f"raw/{category}/{repo_slug}-codebase--github-"
+                f"{revision[:12]}{suffix}"
+            )
+        return None
     if suffix == ".pdf":
         source_suffix = entry.get("source_suffix", source_id_suffix(entry["id"]))
         return f"raw/{category}/{entry['slug']}--{source_suffix}.pdf"
@@ -34,14 +44,24 @@ def expected_raw_path(entry: dict, raw_path: str) -> str | None:
     return None
 
 
-def expected_derived_path(entry: dict) -> str | None:
+def expected_derived_path(entry: dict[str, Any]) -> str | None:
     actual_path = entry.get("derived_path")
     if not actual_path:
         return None
     if entry.get("kind") == "repository":
-        return actual_path
+        repo_slug = entry.get("repo_slug")
+        revision = entry.get("revision")
+        if repo_slug and SHA_RE.fullmatch(revision or ""):
+            return (
+                f"derived/repo-analysis/{entry['category']}/"
+                f"{repo_slug}/{revision}/"
+            )
+        return None
     flat_path = f"derived/pdf-markdown/{entry['category']}/{entry['slug']}.md"
-    folder_path = f"derived/pdf-markdown/{entry['category']}/{entry['slug']}/{entry['slug']}.md"
+    folder_path = (
+        f"derived/pdf-markdown/{entry['category']}/"
+        f"{entry['slug']}/{entry['slug']}.md"
+    )
     if actual_path in {flat_path, folder_path}:
         return actual_path
     return flat_path
@@ -49,10 +69,19 @@ def expected_derived_path(entry: dict) -> str | None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=DEFAULT_ROOT,
+        help="Knowledge-base root (defaults to this script's repository).",
+    )
     parser.add_argument("--manifest", default="sources.json")
     args = parser.parse_args()
 
-    manifest = json.loads((ROOT / args.manifest).read_text(encoding="utf-8"))["sources"]
+    root = args.root.resolve()
+    manifest = json.loads(
+        (root / args.manifest).read_text(encoding="utf-8")
+    )["sources"]
     mismatches = 0
 
     for entry in manifest:
