@@ -1,0 +1,24 @@
+flowchart LR
+  Q["Queries φ(Q)<br/>N × C"]
+  K["Keys φ(K)<br/>N × C"]
+  V["Values V<br/>N × M"]
+  A["① Attention matrix<br/>φ(Q)φ(K)ᵀ<br/>N × N"]
+  O1["Output<br/>N × M"]
+  S["② Summary matrix<br/>S = φ(K)ᵀV<br/>C × M"]
+  Z["Normalizer<br/>z = Σφ(K)<br/>C"]
+  O2["③ Normalized output<br/>φ(Q)S / φ(Q)z<br/>N × M"]
+
+  Q --> A
+  K --> A
+  A --> O1
+  V --> O1
+
+  K --> S
+  V --> S
+  S --> O2
+  Q --> O2
+  K --> Z --> O2
+
+  style A fill:#f8cecc,stroke:#b85450
+  style S fill:#d5e8d4,stroke:#82b366
+  style O2 fill:#dae8fc,stroke:#6c8ebf

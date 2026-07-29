@@ -35,6 +35,17 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2006.16236v3",
+      "title": "Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention",
+      "slug": "transformers-are-rnns-linear-attention",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": ["raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf"],
+      "derived_path": "derived/pdf-markdown/algorithms/transformers-are-rnns-linear-attention.md",
+      "docs_path": "docs/algorithms/linear-attention/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2405.04434",
       "title": "DeepSeek-V2 Multi-Head Latent Attention",
       "slug": "deepseek-v2-multi-head-latent-attention",
@@ -496,7 +507,7 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": ["raw/training/swat-sliding-window-attention-training--paper.pdf"],
-      "derived_path": "derived/pdf-markdown/training/sliding-window-attention.md",
+      "derived_path": "derived/pdf-markdown/training/swat-sliding-window-attention-training.md",
       "docs_path": "docs/training/swat-sliding-window-attention/index.md",
       "status": "ingested"
     },

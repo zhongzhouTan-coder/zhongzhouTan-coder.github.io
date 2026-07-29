@@ -41,9 +41,9 @@ updated: 2026-07-29
 
 ## Why This Exists
 
-Imagine training a 48B MoE model with standard [MLA](../../algorithms/deepseek-v2-mla.md) attention. At 1.4T tokens, the model works fine on short contexts — but the moment you need 128k-token retrieval or long-horizon RL reasoning, you hit a wall: the KV cache grows linearly with sequence length, eating GPU memory and making decoding painfully slow. At 1M tokens, each token takes 11.48 ms to decode.
+Imagine training a 48B MoE model with standard [MLA](../../algorithms/deepseek-v2-mla.md) attention. At 1.4T tokens, the model works fine on short contexts — but the moment you need 128k-token retrieval or long-horizon RL reasoning, you hit a wall: the [KV cache](../../terms/kv-cache.md) grows linearly with sequence length, eating GPU memory and making decoding painfully slow. At 1M tokens, each token takes 11.48 ms to decode.
 
-Pure [linear attention](../../terms/index.md) approaches (Mamba2, GLA, Gated DeltaNet) have tried to fix this with fixed-size recurrent states, but they historically underperform full attention — even on short sequences — because their coarse, scalar-level forget gates can't selectively retain the right memories. GDN uses one scalar α per head; KDA gives every one of the 128 key dimensions its own independent α.
+Pure [linear attention](../../terms/linear-attention.md) approaches (Mamba2, GLA, Gated DeltaNet) have tried to fix this with fixed-size recurrent states, but they historically underperform full attention — even on short sequences — because their coarse, scalar-level forget gates can't selectively retain the right memories. GDN uses one scalar α per head; KDA gives every one of the 128 key dimensions its own independent α.
 
 The question: can you get *better* quality than full attention while using *less* memory and being *faster*? Kimi Linear answers yes — by making the forget gate fine-grained enough to actually work.
 

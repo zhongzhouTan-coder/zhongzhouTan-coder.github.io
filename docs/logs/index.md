@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-28
+updated: 2026-07-29
 ---
 
 # Wiki Index
@@ -47,6 +47,7 @@ updated: 2026-07-28
 
 - [Algorithms](../algorithms/index.md) — Category overview for inference algorithm and kernel pages.
 - [The Transformer: Attention Is All You Need](../algorithms/transformer.md) — The foundational architecture: scaled dot-product attention, multi-head self-attention, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that launched modern LLMs.
+- [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Kernel feature maps, associative reordering, causal recurrent states, linear sequence complexity, benchmark interpretation, and fixed-capacity retrieval limits.
 - [Collaborative Multi-Head Attention](../algorithms/collaborative-attention.md) — Redesigns MHA with shared key/query projections and per-head mixing vectors, enabling 4× compression of Q/K dimensions; CP tensor decomposition for post-hoc conversion of pretrained models.
 - [Multi-Query Attention: One Write-Head is All You Need](../algorithms/multi-query-attention.md) — Shares one K/V across all attention heads, shrinking incremental decoder memory bandwidth 8× for a 12× inference speedup with negligible quality loss.
 - [Grouped-Query Attention in Llama 2](../algorithms/grouped-query-attention/index.md) — Llama 2's 34B/70B GQA decision: 8 KV groups, 30B MHA/MQA/GQA ablation, higher large-batch throughput, and simpler 8-GPU tensor-parallel serving than MQA.

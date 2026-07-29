@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-07-27
+updated: 2026-07-29
 ---
 
 # Terms Glossary
@@ -23,7 +23,8 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Algorithms
 
-_No terms yet. Terms are auto-created when agents detect a concept reused across multiple paper insight pages._
+- [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
+- [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
 
 ## Hardware
 

@@ -1,0 +1,15 @@
+flowchart TD
+  Kernel["Kernel view of attention<br/>Tsai et al. 2019"] --> Linear["Linear Attention<br/>Katharopoulos et al. 2020"]
+  Softmax["Softmax Transformer<br/>Vaswani et al. 2017<br/>O(N²), exact content lookup"] --> Sparse["Sparse Transformer<br/>fixed sparse pattern"]
+  Softmax --> Reformer["Reformer<br/>LSH, O(N log N)"]
+  Softmax --> Linear
+  Assoc["Associativity<br/>(QKᵀ)V = Q(KᵀV)"] --> Linear
+  Linear --> Performer["Performer<br/>random features approximate softmax"]
+  Linear --> GLA["Gated Linear Attention<br/>learned decay"]
+  GLA --> Delta["Gated DeltaNet / KDA<br/>selective update + forgetting"]
+  Linear --> Hybrid["Modern hybrids<br/>linear + full attention"]
+  Delta --> Hybrid
+
+  style Linear fill:#d5e8d4,stroke:#82b366
+  style Softmax fill:#dae8fc,stroke:#6c8ebf
+  style Hybrid fill:#fff2cc,stroke:#d6b656

@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/training/swat-sliding-window-attention-training--paper.pdf
-  - derived/pdf-markdown/training/sliding-window-attention.md
+  - derived/pdf-markdown/training/swat-sliding-window-attention-training.md
 updated: 2026-07-29
 ---
 
