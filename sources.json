@@ -490,6 +490,17 @@
       "status": "ingested"
     },
     {
+      "id": "paper:swat-sliding-window-attention-training",
+      "title": "SWAT: Sliding Window Attention Training for Efficient Large Language Models",
+      "slug": "swat-sliding-window-attention-training",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/swat-sliding-window-attention-training--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/sliding-window-attention.md",
+      "docs_path": "docs/training/swat-sliding-window-attention/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "paper:deepseek-v4",
       "title": "DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence",
       "slug": "deepseek-v4",
