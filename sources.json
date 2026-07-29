@@ -510,6 +510,17 @@
       "derived_path": "derived/pdf-markdown/training/deepseek-v4.md",
       "docs_path": "docs/training/deepseek-v4/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "paper:kimi-linear",
+      "title": "Kimi Linear: An Expressive, Efficient Attention Architecture",
+      "slug": "kimi-linear-expressive-efficient-attention",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/kimi-linear-expressive-efficient-attention--paper.pdf"],
+      "derived_path": "derived/pdf-markdown/training/kimi-linear-expressive-efficient-attention.md",
+      "docs_path": "docs/training/kimi-linear/index.md",
+      "status": "ingested"
     }
   ]
 }
