@@ -77,6 +77,7 @@ updated: 2026-07-29
 - [SWAT: Sliding Window Attention Training](../training/swat-sliding-window-attention/index.md) — Sigmoid-based sliding window attention training: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability; SOTA on 8 commonsense reasoning benchmarks versus linear recurrent baselines at 340M/760M scale.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction, decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.
 - [Kimi Linear: Expressive Efficient Attention Architecture](../training/kimi-linear/index.md) — Hybrid linear attention: KDA with channel-wise gating extends Gated DeltaNet, 3:1 KDA-to-MLA layer ratio with NoPE, 48B MoE (3B active); for the first time outperforms full attention across short/long/RL regimes, 6.3× decoding speedup at 1M context.
+- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi-k3/index.md) — 2.8T/104B-active native multimodal MoE with hybrid KDA/MLA attention, Stable LatentMoE, 1M context, multi-effort agentic RL, MoonEP balanced expert-parallel training, and long-rollout cache/sandbox infrastructure.
 
 ## Hardware and Numerics
 
@@ -87,7 +88,9 @@ updated: 2026-07-29
 ## Terms
 
 - [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
+- [Kimi Delta Attention](../terms/kimi-delta-attention.md) — Gated linear-attention mechanism that extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
 - [Microbatch](../terms/microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work in a pipeline schedule.
+- [Mixture of Experts](../terms/mixture-of-experts.md) — Sparse model architecture that routes each token through a few experts to increase total capacity without activating every parameter.
 - [Scatter/Gather](../terms/scatter-gather.md) — Cross-node communication optimization that avoids redundant activation transfers over slow inter-node links.
 
 ## Sources

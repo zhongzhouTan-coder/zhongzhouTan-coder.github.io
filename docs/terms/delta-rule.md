@@ -8,12 +8,14 @@ category: algorithms
 sources:
   - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
+  - raw/training/k3-technical-report--paper.pdf
 aliases:
   - delta update rule
   - Widrow-Hoff rule
 appears_in:
   - docs/training/gated-delta-networks/index.md
   - docs/training/kimi-linear/index.md
+  - docs/training/kimi-k3/index.md
 updated: 2026-07-29
 ---
 
@@ -48,7 +50,9 @@ The update is only as selective as the learned keys: overlapping key directions 
 
 - [Gated Delta Networks](../training/gated-delta-networks/index.md) — Combines the delta rule with data-dependent scalar decay and a chunkwise parallel training algorithm.
 - [Kimi Linear](../training/kimi-linear/index.md) — Extends Gated DeltaNet to channel-wise decay under a hardware-efficient DPLR constraint.
+- [Kimi K3](../training/kimi-k3/index.md) — Uses KDA's delta-rule update inside the 3:1 KDA/MLA hybrid attention stack.
 
 ## Related Terms
 
 - [Linear Attention](linear-attention.md) — The broader fixed-state attention family in which DeltaNet operates.
+- [Kimi Delta Attention](kimi-delta-attention.md) — A channel-wise delta-rule attention mechanism.

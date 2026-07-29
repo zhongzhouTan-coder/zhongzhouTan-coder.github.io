@@ -15,13 +15,13 @@ updated: 2026-07-29
 **Authors:** Kimi Team (Moonshot AI)
 **Source:** [github.com/MoonshotAI/Kimi-Linear](https://github.com/MoonshotAI/Kimi-Linear)
 
-**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../../algorithms/deepseek-v2-mla.md), [Multi-Query Attention](../../algorithms/multi-query-attention.md), [DeepSeek-V4](../../training/deepseek-v4/index.md), [SWAT: Sliding Window Attention Training](../swat-sliding-window-attention/index.md), [MiniMax Sparse Attention (MSA)](../minimax-sparse-attention/index.md)
+**Related pages:** [Kimi K3](../kimi-k3/index.md), [DeepSeek-V2 Multi-Head Latent Attention](../../algorithms/deepseek-v2-mla.md), [Multi-Query Attention](../../algorithms/multi-query-attention.md), [DeepSeek-V4](../../training/deepseek-v4/index.md), [SWAT: Sliding Window Attention Training](../swat-sliding-window-attention/index.md), [MiniMax Sparse Attention (MSA)](../minimax-sparse-attention/index.md)
 
 ## TL;DR
 
 **What:** A hybrid linear attention architecture (Kimi Linear) that combines channel-wise gated delta attention (KDA) with periodic full MLA layers in a 3:1 ratio, outperforming full attention for the first time on short-context, long-context, and RL tasks.
 
-**How:** KDA extends Gated DeltaNet's scalar forget gate to per-channel diagonal gating, constrained to a hardware-efficient DPLR variant that runs at ~2× the speed of general DPLR; the hybrid design delegates positional encoding entirely to KDA layers via NoPE on MLA layers.
+**How:** [KDA](../../terms/kimi-delta-attention.md) extends Gated DeltaNet's scalar forget gate to per-channel diagonal gating, constrained to a hardware-efficient DPLR variant that runs at ~2× the speed of general DPLR; the hybrid design delegates positional encoding entirely to KDA layers via NoPE on MLA layers.
 
 **The number:** 51.0 on MMLU-Pro (vs. 47.2 for MLA), 84.3 on RULER (128k, vs. 81.3 for MLA), 6.3× faster decoding at 1M context — all from a 48B MoE model with 3B active parameters trained on 1.4T tokens.
 

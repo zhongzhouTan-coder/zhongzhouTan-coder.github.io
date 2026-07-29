@@ -546,13 +546,14 @@
     },
     {
       "id": "paper:k3-technical-report",
-      "title": "K3 Technical Report",
+      "title": "Kimi K3: Open Frontier Intelligence",
       "slug": "k3-technical-report",
       "category": "training",
       "kind": "paper",
       "raw_paths": ["raw/training/k3-technical-report--paper.pdf"],
-      "docs_path": "docs/training/index.md",
-      "status": "captured"
+      "derived_path": "derived/pdf-markdown/training/k3-technical-report.md",
+      "docs_path": "docs/training/kimi-k3/index.md",
+      "status": "ingested"
     }
   ]
 }

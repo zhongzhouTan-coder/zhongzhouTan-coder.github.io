@@ -5,15 +5,10 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-  - raw/training/k3-technical-report--paper.pdf
 updated: 2026-07-29
 ---
 
 # Training
-
-## Captured Sources Awaiting Insight
-
-- **K3 Technical Report** — Original PDF captured at `raw/training/k3-technical-report--paper.pdf`; a dedicated insight page and derived extraction have not yet been created.
 
 ## Insight Pages
 
@@ -31,3 +26,4 @@ updated: 2026-07-29
 - [SWAT: Sliding Window Attention Training](swat-sliding-window-attention/index.md) — Trains Transformers from scratch with sigmoid-based sliding window attention: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability. SOTA on 8 commonsense reasoning benchmarks at 340M/760M vs. linear recurrent baselines with $O(N\omega)$ inference.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](gated-delta-networks/index.md) — Combines Mamba2-style global decay with DeltaNet's key-targeted correction, preserving hardware-efficient chunkwise training; at 1.3B/100B, the pure model beats Mamba2 and DeltaNet while SWA hybrids improve retrieval further.
 - [Kimi Linear: Expressive Efficient Attention Architecture](kimi-linear/index.md) — Hybrid linear attention that for the first time outperforms full MLA across short-context, long-context, and RL: KDA extends Gated DeltaNet with channel-wise gating, 3:1 KDA-to-MLA layer ratio with NoPE, 48B MoE with 3B active, up to 6.3× decoding speedup and 75% KV cache reduction at 1M context.
+- [Kimi K3: Open 3T-Class Frontier Model](kimi-k3/index.md) — 2.8T-parameter native multimodal MoE with 104B active parameters, hybrid KDA/MLA attention, 1M-token context, Stable LatentMoE, multi-effort agentic RL, MoonEP balanced expert training, and long-rollout cache/sandbox infrastructure.

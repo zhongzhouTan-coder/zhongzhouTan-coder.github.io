@@ -9,6 +9,7 @@ sources:
   - raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf
   - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
+  - raw/training/k3-technical-report--paper.pdf
 aliases:
   - linear transformer
   - kernelized attention
@@ -16,6 +17,7 @@ appears_in:
   - docs/algorithms/linear-attention/index.md
   - docs/training/gated-delta-networks/index.md
   - docs/training/kimi-linear/index.md
+  - docs/training/kimi-k3/index.md
 updated: 2026-07-29
 ---
 
@@ -72,8 +74,10 @@ Linear attention usually changes or approximates the softmax kernel, and its fix
 - [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Establishes kernel factorization, associative reordering, and the causal recurrent formulation.
 - [Gated Delta Networks](../training/gated-delta-networks/index.md) — Adds adaptive global decay and key-targeted delta updates to a matrix-valued recurrent state.
 - [Kimi Linear](../training/kimi-linear/index.md) — Extends the family with channel-wise forgetting, delta-rule updates, and periodic full-attention layers.
+- [Kimi K3](../training/kimi-k3/index.md) — Scales Kimi-family linear attention to a 2.8T MoE with lower-bounded decay for BF16 Tensor Core kernels.
 
 ## Related Terms
 
 - [KV Cache](kv-cache.md) — Explicit key/value history used by conventional autoregressive attention.
 - [Delta Rule](delta-rule.md) — Key-targeted online error correction for associative memory.
+- [Kimi Delta Attention](kimi-delta-attention.md) — A channel-wise gated delta-rule member of the linear-attention family.
