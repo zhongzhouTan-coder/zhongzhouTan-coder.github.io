@@ -532,6 +532,27 @@
       "derived_path": "derived/pdf-markdown/training/kimi-linear-expressive-efficient-attention.md",
       "docs_path": "docs/training/kimi-linear/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2412.06464",
+      "title": "Gated Delta Networks: Improving Mamba2 with Delta Rule",
+      "slug": "gated-delta-networks-improving-mamba2-with-delta-rule",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf"],
+      "derived_path": "derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md",
+      "docs_path": "docs/training/gated-delta-networks/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "paper:k3-technical-report",
+      "title": "K3 Technical Report",
+      "slug": "k3-technical-report",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": ["raw/training/k3-technical-report--paper.pdf"],
+      "docs_path": "docs/training/index.md",
+      "status": "captured"
     }
   ]
 }

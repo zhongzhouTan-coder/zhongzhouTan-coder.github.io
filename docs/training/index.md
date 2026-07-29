@@ -5,10 +5,17 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-28
+  - raw/training/k3-technical-report--paper.pdf
+updated: 2026-07-29
 ---
 
 # Training
+
+## Captured Sources Awaiting Insight
+
+- **K3 Technical Report** — Original PDF captured at `raw/training/k3-technical-report--paper.pdf`; a dedicated insight page and derived extraction have not yet been created.
+
+## Insight Pages
 
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](deepseek-v4/) — 1.6T/284B MoE models with CSA+HCA hybrid attention, mHC, and Muon optimizer; achieves 27% FLOPs and 10% KV cache of V3.2 at 1M-token contexts.
 - [GPT-1: Improving Language Understanding by Generative Pre-Training](gpt-1.md) — Introduces the decoder-only Transformer, the pre-train + fine-tune paradigm, task-agnostic input transformations, long-contiguous-text motivation, and transfer ablations.
@@ -22,4 +29,5 @@ updated: 2026-07-28
 - [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](socratic-swe/index.md)
 - [MiniMax Sparse Attention (MSA)](minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per group, Main Branch computes exact block-sparse softmax attention, trained with KL alignment loss. 28.4× FLOPs reduction and 14.2× prefill speedup at 1M context on a 109B MoE model.
 - [SWAT: Sliding Window Attention Training](swat-sliding-window-attention/index.md) — Trains Transformers from scratch with sigmoid-based sliding window attention: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability. SOTA on 8 commonsense reasoning benchmarks at 340M/760M vs. linear recurrent baselines with $O(N\omega)$ inference.
+- [Gated Delta Networks: Improving Mamba2 with Delta Rule](gated-delta-networks/index.md) — Combines Mamba2-style global decay with DeltaNet's key-targeted correction, preserving hardware-efficient chunkwise training; at 1.3B/100B, the pure model beats Mamba2 and DeltaNet while SWA hybrids improve retrieval further.
 - [Kimi Linear: Expressive Efficient Attention Architecture](kimi-linear/index.md) — Hybrid linear attention that for the first time outperforms full MLA across short-context, long-context, and RL: KDA extends Gated DeltaNet with channel-wise gating, 3:1 KDA-to-MLA layer ratio with NoPE, 48B MoE with 3B active, up to 6.3× decoding speedup and 75% KV cache reduction at 1M context.

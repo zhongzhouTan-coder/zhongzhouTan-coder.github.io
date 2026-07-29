@@ -7,12 +7,14 @@ confidence: high
 category: algorithms
 sources:
   - raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf
+  - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
 aliases:
   - linear transformer
   - kernelized attention
 appears_in:
   - docs/algorithms/linear-attention/index.md
+  - docs/training/gated-delta-networks/index.md
   - docs/training/kimi-linear/index.md
 updated: 2026-07-29
 ---
@@ -33,9 +35,27 @@ $$
 (\phi(Q)\phi(K)^T)V=\phi(Q)(\phi(K)^TV).
 $$
 
-The right side summarizes keys and values before applying queries. Under causal masking, prefix states $S_i=\sum_{j\le i}\phi(K_j)V_j^T$ and $Z_i=\sum_{j\le i}\phi(K_j)$ are updated once per token and queried as $\phi(Q_i)^TS_i/\phi(Q_i)^TZ_i$.
+The right side summarizes keys and values before applying queries. Under causal masking, prefix states $S_i=\sum_{j\le i}\phi(K_j)V_j^T$ (a $C \times M$ matrix) and $Z_i=\sum_{j\le i}\phi(K_j)$ (a $C$-vector) are updated once per token and queried as $\phi(Q_i)^TS_i/\phi(Q_i)^TZ_i$, where the numerator is an $M$-vector weighted value sum and the denominator is the scalar sum of the same similarity weights.
 
 Modern variants add learned forgetting, delta-rule updates, convolution, or occasional full-attention layers to make the fixed-capacity state more selective.
+
+## How to Think About Queries, Keys, and Values
+
+In both traditional and linear attention, $Q$, $K$, and $V$ come from the same token representation ($Q = XW_Q$, $K = XW_K$, $V = XW_V$) but serve different roles. The model learns $W_K$ and $W_V$ independently so addressing and content can **specialize**.
+
+| Role | What it answers | Analogy |
+|---|---|---|
+| **$K$ (key)** | "How do I advertise this token so relevant queries find it?" | The **address label** — which folders to file in, and how strongly |
+| **$V$ (value)** | "What useful information should this token contribute?" | The **payload** — the document being filed |
+| **$Q$ (query)** | "Given my current context, which past tokens do I need?" | The **search** — which folders to read from, and how strongly |
+
+The routing weight is always a **$Q$–$K$ match**, not $K$ alone: in traditional attention it's $\text{softmax}(q_i^T k_j)$, and in linear attention it's $\phi(Q_i)^T \phi(K_j)$. $K$ provides the address; $Q$ provides the search criteria.
+
+### The state matrix as a filing cabinet
+
+$S_i = \sum_{j \le i} \phi(K_j) V_j^T$ is a $C \times M$ association table — rows are feature types, columns are value dimensions. Each new token adds a rank-1 contribution: $\phi(K_j)$ says *how strongly* this token belongs to each feature type, and $V_j$ is *what content* gets stored under those types. A query $\phi(Q_i)$ reads the cabinet by taking a weighted blend of rows.
+
+This is the same filing-cabinet intuition as traditional attention — the difference is that linear attention **compresses the cabinet first** ($S_i$) and then queries it, while traditional attention flips through every individual folder ($k_j$) for every query.
 
 ## Tradeoffs
 
@@ -50,8 +70,10 @@ Linear attention usually changes or approximates the softmax kernel, and its fix
 ## Where It Appears
 
 - [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Establishes kernel factorization, associative reordering, and the causal recurrent formulation.
+- [Gated Delta Networks](../training/gated-delta-networks/index.md) — Adds adaptive global decay and key-targeted delta updates to a matrix-valued recurrent state.
 - [Kimi Linear](../training/kimi-linear/index.md) — Extends the family with channel-wise forgetting, delta-rule updates, and periodic full-attention layers.
 
 ## Related Terms
 
 - [KV Cache](kv-cache.md) — Explicit key/value history used by conventional autoregressive attention.
+- [Delta Rule](delta-rule.md) — Key-targeted online error correction for associative memory.

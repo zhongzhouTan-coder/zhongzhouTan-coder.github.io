@@ -1,0 +1,13 @@
+flowchart TD
+  Softmax["Softmax attention<br/>exact token access, quadratic"] --> Linear["Linear attention<br/>fixed-size recurrent state"]
+  Linear --> Mamba2["Mamba2 / gated recurrence<br/>global adaptive decay"]
+  Linear --> Delta["DeltaNet<br/>key-targeted replacement"]
+  Mamba2 --> GDN["Gated DeltaNet<br/>global clearing + targeted update"]
+  Delta --> GDN
+  GDN --> H1["H1 hybrid<br/>GDN + sliding-window attention"]
+  GDN --> H2["H2 hybrid<br/>Mamba2 + GDN + SWA"]
+  GDN --> KDA["Kimi Delta Attention<br/>channel-wise decay"]
+
+  style GDN fill:#d5e8d4,stroke:#82b366
+  style Mamba2 fill:#fff2cc,stroke:#d6b656
+  style Delta fill:#f8cecc,stroke:#b85450

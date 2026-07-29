@@ -157,8 +157,10 @@ $$
 **How it works:** After updating $S_i$ and $Z_i$, the layer outputs
 
 $$
-V'_i=\frac{\phi(Q_i)^TS_i}{\phi(Q_i)^TZ_i}.
+V'_i=\frac{\phi(Q_i)^TS_i}{\phi(Q_i)^TZ_i},
 $$
+
+where the numerator is an $M$-dimensional weighted sum of past values and the denominator is a scalar (the sum of the same similarity weights used to scale them). The shapes differ — $S_i$ is $C \times M$, $Z_i$ is $C$ — so the two $\phi(Q_i)^T$ products do not cancel.
 
 The paper also derives forward and reverse cumulative-sum gradients so causal training remains linear-time without storing every $S_i$ matrix.
 

@@ -1,0 +1,18 @@
+flowchart LR
+  X["Token x_t"] --> QKV["Project q_t, k_t, v_t"]
+  X --> Gates["Predict α_t and β_t"]
+  S0["Previous state S_(t-1)"] --> Decay["① Global decay<br/>α_t S_(t-1)"]
+  Gates --> Decay
+  Decay --> Correct["② Key-targeted correction<br/>remove stale value at k_t"]
+  QKV --> Correct
+  Correct --> Write["③ Write new association<br/>β_t v_t k_t^T"]
+  QKV --> Write
+  Write --> S1["Updated state S_t"]
+  S1 --> Read["④ Read with q_t<br/>o_t = S_t q_t"]
+  QKV --> Read
+  Read --> O["Token-mixer output"]
+
+  style Decay fill:#fff2cc,stroke:#d6b656
+  style Correct fill:#f8cecc,stroke:#b85450
+  style Write fill:#d5e8d4,stroke:#82b366
+  style Read fill:#dae8fc,stroke:#6c8ebf

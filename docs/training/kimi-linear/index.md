@@ -117,7 +117,7 @@ KDA notation follows and extends the DeltaNet/GDN convention. Superscripts $^C$,
 **How it works:** The state update is:
 $$S_t = (I - \beta_t k_t k_t^\top) \text{Diag}(\alpha_t) S_{t-1} + \beta_t k_t v_t^\top$$
 
-Read right-to-left: (1) decay the old state with per-dimension $\alpha_t$; (2) apply a rank-1 Householder-style correction via $\beta_t k_t k_t^\top$; (3) add the new key–value association $\beta_t k_t v_t^\top$. The delta rule correction ensures the state actively moves toward representing the mapping $k_t \mapsto v_t$.
+Read right-to-left: (1) decay the old state with per-dimension $\alpha_t$; (2) apply a rank-1 Householder-style correction via $\beta_t k_t k_t^\top$; (3) add the new key–value association $\beta_t k_t v_t^\top$. The [delta rule](../../terms/delta-rule.md) correction ensures the state actively moves toward representing the mapping $k_t \mapsto v_t$.
 
 **The intuition:** Think of each dimension as a separate memory slot with its own adjustable "stickiness." When the model encounters a token that's important for future retrieval (like a function definition), the corresponding $\alpha$ values stay near 1.0 (keep). When it encounters noise, $\alpha$ drops near 0 (discard). The delta rule then corrects whatever remains.
 
