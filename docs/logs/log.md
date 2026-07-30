@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-28
+updated: 2026-07-30
 ---
 
 # Wiki Log
@@ -181,3 +181,9 @@ updated: 2026-07-28
 - Converted `raw/training/k3-technical-report--paper.pdf` to Markdown via MinerU precise mode, saving result to `derived/pdf-markdown/training/k3-technical-report.md`.
 - Added [Kimi K3: Open 3T-Class Frontier Model](../training/kimi-k3/index.md), sourced from `raw/training/k3-technical-report--paper.pdf` and derived Markdown. Covers the 2.8T/104B-active native multimodal MoE architecture, hybrid KDA/MLA attention, Stable LatentMoE with SiTU-GLU and Quantile Balancing, multi-effort agentic RL, MoonEP balanced expert training, million-token rollout cache/sandbox infrastructure, reported third-party and in-house results, and copied local figure assets.
 - Added [Kimi Delta Attention](../terms/kimi-delta-attention.md) and [Mixture of Experts](../terms/mixture-of-experts.md) glossary entries, and back-linked Kimi K3 from the existing KV Cache, Linear Attention, and Delta Rule term pages.
+- Added [vLLM-Ascend Kimi K3 MoE Forward Path](../frameworks/vllm-ascend-kimi-k3-moe-forward.md), sourced from the pinned clean vllm-ascend codebase at `8645122088f5cad1701205310573c5ee05c809f5`. The insight traces the Kimi K3-style routed-MoE serving substrate through patched `FusedMoE`, `AscendMoERunner`, router top-k selection, token dispatch, grouped expert MLP, combine/finalize, shared-expert overlap, and dynamic EPLB. Added derived evidence notes and a local Mermaid flow asset.
+- Added [vLLM Kimi K3 Code Reading Map](../frameworks/vllm-kimi-k3-code-reading.md), sourced from the newly pinned clean upstream vLLM commit `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`. The page replaces the earlier substrate-only reading with the real upstream Kimi K3 implementation: `vllm/models/kimi_k3/`, XTML renderer/parser integration, multimodal Kimi-K2.5 vision wrapper, `KimiLinearForCausalLM`, hybrid KDA/NoPE MLA layers, latent MoE with `LatentMoERunner`, DeepGEMM MegaMoE, optional SM100 latent-MoE tail fusion, and `KimiK3MTP`.
+
+## 2026-07-30
+
+- Re-insighted [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend-kimi-k3-moe-forward.md), sourced from the verified remote `main` vllm-ascend checkout at `e3bb5f570f0b7d7fef9df3190a450052bee090cc`. The refreshed page replaces the older `8645122088f5...` reading with typed MoE stage contracts, routed-expert capture, MC2/Fused-MC2 details, CANN MegaMoe buffer constraints, dynamic EPLB wiring, and the current limitation that vllm-ascend has no plugin-local `kimi_k3.py` model file.

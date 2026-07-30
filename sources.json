@@ -316,6 +316,19 @@
       "status": "ingested"
     },
     {
+      "id": "github:vllm-project/vllm-ascend@e3bb5f570f0b7d7fef9df3190a450052bee090cc",
+      "title": "vLLM Ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "e3bb5f570f0b7d7fef9df3190a450052bee090cc",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": ["raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md"],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/e3bb5f570f0b7d7fef9df3190a450052bee090cc/",
+      "docs_paths": ["docs/frameworks/vllm-ascend-kimi-k3-moe-forward.md"],
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2410.09426v4",
       "title": "FlatQuant: Fast Learnable Affine Quantization",
       "slug": "flatquant-fast-learnable-affine-quantization",
@@ -553,6 +566,23 @@
       "raw_paths": ["raw/training/k3-technical-report--paper.pdf"],
       "derived_path": "derived/pdf-markdown/training/k3-technical-report.md",
       "docs_path": "docs/training/kimi-k3/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-a0c092ee72c0.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/",
+      "docs_paths": [
+        "docs/frameworks/vllm-kimi-k3-code-reading.md"
+      ],
       "status": "ingested"
     }
   ]

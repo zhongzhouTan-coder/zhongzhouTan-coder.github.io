@@ -1,0 +1,26 @@
+flowchart TD
+    A["OpenAI/chat request"] --> B["ModelConfig resolves<br/>KimiK3ForConditionalGeneration"]
+    B --> C["tokenizer_mode=kimi_k3"]
+    C --> D["KimiK3Renderer<br/>XTML + media/tool normalization"]
+    D --> E["KimiK3ForConditionalGeneration"]
+    E --> F["MoonViT / Kimi-K2.5 vision<br/>+ multimodal projector"]
+    E --> G["KimiLinearForCausalLM"]
+    G --> H["KimiLinearModel layers"]
+    H --> I{"Layer attention type"}
+    I -->|"KDA layer"| J["KimiK3DeltaAttention<br/>KDA state + FlashKDA/Triton/decode kernels"]
+    I -->|"MLA layer"| K["MultiHeadLatentAttention<br/>NoPE MLA + fused cache insert"]
+    J --> L["AttnRes / post-attn norm"]
+    K --> L
+    L --> M{"MoE layer?"}
+    M -->|"dense"| N["KimiMLP"]
+    M -->|"routed MoE"| O["KimiMoE"]
+    O --> P{"MoE backend"}
+    P -->|"deep_gemm_mega_moe"| Q["KimiK3MegaMoEExperts<br/>DeepGEMM MegaMoE"]
+    P -->|"generic FusedMoE"| R["FusedMoE + LatentMoERunner<br/>latent down/up + shared experts"]
+    R --> S["optional K3 latent-MoE tail fusion<br/>SM100 TP=8/16 decode"]
+    Q --> T["next layer / logits"]
+    R --> T
+    S --> T
+    N --> T
+    T --> U["final norm in compute_logits<br/>LM head"]
+    G --> V["KimiK3MTP draft model<br/>speculative decoding"]

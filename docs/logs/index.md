@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-29
+updated: 2026-07-30
 ---
 
 # Wiki Index
@@ -39,9 +39,11 @@ updated: 2026-07-29
 - [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/triton-language/index.md) — Original Triton language (MAPL 2019): Triton-C tile-programming frontend, Triton-IR tile-level LLVM extensions, Triton-JIT compiler with hierarchical tiling, memory coalescing, shared memory allocation/synchronization, and auto-tuning; achieves cuBLAS/cuDNN parity for matmul and convolution.
 - [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/triton-ascend/index.md) — Beginner-friendly architecture tour: five-layer design (backend registration, compilation pipeline, MLIR passes, runtime driver, CANN extensions), TTIR→HIVM→LLVM→Linalg→Bisheng compilation flow, SIMD/SIMT/Unstructured-in-SIMT three-mode compilation, and relationship to vllm-ascend.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton-language/triton-in-vllm.md) — Codebase-driven tour: vLLM's triton_utils infrastructure, custom op registration, ~163 kernel files across 12 categories, universal coding patterns with concrete examples, and vllm-ascend's CANN-backend adaptation with dual Triton+AscendC strategy.
+- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek-v4-attention-code-reading.md) — Navigable implementation map of DeepSeek V4's hybrid compressed attention across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU), covering CSA/HCA compressors, sparse MLA backends, heterogeneous KV cache, multi-stream overlap, and platform-specific kernel dispatch.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend-kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 
 ## Algorithms
 

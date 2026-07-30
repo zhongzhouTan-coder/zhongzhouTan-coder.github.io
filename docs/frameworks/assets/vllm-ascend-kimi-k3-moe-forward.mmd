@@ -1,0 +1,17 @@
+flowchart TD
+    A["Upstream model layer<br/>hidden_states + router"] --> B["FusedMoE call"]
+    B --> C["vllm-ascend patch<br/>AscendMoERunner"]
+    C --> D["prepare_finalize.prepare<br/>AllGather / All2All / MC2"]
+    D --> E["select_experts<br/>fused top-k / hash / native fallback"]
+    E --> F["typed MoEFusedExpertsInput<br/>weights + routing + quant"]
+    F --> G["token_dispatch<br/>AllGather / All2All / MC2"]
+    G --> H["unified_apply_mlp<br/>GMM1 + activation + GMM2"]
+    H --> I["token_combine<br/>unpermute / distribute_combine / fused MC2"]
+    I --> J["prepare_finalize.finalize<br/>gather / unpad / reduction policy"]
+    J --> K["routed output"]
+    C --> L["shared experts optional<br/>event-based overlap"]
+    L --> M["combined MoE output"]
+    K --> M
+    E --> N["routed expert capture<br/>DP/SP layout repair"]
+    G --> O["expert_tokens"]
+    O --> P["dynamic EPLB<br/>moe_load -> placement -> log2phy"]
