@@ -59,6 +59,8 @@ Options:
   --browser-executable PATH Chromium executable for browser rendering.
   --timeout-ms NUMBER       Navigation/fetch timeout (default: 30000).
   --settle-ms NUMBER        Browser wait after DOMContentLoaded (default: 1000).
+  --challenge-wait-ms N     Additional wait for automatic browser checks to
+                            clear (default: 10000; does not solve CAPTCHAs).
   --max-bytes NUMBER        Maximum captured HTML bytes (default: 20971520).
   --min-content-chars N     Auto-render fallback threshold (default: 200).
   --allow-private-network   Permit explicit localhost/private IP URLs.
@@ -81,6 +83,7 @@ function parseArgs(argv) {
     renderer: "auto",
     timeoutMs: 30_000,
     settleMs: 1_000,
+    challengeWaitMs: 10_000,
     maxBytes: DEFAULT_MAX_BYTES,
     minContentChars: 200,
     allowPrivateNetwork: false,
@@ -97,6 +100,7 @@ function parseArgs(argv) {
     ["--browser-executable", "browserExecutable"],
     ["--timeout-ms", "timeoutMs"],
     ["--settle-ms", "settleMs"],
+    ["--challenge-wait-ms", "challengeWaitMs"],
     ["--max-bytes", "maxBytes"],
     ["--min-content-chars", "minContentChars"],
     ["--captured-at", "capturedAt"],
@@ -128,7 +132,13 @@ function parseArgs(argv) {
     index += 1
   }
 
-  for (const key of ["timeoutMs", "settleMs", "maxBytes", "minContentChars"]) {
+  for (const key of [
+    "timeoutMs",
+    "settleMs",
+    "challengeWaitMs",
+    "maxBytes",
+    "minContentChars"
+  ]) {
     options[key] = Number(options[key])
     if (!Number.isInteger(options[key]) || options[key] < 0) {
       fail(`--${key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)} must be a non-negative integer`)
@@ -263,6 +273,77 @@ function sanitizedHeaders(headers) {
   )
 }
 
+function accessChallengeReason(html, responseHeaders = {}) {
+  if ((responseHeaders["cf-mitigated"] || "").toLowerCase() === "challenge") {
+    return "the response was marked as a Cloudflare challenge"
+  }
+
+  const dom = new JSDOM(html)
+  const { document } = dom.window
+  const title = (document.title || "").replace(/\s+/g, " ").trim().toLowerCase()
+  const text = (document.body?.textContent || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase()
+  const knownChallengeElement = document.querySelector(
+    [
+      "#challenge-running",
+      "#challenge-form",
+      ".cf-challenge",
+      "iframe[src*='challenges.cloudflare.com']",
+      "script[src*='challenges.cloudflare.com']"
+    ].join(",")
+  )
+  if (knownChallengeElement) {
+    return "the page contains an automated-access verification challenge"
+  }
+
+  const captchaElement = document.querySelector(
+    "[data-callback*='captcha'], .g-recaptcha, .h-captcha"
+  )
+  const challengeTitles = [
+    "just a moment",
+    "attention required",
+    "security check",
+    "verify you are human",
+    "access denied"
+  ]
+  const challengePhrases = [
+    "checking your browser",
+    "verify you are human",
+    "performing security verification",
+    "enable javascript and cookies to continue",
+    "unusual traffic from your computer network"
+  ]
+  const hasChallengeLanguage =
+    challengeTitles.some((candidate) => title.includes(candidate)) ||
+    challengePhrases.some((candidate) => text.includes(candidate))
+  if (captchaElement && hasChallengeLanguage) {
+    return "the page contains a human-verification challenge"
+  }
+  if (
+    challengeTitles.some((candidate) => title.includes(candidate)) &&
+    challengePhrases.some((candidate) => text.includes(candidate))
+  ) {
+    return `the page appears to be an access check (${document.title.trim()})`
+  }
+  return null
+}
+
+function assertNoAccessChallenge(capture) {
+  const reason = accessChallengeReason(
+    capture.html,
+    capture.responseHeaders
+  )
+  if (reason) {
+    fail(
+      `${reason}; the capture was not saved. Retry with --renderer chromium, ` +
+      "or complete the check in a normal browser and ingest an exported HTML " +
+      "snapshot with --input-html. CAPTCHAs and access controls are not bypassed."
+    )
+  }
+}
+
 async function captureWithHttp(options) {
   if (options.inputHtml) {
     const html = await readFile(options.inputHtml, "utf8")
@@ -373,15 +454,40 @@ async function captureWithChromium(options) {
   })
   try {
     const page = await browser.newPage()
-    const response = await page.goto(options.url, {
+    let latestDocumentResponse = null
+    page.on("response", (candidate) => {
+      if (
+        candidate.request().resourceType() === "document" &&
+        candidate.frame() === page.mainFrame()
+      ) {
+        latestDocumentResponse = candidate
+      }
+    })
+    const navigationResponse = await page.goto(options.url, {
       waitUntil: "domcontentloaded",
       timeout: options.timeoutMs
     })
     if (options.settleMs) await page.waitForTimeout(options.settleMs)
+    let html = await page.content()
+    let response = latestDocumentResponse || navigationResponse
+    let responseHeaders = response
+      ? sanitizedHeaders(await response.allHeaders())
+      : {}
+    const challengeDeadline = Date.now() + options.challengeWaitMs
+    while (
+      accessChallengeReason(html, responseHeaders) &&
+      Date.now() < challengeDeadline
+    ) {
+      await page.waitForTimeout(Math.min(500, challengeDeadline - Date.now()))
+      html = await page.content()
+      response = latestDocumentResponse || navigationResponse
+      responseHeaders = response
+        ? sanitizedHeaders(await response.allHeaders())
+        : {}
+    }
     const finalUrl = page.url()
     const contentType = (await response?.headerValue("content-type")) || "text/html"
     assertHtmlResponse(contentType, finalUrl)
-    const html = await page.content()
     if (Buffer.byteLength(html) > options.maxBytes) {
       fail(`rendered page exceeds --max-bytes (${options.maxBytes})`)
     }
@@ -395,9 +501,7 @@ async function captureWithChromium(options) {
       httpStatus,
       contentType,
       renderer: "chromium",
-      responseHeaders: response
-        ? sanitizedHeaders(await response.allHeaders())
-        : {}
+      responseHeaders
     }
   } finally {
     await browser.close()
@@ -641,14 +745,17 @@ function extractMarkdown(html, finalUrl) {
 async function captureAndExtract(options) {
   if (options.inputHtml) {
     const capture = await captureWithHttp(options)
+    assertNoAccessChallenge(capture)
     return { capture, extraction: extractMarkdown(capture.html, capture.finalUrl) }
   }
   if (options.renderer === "http") {
     const capture = await captureWithHttp(options)
+    assertNoAccessChallenge(capture)
     return { capture, extraction: extractMarkdown(capture.html, capture.finalUrl) }
   }
   if (options.renderer === "chromium") {
     const capture = await captureWithChromium(options)
+    assertNoAccessChallenge(capture)
     return { capture, extraction: extractMarkdown(capture.html, capture.finalUrl) }
   }
 
@@ -656,6 +763,7 @@ async function captureAndExtract(options) {
   let httpCandidate = null
   try {
     const capture = await captureWithHttp(options)
+    assertNoAccessChallenge(capture)
     const extraction = extractMarkdown(capture.html, capture.finalUrl)
     if (extraction.markdown.length >= options.minContentChars) {
       return { capture, extraction }
@@ -667,6 +775,7 @@ async function captureAndExtract(options) {
 
   try {
     const capture = await captureWithChromium(options)
+    assertNoAccessChallenge(capture)
     return { capture, extraction: extractMarkdown(capture.html, capture.finalUrl) }
   } catch (browserError) {
     if (httpCandidate) return httpCandidate

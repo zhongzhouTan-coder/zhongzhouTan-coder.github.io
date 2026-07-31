@@ -18,7 +18,9 @@
       "slug": "attention-is-all-you-need",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf"],
+      "raw_paths": [
+        "raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/attention-is-all-you-need.md",
       "docs_path": "docs/algorithms/transformer.md",
       "status": "ingested"
@@ -29,7 +31,9 @@
       "slug": "collaborative-multi-head-attention",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf"],
+      "raw_paths": [
+        "raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/collaborative-multi-head-attention.md",
       "docs_path": "docs/algorithms/collaborative-attention.md",
       "status": "ingested"
@@ -40,7 +44,9 @@
       "slug": "transformers-are-rnns-linear-attention",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf"],
+      "raw_paths": [
+        "raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/transformers-are-rnns-linear-attention.md",
       "docs_path": "docs/algorithms/linear-attention/index.md",
       "status": "ingested"
@@ -51,7 +57,9 @@
       "slug": "deepseek-v2-multi-head-latent-attention",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf"],
+      "raw_paths": [
+        "raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md",
       "docs_path": "docs/algorithms/deepseek-v2-mla.md",
       "status": "ingested"
@@ -62,7 +70,9 @@
       "slug": "deepseek-v3.2-sparse-attention-scaled-rl-tool-use",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf"],
+      "raw_paths": [
+        "raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md",
       "docs_path": "docs/algorithms/deepseek-v3.2/index.md",
       "status": "ingested"
@@ -73,7 +83,9 @@
       "slug": "flashattention-io-aware-exact-attention",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf"],
+      "raw_paths": [
+        "raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md",
       "docs_path": "docs/algorithms/flashattention.md",
       "status": "ingested"
@@ -84,7 +96,9 @@
       "slug": "flashattention-2-better-parallelism-work-partitioning",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf"],
+      "raw_paths": [
+        "raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md",
       "docs_path": "docs/algorithms/flashattention-2.md",
       "status": "ingested"
@@ -95,7 +109,9 @@
       "slug": "flashattention-3-asynchrony-low-precision",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf"],
+      "raw_paths": [
+        "raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md",
       "docs_path": "docs/algorithms/flashattention-3.md",
       "status": "ingested"
@@ -106,7 +122,9 @@
       "slug": "flashattention-4-kernel-pipelining-co-design",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf"],
+      "raw_paths": [
+        "raw/algorithms/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/flashattention-4-kernel-pipelining-co-design.md",
       "docs_path": "docs/algorithms/flashattention-4.md",
       "status": "ingested"
@@ -117,7 +135,9 @@
       "slug": "grouped-query-attention-llama-2",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/grouped-query-attention-llama-2--paper.pdf"],
+      "raw_paths": [
+        "raw/algorithms/grouped-query-attention-llama-2--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/grouped-query-attention-llama-2.md",
       "docs_path": "docs/algorithms/grouped-query-attention/index.md",
       "status": "ingested"
@@ -128,7 +148,9 @@
       "slug": "matrix-exponentiation-hackerearth",
       "category": "algorithms",
       "kind": "reference",
-      "raw_paths": ["raw/algorithms/matrix-exponentiation-hackerearth--web.pdf"],
+      "raw_paths": [
+        "raw/algorithms/matrix-exponentiation-hackerearth--web.pdf"
+      ],
       "docs_path": "docs/algorithms/matrix-exponentiation.md",
       "status": "ingested"
     },
@@ -138,7 +160,9 @@
       "slug": "multi-query-attention-one-write-head",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/multi-query-attention-one-write-head--paper.pdf"],
+      "raw_paths": [
+        "raw/algorithms/multi-query-attention-one-write-head--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md",
       "docs_path": "docs/algorithms/multi-query-attention.md",
       "status": "ingested"
@@ -150,7 +174,9 @@
       "source_suffix": "franke-degen",
       "category": "algorithms",
       "kind": "paper",
-      "raw_paths": ["raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf"],
+      "raw_paths": [
+        "raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/algorithms/softmax-function-properties-motivation-interpretation.md",
       "docs_path": "docs/algorithms/softmax.md",
       "status": "ingested"
@@ -161,7 +187,9 @@
       "slug": "autojudger-agent-driven-mllm-benchmarking",
       "category": "benchmarks",
       "kind": "paper",
-      "raw_paths": ["raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf"],
+      "raw_paths": [
+        "raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md",
       "docs_path": "docs/benchmarks/autojudger.md",
       "status": "ingested"
@@ -172,7 +200,9 @@
       "slug": "tau-bench-tool-agent-user-interaction-benchmark",
       "category": "benchmarks",
       "kind": "paper",
-      "raw_paths": ["raw/benchmarks/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf"],
+      "raw_paths": [
+        "raw/benchmarks/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf"
+      ],
       "docs_path": "docs/benchmarks/tau-bench.md",
       "status": "ingested"
     },
@@ -182,7 +212,9 @@
       "slug": "tau2-bench-mechanism-and-design",
       "category": "benchmarks",
       "kind": "paper",
-      "raw_paths": ["raw/benchmarks/tau2-bench-mechanism-and-design--paper.pdf"],
+      "raw_paths": [
+        "raw/benchmarks/tau2-bench-mechanism-and-design--paper.pdf"
+      ],
       "docs_path": "docs/benchmarks/tau2-bench-mechanism.md",
       "status": "ingested"
     },
@@ -192,7 +224,9 @@
       "slug": "tau-voice-full-duplex-voice-agent-benchmark",
       "category": "benchmarks",
       "kind": "paper",
-      "raw_paths": ["raw/benchmarks/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf"],
+      "raw_paths": [
+        "raw/benchmarks/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf"
+      ],
       "docs_path": "docs/benchmarks/tau-voice.md",
       "status": "ingested"
     },
@@ -202,7 +236,9 @@
       "slug": "deepswe-long-horizon-software-engineering-benchmark",
       "category": "benchmarks",
       "kind": "reference",
-      "raw_paths": ["raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md"],
+      "raw_paths": [
+        "raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md"
+      ],
       "docs_path": "docs/benchmarks/deepswe/index.md",
       "status": "ingested"
     },
@@ -212,7 +248,9 @@
       "slug": "deepswe-v1.1-execution-and-scoring-changes",
       "category": "benchmarks",
       "kind": "reference",
-      "raw_paths": ["raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md"],
+      "raw_paths": [
+        "raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md"
+      ],
       "docs_path": "docs/benchmarks/deepswe-v1-1/index.md",
       "status": "ingested"
     },
@@ -222,7 +260,9 @@
       "slug": "pier-coding-agent-evaluation-harness",
       "category": "benchmarks",
       "kind": "reference",
-      "raw_paths": ["raw/benchmarks/pier-coding-agent-evaluation-harness.md"],
+      "raw_paths": [
+        "raw/benchmarks/pier-coding-agent-evaluation-harness.md"
+      ],
       "docs_path": "docs/benchmarks/pier/index.md",
       "status": "ingested"
     },
@@ -232,7 +272,9 @@
       "slug": "dspark-confidence-scheduled-speculative-decoding",
       "category": "frameworks",
       "kind": "paper",
-      "raw_paths": ["raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"],
+      "raw_paths": [
+        "raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"
+      ],
       "docs_path": "docs/frameworks/dspark/index.md",
       "status": "ingested"
     },
@@ -264,7 +306,9 @@
       "slug": "sglang-structured-language-model-programs",
       "category": "frameworks",
       "kind": "paper",
-      "raw_paths": ["raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf"],
+      "raw_paths": [
+        "raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf"
+      ],
       "docs_path": "docs/frameworks/sglang-framework.md",
       "status": "ingested"
     },
@@ -274,7 +318,9 @@
       "slug": "vllm-pagedattention-serving-framework",
       "category": "frameworks",
       "kind": "paper",
-      "raw_paths": ["raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"],
+      "raw_paths": [
+        "raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"
+      ],
       "docs_path": "docs/frameworks/vllm-framework.md",
       "status": "ingested"
     },
@@ -284,7 +330,9 @@
       "slug": "triton-tiled-gpu-kernel-language-compiler",
       "category": "frameworks",
       "kind": "paper",
-      "raw_paths": ["raw/frameworks/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"],
+      "raw_paths": [
+        "raw/frameworks/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/frameworks/triton-tiled-gpu-kernel-language-compiler.md",
       "docs_path": "docs/frameworks/triton-language/index.md",
       "status": "ingested"
@@ -297,9 +345,14 @@
       "revision": "d18ed2304a2703e3211fc384a58607e754f5b723",
       "category": "frameworks",
       "kind": "repository",
-      "raw_paths": ["raw/frameworks/vllm-codebase--github-d18ed2304a27.md"],
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-d18ed2304a27.md"
+      ],
       "derived_path": "derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
-      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md", "docs/frameworks/deepseek-v4-attention-code-reading.md"],
+      "docs_paths": [
+        "docs/frameworks/triton-language/triton-in-vllm.md",
+        "docs/frameworks/deepseek-v4-attention-code-reading.md"
+      ],
       "status": "ingested"
     },
     {
@@ -310,9 +363,14 @@
       "revision": "8645122088f5cad1701205310573c5ee05c809f5",
       "category": "frameworks",
       "kind": "repository",
-      "raw_paths": ["raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"],
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"
+      ],
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
-      "docs_paths": ["docs/frameworks/triton-language/triton-in-vllm.md", "docs/frameworks/deepseek-v4-attention-code-reading.md"],
+      "docs_paths": [
+        "docs/frameworks/triton-language/triton-in-vllm.md",
+        "docs/frameworks/deepseek-v4-attention-code-reading.md"
+      ],
       "status": "ingested"
     },
     {
@@ -323,9 +381,13 @@
       "revision": "e3bb5f570f0b7d7fef9df3190a450052bee090cc",
       "category": "frameworks",
       "kind": "repository",
-      "raw_paths": ["raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md"],
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md"
+      ],
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/e3bb5f570f0b7d7fef9df3190a450052bee090cc/",
-      "docs_paths": ["docs/frameworks/vllm-ascend-kimi-k3-moe-forward.md"],
+      "docs_paths": [
+        "docs/frameworks/vllm-ascend-kimi-k3-moe-forward.md"
+      ],
       "status": "ingested"
     },
     {
@@ -334,7 +396,9 @@
       "slug": "flatquant-fast-learnable-affine-quantization",
       "category": "hardware",
       "kind": "paper",
-      "raw_paths": ["raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"],
+      "raw_paths": [
+        "raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"
+      ],
       "docs_path": "docs/hardware/flatquant.md",
       "status": "ingested"
     },
@@ -344,7 +408,9 @@
       "slug": "gpt-1-improving-language-understanding",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/gpt-1-improving-language-understanding--paper.pdf"],
+      "raw_paths": [
+        "raw/training/gpt-1-improving-language-understanding--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/gpt-1-improving-language-understanding.md",
       "docs_path": "docs/training/gpt-1.md",
       "status": "ingested"
@@ -355,7 +421,9 @@
       "slug": "gpt-2-unsupervised-multitask-learners",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf"],
+      "raw_paths": [
+        "raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md",
       "docs_path": "docs/training/gpt-2.md",
       "status": "ingested"
@@ -366,7 +434,9 @@
       "slug": "gpt-3-language-models-few-shot-learners",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/gpt-3-language-models-few-shot-learners--paper.pdf"],
+      "raw_paths": [
+        "raw/training/gpt-3-language-models-few-shot-learners--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/gpt-3-language-models-few-shot-learners.md",
       "docs_path": "docs/training/gpt-3.md",
       "status": "ingested"
@@ -377,7 +447,9 @@
       "slug": "intrinsic-dimensionality-language-model-fine-tuning",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf"],
+      "raw_paths": [
+        "raw/training/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf"
+      ],
       "docs_path": "docs/training/intrinsic-dimensionality-fine-tuning/index.md",
       "status": "ingested"
     },
@@ -387,7 +459,9 @@
       "slug": "llama-open-efficient-foundation-language-models",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/llama-open-efficient-foundation-language-models--paper.pdf"],
+      "raw_paths": [
+        "raw/training/llama-open-efficient-foundation-language-models--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/llama-open-efficient-foundation-language-models.md",
       "docs_path": "docs/training/llama.md",
       "status": "ingested"
@@ -424,7 +498,9 @@
       "slug": "gpipe-micro-batch-pipeline-parallelism",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf"],
+      "raw_paths": [
+        "raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/gpipe-micro-batch-pipeline-parallelism.md",
       "docs_path": "docs/training/gpipe/index.md",
       "status": "ingested"
@@ -435,7 +511,9 @@
       "slug": "socratic-swe-self-evolving-coding-agents",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf"],
+      "raw_paths": [
+        "raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md",
       "docs_path": "docs/training/socratic-swe/index.md",
       "status": "ingested"
@@ -446,7 +524,9 @@
       "slug": "sequence-parallelism-long-sequence-training",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf"],
+      "raw_paths": [
+        "raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md",
       "docs_path": "docs/training/sequence-parallelism/index.md",
       "status": "ingested"
@@ -457,7 +537,9 @@
       "slug": "minimax-sparse-attention",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/minimax-sparse-attention--paper.pdf"],
+      "raw_paths": [
+        "raw/training/minimax-sparse-attention--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/minimax-sparse-attention.md",
       "docs_path": "docs/training/minimax-sparse-attention/index.md",
       "status": "ingested"
@@ -470,12 +552,15 @@
       "revision": "41f499924da1d58955196c946895597e992127f0",
       "category": "frameworks",
       "kind": "repository",
-      "raw_paths": ["raw/frameworks/triton-ascend-codebase--github-41f499924da1.md"],
+      "raw_paths": [
+        "raw/frameworks/triton-ascend-codebase--github-41f499924da1.md"
+      ],
       "derived_path": "derived/repo-analysis/frameworks/triton-ascend/41f499924da1d58955196c946895597e992127f0/",
-      "docs_paths": ["docs/frameworks/triton-ascend/index.md"],
+      "docs_paths": [
+        "docs/frameworks/triton-ascend/index.md"
+      ],
       "status": "ingested"
-    }
-  ,
+    },
     {
       "id": "web:nvidia.github.io/nvfp4-te@2026-07-28-6625830e9e9e",
       "title": "NVFP4 — Transformer Engine 2.19.0.dev0 documentation",
@@ -493,8 +578,7 @@
       "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.md",
       "docs_path": "docs/hardware/nvfp4.md",
       "status": "ingested"
-    }
-  ,
+    },
     {
       "id": "web:developer.nvidia.com/nvfp4-blog@2026-07-28-a2f3eb0ba3bb",
       "title": "Introducing NVFP4 for Efficient and Accurate Low-Precision Inference | NVIDIA Technical Blog",
@@ -519,7 +603,9 @@
       "slug": "swat-sliding-window-attention-training",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/swat-sliding-window-attention-training--paper.pdf"],
+      "raw_paths": [
+        "raw/training/swat-sliding-window-attention-training--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/swat-sliding-window-attention-training.md",
       "docs_path": "docs/training/swat-sliding-window-attention/index.md",
       "status": "ingested"
@@ -530,7 +616,9 @@
       "slug": "deepseek-v4",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/deepseek-v4--paper.pdf"],
+      "raw_paths": [
+        "raw/training/deepseek-v4--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/deepseek-v4.md",
       "docs_path": "docs/training/deepseek-v4/index.md",
       "status": "ingested"
@@ -541,7 +629,9 @@
       "slug": "kimi-linear-expressive-efficient-attention",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/kimi-linear-expressive-efficient-attention--paper.pdf"],
+      "raw_paths": [
+        "raw/training/kimi-linear-expressive-efficient-attention--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/kimi-linear-expressive-efficient-attention.md",
       "docs_path": "docs/training/kimi-linear/index.md",
       "status": "ingested"
@@ -552,7 +642,9 @@
       "slug": "gated-delta-networks-improving-mamba2-with-delta-rule",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf"],
+      "raw_paths": [
+        "raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md",
       "docs_path": "docs/training/gated-delta-networks/index.md",
       "status": "ingested"
@@ -563,7 +655,9 @@
       "slug": "k3-technical-report",
       "category": "training",
       "kind": "paper",
-      "raw_paths": ["raw/training/k3-technical-report--paper.pdf"],
+      "raw_paths": [
+        "raw/training/k3-technical-report--paper.pdf"
+      ],
       "derived_path": "derived/pdf-markdown/training/k3-technical-report.md",
       "docs_path": "docs/training/kimi-k3/index.md",
       "status": "ingested"
@@ -583,6 +677,42 @@
       "docs_paths": [
         "docs/frameworks/vllm-kimi-k3-code-reading.md"
       ],
+      "status": "ingested"
+    },
+    {
+      "id": "web:web.archive.org/linear-attention-without-softmax@2026-07-30-e116218d6fdb",
+      "title": "线性Attention的探索：Attention必须有个Softmax吗？",
+      "slug": "linear-attention-without-softmax",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546",
+      "final_url": "https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546",
+      "captured_at": "2026-07-30T11:17:58.569Z",
+      "revision": "e116218d6fdb6e4d838d369f4e7000183b59c965f8c38fb35053599416b359da",
+      "raw_paths": [
+        "raw/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.html",
+        "raw/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.md",
+      "status": "ingested",
+      "docs_path": "docs/algorithms/linear-attention-without-softmax.md"
+    },
+    {
+      "id": "web:www.cnblogs.com/recurrent-neural-networks-rnn-lstm@2026-07-30-565de51c278c",
+      "title": "神经网络详解（RNN/LSTM)",
+      "slug": "recurrent-neural-networks-rnn-lstm",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://www.cnblogs.com/aabbcc/p/14321333.html",
+      "final_url": "https://www.cnblogs.com/aabbcc/p/14321333.html",
+      "captured_at": "2026-07-30T15:21:29.683Z",
+      "revision": "565de51c278c833549ba8f4cf1e0413fc038bca6ee5d4cc0fecd35b1bebf362c",
+      "raw_paths": [
+        "raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.html",
+        "raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.md",
+      "docs_path": "docs/algorithms/recurrent-neural-networks/index.md",
       "status": "ingested"
     }
   ]

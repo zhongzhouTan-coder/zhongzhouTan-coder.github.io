@@ -5,13 +5,15 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-29
+updated: 2026-07-30
 ---
 
 # Algorithms
 
 - [The Transformer: Attention Is All You Need](transformer.md) — The foundational architecture that replaces recurrence with multi-head self-attention: scaled dot-product attention, multi-head parallelism, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that birthed modern LLMs.
+- [Recurrent Neural Networks: From RNN to LSTM](recurrent-neural-networks/index.md) — Beginner-oriented path from sequence order and shared recurrent weights to hidden-state memory, long-term dependency failures, LSTM gates, and linear attention's RNN execution mode.
 - [Transformers Are RNNs: Linear Attention](linear-attention/index.md) — Kernel feature maps and associative reordering eliminate the quadratic attention matrix; causal prefix states expose a fixed-size recurrent interpretation and its accuracy/throughput tradeoffs.
+- [Linear Attention Without Softmax: Su Jianlin's Survey](linear-attention-without-softmax.md) — 苏剑林's blog survey identifying softmax as the root cause of attention's O(n²) complexity; catalogs three linear attention families (kernel maps, double-softmax, cosine-similarity Taylor approximation) and their autoregressive generation support.
 - [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](collaborative-attention.md) — Redesigns MHA with shared key/query projections and per-head mixing vectors, enabling 4× compression of Q/K dimensions; CP tensor decomposition for post-hoc conversion of pretrained models.
 - [Multi-Query Attention: One Write-Head is All You Need](multi-query-attention.md) — Eliminates per-head key/value projections, sharing one K/V across all heads; reduces incremental decoder inference cost 12× (46→3.8 µs/token) with negligible quality loss; orthogonal to local attention and ancestor of Grouped-Query Attention (GQA).
 - [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) — Llama 2's 34B/70B attention choice: use 8 KV groups to cut KV-cache pressure while preserving more quality and cleaner tensor-parallel serving than single-KV-head MQA.

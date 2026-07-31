@@ -21,11 +21,19 @@ npm run ingest:web -- \
 ```
 
 The command defaults to an HTTP capture and falls back to the installed
-Chromium browser when the extracted content is suspiciously short. Use
-`--renderer chromium` for pages that require client-side rendering.
+Chromium browser when the extracted content is suspiciously short or the HTTP
+response is an access-check interstitial. Chromium waits up to 10 seconds for
+automatic JavaScript checks to clear; adjust this with `--challenge-wait-ms`.
+Use `--renderer chromium` for pages that require client-side rendering.
 Chromium honors `WEB_INGEST_PROXY`, or the standard `HTTPS_PROXY` /
 `HTTP_PROXY` and `NO_PROXY` environment variables when the explicit variable
 is absent.
+
+The capture command detects common verification and CAPTCHA pages and refuses
+to save them as source content. It does not solve CAPTCHAs or bypass
+authentication and access controls. When a permitted public page still needs a
+manual check, complete it in a normal browser, export the resulting HTML, and
+ingest that file with `--input-html`.
 
 The command creates one immutable source revision:
 

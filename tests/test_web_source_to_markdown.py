@@ -257,6 +257,46 @@ class WebSourceIngestTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("private IP URLs are blocked", result.stderr)
 
+    def test_access_challenge_is_not_saved_as_source_content(self) -> None:
+        self.fixture.write_text(
+            """<!doctype html>
+<html>
+  <head><title>Just a moment...</title></head>
+  <body>
+    <main id="challenge-running">
+      Checking your browser before accessing the site.
+    </main>
+  </body>
+</html>
+""",
+            encoding="utf-8",
+        )
+
+        result = self.run_ingest()
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("access verification challenge", result.stderr)
+        self.assertIn("CAPTCHAs and access controls are not bypassed", result.stderr)
+        self.assertFalse((self.root / "raw").exists())
+        manifest = json.loads(
+            (self.root / "sources.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["sources"], [])
+
+    def test_embedded_captcha_widget_does_not_reject_article(self) -> None:
+        self.fixture.write_text(
+            ARTICLE_HTML.replace(
+                "</article>",
+                '<div class="g-recaptcha"></div>\n      </article>',
+            ),
+            encoding="utf-8",
+        )
+
+        result = self.run_ingest()
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["status"], "captured")
+
     def test_integrity_detects_modified_raw_html(self) -> None:
         result = self.run_ingest()
         self.assertEqual(result.returncode, 0, result.stderr)

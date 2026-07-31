@@ -1,0 +1,1146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" style="--wm-toolbar-height: 67px;"><!-- 页面设计者：www.laogui.com --><!-- 页面完善者：www.kexue.fm --><head><script src="//web.archive.org/web/20250117110749/https://hm.baidu.com/hm.js?05a8a552590dfa8b88bcff93d9ec3ba8"></script><script src="https://web.archive.org/web/20250117110749/https://zz.bdstatic.com/linksubmit/push.js"></script><script src="https://web-static.archive.org/_static/js/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app257.us.archive.org';v.server_ms=1844;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/bundle-playback.js?v=2N_sDSC0" charset="utf-8"></script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/wombat.js?v=o9P2E1FK" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden","showSwfDownload":true};</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/ruffle/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://spaces.ac.cn/archives/7546","20250117110749","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1737112069");
+</script>
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3">
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv">
+<!-- End Wayback Rewrite JS Include -->
+
+    
+    <meta baidu-gxt-verify-token="2e7e16245e9e60b47ef9abf7da323d7f">
+    <meta name="baidu-site-verification" content="ovVHx28ijH">
+    <meta name="baidu-site-verification" content="aAbtts7I8Y">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- google验证 -->
+    <meta name="google-site-verification" content="2OH3qUDPmSsnHkKhUC7j3EEhESVaHJObE6YuwxWNw4c">
+    <meta name="google-site-verification" content="1IF-re5N9bZpBaUiwSAARvUyPkEomCWxrQU4YkVZfIE">
+    
+    <!-- 百度推送 -->
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = 'https://web.archive.org/web/20250117110749/https://zz.bdstatic.com/linksubmit/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="apple-mobile-web-app-title" content="Scientific Spaces">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>线性Attention的探索：Attention必须有个Softmax吗？ - 科学空间|Scientific Spaces</title>
+
+    <!-- 使用url函数转换相关路径 -->
+    <link rel="stylesheet" href="https://web.archive.org/web/20250117110749cs_/https://spaces.ac.cn/usr/themes/geekg/style.css?v=20241013">
+    <link rel="stylesheet" href="https://web.archive.org/web/20250117110749cs_/https://spaces.ac.cn/usr/themes/geekg/prism.css">
+    <link rel="shortcut icon" href="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/favicon.ico">
+    <link rel="pingback" href="https://spaces.ac.cn/index.php/action/xmlrpc">
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://spaces.ac.cn/action/xmlrpc?rsd">
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://spaces.ac.cn/action/xmlrpc?wlw">
+
+    <!-- 通过自有函数输出HTML头部信息 -->
+    <meta name="description" content="众所周知，尽管基于Attention机制的Transformer类模型有着良好的并行性能，但它的空间和时间复杂度都是$\mathcal{O}(n^2)$级别的，$n$是序列长度，所以当$n$比较...">
+<meta name="keywords" content="模型,文本生成,attention">
+<meta name="generator" content="Typecho 1.1/17.10.30">
+<meta name="template" content="geekg">
+<link rel="pingback" href="https://spaces.ac.cn/action/xmlrpc">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://spaces.ac.cn/action/xmlrpc?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://spaces.ac.cn/action/xmlrpc?wlw">
+<link rel="alternate" type="application/rss+xml" title="线性Attention的探索：Attention必须有个Softmax吗？ » 科学空间|Scientific Spaces » RSS 2.0" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/feed/archives/7546">
+<link rel="alternate" type="application/rdf+xml" title="线性Attention的探索：Attention必须有个Softmax吗？ » 科学空间|Scientific Spaces » RSS 1.0" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/feed/rss/archives/7546">
+<link rel="alternate" type="application/atom+xml" title="线性Attention的探索：Attention必须有个Softmax吗？ » 科学空间|Scientific Spaces » ATOM 1.0" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/feed/atom/archives/7546">
+<script type="text/javascript">
+(function () {
+    window.TypechoComment = {
+        dom : function (id) {
+            return document.getElementById(id);
+        },
+    
+        create : function (tag, attr) {
+            var el = document.createElement(tag);
+        
+            for (var key in attr) {
+                el.setAttribute(key, attr[key]);
+            }
+        
+            return el;
+        },
+
+        reply : function (cid, coid) {
+            var comment = this.dom(cid), parent = comment.parentNode,
+                response = this.dom('respond-post-7546'), input = this.dom('comment-parent'),
+                form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                textarea = response.getElementsByTagName('textarea')[0];
+
+            if (null == input) {
+                input = this.create('input', {
+                    'type' : 'hidden',
+                    'name' : 'parent',
+                    'id'   : 'comment-parent'
+                });
+
+                form.appendChild(input);
+            }
+
+            input.setAttribute('value', coid);
+
+            if (null == this.dom('comment-form-place-holder')) {
+                var holder = this.create('div', {
+                    'id' : 'comment-form-place-holder'
+                });
+
+                response.parentNode.insertBefore(holder, response);
+            }
+
+            comment.appendChild(response);
+            this.dom('cancel-comment-reply-link').style.display = '';
+
+            if (null != textarea && 'text' == textarea.name) {
+                textarea.focus();
+            }
+
+            return false;
+        },
+
+        cancelReply : function () {
+            var response = this.dom('respond-post-7546'),
+            holder = this.dom('comment-form-place-holder'), input = this.dom('comment-parent');
+
+            if (null != input) {
+                input.parentNode.removeChild(input);
+            }
+
+            if (null == holder) {
+                return true;
+            }
+
+            this.dom('cancel-comment-reply-link').style.display = 'none';
+            holder.parentNode.insertBefore(response, holder);
+            return false;
+        }
+    };
+})();
+</script>
+<script type="text/javascript">
+(function () {
+    var event = document.addEventListener ? {
+        add: 'addEventListener',
+        triggers: ['scroll', 'mousemove', 'keyup', 'touchstart'],
+        load: 'DOMContentLoaded'
+    } : {
+        add: 'attachEvent',
+        triggers: ['onfocus', 'onmousemove', 'onkeyup', 'ontouchstart'],
+        load: 'onload'
+    }, added = false;
+
+    document[event.add](event.load, function () {
+        var r = document.getElementById('respond-post-7546'),
+            input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_';
+        input.value = (function () {
+    var _gKIuCw = '1ed'//'jK'
++//'w'
+'f'+'7'//'Aw'
++''///*'XVw'*/'XVw'
++//'ld'
+'d27'+'aba'//'Tu'
++'5b'//'Npe'
++//'84'
+'61'+//'7'
+'1'+//'ztG'
+'95f'+'g'//'g'
++'Yz'//'Yz'
++'9'//'RAZ'
++'ed5'//'iRn'
++//'vzr'
+'66'+'90b'//'4'
++'9'//'i'
++'507'//'X7z'
+, _jJ1XB = [[19,20],[19,21]];
+    
+    for (var i = 0; i < _jJ1XB.length; i ++) {
+        _gKIuCw = _gKIuCw.substring(0, _jJ1XB[i][0]) + _gKIuCw.substring(_jJ1XB[i][1]);
+    }
+
+    return _gKIuCw;
+})();
+
+        if (null != r) {
+            var forms = r.getElementsByTagName('form');
+            if (forms.length > 0) {
+                function append() {
+                    if (!added) {
+                        forms[0].appendChild(input);
+                        added = true;
+                    }
+                }
+            
+                for (var i = 0; i < event.triggers.length; i ++) {
+                    var trigger = event.triggers[i];
+                    document[event.add](trigger, append);
+                    window[event.add](trigger, append);
+                }
+            }
+        }
+    });
+})();
+</script>
+    <script src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/usr/themes/geekg/js/prism.js"></script>
+
+    <!-- 导入jquery，目前只有ajax评论翻页用到了 -->
+    <script src="https://web.archive.org/web/20250117110749js_/https://s3.pstatp.com/cdn/expire-1-M/jquery/3.2.1/jquery.js"></script>
+    
+    <!-- 下面三个都是为移动端侧边栏准备的 -->
+    <script src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/usr/themes/geekg/js/prototype.js"></script>
+    <script src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/usr/themes/geekg/js/effects.js"></script>
+    <script src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/usr/themes/geekg/js/side-bar.js"></script>
+
+    <script type="text/x-mathjax-config;executed=true">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+            TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}, extensions: ["AMSmath.js", "AMSsymbols.js", "extpfeil.js"]},
+            "HTML-CSS": {noReflows: false, availableFonts: ["tex"], styles: {".MathJax_Display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}},
+            "CommonHTML": {noReflows: false, availableFonts: ["tex"], styles: {".MJXc-display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}},
+            "SVG": {noReflows: false, availableFonts: ["tex"], styles: {".MathJax_SVG_Display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}}
+        });
+        MathJax.Hub.Queue(function() {
+            document.querySelectorAll('.MathJax').forEach(element => element.classList.add('notranslate'));
+            document.querySelectorAll('span[id^="MathJax-Element"]').forEach(function(e) {
+                parentWidth = e.parentNode.offsetWidth;
+                if (e.parentNode.className.endsWith('isplay')) {
+                    parentWidth = e.parentNode.parentNode.offsetWidth;
+                }
+                if (e.offsetWidth > parentWidth) {
+                    var bias = e.getAttribute('data-mathml').includes('border') ? -2 : 0
+                    e.style.fontSize = (parentWidth * 100 / e.offsetWidth + bias) + '%';
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript" src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/sci/MathJax-2.7.9/AMS-setcounter.js"></script>
+    <script type="text/javascript" src="https://web.archive.org/web/20250117110749js_/https://spaces.ac.cn/sci/MathJax-2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style type="text/css">.MathJax_Preview {color: #888; display: contents}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style></head>
+
+<body><div id="MathJax_Message" style="">File failed to load: https://spaces.ac.cn/sci/MathJax-2.7.9/extensions/MathZoom.js</div><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr; height: 67px;" toolbar-mode="auto">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(775,27,25,2,"web","https://spaces.ac.cn/archives/7546","20250117110749",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+
+<div id="Container">
+
+    <div id="Header">
+
+        <div id="MobileSideBar">
+        
+        <a id="MobileSideBarTab"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/slide-button.png" alt="MobileSideBar" title="MobileSideBar"></a>
+        
+        <div id="MobileSideBarContents" style="display:none;">
+            <div class="MobileSideBarContentsInner">
+                <h2>SEARCH</h2>
+                <div class="search d5">
+                    <form action="" method="post"><input type="text" name="s" placeholder="搜索从这里开始..."></form>
+                </div>
+            </div>
+
+            <div class="MobileSideBarContentsInner">
+                <div class="MobileSideBar_two_columns">
+                </div>
+            </div>
+
+            <div class="MobileSideBarContentsInner">
+                <h2>MENU</h2>
+                <div class="MobileSideBar_two_columns">
+                    <ul>
+                        <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/reward.html">打赏</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/latex.html">公式</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/ac.html">天象</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/links.html">链接</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/me.html">时光</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/science.html">博览</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/content.html">归档</a></li>                    </ul>
+                </div>
+            </div>
+            
+            <div class="MobileSideBarContentsInner">
+                <h2>CATEGORIES</h2>
+                <div class="MobileSideBar_two_columns">
+                    <ul>
+                        <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Everything">千奇百怪</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Astronomy">天文探索</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Mathematics">数学研究</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Phy-chem">物理化学</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Big-Data">信息时代</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Biology">生物自然</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Photograph">图片摄影</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Questions">问题百科</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Life-Feeling">生活/情感</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Resources">资源共享</a></li>                    </ul>
+                </div>
+            </div>
+
+            <div class="MobileSideBarContentsInner">              
+                <h2>NEWPOSTS</h2>
+                <div class="MobileSideBar_one_column" id="MobileNewposts">
+                    <ul> 
+                                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667">细水长flow之TARFLOW：流...</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10662">低秩近似之路（五）：CUR</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10657">为什么梯度裁剪的默认模长是1？</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10648">从谱范数梯度到新式权重衰减的思考</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10633">生成扩散模型漫谈（二十八）：分步理...</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10617">生成扩散模型漫谈（二十七）：将步长...</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592">Muon优化器赏析：从向量到矩阵的...</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10588">从Hessian近似看自适应学习率优化器</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10567">生成扩散模型漫谈（二十六）：基于恒...</a></li>
+                                                    <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10563">Adam的epsilon如何影响学...</a></li>
+                                            </ul>
+                </div>
+            </div>
+
+            <div class="MobileSideBarContentsInner">
+                <h2>COMMENTS</h2>
+                <div class="MobileSideBar_one_column" id="MobileComments">
+                    <ul>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667/comment-page-1#comment-26292"><font style="color: #ADCB83;">More</font>: 请问如何实现文中提到的训练慢采样快</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667/comment-page-1#comment-26291"><font style="color: #ADCB83;">More</font>: 请问如何实现文中提到的训练慢采样快</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10197/comment-page-1#comment-26290"><font style="color: #ADCB83;">bd</font>: 我倒是觉得很有道理，类比：相机并不能认为麦克斯韦方程组的一个解...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9405/comment-page-1#comment-26289"><font style="color: #ADCB83;">Jay Gao</font>: 但凡宅基地面积大一点都不用盖那么高呢。。。单向阀检查过了，上面...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10091/comment-page-4#comment-26287"><font style="color: #ADCB83;">K</font>: 加了PE的部分，也可以用额外一个K cache吧。这样就节省了...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26286"><font style="color: #ADCB83;">plc</font>: Muon的复杂度有些问题，每个nxn矩阵，Muon是O(n^3...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26285"><font style="color: #ADCB83;">plc</font>: Lion理论基础和实际效果还不错（如果把Muon的每一组矩阵退...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26284"><font style="color: #ADCB83;">plc</font>: 1. 其实Adam-Mini就很好。向量和矩阵的区别，在Ada...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10197/comment-page-3#comment-26283"><font style="color: #ADCB83;">jorjiang</font>: 压缩即智能，在图像理解的背景下，即使输入是无损的 在模型里也会...</a></li>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9984/comment-page-3#comment-26282"><font style="color: #ADCB83;">jorjiang</font>: 就算输入是无损的，但是模型基于高斯分布，用一个偏弱的模型去拟合...</a></li>
+                                    </ul>
+            </div>
+        </div>
+
+        <div class="MobileSideBarContentsInner">
+            <h2>USERLOGIN</h2>
+            <div class="MobileSideBar_one_column">
+                <ul>
+                                            <li style="float: none; width: 90%; margin: 4px 16px; padding: 2px 2px 2px 10px; background: transparent url(https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/widgetlisticon.gif) no-repeat scroll 0 center;"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/admin/login.php" target="_blank">登录</a></li>
+                                        
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+</div>
+        <div id="HeadLeft">
+                            <div id="Hi"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/">科学空间|Scientific Spaces</a></div>
+                        <div id="MenuTop">
+                <ul>
+                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/admin/login.php" target="_blank">登录</a></li>
+                                        <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/reward.html">打赏</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/latex.html">公式</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/ac.html">天象</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/links.html">链接</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/me.html">时光</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/science.html">博览</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/content.html">归档</a></li>                </ul>
+            </div>
+            <div id="navigation">渴望成为一个小飞侠</div>
+        </div>
+        <div id="HeadRight">
+
+            <div id="topnavbox">
+                <ul>    
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/feed"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/rss.png" alt=""><br>
+                    欢迎订阅</a></li>
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/119"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/mail.png" alt=""><br>
+                    个性邮箱</a></li>
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/ac.html"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/Saturn.png" alt=""><br>
+                    天象信息</a></li>
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/41"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/iss.png" alt=""><br>
+                    观测ISS</a></li>
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/latex.html"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/pi.png" alt=""><br>
+                    LaTeX</a></li>
+                    <li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/me.html"><img src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/images/mlogo.png" alt=""><br>
+                    关于博主</a></li>
+                </ul>
+            </div>
+            <div id="Submissions">
+                <p>欢迎访问“科学空间”，这里将与您共同探讨自然科学，回味人生百态；也期待大家的分享～</p>
+            </div>
+        </div>
+    </div>
+    <div id="MainMenu">
+        <ul>
+            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Everything"><strong>千奇百怪</strong>Everything</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Astronomy"><strong>天文探索</strong>Astronomy</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Mathematics"><strong>数学研究</strong>Mathematics</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Phy-chem"><strong>物理化学</strong>Phy-chem</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Big-Data"><strong>信息时代</strong>Big-Data</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Biology"><strong>生物自然</strong>Biology</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Photograph"><strong>图片摄影</strong>Photograph</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Questions"><strong>问题百科</strong>Questions</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Life-Feeling"><strong>生活/情感</strong>Life-Feeling</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Resources"><strong>资源共享</strong>Resources</a></li>        </ul>
+    </div>
+
+    <div id="MainMenuiPad">
+        <div style="text-align: center;">
+            <ul>
+                <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Everything"><strong>千奇百怪</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Astronomy"><strong>天文探索</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Mathematics"><strong>数学研究</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Phy-chem"><strong>物理化学</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Big-Data"><strong>信息时代</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Biology"><strong>生物自然</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Photograph"><strong>图片摄影</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Questions"><strong>问题百科</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Life-Feeling"><strong>生活/情感</strong></a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Resources"><strong>资源共享</strong></a></li>            </ul>
+        </div>
+    </div>
+
+<!-- end #header -->
+
+<div id="MainBody">
+    <div id="content">
+        <div id="breadcrumb">
+            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/">首页</a>
+            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Big-Data">信息时代</a>            线性Attention的探索：Attention必须有个Softmax吗？        </div>
+        <div class="Post">
+            <div class="PostHead">
+                <div class="date-wrap">
+                    <span class="date-day">4</span>
+                    <span class="date-month">Jul</span>
+                </div>
+                <div class="title-wrap">
+                    <h1><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546">线性Attention的探索：Attention必须有个Softmax吗？</a></h1>
+                    <span class="submitted">
+                        <span>By </span>
+                        <span>苏剑林</span> |
+                        <span>2020-07-04</span> |
+                        <span>231682位读者</span>
+                        <span id="print"> | <input type="button" class="title_button" onclick="document.getElementById('SideBar').style.display = 'none'; document.getElementById('content').style.width = '100%'; document.getElementById('content').style.border = 'none'; document.getElementById('Header').style.display = 'none'; document.getElementById('PostComment').style.display = 'none'; document.getElementById('comments').style.display = 'none'; document.getElementById('similar').style.display = 'none'; document.getElementById('breadcrumb').style.display = 'none'; document.getElementById('pay').style.display = 'none'; document.getElementById('tools').style.display = 'none'; document.getElementById('entrynavigation').style.display = 'none'; document.getElementById('content_tips').style.display = 'none'; document.getElementById('Container').style.padding = '0'; document.getElementById('Footer').style.display = 'none'; document.getElementById('MobileSideBar').style.display = 'none'; document.getElementById('MainMenu').style.display = 'none'; document.getElementById('MainMenuiPad').style.display = 'none'; document.getElementById('print').style.display = 'none'; document.getElementById('PostContent').style.color = '#000'; document.getElementById('Container').style.maxWidth = '100%'; document.body.style.background = 'none'; document.getElementById('share').style.display = 'none'; document.getElementById('to_cite').style.display = 'none'; window.print();" value="打印"></span> <span id="to_cite"><input type="button" class="title_button" onclick="location.href='#how_to_cite'" value="引用"></span> <span id="share">
+    <input type="button" class="title_button" onclick="var to_share = document.getElementById('share_position'); if (to_share.style.display === 'none') {to_share.style.display = 'inline-block';} else {to_share.style.display = 'none'}" value="分享">
+    <span id="share_position" style="display: none">
+        :
+        <input type="button" class="title_button" onclick="shareTo('qzone')" value="空间">
+        <input type="button" class="title_button" onclick="shareTo('qq')" value="QQ">
+        <input type="button" class="title_button" onclick="shareTo('sina')" value="微博">
+        <input type="button" class="title_button" onclick="shareTo('wechat')" value="微信"> 
+    </span>
+</span>
+
+<script type="text/javascript">
+//一键分享
+function shareTo(stype){
+    //获取文章标题
+    var share_title = document.title;
+    //获取文章地址
+    var share_url = document.location.href.split('#')[0];
+    //获取文章描述
+    var share_content = document.querySelector('meta[name="description"]').getAttribute('content');
+    //获取文章第一章图片
+    var share_img = document.getElementById('PostContent').getElementsByTagName('img')[0].src;
+    if (share_img.indexOf('wx.png') >= 0) {
+        //如果文章无图则用默认的logo
+        share_img = 'https://web.archive.org/web/20250117110749/https://kexue.fm/usr/uploads/2014/06/1891032154.png';
+    }
+
+    if(stype=='qzone'){
+        window.open('https://web.archive.org/web/20250117110749/https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+share_url+'&share_title='+share_title+'&pics='+share_img+'&summary='+share_content);
+    }
+    if(stype=='sina'){
+        window.open('https://web.archive.org/web/20250117110749/http://service.weibo.com/share/share.php?url='+share_url+'?sharesource=weibo&title='+share_title+'&pic='+share_img+'&appkey=2429761806');
+    }
+    if(stype == 'qq'){
+        window.open('https://web.archive.org/web/20250117110749/http://connect.qq.com/widget/shareqq/index.html?url='+share_url+'&title='+share_title+'&pics='+share_img+'&summary='+share_content+'&desc='+share_title);
+    }
+    if(stype == 'wechat'){
+        //分享到微信实际上就是生成对应的二维码
+        window.open('https://web.archive.org/web/20250117110749/https://tool.oschina.net/action/qrcode/generate?output=image%2Fpng&error=L&type=0&margin=6&size=4&data='+share_url);
+    }
+}
+</script>                    </span> 
+                </div>
+            </div>
+            <div class="PostContent" id="PostContent">
+
+                <p>众所周知，尽管基于Attention机制的Transformer类模型有着良好的并行性能，但它的空间和时间复杂度都是$\mathcal{O}(n^2)$级别的，$n$是序列长度，所以当$n$比较大时Transformer模型的计算量难以承受。近来，也有不少工作致力于降低Transformer模型的计算量，比如模型剪枝、量化、蒸馏等精简技术，又或者修改Attention结构，使得其复杂度能降低到$\mathcal{O}(n\log n)$甚至$\mathcal{O}(n)$。</p><p>前几天笔者读到了论文<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2006.16236" target="_blank">《Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention》</a>，了解到了线性化<font color="red">Attention（Linear Attention）</font>这个探索点，继而阅读了一些相关文献，有一些不错的收获，最后将自己对线性化Attention的理解汇总在此文中。</p><h2 id="Attention">Attention<a href="#Attention"> #</a></h2><p>当前最流行的Attention机制当属<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1706.03762" target="_blank">Scaled-Dot Attention</a>，形式为<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V}) = softmax\left(\boldsymbol{Q}\boldsymbol{K}^{\top}\right)\boldsymbol{V}\label{eq:std-att}\end{equation}<br>
+这里的$\boldsymbol{Q}\in\mathbb{R}^{n\times d_k}, \boldsymbol{K}\in\mathbb{R}^{m\times d_k}, \boldsymbol{V}\in\mathbb{R}^{m\times d_v}$，简单起见我们就没显式地写出Attention的缩放因子了。本文我们主要关心Self Attention场景，所以为了介绍上的方便统一设$\boldsymbol{Q}, \boldsymbol{K}, \boldsymbol{V}\in\mathbb{R}^{n\times d}$，一般场景下都有$n &gt; d$甚至$n\gg d$（BERT base里边$d=64$）。<!--more-->相关解读可以参考笔者的<a href="/web/20250117110749/https://spaces.ac.cn/archives/4765" target="_blank">《Attention is All You Need》浅读（简介+代码）</a>，以及它的一些改进工作也可以参考<a href="/web/20250117110749/https://spaces.ac.cn/archives/7325" target="_blank">《突破瓶颈，打造更强大的Transformer》</a>、<a href="/web/20250117110749/https://spaces.ac.cn/archives/7430" target="_blank">《Google新作Synthesizer：我们还不够了解自注意力》</a>，这里就不多深入介绍了。</p><h3 id="摘掉Softmax">摘掉Softmax<a href="#摘掉Softmax"> #</a></h3><p>读者也许想不到，制约Attention性能的关键因素，其实是定义里边的Softmax！事实上，简单地推导一下就可以得到这个结论。$\boldsymbol{Q}\boldsymbol{K}^{\top}$这一步我们得到一个$n\times n$的矩阵，就是这一步决定了Attention的复杂度是$\mathcal{O}(n^2)$；如果没有Softmax，那么就是三个矩阵连乘$\boldsymbol{Q}\boldsymbol{K}^{\top}\boldsymbol{V}$，而矩阵乘法是满足结合率的，所以我们可以先算$\boldsymbol{K}^{\top}\boldsymbol{V}$，得到一个$d\times d$的矩阵，然后再用$\boldsymbol{Q}$左乘它，由于$d \ll n$，所以这样算大致的复杂度只是$\mathcal{O}(n)$（就是$\boldsymbol{Q}$左乘那一步占主导）。</p><p>也就是说，去掉Softmax的Attention的复杂度可以降到最理想的线性级别$\mathcal{O}(n)$！这显然就是我们的终极追求：<font color="red">Linear Attention</font>，复杂度为线性级别的Attention。所以，本文的主题就是探究<font color="red">摘掉Softmax后的线形Attention</font>。</p><h3 id="一般的定义">一般的定义<a href="#一般的定义"> #</a></h3><p>问题是，直接去掉Softmax还能算是Attention吗？它还能有标准的Attention的效果吗？为了回答这个问题，我们先将Scaled-Dot Attention的定义$\eqref{eq:std-att}$等价地改写为（本文的向量都是列向量）<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V})_i = \frac{\sum\limits_{j=1}^n e^{\boldsymbol{q}_i^{\top}\boldsymbol{k}_j}\boldsymbol{v}_j}{\sum\limits_{j=1}^n e^{\boldsymbol{q}_i^{\top}\boldsymbol{k}_j}}\label{eq:std-att-2}\end{equation}<br>
+所以，Scaled-Dot Attention其实就是以$e^{\boldsymbol{q}_i^{\top}\boldsymbol{k}_j}$为权重对$\boldsymbol{v}_j$做加权平均。所以我们可以提出一个Attention的一般化定义<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V})_i = \frac{\sum\limits_{j=1}^n \text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)\boldsymbol{v}_j}{\sum\limits_{j=1}^n \text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)}\label{eq:gen-att}\end{equation}<br>
+也就是把$e^{\boldsymbol{q}_i^{\top}\boldsymbol{k}_j}$换成$\boldsymbol{q}_i, \boldsymbol{k}_j$的一般函数$\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)$，为了保留Attention相似的分布特性，我们要求$\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)\geq 0$恒成立。也就是说，我们如果要定义新式的Attention，那么要保留式$\eqref{eq:gen-att}$的形式，并且满足$\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)\geq 0$。</p><p>这种一般形式的Attention在CV中也被称为<font color="red">Non-Local网络</font>，出自论文<a href="1711.07971" target="_blank">《Non-local Neural Networks》</a>。</p><h2 id="几个例子">几个例子<a href="#几个例子"> #</a></h2><p>如果直接去掉Softmax，那么就是$\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j) = \boldsymbol{q}_i^{\top}\boldsymbol{k}_j$，问题是内积无法保证非负性，所以这还不是一个合理的选择。下面我们简单介绍几种可取的方案。</p><p>值得指出的是，下面介绍的这几种Linear Attention，前两种来自CV领域，第三种是笔者自己构思的，所以都还没有在NLP任务上做过什么实验，各位做模型改进的NLPer们就有实验方向了（^_^）～～顺便说一下，CV领域有不少对Attention的改进工作（除了下面介绍的外，还有<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1907.13426" target="_blank">EMANet</a>等），很多内容都值得做NLP的我们参考阅读。</p><h3 id="核函数形式">核函数形式<a href="#核函数形式"> #</a></h3><p>一个自然的想法是：如果$\boldsymbol{q}_i,\boldsymbol{k}_j$的每个元素都是非负的，那么内积自然也就是非负的。为了完成这点，我们可以给$\boldsymbol{q}_i,\boldsymbol{k}_j$各自加个激活函数$\phi,\varphi$，即<br>
+\begin{equation}\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j) = \phi(\boldsymbol{q}_i)^{\top} \varphi(\boldsymbol{k}_j)\label{eq:gen-att-2}\end{equation}<br>
+其中$\phi(\cdot),\varphi(\cdot)$是值域非负的激活函数。本文开头提到的论文<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2006.16236" target="_blank">《Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention》</a>选择的是$\phi(x)=\varphi(x)=\text{elu}(x)+1$。</p><p>非要讲故事的话，式$\eqref{eq:gen-att-2}$可以联想到“<font color="red">核方法（kernal method）</font>”，尤其是$\phi=\varphi$时$\phi$就相当于一个核函数，而$\langle \phi(\boldsymbol{q}_i), \phi(\boldsymbol{k}_j)\rangle$就是通过核函数所定义的内积。这方面的思考可以参考论文<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1908.11775" target="_blank">《Transformer dissection: An unified understanding for transformer’s attention via the lens of kernel》</a>，此处不做过多延伸。</p><h3 id="妙用Softmax">妙用Softmax<a href="#妙用Softmax"> #</a></h3><p>另一篇更早的文章<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1812.01243" target="_blank">《Efficient Attention: Attention with Linear Complexities》</a>则给出了一个更有意思的选择。它留意到在$\boldsymbol{Q}\boldsymbol{K}^{\top}$中，$\boldsymbol{Q}, \boldsymbol{K}, \in\mathbb{R}^{n\times d}$，如果“$\boldsymbol{Q}$在$d$那一维是归一化的、并且$\boldsymbol{K}$在$n$那一维是归一化的”，那么$\boldsymbol{Q}\boldsymbol{K}^{\top}$就是自动满足归一化了，所以它给出的选择是：<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V}) = softmax_2\left(\boldsymbol{Q}\right)softmax_1(\boldsymbol{K})^{\top}\boldsymbol{V}\end{equation}<br>
+其中$softmax_1$、$softmax_2$分别指在第一个（$n$）、第二个维度（$d$）进行Softmax运算。也就是说，这时候我们是各自给$\boldsymbol{Q},\boldsymbol{K}$加Softmax，而不是$\boldsymbol{Q}\boldsymbol{K}^{\top}$算完之后才加Softmax。</p><p>如果直接取$\phi(\boldsymbol{q}_i)=softmax(\boldsymbol{q}_i),\varphi(\boldsymbol{k}_j)=softmax(\boldsymbol{k}_j)$，那么很显然这个形式也是式$\eqref{eq:gen-att-2}$的一个特例。另外这个设计在CV中出现过不止一次，比如<a href="https://web.archive.org/web/20250117110749/https://papers.nips.cc/paper/7318-a2-nets-double-attention-networks.pdf" target="_blank">A<sup>2</sup>-Nets</a>也包含了同样的做法。</p><h3 id="自己的构思">自己的构思<a href="#自己的构思"> #</a></h3><p>在这里，笔者给出自己的一种构思。这个构思的出发点不再是式$\eqref{eq:gen-att-2}$，而是源于我们对原始定义$\eqref{eq:std-att-2}$的近似。由泰勒展开我们有<br>
+\begin{equation}e^{\boldsymbol{q}_i^{\top}\boldsymbol{k}_j} \approx 1 + \boldsymbol{q}_i^{\top}\boldsymbol{k}_j\end{equation}<br>
+如果$\boldsymbol{q}_i^{\top}\boldsymbol{k}_j\geq -1$，那么就可以保证右端的非负性，而从可以让$\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j)=1 + \boldsymbol{q}_i^{\top}\boldsymbol{k}_j$。到这里读者可能已经想到了，想要保证$\boldsymbol{q}_i^{\top}\boldsymbol{k}_j\geq -1$，只需要分别对$\boldsymbol{q}_i,\boldsymbol{k}_j$做$l_2$归一化。所以，笔者最终提出的方案就是：<br>
+\begin{equation}\text{sim}(\boldsymbol{q}_i, \boldsymbol{k}_j) = 1 + \left( \frac{\boldsymbol{q}_i}{\Vert \boldsymbol{q}_i\Vert}\right)^{\top}\left(\frac{\boldsymbol{k}_j}{\Vert \boldsymbol{k}_j\Vert}\right)\end{equation}<br>
+这不同于形式$\eqref{eq:gen-att-2}$，但理论上它更加接近原始的Scaled-Dot Attention。</p><h2 id="相关工作">相关工作<a href="#相关工作"> #</a></h2><p>通过修改Attention的形式来降低它的计算复杂度，相关的工作有很多，这里简要列举一些。</p><h3 id="稀疏Attention">稀疏Attention<a href="#稀疏Attention"> #</a></h3><p>我们之前介绍过OpenAI的<a href="/web/20250117110749/https://spaces.ac.cn/archives/6853#Sparse%20Self%20Attention" target="_blank">Sparse Attention</a>，通过“只保留小区域内的数值、强制让大部分注意力为零”的方式，来减少Attention的计算量。经过特殊设计之后，Attention矩阵的大部分元素都是0，因此理论上它也能节省显存占用量和计算量。后续类似工作还有<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1912.11637" target="_blank">《Explicit Sparse Transformer: Concentrated Attention Through Explicit Selection》</a>、<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2004.05150" target="_blank">《Longformer: The Long-Document Transformer》</a>等。</p><p>但是很明显，这种思路有两个不足之处：</p><blockquote><p>1、如何选择要保留的注意力区域，这是人工主观决定的，带有很大的不智能性；</p><p>2、它需要从编程上进行特定的设计优化，才能得到一个高效的实现，所以它不容易推广。</p></blockquote><h3 id="Reformer">Reformer<a href="#Reformer"> #</a></h3><p><a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2001.04451" target="_blank">Reformer</a>也是有代表性的改进工作，它将Attention的复杂度降到了$\mathcal{O}(n\log n)$。某种意义上来说，Reformer也是稀疏Attention的一种，只不过它的稀疏Pattern不是事先指定的，而是通过LSH（Locality Sensitive Hashing）技术（近似地）快速地找到最大的若干个Attention值，然后只去计算那若干个值。此外，Reformer通过构造可逆形式的FFN（Feedforward Network）替换掉原来的FFN，然后重新设计反向传播过程，从而降低了显存占用量。</p><p>所以，相比前述稀疏Attention，Reformer解决了它的第一个缺点，但是依然有第二个缺点：实现起来复杂度高。要实现LSH形式的Attention比标准的Attention复杂多了，对可逆网络重写反向传播过程对普通读者来说更是遥不可及～</p><h3 id="Linformer">Linformer<a href="#Linformer"> #</a></h3><p>跟本文所介绍的Linear Attention很相似的一个工作是Facebook最近放出来的<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2006.04768" target="_blank">Linformer</a>，它依然保留原始的Scaled-Dot Attention形式，但在进行Attention之前，用两个$m\times n$的矩阵$\boldsymbol{E},\boldsymbol{F}$分别对$\boldsymbol{K},\boldsymbol{V}$进行投影，即变为<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V}) = softmax\left(\boldsymbol{Q}(\boldsymbol{E}\boldsymbol{K})^{\top}\right)\boldsymbol{F}\boldsymbol{V}\end{equation}<br>
+这样一来，$\boldsymbol{Q}(\boldsymbol{E}\boldsymbol{K})^{\top}$就只是一个$n\times m$的矩阵，而作者声称对于哪怕对于很大的序列长度$n$，$m$也可以保持为一个适中的常数，从而这种Attention也是线性的。跟Linformer类似的思路还出现在更早一些的CV论文<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/1907.13426" target="_blank">《Asymmetric Non-local Neural Networks for Semantic Segmentation》</a>中。</p><p>但是，笔者认为“对于超长序列$m$可以保持不变”这个结论是值得质疑的，对于长序列原论文只做了MLM任务，而很明显MLM并不那么需要长程依赖，所以这个实验没什么说服力。因此，Linformer是不是真的Linear，还有待商榷。</p><h3 id="自回归生成">自回归生成<a href="#自回归生成"> #</a></h3><p>Linformer的另一个缺点是$\boldsymbol{E}\boldsymbol{K},\boldsymbol{F}\boldsymbol{V}$这两个运算直接把整个序列的信息给“糅合”起来了，所以它没法简单地把将来信息给Mask掉（Causal Masking），从而无法做语言模型、Seq2Seq等自回归生成任务，这也是刚才说的原作者只做了MLM任务的原因。相比之下，本文介绍的几种Linear Attention都能做到这一点。以式$\eqref{eq:gen-att}$和式$\eqref{eq:gen-att-2}$为例，如果要Mask掉未来信息，那么只需要把求和$\sum\limits_{j=1}^n$改为$\sum\limits_{j=1}^i$：<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V})_i = \frac{\sum\limits_{j=1}^i \left(\phi(\boldsymbol{q}_i)^{\top} \varphi(\boldsymbol{k}_j)\right)\boldsymbol{v}_j}{\sum\limits_{j=1}^i \phi(\boldsymbol{q}_i)^{\top} \varphi(\boldsymbol{k}_j)}=\frac{ \phi(\boldsymbol{q}_i)^{\top} \sum\limits_{j=1}^i\varphi(\boldsymbol{k}_j)\boldsymbol{v}_j^{\top}}{ \phi(\boldsymbol{q}_i)^{\top} \sum\limits_{j=1}^i\varphi(\boldsymbol{k}_j)}\end{equation}<br>
+实现上式有两种方式：第一方式是设$\boldsymbol{S}_i=\sum\limits_{j=1}^i\varphi(\boldsymbol{k}_j)\boldsymbol{v}_j^{\top}$以及$\boldsymbol{z}_i=\sum\limits_{j=1}^i\varphi(\boldsymbol{k}_j)$，我们有<br>
+\begin{equation}Attention(\boldsymbol{Q},\boldsymbol{K},\boldsymbol{V})_i =\frac{ \phi(\boldsymbol{q}_i)^{\top} \boldsymbol{S}_i}{ \phi(\boldsymbol{q}_i)^{\top} \boldsymbol{z}_i},\quad \begin{aligned}&amp;\boldsymbol{S}_i=\boldsymbol{S}_{i-1}+\varphi(\boldsymbol{k}_i)\boldsymbol{v}_i^{\top}\\<br>
+&amp;\boldsymbol{z}_i=\boldsymbol{z}_{i-1}+\varphi(\boldsymbol{k}_i)<br>
+\end{aligned}\end{equation}<br>
+这说明这种Attention可以作为一个RNN模型用递归的方式实现，它的空间复杂度最低，但是要串性计算，适合预测解码时使用；第二种是直接将$\varphi(\boldsymbol{K}),\boldsymbol{V}\in\mathbb{R}^{n\times d}$做外积，得到一个$n\times d\times d$的矩阵，然后对$n$那一维执行$\text{cumsum}$运算，这样就一次性得到$\boldsymbol{S}_1,\boldsymbol{S}_2,\dots,\boldsymbol{S}_n$了，它的速度最快，但空间占用最大，适合训练时使用，不过很多时候都有$d^2\gg n$，一般情况下训练时都很难承受这个空间复杂度，因此多数还是用RNN形式。</p><h3 id="下采样技术">下采样技术<a href="#下采样技术"> #</a></h3><p>从结果上来看，Linformer的$\boldsymbol{E}\boldsymbol{K}, \boldsymbol{F}\boldsymbol{V}$就是将序列变短（下采样）了，而将序列变短的一个最朴素的方法就是Pooling了，所以笔者之前也尝试过把Pooling技术引入到Transformer中去。近来也有类似的工作发出来，比如IBM的<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2001.08950" target="_blank">《PoWER-BERT: Accelerating BERT Inference via Progressive Word-vector Elimination》</a>和Google的<a href="https://web.archive.org/web/20250117110749/https://papers.cool/arxiv/2006.03236" target="_blank">《Funnel-Transformer: Filtering out Sequential Redundancy for Efficient Language Processing》</a>。除了Pooling之外，其实还有其他的下采样技术，比如可以通过stride &gt; 1的一维卷积来实现，基于这个思路，或许我们可以把FFN里边的Position-Wise全连接换成stride &gt; 1的一维卷积？总之这方面应该也能玩出很多花样来，不过跟Linformer一样，这样糅合之后做自回归生成就很难了。</p><h2 id="文章小结">文章小结<a href="#文章小结"> #</a></h2><p>本文介绍了一些从结构上对Attention进行修改从而降低其计算复杂度的工作，其中最主要的idea是去掉标准Attention中的Softmax，就可以使得Attention的复杂度退化为理想的$\mathcal{O}(n)$级别（Linear Attention）。相比于其他类似的改进结构的工作，这种修改能在把复杂度降到$\mathcal{O}(n)$的同时，依然保留所有的“token-token“的注意力，同时还能保留用于做自回归生成的可能性。</p>
+                <p style="color: #FF8800; margin-top: 30px; margin-bottom: 0px"><em><strong>转载到请包括本文地址：</strong><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546" rel="bookmark" title="线性Attention的探索：Attention必须有个Softmax吗？">https://spaces.ac.cn/archives/7546</a></em></p>
+                <p style="color: #FF8800; margin-top: 0px; margin-bottom: 15px"><em><strong>更详细的转载事宜请参考：</strong></em><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/6508#%E6%96%87%E7%AB%A0%E5%A6%82%E4%BD%95%E8%BD%AC%E8%BD%BD/%E5%BC%95%E7%94%A8" rel="bookmark" title="《科学空间FAQ》">《科学空间FAQ》</a></p>
+                <div id="content_tips">
+                <p style="border-top: 1px solid #ddd; color: #FF8800; padding-top: 5px"><strong>如果您还有什么疑惑或建议，欢迎在下方评论区继续讨论。</strong></p>
+                <p style="color: #FF8800"><strong>如果您觉得本文还不错，欢迎<a href="#share">分享</a>/<a href="#pay">打赏</a>本文。打赏并非要从中获得收益，而是希望知道科学空间获得了多少读者的真心关注。当然，如果你无视它，也不会影响你的阅读。再次表示欢迎和感谢！</strong></p>
+                </div>
+
+                        <div id="pay" style="padding: 10px 0; margin: 20px auto; width: 100%; font-size:16px; text-align: center;">
+                <button id="payButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display = 'block';} else {qr.style.display = 'none'}">
+                    <span>打赏</span>
+                </button>
+                <div id="QR" style="display: none;">
+                    <div id="wechat" style="display: inline-block">
+                        <a class="fancybox" rel="group"><img id="wechat_qr" src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/payment/wx.png" alt="科学空间"></a>
+                        <p>微信打赏</p>
+                    </div>
+                    <div id="alipay" style="display: inline-block">
+                        <a class="fancybox" rel="group"><img id="alipay_qr" src="https://web.archive.org/web/20250117110749im_/https://spaces.ac.cn/usr/themes/geekg/payment/zfb.png" alt="科学空间"></a>
+                        <p>支付宝打赏</p>
+                    </div>
+                    <p><font color="red">因为网站后台对打赏并无记录，因此欢迎在打赏时候备注留言。</font><br>你还可以<a href="https://web.archive.org/web/20250117110749/http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=tN7d1drY3drrx8H0xcWa19vZ" target="_blank"><strong>点击这里</strong></a>或在下方评论区留言来告知你的建议或需求。</p>
+                </div>
+            </div>
+                <div id="how_to_cite">
+                    <p><strong>如果您需要引用本文，请参考：</strong></p>
+                    <p class="cite_style">苏剑林. (Jul. 04, 2020). 《线性Attention的探索：Attention必须有个Softmax吗？ 》[Blog post]. Retrieved from <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546">https://spaces.ac.cn/archives/7546</a></p>
+                    <p class="cite_style">
+                    @online{kexuefm-7546,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title={线性Attention的探索：Attention必须有个Softmax吗？},<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;author={苏剑林},<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year={2020},<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;month={Jul},<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url={\url{https://spaces.ac.cn/archives/7546}},<br>
+                    }
+                    </p>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="tools" class="tools">
+            <span class="cat">分类：<a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/category/Big-Data">信息时代</a>&nbsp; &nbsp; 标签：<a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%A8%A1%E5%9E%8B/">模型</a>, <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/">文本生成</a>, <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/attention/">attention</a>            </span>
+
+            <span class="comment_comments">
+                <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546#comments">102 评论</a>
+            </span>     
+        </div>
+        <div id="entrynavigation" class="entrynavigation">
+            <font color="green">&lt;</font> <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7533" title="积分梯度：一种新颖的神经网络可视化方法">积分梯度：一种新颖的神经网络可视化方法</a> | <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7574" title="强大的NVAE：以后再也不能说VAE生成的图像模糊了">强大的NVAE：以后再也不能说VAE生成的图像模糊了</a> <font color="green">&gt;</font>
+        </div>
+
+        
+        <div id="similar">
+            <h3>你也许还对下面的内容感兴趣</h3>
+            <ul style="padding: 0;">
+                                                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667" title="细水长flow之TARFLOW：流模型满血归来？">细水长flow之TARFLOW：流模型满血归来？</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10352" title="“闭门造车”之多模态思路浅谈（三）：位置编码">“闭门造车”之多模态思路浅谈（三）：位置编码</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10347" title="Decoder-only的LLM为什么需要位置编码？">Decoder-only的LLM为什么需要位置编码？</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10122" title="Transformer升级之路：18、RoPE的底数选择原则">Transformer升级之路：18、RoPE的底数选择原则</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10091" title="缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA">缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10040" title="Transformer升级之路：17、多模态位置编码的简单思考">Transformer升级之路：17、多模态位置编码的简单思考</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10017" title="时空之章：将Attention视为平方复杂度的RNN">时空之章：将Attention视为平方复杂度的RNN</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9984" title="“闭门造车”之多模态思路浅谈（一）：无损输入">“闭门造车”之多模态思路浅谈（一）：无损输入</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9948" title="Transformer升级之路：16、“复盘”长度外推技术">Transformer升级之路：16、“复盘”长度外推技术</a>
+                        </li>
+                                            <li>
+                            <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9889" title="注意力机制真的可以“集中注意力”吗？">注意力机制真的可以“集中注意力”吗？</a>
+                        </li>
+                                                     
+            </ul>
+            <div class="clear"></div>
+        </div>
+
+    <div id="PostComment">
+        <a href="#comment_form">发表你的看法</a>
+    </div>
+
+    
+<script>
+    
+    //评论预览功能
+    var Comment_Preview = {
+  delay: 150,        // delay after keystroke before updating
+  preview: null,     // filled in by Init below
+  buffer: null,      // filled in by Init below
+  timeout: null,     // store setTimout id
+  mjRunning: false,  // true when MathJax is processing
+  mjPending: false,  // true when a typeset has been queued
+  oldText: null,     // used to check if an update is needed
+  //
+  //  Get the preview and buffer DIV's
+  //
+  Init: function () {
+    this.preview = document.getElementById("comment_preview");
+    this.buffer = document.getElementById("comment_buffer");
+},
+  //
+  //  Switch the buffer and preview, and display the right one.
+  //  (We use visibility:hidden rather than display:none since
+  //  the results of running MathJax are more accurate that way.)
+  //
+  SwapBuffers: function () {
+    var buffer = this.preview, preview = this.buffer;
+    this.buffer = buffer; this.preview = preview;
+    buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
+    preview.style.position = ""; preview.style.visibility = "";
+},
+  //
+  //  This gets called when a key is pressed in the textarea.
+  //  We check if there is already a pending update and clear it if so.
+  //  Then set up an update to occur after a small delay (so if more keys
+  //    are pressed, the update won't occur until after there has been 
+  //    a pause in the typing).
+  //  The callback function is set up below, after the Comment_Preview object is set up.
+  //
+  Update: function () {
+    if (this.timeout) {clearTimeout(this.timeout)}
+        this.timeout = setTimeout(this.callback,this.delay);
+},
+  //
+  //  Creates the preview and runs MathJax on it.
+  //  If MathJax is already trying to render the code, return
+  //  If the text hasn't changed, return
+  //  Otherwise, indicate that MathJax is running, and start the
+  //    typesetting.  After it is done, call Comment_PreviewDone.
+  //  
+  CreateComment_Preview: function () {
+    Comment_Preview.timeout = null;
+    if (this.mjPending) return;
+    var text = document.getElementById("comment_texts").value;
+    text = text.replace(/\n/g, '<br>');
+    var subStr=new RegExp('\\[comment=(.*?)\\](.*?)\\[\\/comment\\]', 'ig');
+    text = text.replace(subStr, '<a href="#comment-$1">@$2|$1</a>');
+    if (text === this.oldtext) return;
+    if (this.mjRunning) {
+      this.mjPending = true;
+      MathJax.Hub.Queue(["CreateComment_Preview",this]);
+  } else {
+      this.buffer.innerHTML = this.oldtext = text;
+      this.mjRunning = true;
+      MathJax.Hub.Queue(
+          ["Typeset",MathJax.Hub,this.buffer],
+          ["Comment_PreviewDone",this]
+          );
+  }
+},
+  //
+  //  Indicate that MathJax is no longer running,
+  //  and swap the buffers to show the results.
+  //
+  Comment_PreviewDone: function () {
+    this.mjRunning = this.mjPending = false;
+    this.SwapBuffers();
+}
+};
+//
+//  Cache a callback to the CreateComment_Preview action
+//
+Comment_Preview.callback = MathJax.Callback(["CreateComment_Preview",Comment_Preview]);
+Comment_Preview.callback.autoReset = true;  // make sure it can run more than once
+
+
+    //评论引用功能
+    function Cite_Comment(comment_id, author_name){  
+        document.getElementById('comment_texts').value += ('[comment=' + comment_id.replace('comment-','') + ']' + author_name + '[/comment]\n\n');
+        var this_url = window.location.href;
+        window.location.href='#comment_texts';
+        Comment_Preview.Update();
+        window.history.pushState({}, 0, this_url.split('#')[0]+'#'+comment_id); // 修改地址栏，方便需要复制评论地址的读者
+    }
+
+</script>
+
+<div id="comments">
+
+    
+            <div id="pages">
+            <ul>
+                <ol class="page-navigator"><li class="prev"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-3#comments">«</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-1#comments">1</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-2#comments">2</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-3#comments">3</a></li><li class="current"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4#comments">4</a></li></ol>            </ul>
+        </div>
+         
+        <div class="AllComments">
+            <div class="ComListLi">
+            
+            <div class="ListUser"><a href="https://web.archive.org/web/20250117110749/https://proanimer.com/2024/02/19/%e4%bb%8e%e7%9b%b8%e5%af%b9%e4%bd%8d%e7%bd%ae%e7%bc%96%e7%a0%81%e5%88%b0vision-transformer/" rel="external nofollow" target="_blank">从相对位置编码到Vision Transformer R11; 博客小屋</a></div>
+            <p class="ListDate">February 19th, 2024</p><span class="ListNr"><input type="button" class="cite_comment" onclick="Cite_Comment('pingback-23708', '从相对位置编码到Vision Transformer R11; 博客小屋')" value="1" style="font: normal 24px/24px 'Arial';"></span>
+            <div id="pingback-23708" class="ListContent"> 
+                
+                <p>[...]线性Attention的探索：Attention必须有个Softmax吗？ - 科学空间|Scientific Spaces提出将指数[...]</p>                <div class="comment_reply">
+                    <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4?replyTo=23708#respond-post-7546" rel="nofollow" onclick="return TypechoComment.reply('pingback-23708', 23708);">回复评论</a>                </div>                   
+            </div>
+                    </div>  
+            <div class="ComListLi">
+            
+            <div class="ListUser">Goddess陆伯言</div>
+            <p class="ListDate">April 3rd, 2024</p><span class="ListNr"><input type="button" class="cite_comment" onclick="Cite_Comment('comment-24057', 'Goddess陆伯言')" value="2" style="font: normal 24px/24px 'Arial';"></span>
+            <div id="comment-24057" class="ListContent"> 
+                
+                <p>苏神您好，我有个疑问：虽然\((\varphi(Q)\phi(K^T))V=\varphi(Q)(\phi(K^T)V)\)，但对于decoder架构来说，Attention还有个mask，是一个非1即0的下三角矩阵，记为M，那么\(Attention = \varphi(Q) \times \phi(K^T) * M \times V\)，\(\times\)是矩阵乘法，\(*\)是数乘，这样好像没法做结合律了，矩阵乘法和矩阵数乘混合在一起不满足结合律，这样计算复杂度就还是\(O(n^2)\)</p>                <div class="comment_reply">
+                    <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4?replyTo=24057#respond-post-7546" rel="nofollow" onclick="return TypechoComment.reply('comment-24057', 24057);">回复评论</a>                </div>                   
+            </div>
+                <div class="subcomments">
+        <div class="comment_2 odd">
+            <div class="comment_data">
+
+                <span><input type="button" class="cite_comment" onclick="Cite_Comment('comment-24080', '苏剑林')" value="第3层"></span>
+                <a href="https://web.archive.org/web/20250117110749/https://kexue.fm/" rel="external nofollow" target="_blank">苏剑林</a> 发表于
+                April 3rd, 2024            </div>
+            <div id="comment-24080" class="comment_content">
+                <p>后面“自回归生成”一节就已经讨论了，此时可以转为RNN，这种情况下时间复杂度较大，空间复杂度最低；其次可以用外积的方式，用$\mathcal{O}(nd^2)$的空间复杂度去并行，d是head_size，bert是64，llama是128，只要$n &gt; d^2$，那么这种做法效率也是可以接受的。</p>                <div class="comment_reply">
+                    <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4?replyTo=24080#respond-post-7546" rel="nofollow" onclick="return TypechoComment.reply('comment-24080', 24080);">回复评论</a>                </div>
+            </div>
+        </div>
+            </div>
+            </div>  
+            <div class="ComListLi">
+            
+            <div class="ListUser">huleeee</div>
+            <p class="ListDate">October 9th, 2024</p><span class="ListNr"><input type="button" class="cite_comment" onclick="Cite_Comment('comment-25404', 'huleeee')" value="3" style="font: normal 24px/24px 'Arial';"></span>
+            <div id="comment-25404" class="ListContent"> 
+                
+                <p>上文中的（6）式的泰勒展开，并不能保证高阶项非负或者为0，是否还需要加一个$q^T k$足够小的正则，这样才能确保展开保留的一阶部分为下界？</p>                <div class="comment_reply">
+                    <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4?replyTo=25404#respond-post-7546" rel="nofollow" onclick="return TypechoComment.reply('comment-25404', 25404);">回复评论</a>                </div>                   
+            </div>
+                <div class="subcomments">
+        <div class="comment_2 odd">
+            <div class="comment_data">
+
+                <span><input type="button" class="cite_comment" onclick="Cite_Comment('comment-25471', '苏剑林')" value="第4层"></span>
+                <a href="https://web.archive.org/web/20250117110749/https://kexue.fm/" rel="external nofollow" target="_blank">苏剑林</a> 发表于
+                October 11th, 2024            </div>
+            <div id="comment-25471" class="comment_content">
+                <p>文章也没说直接用$(6)$来构建linear attention呀，下面就指出不能保证非负所以改为$1+\cos(q,k)$（不过后来测试发现这个事实上效果也不大好）。后来有人用 <a href="https://web.archive.org/web/20250117110749/https://kexue.fm/archives/7919" target="_blank">https://kexue.fm/archives/7919</a> 来做linear attention的，展开到2阶就能保证非负了</p>                <div class="comment_reply">
+                    <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4?replyTo=25471#respond-post-7546" rel="nofollow" onclick="return TypechoComment.reply('comment-25471', 25471);">回复评论</a>                </div>
+            </div>
+        </div>
+            </div>
+            </div>  
+        </div>
+    
+            <div id="bottom_pages">
+            <ul>
+                <ol class="page-navigator"><li class="prev"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-3#comments">«</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-1#comments">1</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-2#comments">2</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-3#comments">3</a></li><li class="current"><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment-page-4#comments">4</a></li></ol>            </ul>
+        </div>
+     
+            <div id="respond-post-7546" class="respond">
+            <div class="cancle_comment_reply"><a id="cancel-comment-reply-link" href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546#respond-post-7546" rel="nofollow" style="display:none" onclick="return TypechoComment.cancelReply();">取消回复</a></div>
+            <form method="post" action="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/7546/comment" id="comment_form">
+                                    <p>
+                        <input type="text" name="author" id="author" class="comment_infos" size="14" value="">
+                        <label for="author">你的大名</label>
+                    </p>
+                    <p>
+                        <input type="text" name="mail" id="mail" class="comment_infos" size="14" value="">
+                        <label for="mail">电子邮箱</label>
+                    </p>
+                    <p>
+                        <input type="text" name="url" id="url" class="comment_infos" size="14" value="">
+                        <label for="url">个人网站（选填）</label>
+                    </p>
+                                <p><textarea name="text" id="comment_texts" onkeyup="Comment_Preview.Update()"></textarea></p>
+                <p>1. 可以使用LaTeX代码，点击“预览效果”可查看效果；   2. 可以通过点击评论楼层编号来引用该楼层。</p>
+                <p><input type="submit" value="提交评论" class="submit">  <input type="button" id="preview_button" value="预览效果" class="submit" onclick="var preview = document.getElementById('preview'); if (preview.style.display === 'none') {preview.style.display='block'; document.getElementById('preview_button').value='隐藏预览';} else {preview.style.display='none'; document.getElementById('preview_button').value='预览效果';}"></p>
+            </form>
+
+            <div id="preview" style="display: none; margin-bottom: 10px">
+                <div id="comment_preview" style="padding: 5px; min-height: 125px; width: 100%; border: 1px solid #ccc; word-break: break-all; word-wrap: break-word; color: #666; box-sizing: border-box"></div>
+                <div id="comment_buffer" style="padding: 5px; min-height: 125px; width: 100%; border: 1px solid #ccc; visibility: hidden; position: absolute; top: 0; left: 0; word-break: break-all; word-wrap: break-word; color: #666; box-sizing: border-box"></div>
+            </div>
+
+            <script>
+                Comment_Preview.Init();
+                //超链接都在新页面打开
+                var anchors = document.getElementById('comments').getElementsByTagName('a');
+                for (i=0; i<anchors.length; i++) {
+                    var anchor_item = anchors[i];
+                    if (anchor_item.getAttribute("rel") == 'external nofollow') {
+                        anchor_item.target = '_blank';
+                    }
+                }
+                // 缓存评论内容
+                var form = document.getElementById('comment_form');
+                var commentText = localStorage.getItem('commentText') || '';
+                if (commentText.startsWith(form.action)) {
+                    form.querySelector('#comment_texts').value = commentText.substring(form.action.length);
+                    Comment_Preview.Update();
+                }
+                form.querySelector('#comment_texts').addEventListener('input', function() {
+                    localStorage.setItem('commentText', form.action + this.value);
+                });
+            </script>
+
+        </div>
+        
+</div>
+    </div>
+
+    <!-- end #content-->
+    <div id="SideBar">
+    
+    <!-- 页面是非文章页 或 没有找到目录 -->
+    
+            <div class="alt-wrapper">
+                <b class="rtop">
+                    <b class="r1"></b>
+                    <b class="r2"></b>
+                    <b class="r3"></b>
+                    <b class="r4"></b>
+                </b>
+                <div class="inner-wrapper">
+                    <h3>内容速览</h3>
+                    <div class="tableofcontents"><li class="toc-2"><a href="#Attention">Attention</a></li>
+<li class="toc-3"><a href="#摘掉Softmax">摘掉Softmax</a></li>
+<li class="toc-3"><a href="#一般的定义">一般的定义</a></li>
+<li class="toc-2"><a href="#几个例子">几个例子</a></li>
+<li class="toc-3"><a href="#核函数形式">核函数形式</a></li>
+<li class="toc-3"><a href="#妙用Softmax">妙用Softmax</a></li>
+<li class="toc-3"><a href="#自己的构思">自己的构思</a></li>
+<li class="toc-2"><a href="#相关工作">相关工作</a></li>
+<li class="toc-3"><a href="#稀疏Attention">稀疏Attention</a></li>
+<li class="toc-3"><a href="#Reformer">Reformer</a></li>
+<li class="toc-3"><a href="#Linformer">Linformer</a></li>
+<li class="toc-3"><a href="#自回归生成">自回归生成</a></li>
+<li class="toc-3"><a href="#下采样技术">下采样技术</a></li>
+<li class="toc-2"><a href="#文章小结">文章小结</a></li></div>                </div>
+                <b class="rbottom">
+                    <b class="r4"></b>
+                    <b class="r3"></b>
+                    <b class="r2"></b>
+                    <b class="r1"></b>
+                </b>
+            </div>
+
+        
+        <div id="searchblock">
+            <h3>智能搜索</h3>
+            <div id="right_search_form">
+                <form method="post" action="">
+                    <div><input type="text" onfocus="if(this.value=='请输入关键词') this.value='';" onblur="if(this.value=='') this.value='请输入关键词';" value="请输入关键词" name="s" size="15"> <input class="btn_search_small" type="submit" value=""></div>
+                </form>
+            </div>
+            <div class="text">支持整句搜索！网站自动使用<a href="https://web.archive.org/web/20250117110749/https://github.com/fxsjy/jieba" target="_blank">结巴分词</a>进行分词，并结合ngrams排序算法给出合理的搜索结果。</div>
+        </div>
+
+        <div class="alt-wrapper">
+            <b class="rtop">
+                <b class="r1"></b>
+                <b class="r2"></b>
+                <b class="r3"></b>
+                <b class="r4"></b>
+            </b>
+            <div class="inner-wrapper">
+                <h3>热门标签</h3>
+                <div style="margin:7px 0px 0px 0px;"><ul>
+                      
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/">生成模型</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/attention/">attention</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E4%BC%98%E5%8C%96/">优化</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%A8%A1%E5%9E%8B/">模型</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">语言模型</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E7%BD%91%E7%AB%99/">网站</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%A6%82%E7%8E%87/">概率</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E8%BD%AC%E8%BD%BD/">转载</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%A2%AF%E5%BA%A6/">梯度</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/">微分方程</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E5%A4%A9%E8%B1%A1/">天象</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E7%9F%A9%E9%98%B5/">矩阵</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E7%A7%AF%E5%88%86/">积分</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E5%88%86%E6%9E%90/">分析</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/python/">python</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E5%8A%9B%E5%AD%A6/">力学</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%97%A0%E7%9B%91%E7%9D%A3/">无监督</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%89%A9%E6%95%A3/">扩散</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E8%8A%82%E6%97%A5/">节日</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E5%87%A0%E4%BD%95/">几何</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90/">文本生成</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E4%BC%98%E5%8C%96%E5%99%A8/">优化器</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E7%94%9F%E6%B4%BB/">生活</a>
+                      
+                        <a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/tag/%E6%95%B0%E8%AE%BA/">数论</a>
+                                    </ul></div>
+            </div>
+            <b class="rbottom">
+                <b class="r4"></b>
+                <b class="r3"></b>
+                <b class="r2"></b>
+                <b class="r1"></b>
+            </b>
+        </div>
+
+
+                    <div class="diggwrapper">
+                <b class="rtop">
+                    <b class="r1"></b>
+                    <b class="r2"></b>
+                    <b class="r3"></b>
+                    <b class="r4"></b>
+                </b>
+                <div class="inner-wrapper">
+                    <h3>随机文章</h3>
+                    <div>
+                        <ul> 
+                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/2236">写在2013年即将逝去之际</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/36">这样的世界之最你见过没有？</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9305">生成扩散模型漫谈（十三）：从万有引力到扩散模型</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/58">五种零食揭示宇宙的形状</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10137">重温SSM（二）：HiPPO的一些遗留问题</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/501">【问答】为什么绿色星星非常罕见呢?</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/845">“凌星时刻变化”技术搜寻外行星</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/2498">如何看费曼的讲义和朗道的教程？</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/49">一道级数求和证明题(非数学归纳法)</a></li><li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/1288">沐浴问题——调控水温</a></li>                  
+                        </ul>
+                    </div>
+                </div>                          
+                <b class="rbottom">
+                    <b class="r4"></b>
+                    <b class="r3"></b>
+                    <b class="r2"></b>
+                    <b class="r1"></b>
+                </b>                            
+            </div>
+         
+
+
+        <div class="wrapper">
+            <b class="rtop">
+                <b class="r1"></b>
+                <b class="r2"></b>
+                <b class="r3"></b>
+                <b class="r4"></b>
+            </b>
+
+            <div class="inner-wrapper">
+                <div class="block-comment">
+                    <h3>最近评论</h3>
+                    <div class="content">
+                        <ul>
+                                                                                        <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667/comment-page-1#comment-26292">More</a>: 请问如何实现文中提到的训练慢采样快</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10667/comment-page-1#comment-26291">More</a>: 请问如何实现文中提到的训练慢采样快</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10197/comment-page-1#comment-26290">bd</a>: 我倒是觉得很有道理，类比：相机并不能认为麦克斯韦方程组的一个解，同样B超(超声波成像)也不是。...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9405/comment-page-1#comment-26289">Jay Gao</a>: 但凡宅基地面积大一点都不用盖那么高呢。。。单向阀检查过了，上面有指示标识的，没有错方向，后来在...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10091/comment-page-4#comment-26287">K</a>: 加了PE的部分，也可以用额外一个K cache吧。这样就节省了xi W(s)k R 这部分的计...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26286">plc</a>: Muon的复杂度有些问题，每个nxn矩阵，Muon是O(n^3)，AdamW是O(n^2)。或...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26285">plc</a>: Lion理论基础和实际效果还不错（如果把Muon的每一组矩阵退化成1x1的大小，就是Lion了...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10592/comment-page-1#comment-26284">plc</a>: 1. 其实Adam-Mini就很好。向量和矩阵的区别，在Adam-Mini就体现出来了。
+2....</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/10197/comment-page-3#comment-26283">jorjiang</a>: 压缩即智能，在图像理解的背景下，即使输入是无损的 在模型里也会有对应的部分去压缩，也就是不管你...</li>
+                                                            <li><a href="https://web.archive.org/web/20250117110749/https://spaces.ac.cn/archives/9984/comment-page-3#comment-26282">jorjiang</a>: 就算输入是无损的，但是模型基于高斯分布，用一个偏弱的模型去拟合更复杂的数据，本身是不是就是有损的</li>
+                                                    </ul>
+                   </div>
+               </div>
+          </div>
+        <b class="rbottom">
+            <b class="r4"></b>
+            <b class="r3"></b>
+            <b class="r2"></b>
+            <b class="r1"></b>
+        </b>
+    </div>
+
+
+    <div class="wrapper">
+        <b class="rtop">
+            <b class="r1"></b>
+            <b class="r2"></b>
+            <b class="r3"></b>
+            <b class="r4"></b>
+        </b>
+        <div class="inner-wrapper">
+            <h3>友情链接</h3>
+            <div id="friends">
+                <ul><li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://papers.cool/">Cool Papers</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://bbs.emath.ac.cn/">数学研发</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://www.seatop.com.cn/">Seatop</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://xiaoxia.org/">Xiaoxia</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://kexue.fm/sci/integral/index.html">积分表-网络版</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://blog.dvxj.com/">丝路博傲</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://www.ph4ntasy.com/">ph4ntasy 饭特稀</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://www.2math.cn/">数学之家</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://interesting-sky.china-vo.org/">有趣天文奇观</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/http://www.twistedwg.com/">TwistedW</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://godweiyang.com/">godweiyang</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://blog.ailemon.net/">AI柠檬</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://greatdk.com/">王登科-DK博客</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://blog.eson.org/">ESON</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://fzhiy.net/">枫之羽</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://wmathor.com/">Mathor's blog</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://coding-zuo.github.io/">coding-zuo</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://www.bokeyuan.net/">博科园</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://www.kppkkp.top/">孔皮皮的博客</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://yunpengtai.top/">运鹏的博客</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://jiming.site/">jiming.site</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://www.omegaxyz.com/">OmegaXYZ</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://www.eacls.top/">Blog by Eacls</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://www.robotech.ink/">EAI猩球</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://liwenju0.com/">文举的博客</a></li>
+
+<li><a target="_blank" href="https://web.archive.org/web/20250117110749/https://kexue.fm/links.html">申请链接</a></li></ul>            </div>
+        </div>
+        <b class="rbottom">
+            <b class="r4"></b>
+            <b class="r3"></b>
+            <b class="r2"></b>
+            <b class="r1"></b>
+        </b>
+    </div>
+
+
+    
+</div><!-- end #sidebar -->    </div>
+
+<div id="Footer">
+    <p><a target="_blank" href="https://web.archive.org/web/20250117110749/http://creativecommons.org/licenses/by-nc-nd/2.5/cn/"><img src="https://web.archive.org/web/20250117110749im_/https://kexue.fm/usr/themes/geekg/images/cc.gif" alt="署名-非商业用途-保持一致"></a> 本站采用创作共用版权协议，要求署名、非商业用途和保持一致。转载本站内容必须也遵循“<a target="_blank" href="https://web.archive.org/web/20250117110749/http://creativecommons.org/licenses/by-nc-nd/2.5/cn/">署名-非商业用途-保持一致</a>”的创作共用协议。 
+
+        <br>
+        © 2009-2025 Scientific Spaces. All rights reserved. Theme by <a target="_blank" href="https://web.archive.org/web/20250117110749/http://www.laogui.com/">laogui</a>. Powered by <a target="_blank" href="https://web.archive.org/web/20250117110749/http://typecho.org/">Typecho</a>. 备案号: <a target="_blank" href="https://web.archive.org/web/20250117110749/https://beian.miit.gov.cn/" title="粤ICP备09093259号">粤ICP备09093259号-1/2</a>。  
+    </p><span class="myurl"></span>
+</div>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//web.archive.org/web/20250117110749/https://hm.baidu.com/hm.js?05a8a552590dfa8b88bcff93d9ec3ba8";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script>
+// 评论ajax翻页
+jQuery(document).ready(function($) {
+    var comments = $("#comments"), // 评论部分id
+        loadingText = "\u8bc4\u8bba\u6570\u636e\u52a0\u8f7d\u4e2d\x2e\x2e\x2e", // 加载loading提示
+        ajaxed = false;
+    $(document).on('click', '#comments .page-navigator li a', function(e){
+        e.preventDefault();
+        var _this = $(this),
+            _thisP = _this.parent();
+        if(_thisP.hasClass('current') || ajaxed==true) return; // 判断是否是当前页面
+        var _list = $('.ComListLi'),
+            url = _this.attr("href").replace("#comments", "") + "?action=ajax_comments";
+            window.history.pushState({}, 0, _this.attr("href")); // 修改地址栏，方便复制评论
+        $.ajax({ // Ajax请求
+            url: url,
+            beforeSend: function() {
+                _list.text(loadingText);
+                ajaxed = true;
+            },
+            success: function(data) {
+                comments.html(data);
+                ajaxed = false;
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
+        });
+        return false;
+    });
+});
+</script>
+
+<!-- end #footer -->
+</div>
+<script type="text/javascript">
+var typechoAddCommentReply = function (cid, coid, cfid, style) {
+    var _ce = document.getElementById(cid), _cp = _ce.parentNode;
+    var _cf = document.getElementById(cfid);
+
+    var _pi = document.getElementById('comment-parent');
+    if (null == _pi) {
+        _pi = document.createElement('input');
+        _pi.setAttribute('type', 'hidden');
+        _pi.setAttribute('name', 'parent');
+        _pi.setAttribute('id', 'comment-parent');
+
+        var _form = 'form' == _cf.tagName ? _cf : _cf.getElementsByTagName('form')[0];
+
+        _form.appendChild(_pi);
+    }
+    _pi.setAttribute('value', coid);
+
+    if (null == document.getElementById('comment-form-place-holder')) {
+        var _cfh = document.createElement('div');
+        _cfh.setAttribute('id', 'comment-form-place-holder');
+        _cf.parentNode.insertBefore(_cfh, _cf);
+    }
+
+    1 == style ? (null == _ce.nextSibling ? _cp.appendChild(_cf)
+    : _cp.insertBefore(_cf, _ce.nextSibling)) : _ce.appendChild(_cf);
+
+    return false;
+};
+
+var typechoCancelCommentReply = function (cfid) {
+    var _cf = document.getElementById(cfid),
+    _cfh = document.getElementById('comment-form-place-holder');
+
+    var _pi = document.getElementById('comment-parent');
+    if (null != _pi) {
+        _pi.parentNode.removeChild(_pi);
+    }
+
+    if (null == _cfh) {
+        return true;
+    }
+
+    _cfh.parentNode.insertBefore(_cf, _cfh);
+    return false;
+};
+</script>
+
+
+
+
+</body></html>

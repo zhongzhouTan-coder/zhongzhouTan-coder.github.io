@@ -15,10 +15,11 @@ aliases:
   - kernelized attention
 appears_in:
   - docs/algorithms/linear-attention/index.md
+  - docs/algorithms/linear-attention-without-softmax.md
   - docs/training/gated-delta-networks/index.md
   - docs/training/kimi-linear/index.md
   - docs/training/kimi-k3/index.md
-updated: 2026-07-29
+updated: 2026-07-30
 ---
 
 # Linear Attention

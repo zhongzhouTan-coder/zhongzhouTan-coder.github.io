@@ -15,7 +15,7 @@ updated: 2026-07-29
 **Authors:** Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, and François Fleuret  
 **arXiv:** [2006.16236v3](https://arxiv.org/abs/2006.16236) (June 2020; revised August 2020)
 
-**Related pages:** [The Transformer](../transformer.md), [FlashAttention](../flashattention.md), [Kimi Linear](../../training/kimi-linear/index.md)
+**Related pages:** [Recurrent Neural Networks](../recurrent-neural-networks/index.md), [The Transformer](../transformer.md), [FlashAttention](../flashattention.md), [Kimi Linear](../../training/kimi-linear/index.md)
 
 ## TL;DR
 
