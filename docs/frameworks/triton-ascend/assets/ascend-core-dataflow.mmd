@@ -1,0 +1,9 @@
+flowchart LR
+    P["Triton program<br/>program_id + grid"] --> T["Static tile<br/>arange / broadcast / mask"]
+    T --> K{"Dominant operation?"}
+    K -->|"elementwise / reduction / layout"| V["Vector path<br/>GM ↔ UB ↔ AIV"]
+    K -->|"tl.dot"| C["Cube path<br/>GM → L1/L0 → AIC → L0C"]
+    K -->|"tl.dot + Vector logic"| CV["CV path<br/>AIC + AIV cooperation"]
+    V --> R["Check: UB, contiguous access,<br/>physical-core reuse"]
+    C --> S["Check: M/N/K tile, L1/L0,<br/>K pipeline"]
+    CV --> B["Check: intermediate transfer,<br/>synchronization, C/V balance"]

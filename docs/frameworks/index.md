@@ -15,6 +15,7 @@ updated: 2026-07-30
 - [SGLang: Structured Language Model Programs](sglang-framework.md)
 - [Triton: Tiled GPU Kernel Language and Compiler](triton-language/index.md)
 - [Triton Ascend: Ascend NPU Backend for Triton](triton-ascend/index.md)
+- [Triton Ascend 算子机制学习路径](triton-ascend/operator-mechanisms.md)
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](triton-language/triton-in-vllm.md)
 - [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md)
 - [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)

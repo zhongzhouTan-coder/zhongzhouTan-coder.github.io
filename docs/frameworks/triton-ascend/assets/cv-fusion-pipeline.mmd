@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant GM as Global Memory
+    participant AIC as AIC / Cube
+    participant X as Intermediate / Workspace
+    participant AIV as AIV / Vector
+
+    GM->>AIC: load A/B tile
+    AIC->>AIC: tl.dot and accumulate
+    AIC->>X: publish result tile
+    Note over AIC,X: producer completion / synchronization
+    X->>AIV: consume result sub-tile
+    AIV->>AIV: bias / mask / activation / reduction
+    AIV->>GM: store final tile

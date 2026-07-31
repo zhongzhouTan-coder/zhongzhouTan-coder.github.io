@@ -126,7 +126,7 @@ The online affine transformation and quantization are memory-bound. FlatQuant fu
 1. Load `P1`, `P2`, and an activation tile into SRAM.
 2. Compute the Kronecker-factorized affine transformation inside the kernel.
 3. Quantize the transformed activation on the fly.
-4. Write only the quantized result to global memory.
+4. Write only the quantized result to [global memory](../terms/global-memory.md).
 5. Use a CUTLASS INT4 matmul kernel for the quantized activation and weight.
 
 This avoids writing intermediate transformed activations to HBM and reduces kernel launch overhead. For KV-cache quantization, the paper uses FlashInfer.

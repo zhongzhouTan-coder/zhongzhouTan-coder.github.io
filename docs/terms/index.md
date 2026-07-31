@@ -31,7 +31,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Hardware
 
-_No terms yet._
+- [Global Memory](global-memory.md) — The off-chip device memory on an accelerator (GPU HBM or Ascend GM) that holds full tensors; kernels move tiles from it into on-chip storage to compute.
 
 ## Frameworks
 

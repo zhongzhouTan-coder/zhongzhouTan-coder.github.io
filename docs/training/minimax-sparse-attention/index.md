@@ -287,7 +287,7 @@ MSA uses superscripts to distinguish branches and selects at block granularity w
 
 **How it works:**
 
-- **LSE fusion:** The attention forward kernel emits $\text{LSE}_{\text{main}}$ and $\text{LSE}_{\text{idx}}$ directly to global memory, so the KL loss backward kernel can load them without a dedicated KL forward pass.
+- **LSE fusion:** The attention forward kernel emits $\text{LSE}_{\text{main}}$ and $\text{LSE}_{\text{idx}}$ directly to [global memory](../../terms/global-memory.md), so the KL loss backward kernel can load them without a dedicated KL forward pass.
 - **Dynamic load balancing:** A persistent grid with atomic work claiming handles variable per-tile work under data-dependent sparsity and variable-length sequences.
 
 **The intuition:** The KL loss's forward pass is a "free rider" on the attention computation — it gets the logsumexp values it needs without extra compute.

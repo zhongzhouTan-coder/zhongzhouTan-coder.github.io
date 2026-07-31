@@ -715,5 +715,81 @@
       "docs_path": "docs/algorithms/recurrent-neural-networks/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:www.hiascend.com/cann-ascendc-basic-architecture@2026-07-31-87f687f6b225",
+      "title": "基本架构-硬件架构与数据处理原理-概念原理和术语-Ascend C算子开发-算子开发-CANN社区版8.3.RCX开发文档-昇腾社区",
+      "slug": "cann-ascendc-basic-architecture",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/83RC1/opdevg/Ascendcopdevg/atlas_ascendc_10_0008.html",
+      "final_url": "https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/83RC1/opdevg/Ascendcopdevg/atlas_ascendc_10_0008.html",
+      "captured_at": "2026-07-31T06:04:49.849Z",
+      "revision": "87f687f6b2255dacea6859d17956367791548946bd6e3a9adb1eb97b5df83e0c",
+      "raw_paths": [
+        "raw/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.html",
+        "raw/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
+    }
+  ,
+    {
+      "id": "web:triton-ascend.readthedocs.io/triton-ascend-vector-operator@2026-07-31-f4dff5a43fca",
+      "title": "Vector 算子开发 - Triton Ascend latest 文档",
+      "slug": "triton-ascend-vector-operator",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/vector_operator.html",
+      "final_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/vector_operator.html",
+      "captured_at": "2026-07-31T06:04:53.347Z",
+      "revision": "f4dff5a43fca259c9a7cb33eb3bf85b79d5154e8c427ebda15d6a9b8f8ac26e1",
+      "raw_paths": [
+        "raw/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.html",
+        "raw/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
+    }
+  ,
+    {
+      "id": "web:triton-ascend.readthedocs.io/triton-ascend-cube-operator@2026-07-31-4aac18bcbb4a",
+      "title": "Cube 算子开发 - Triton Ascend latest 文档",
+      "slug": "triton-ascend-cube-operator",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/cube_operator.html",
+      "final_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/cube_operator.html",
+      "captured_at": "2026-07-31T06:04:56.742Z",
+      "revision": "4aac18bcbb4aec244ab4ec53d6da70dffcdbeec9d9fd6077f7c54a1a2f2fc5ef",
+      "raw_paths": [
+        "raw/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.html",
+        "raw/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
+    }
+  ,
+    {
+      "id": "web:triton-ascend.readthedocs.io/triton-ascend-cv-fusion-operator@2026-07-31-5943a1d2b3f9",
+      "title": "CV 融合算子开发 - Triton Ascend latest 文档",
+      "slug": "triton-ascend-cv-fusion-operator",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/cv_fusion_operator.html",
+      "final_url": "https://triton-ascend.readthedocs.io/zh-cn/latest/programming_guide/cv_fusion_operator.html",
+      "captured_at": "2026-07-31T06:04:58.837Z",
+      "revision": "5943a1d2b3f9299f2c0a16a98799bf304c5e930581699b5b2b48fad4f360e545",
+      "raw_paths": [
+        "raw/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.html",
+        "raw/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
+    }
   ]
 }
