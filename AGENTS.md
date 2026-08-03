@@ -43,6 +43,13 @@ This repository is a markdown knowledge base.
 - If a docs page references sibling assets such as images or Draw.io files, prefer a folder-backed page at `topic/index.md`.
 - **When creating or updating a paper insight page:** identify key technical terms that appear across multiple papers (e.g., "microbatch", "pipeline bubble", "KV cache"). For each term, check `docs/terms/{term-slug}.md`. If missing, create a term page following `.github/instructions/docs-terms.instructions.md`. If present, add the new paper to the term's `appears_in` list and "Where It Appears" section. Link the first meaningful in-content occurrence of each term to its term page using ordinary Markdown links. Update `docs/terms/index.md` when adding a new term.
 
+## Docs Organization
+
+- **Keep categories organized with subcategory folders.** Inside each topic category (`docs/frameworks/`, `docs/algorithms/`, `docs/benchmarks/`, `docs/training/`, `docs/hardware/`), group related pages into per-project or per-theme subfolders (for example `docs/frameworks/vllm/`, `docs/algorithms/flashattention/`, `docs/benchmarks/agent-eval/`). Give each subcategory a hub page at `<subfolder>/index.md` that lists its pages, and group links under matching subheadings in the category `index.md`.
+- **Keep pages linked to avoid orphans.** Every docs page must be reachable from a category index, a subcategory hub, or `docs/logs/index.md`; the lint reports unreferenced pages as orphans.
+- **Do not move a page across categories casually.** `kb-check-integrity.py` requires each `sources.json` `docs_path` to stay under `docs/{category}/`, and the page's raw/derived sources live under `raw/{category}/` and `derived/pdf-markdown/{category}/`. Relocating a page to another category therefore requires moving its raw and derived sources and updating the manifest `category`. Prefer reorganizing within the page's existing category.
+- **When moving or renaming any docs page:** use `git mv` to preserve history, recompute relative links in the moved page and in every page that links to it, update `sources.json` (`docs_path` or `docs_paths`), update the category index and subcategory hub, update `docs/logs/index.md`, append `docs/logs/log.md`, then run `./scripts/lint-docs.sh`.
+
 ## Diagram Conventions
 
 - **Original source figures are the first choice.** Before creating any visual,

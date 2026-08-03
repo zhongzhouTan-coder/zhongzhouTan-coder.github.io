@@ -107,6 +107,12 @@ For `kind: "web"`, require `source_url`, `final_url`, `captured_at`, a
 `derived_path` below `derived/web-markdown/{category}/`. A captured source may
 omit `docs_path`; an ingested source must name and be cited by its docs page.
 
+`docs_path` (and each `docs_paths` entry) must stay under `docs/{category}/`.
+`kb-check-integrity.py` enforces this prefix, and the page's raw and derived
+sources live under the same category. Reorganize within the category instead of
+relocating a page across categories unless the raw and derived sources are moved
+together and the manifest `category` is updated.
+
 Run these checks after source or docs changes:
 
 ```bash
@@ -125,3 +131,15 @@ Renaming or moving files under `raw/` is allowed only as repository organization
 - any related `derived/pdf-markdown/` paths
 - any related `derived/web-markdown/` paths
 - any related `derived/repo-analysis/` paths
+
+Docs page moves under `docs/` follow the same "update everything that
+references the old path" rule. When moving or renaming a docs page:
+
+- Use `git mv` to preserve history.
+- Recompute relative links in the moved page and every page linking to it
+  (broken links and orphan pages fail `scripts/lint-docs.sh`).
+- Update `sources.json` `docs_path` / `docs_paths`, the category `index.md`, and
+  the subcategory hub page.
+- Update `docs/logs/index.md` and append `docs/logs/log.md`.
+- Keep the page under its `sources.json` category prefix (see Manifest
+  Maintenance).

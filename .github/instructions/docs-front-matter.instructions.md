@@ -36,6 +36,7 @@ updated: 2026-05-28
 
 - Keep `confidence` consistent with the evidence quality in the page body.
 - Organize pages by topic folder such as `docs/benchmarks/`, `docs/frameworks/`, `docs/algorithms/`, or `docs/hardware/`; do not create topic-agnostic `docs/layer_*` folders.
+- Within a category, group related pages into subcategory folders by project or theme (for example `docs/frameworks/vllm/`, `docs/algorithms/flashattention/`, `docs/benchmarks/agent-eval/`), each with a hub `index.md` that lists its pages. A page path must stay under the category prefix that matches its `sources.json` `docs_path`; do not relocate a page to a different category without also moving its `raw/` and `derived/` sources and updating the manifest.
 - If a page's confidence changes, update the front matter and move the file only when its topic/category path also needs to change.
 - If multiple raw files support the page, list all of them in `sources`.
 - Do not invent source paths. Read the source files first.
