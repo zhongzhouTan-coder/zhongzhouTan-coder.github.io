@@ -40,6 +40,10 @@
     // No emphasis-as-headings (bold text used as a heading).
     "MD036": true,
 
+    // Allow both strong styles — code identifiers like __init__.py contain
+    // double underscores that markdownlint misreads as underscore-style strong.
+    "MD050": false,
+
     // Fenced code blocks must have a language tag.
     "MD040": true,
 

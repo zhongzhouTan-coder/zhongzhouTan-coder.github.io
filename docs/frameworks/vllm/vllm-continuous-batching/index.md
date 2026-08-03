@@ -3,6 +3,7 @@ title: "vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow"
 summary: "A code-backed explanation of how vLLM rebuilds a token-level batch each engine iteration, mixes prefill and decode work, allocates paged KV slots, admits waiting requests, and handles completion or preemption."
 layout: default
 confidence: medium
+code_links: strict
 sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/continuous-batching-runtime.md
@@ -136,14 +137,14 @@ lengths. They solve different halves of the same serving problem.
 | block table | Logical block position → physical KV block ID | Lets request state grow without contiguous reservation |
 | `finished_req_ids` | Requests completed since the prior scheduling handoff | Tells workers to discard persistent request rows and side state |
 
-The source comment in `Scheduler.schedule()` is especially important: the
+The source comment in <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/sched/scheduler.py#L427" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/sched/scheduler.py" data-code-line="427"><code>Scheduler.schedule()</code></a> is especially important: the
 scheduler has no fundamental “prefill phase queue” and “decode phase queue.” It
 models every request as a difference between a computed cursor and a target
 token count.
 
 ## Deep Dive 1: One Engine Step Is a Closed Control Loop
 
-**What it does:** `EngineCore.step()` performs schedule → execute → update once.
+**What it does:** <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/engine/core.py#L584" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/engine/core.py" data-code-line="584"><code>EngineCore.step()</code></a> performs schedule → execute → update once.
 
 **Why it matters:** This loop is the iteration boundary at which the active
 batch may change.
@@ -153,7 +154,7 @@ batch may change.
 1. `Scheduler.schedule()` constructs a new `SchedulerOutput`.
 2. `model_executor.execute_model()` runs the planned tokens.
 3. Sampling returns zero or more accepted output tokens per scheduled request.
-4. `Scheduler.update_from_output()` advances request state and evaluates stop
+4. <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/sched/scheduler.py#L1653" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/sched/scheduler.py" data-code-line="1653"><code>Scheduler.update_from_output()</code></a> advances request state and evaluates stop
    conditions.
 5. Unfinished requests remain eligible for the next step; finished requests
    leave `running` and release request-owned cache blocks.
@@ -231,7 +232,7 @@ KV capacity must also agree.
 
 ## Deep Dive 4: Paged KV Memory Makes Fine-Grained Admission Practical
 
-**What it does:** `KVCacheManager.allocate_slots()` maps newly required logical
+**What it does:** <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/kv_cache_manager.py#L344" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/kv_cache_manager.py" data-code-line="344"><code>KVCacheManager.allocate_slots()</code></a> maps newly required logical
 token positions to physical KV blocks.
 
 **Why it matters:** A scheduler cannot safely add and grow arbitrary requests
@@ -267,7 +268,7 @@ scheduling and memory-efficient residency, not from either label alone.
 
 ## Deep Dive 5: The GPU Batch Is Persistent but Reconciled
 
-**What it does:** `GPUModelRunner._update_states()` updates an existing input
+**What it does:** <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/worker/gpu_model_runner.py#L1192" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu_model_runner.py" data-code-line="1192"><code>GPUModelRunner._update_states()</code></a> updates an existing input
 batch rather than reconstructing every request's state from scratch.
 
 **Why it matters:** Fine-grained scheduling would lose its benefit if every
@@ -426,15 +427,15 @@ directly to a current deployment.
 
 ## Code Reading Path
 
-1. Start at `vllm/v1/engine/core.py::EngineCore.step` to see the control loop.
-2. Read `vllm/v1/core/sched/scheduler.py::Scheduler.schedule`, especially the
+1. Start at <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/engine/core.py#L584" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/engine/core.py" data-code-line="584"><code>vllm/v1/engine/core.py::EngineCore.step</code></a> to see the control loop.
+2. Read <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/sched/scheduler.py#L427" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/sched/scheduler.py" data-code-line="427"><code>vllm/v1/core/sched/scheduler.py::Scheduler.schedule</code></a>, especially the
    running loop, waiting loop, and `SchedulerOutput` construction.
-3. Read `vllm/v1/request.py::Request` for the computed-token cursor model.
+3. Read <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/request.py#L59" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/request.py" data-code-line="59"><code>vllm/v1/request.py::Request</code></a> for the computed-token cursor model.
 4. Follow `KVCacheManager.allocate_slots` in
-   `vllm/v1/core/kv_cache_manager.py` for memory admission.
+   <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/kv_cache_manager.py#L344" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/kv_cache_manager.py" data-code-line="344"><code>vllm/v1/core/kv_cache_manager.py</code></a> for memory admission.
 5. Inspect `GPUModelRunner._update_states` in
-   `vllm/v1/worker/gpu_model_runner.py` for persistent-batch mutation.
-6. Return to `Scheduler.update_from_output` to see stop detection, queue removal,
+   <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/worker/gpu_model_runner.py#L1192" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu_model_runner.py" data-code-line="1192"><code>vllm/v1/worker/gpu_model_runner.py</code></a> for persistent-batch mutation.
+6. Return to <a class="code-link" href="../../../../external-repos/vllm/vllm/v1/core/sched/scheduler.py#L1653" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/sched/scheduler.py" data-code-line="1653"><code>Scheduler.update_from_output</code></a> to see stop detection, queue removal,
    preemption aftermath, and KV release.
 
 The factual code evidence and reproduction commands are preserved in

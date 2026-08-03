@@ -3,6 +3,7 @@ title: "Triton in Practice: How vLLM and vllm-ascend Use Triton"
 summary: "A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure, kernel categories, coding patterns, custom op registration, and the dual Triton + AscendC strategy."
 layout: default
 confidence: high
+code_links: strict
 sources:
   - raw/frameworks/vllm-codebase--github-d18ed2304a27.md
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
@@ -81,7 +82,7 @@ import triton
 import triton.language as tl
 ```
 
-Why? Because `vllm/triton_utils/importing.py` handles:
+Why? Because <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/triton_utils/importing.py#L94" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/triton_utils/importing.py" data-code-line="94"><code>vllm/triton_utils/importing.py</code></a> handles:
 
 - **Environment detection**: Triton may not be available (CPU-only builds, driverless containers during Ray init, XPU backends). The wrapper returns `TritonPlaceholder` / `TritonLanguagePlaceholder` no-op classes instead of crashing.
 - **Driver leniency**: Distributed Ray workers may not have CUDA visible during init; the wrapper delays the driver check.
@@ -121,7 +122,7 @@ direct_register_custom_op(
 output = torch.ops.vllm.per_token_group_quant_fp8(x, group_size)
 ```
 
-The vLLM compilation pipeline's `clone_elimination.py` pass recognizes `TritonKernelWrapperFunctional` nodes, enabling graph-level optimizations across kernel boundaries.
+The vLLM compilation pipeline's <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/compilation/passes/ir/clone_elimination.py#L19" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/compilation/passes/ir/clone_elimination.py" data-code-line="19"><code>clone_elimination.py</code></a> pass recognizes `TritonKernelWrapperFunctional` nodes, enabling graph-level optimizations across kernel boundaries.
 
 ### Launch Configuration: JSON Records vs. `@triton.autotune`
 
@@ -159,11 +160,11 @@ vLLM cannot use stock FlashAttention because its PagedAttention KV cache stores 
 
 | Kernel | Phase | Key Feature |
 |---|---|---|
-| `triton_unified_attention.py` | Prefill + Decode | One kernel for both phases; binary search over `query_start_loc`; supports ALiBi, softcap, QQ-bias, FP8/INT8 KV cache quantization |
-| `triton_decode_attention.py` | Decode | Split-K flash-decoding: stage 1 computes partial softmax per tile, stage 2 merges via `triton_merge_attn_states.py` |
-| `triton_prefill_attention.py` | Prefill | Page size = 1, adapted from SGLang/LightLLM's `context_flashattention_nopad`; supports sliding window |
-| `triton_reshape_and_cache_flash.py` | KV cache insert | Fuses reshape + FP8 quantize + KV cache write in one kernel |
-| `triton_attention_helpers.py` | Shared utilities | `find_seq_idx` (binary search), `softmax_step`, `apply_alibi_to_score`, `apply_softcap`, `store_segm_reduce_scalars` — shared across all attention kernels |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_unified_attention.py#L39" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_unified_attention.py" data-code-line="39"><code>triton_unified_attention.py</code></a> | Prefill + Decode | One kernel for both phases; binary search over `query_start_loc`; supports ALiBi, softcap, QQ-bias, FP8/INT8 KV cache quantization |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_decode_attention.py#L54" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_decode_attention.py" data-code-line="54"><code>triton_decode_attention.py</code></a> | Decode | Split-K flash-decoding: stage 1 computes partial softmax per tile, stage 2 merges via <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_merge_attn_states.py#L12" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_merge_attn_states.py" data-code-line="12"><code>triton_merge_attn_states.py</code></a> |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_prefill_attention.py#L37" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_prefill_attention.py" data-code-line="37"><code>triton_prefill_attention.py</code></a> | Prefill | Page size = 1, adapted from SGLang/LightLLM's `context_flashattention_nopad`; supports sliding window |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_reshape_and_cache_flash.py#L20" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_reshape_and_cache_flash.py" data-code-line="20"><code>triton_reshape_and_cache_flash.py</code></a> | KV cache insert | Fuses reshape + FP8 quantize + KV cache write in one kernel |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_attention_helpers.py#L22" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_attention_helpers.py" data-code-line="22"><code>triton_attention_helpers.py</code></a> | Shared utilities | `find_seq_idx` (binary search), `softmax_step`, `apply_alibi_to_score`, `apply_softcap`, `store_segm_reduce_scalars` — shared across all attention kernels |
 
 The unified attention kernel is IBM-contributed and is one of the most sophisticated Triton kernels in the codebase. It handles both prefill (many query tokens, many KV tokens) and decode (one query token, many KV tokens) in a single kernel by branching on a `IS_PREFILL` constexpr.
 
@@ -173,11 +174,11 @@ MoE models like DeepSeek-V2/V3/V4 and Mixtral route each token to a subset of ex
 
 | Kernel | Approach |
 |---|---|
-| `fused_moe.py` | Main dispatcher — gates between Triton, CUTLASS, and DeepGEMM based on quantization config |
-| `gpt_oss_triton_kernels_moe.py` | OpenAI-style modular MoE kernels with FP4 quantization, bitmatrix sparse matmul, and swiglu |
-| `triton_cutlass_moe.py` | Triton + CUTLASS hybrid |
-| `triton_deep_gemm_moe.py` | Triton + DeepGEMM hybrid |
-| `moe_align_block_size.py` | Token-to-expert alignment for block-size-compatible matmul — core orchestration |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_moe/fused_moe.py#L42" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_moe/fused_moe.py" data-code-line="42"><code>fused_moe.py</code></a> | Main dispatcher — gates between Triton, CUTLASS, and DeepGEMM based on quantization config |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py#L36" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_moe/experts/gpt_oss_triton_kernels_moe.py" data-code-line="36"><code>gpt_oss_triton_kernels_moe.py</code></a> | OpenAI-style modular MoE kernels with FP4 quantization, bitmatrix sparse matmul, and swiglu |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_moe/experts/triton_cutlass_moe.py#L19" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_moe/experts/triton_cutlass_moe.py" data-code-line="19"><code>triton_cutlass_moe.py</code></a> | Triton + CUTLASS hybrid |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_moe/experts/triton_deep_gemm_moe.py#L24" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_moe/experts/triton_deep_gemm_moe.py" data-code-line="24"><code>triton_deep_gemm_moe.py</code></a> | Triton + DeepGEMM hybrid |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_moe/moe_align_block_size.py#L11" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_moe/moe_align_block_size.py" data-code-line="11"><code>moe_align_block_size.py</code></a> | Token-to-expert alignment for block-size-compatible matmul — core orchestration |
 
 The dispatch hierarchy looks like:
 
@@ -197,11 +198,11 @@ Quantization is where Triton shines — each quantization scheme has custom pack
 
 | Kernel | Quantization Scheme |
 |---|---|
-| `awq_triton.py` | AWQ: unpacks 4-bit groups (32/64/128), uses `tl.interleave` for bit-reversal reordering, applies scales/zeros per group |
-| `fp8_utils.py` | FP8 suite: per-token-group quant, fused SiLU+mult+FP8 quant, per-tensor quant |
-| `nvfp4_emulation_utils.py` | NVFP4: decodes 4-bit (e2m1) nibbles to float32 via IEEE 754 bit construction |
-| `int8_utils.py` | INT8: per-token dynamic quantization, block dequant |
-| `triton_scaled_mm.py` | Compressed-tensor scaled matmul with per-tensor/per-channel scales + optional bias |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/awq_triton.py#L12" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/awq_triton.py" data-code-line="12"><code>awq_triton.py</code></a> | AWQ: unpacks 4-bit groups (32/64/128), uses `tl.interleave` for bit-reversal reordering, applies scales/zeros per group |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L42" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/utils/fp8_utils.py" data-code-line="42"><code>fp8_utils.py</code></a> | FP8 suite: per-token-group quant, fused SiLU+mult+FP8 quant, per-tensor quant |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/utils/nvfp4_emulation_utils.py#L26" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/utils/nvfp4_emulation_utils.py" data-code-line="26"><code>nvfp4_emulation_utils.py</code></a> | NVFP4: decodes 4-bit (e2m1) nibbles to float32 via IEEE 754 bit construction |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/utils/int8_utils.py#L20" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/utils/int8_utils.py" data-code-line="20"><code>int8_utils.py</code></a> | INT8: per-token dynamic quantization, block dequant |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/compressed_tensors/triton_scaled_mm.py#L10" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/compressed_tensors/triton_scaled_mm.py" data-code-line="10"><code>triton_scaled_mm.py</code></a> | Compressed-tensor scaled matmul with per-tensor/per-channel scales + optional bias |
 
 ### 4. Activation, Normalization, and RoPE
 
@@ -209,19 +210,19 @@ vLLM fuses these small element-wise ops to reduce kernel launch overhead:
 
 | Kernel | What It Fuses |
 |---|---|
-| `activation.py` (`swiglustep_and_mul_triton`) | sigmoid gate → clamp gate+up → multiply in one kernel |
-| `fused_qk_norm_rope.py` | split → QK RMSNorm → partial RoPE → gate chunk (Qwen3.5) |
-| `mrope.py` | Multi-resolution RoPE for Qwen2-VL with separate T/H/W cos/sin caches |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/activation.py#L27" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/activation.py" data-code-line="27"><code>activation.py</code></a> (`swiglustep_and_mul_triton`) | sigmoid gate → clamp gate+up → multiply in one kernel |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/fused_qk_norm_rope.py#L17" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/fused_qk_norm_rope.py" data-code-line="17"><code>fused_qk_norm_rope.py</code></a> | split → QK RMSNorm → partial RoPE → gate chunk (Qwen3.5) |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/rotary_embedding/mrope.py#L15" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/rotary_embedding/mrope.py" data-code-line="15"><code>mrope.py</code></a> | Multi-resolution RoPE for Qwen2-VL with separate T/H/W cos/sin caches |
 
 ### 5. Sampling, Mamba, and Utilities
 
 | Category | Kernel | Purpose |
 |---|---|---|
-| Sampling | `topk_topp_triton.py` | Combined Top-K + Top-P with pivot-based truncation and precomputed CDF/sigma tables |
-| Mamba SSM | `mamba_ssm.py` | Selective state update with per-device JSON tuning |
-| Mamba SSM | `causal_conv1d.py` | Causal 1D convolution |
-| Lightning Attn | `lightning_attn.py` | Diagonal-block attention with `_fwd_diag_kernel` and `_fwd_sliding_kernel` |
-| KV Offload | `swap_blocks_triton.py` | CPU↔GPU KV block swap, tuned for H100 |
+| Sampling | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/sample/ops/topk_topp_triton.py#L71" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/sample/ops/topk_topp_triton.py" data-code-line="71"><code>topk_topp_triton.py</code></a> | Combined Top-K + Top-P with pivot-based truncation and precomputed CDF/sigma tables |
+| Mamba SSM | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/mamba/ops/cpu/mamba_ssm.py#L10" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/mamba/ops/cpu/mamba_ssm.py" data-code-line="10"><code>mamba_ssm.py</code></a> | Selective state update with per-device JSON tuning |
+| Mamba SSM | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/mamba/ops/cpu/causal_conv1d.py#L13" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/mamba/ops/cpu/causal_conv1d.py" data-code-line="13"><code>causal_conv1d.py</code></a> | Causal 1D convolution |
+| Lightning Attn | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/lightning_attn.py#L13" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/lightning_attn.py" data-code-line="13"><code>lightning_attn.py</code></a> | Diagonal-block attention with `_fwd_diag_kernel` and `_fwd_sliding_kernel` |
+| KV Offload | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/kv_offload/cpu/swap_blocks_triton.py#L25" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/kv_offload/cpu/swap_blocks_triton.py" data-code-line="25"><code>swap_blocks_triton.py</code></a> | CPU↔GPU KV block swap, tuned for H100 |
 | Spec Decode | Various | EAGLE draft model kernels, rejection sampling |
 
 ## Universal Triton Coding Patterns
@@ -307,7 +308,7 @@ vllm-ascend brings vLLM to Huawei Ascend NPUs. It uses **two kernel languages**:
 
 ### Ascend-Specific Triton Infrastructure
 
-The CANN (Compute Architecture for Neural Networks) backend for Triton lives at `triton.language.extra.cann`:
+The CANN (Compute Architecture for Neural Networks) backend for Triton lives at `triton.language.extra.cann`, and vllm-ascend's infrastructure wrapper is <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/triton_utils.py#L17" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/triton_utils.py" data-code-line="17"><code>vllm_ascend/ops/triton/triton_utils.py</code></a>:
 
 ```python
 # vllm_ascend/ops/triton/triton_utils.py
@@ -376,16 +377,16 @@ On Ascend, the CANN extension provides hardware-optimized implementations of the
 
 | Category | Key Files | What They Do |
 |---|---|---|
-| **Fused QKV + Norm + RoPE** | `linearnorm/split_qkv_rmsnorm_rope.py` (SIMD + SIMT variants, TP-aware variant, M-RoPE variant) | The most important fused kernel — collapses QKV projection split + RMSNorm + weight/bias + rotary embedding into one launch |
-| **Flash Linear Attention** | `fla/chunk_o.py`, `chunk_delta_h.py`, `cumsum.py`, `solve_tril.py`, etc. (~14 files) | Chunked linear attention with gated delta rule, full forward pass with state updates |
-| **Kernelized Dynamic Attention** | `kda/kda.py`, `fused_recurrent_kda.py`, etc. (~7 files) | Recurrent kernelized attention with L2 norm and triangular solve |
-| **Activation** | `activation/swiglu_quant.py`, `swiglustep.py` | SwiGLU + int8 quantization, SwigluStepAndMul with clamping |
-| **Normalization** | `rms_norm.py`, `layernorm_gated.py` | RMSNorm and gated LayerNorm |
-| **RoPE** | `rope.py` | NeoX and non-NeoX rotary embedding |
-| **Mamba SSM** | `mamba/causal_conv1d.py`, `lightning_attn.py`, `postprocess.py` | Causal conv1d, lightning attention, post-processing |
-| **Sampling** | `penalty.py`, `reject_sample.py`, `bincount.py` | Repetition/frequency/presence penalties, rejection sampling |
-| **Batch Invariant** | `batch_invariant/matmul.py`, `mean.py`, `softmax.py` | MatMul+bias, mean, softmax |
-| **Utility** | `mul_add.py`, `muls_add.py`, `batch_memcpy.py` | Fused multiply-add, batch memcpy with `.cg` cache modifier |
+| **Fused QKV + Norm + RoPE** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py" data-code-line="26"><code>linearnorm/split_qkv_rmsnorm_rope.py</code></a> (SIMD + SIMT variants, TP-aware variant, M-RoPE variant) | The most important fused kernel — collapses QKV projection split + RMSNorm + weight/bias + rotary embedding into one launch |
+| **Flash Linear Attention** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/fla/chunk_o.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/fla/chunk_o.py" data-code-line="26"><code>fla/chunk_o.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/chunk_delta_h.py#L36" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/chunk_delta_h.py" data-code-line="36"><code>chunk_delta_h.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/cumsum.py#L22" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/cumsum.py" data-code-line="22"><code>cumsum.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/solve_tril.py#L28" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/solve_tril.py" data-code-line="28"><code>solve_tril.py</code></a>, etc. (~14 files) | Chunked linear attention with gated delta rule, full forward pass with state updates |
+| **Kernelized Dynamic Attention** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/kda.py#L36" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/kda.py" data-code-line="36"><code>kda/kda.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/fused_recurrent_kda.py#L24" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/fused_recurrent_kda.py" data-code-line="24"><code>fused_recurrent_kda.py</code></a>, etc. (~7 files) | Recurrent kernelized attention with L2 norm and triangular solve |
+| **Activation** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/activation/swiglu_quant.py#L8" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/activation/swiglu_quant.py" data-code-line="8"><code>activation/swiglu_quant.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/activation/swiglustep.py#L45" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/activation/swiglustep.py" data-code-line="45"><code>swiglustep.py</code></a> | SwiGLU + int8 quantization, SwigluStepAndMul with clamping |
+| **Normalization** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/rms_norm.py#L6" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/rms_norm.py" data-code-line="6"><code>rms_norm.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/layernorm_gated.py#L16" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/layernorm_gated.py" data-code-line="16"><code>layernorm_gated.py</code></a> | RMSNorm and gated LayerNorm |
+| **RoPE** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/rope.py#L24" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/rope.py" data-code-line="24"><code>rope.py</code></a> | NeoX and non-NeoX rotary embedding |
+| **Mamba SSM** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/mamba/causal_conv1d.py#L24" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/mamba/causal_conv1d.py" data-code-line="24"><code>mamba/causal_conv1d.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/mamba/lightning_attn.py#L32" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/mamba/lightning_attn.py" data-code-line="32"><code>lightning_attn.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/mamba/postprocess.py#L9" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/mamba/postprocess.py" data-code-line="9"><code>postprocess.py</code></a> | Causal conv1d, lightning attention, post-processing |
+| **Sampling** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/penalty.py#L31" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/penalty.py" data-code-line="31"><code>penalty.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/reject_sample.py#L23" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/reject_sample.py" data-code-line="23"><code>reject_sample.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/bincount.py#L32" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/bincount.py" data-code-line="32"><code>bincount.py</code></a> | Repetition/frequency/presence penalties, rejection sampling |
+| **Batch Invariant** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/batch_invariant/matmul.py#L25" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/batch_invariant/matmul.py" data-code-line="25"><code>batch_invariant/matmul.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/batch_invariant/mean.py#L25" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/batch_invariant/mean.py" data-code-line="25"><code>mean.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/batch_invariant/softmax.py#L22" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/batch_invariant/softmax.py" data-code-line="22"><code>softmax.py</code></a> | MatMul+bias, mean, softmax |
+| **Utility** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/mul_add.py#L8" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/mul_add.py" data-code-line="8"><code>mul_add.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/muls_add.py#L8" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/muls_add.py" data-code-line="8"><code>muls_add.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/batch_memcpy.py#L10" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/batch_memcpy.py" data-code-line="10"><code>batch_memcpy.py</code></a> | Fused multiply-add, batch memcpy with `.cg` cache modifier |
 
 ### Triton vs. AscendC: The Dual Strategy
 
@@ -423,17 +424,17 @@ flowchart TD
 
 If you want to understand Triton in practice, read these files in order:
 
-1. **Start here:** `vllm/model_executor/layers/activation.py` — the `swiglustep_and_mul_triton` kernel is ~60 lines and demonstrates grid-stride loop, `tl.constexpr`, masked loads/stores, and fused element-wise math. The simplest complete example.
+1. **Start here:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/activation.py#L27" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/activation.py" data-code-line="27"><code>vllm/model_executor/layers/activation.py</code></a> — the `swiglustep_and_mul_triton` kernel is ~60 lines and demonstrates grid-stride loop, `tl.constexpr`, masked loads/stores, and fused element-wise math. The simplest complete example.
 
-2. **Quantization:** `vllm/model_executor/layers/quantization/awq_triton.py` — shows `tl.interleave` for bit-reversal, group-wise dequant, and how scales/zeros are applied per group.
+2. **Quantization:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/awq_triton.py#L12" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/awq_triton.py" data-code-line="12"><code>vllm/model_executor/layers/quantization/awq_triton.py</code></a> — shows `tl.interleave` for bit-reversal, group-wise dequant, and how scales/zeros are applied per group.
 
-3. **Attention helpers:** `vllm/v1/attention/ops/triton_attention_helpers.py` — shared utility functions (`find_seq_idx` binary search, `softmax_step`, `apply_alibi`) that show how complex logic is decomposed into reusable `@triton.jit` functions.
+3. **Attention helpers:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_attention_helpers.py#L22" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_attention_helpers.py" data-code-line="22"><code>vllm/v1/attention/ops/triton_attention_helpers.py</code></a> — shared utility functions (`find_seq_idx` binary search, `softmax_step`, `apply_alibi`) that show how complex logic is decomposed into reusable `@triton.jit` functions.
 
-4. **Decode attention:** `vllm/v1/attention/ops/triton_decode_attention.py` — split-K flash-decoding with two-stage reduction. Demonstrates how to structure a large kernel across multiple files.
+4. **Decode attention:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/ops/triton_decode_attention.py#L54" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/ops/triton_decode_attention.py" data-code-line="54"><code>vllm/v1/attention/ops/triton_decode_attention.py</code></a> — split-K flash-decoding with two-stage reduction. Demonstrates how to structure a large kernel across multiple files.
 
-5. **Ascend adaptation:** `vllm-ascend/vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py` — the fused QKV+Norm+RoPE kernel on Ascend, showing `extract_slice`, 1D grid, and how the same logical operation adapts across hardware.
+5. **Ascend adaptation:** <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py" data-code-line="26"><code>vllm-ascend/vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py</code></a> — the fused QKV+Norm+RoPE kernel on Ascend, showing `extract_slice`, 1D grid, and how the same logical operation adapts across hardware.
 
-6. **Custom op registration:** `vllm/model_executor/layers/quantization/utils/fp8_utils.py` — full example of wrapping a Triton kernel as a `torch.ops.vllm.*` custom op with `direct_register_custom_op`.
+6. **Custom op registration:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L42" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/model_executor/layers/quantization/utils/fp8_utils.py" data-code-line="42"><code>vllm/model_executor/layers/quantization/utils/fp8_utils.py</code></a> — full example of wrapping a Triton kernel as a `torch.ops.vllm.*` custom op with `direct_register_custom_op`.
 
 ## Deep Dive: A Complete Kernel Walkthrough
 

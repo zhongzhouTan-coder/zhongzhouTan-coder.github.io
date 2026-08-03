@@ -3,6 +3,7 @@ title: "Triton Ascend: Ascend NPU Backend for Triton"
 summary: "A beginner-friendly tour of triton-ascend: how it bridges the Triton GPU kernel language to Huawei Ascend NPU hardware through a custom MLIR compilation pipeline, Bisheng compiler integration, and ACL runtime."
 layout: default
 confidence: high
+code_links: strict
 sources:
   - raw/frameworks/triton-ascend-codebase--github-41f499924da1.md
   - derived/repo-analysis/frameworks/triton-ascend/41f499924da1d58955196c946895597e992127f0/important-files.md
@@ -93,15 +94,15 @@ When you `import triton`, triton-ascend registers itself as an available backend
 
 **How registration works:**
 
-1. `third_party/ascend/backend/name.conf` contains the single word `ascend` — this is the backend name.
+1. <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/name.conf#L1" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/name.conf" data-code-line="1"><code>third_party/ascend/backend/name.conf</code></a> contains the single word `ascend` — this is the backend name.
 2. During `pip install`, setup.py's `BackendInstaller` discovers the `name.conf` file and installs the backend package.
-3. At runtime, `python/triton/backends/__init__.py` scans installed packages for ones with a `name.conf` file.
+3. At runtime, <a class="code-link" href="../../../external-repos/triton-ascend/python/triton/backends/__init__.py#L38" data-code-repo="triton-ascend-41f499924da1" data-code-path="python/triton/backends/__init__.py" data-code-line="38"><code>python/triton/backends/__init__.py</code></a> scans installed packages for ones with a `name.conf` file.
 
-**Key file:** `python/triton/backends/__init__.py` — the `_discover_backends()` function walks all installed packages looking for `name.conf` files. When it finds `ascend`, it loads `third_party/ascend/backend/` as the backend module.
+**Key file:** <a class="code-link" href="../../../external-repos/triton-ascend/python/triton/backends/__init__.py#L38" data-code-repo="triton-ascend-41f499924da1" data-code-path="python/triton/backends/__init__.py" data-code-line="38"><code>python/triton/backends/__init__.py</code></a> — the `_discover_backends()` function walks all installed packages looking for `name.conf` files. When it finds `ascend`, it loads `third_party/ascend/backend/` as the backend module.
 
 ### Layer 2: Compilation Pipeline
 
-The compilation pipeline is the heart of triton-ascend. It is defined in `AscendBackend.add_stages()` in `third_party/ascend/backend/compiler.py`.
+The compilation pipeline is the heart of triton-ascend. It is defined in <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/compiler.py#L1265" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/compiler.py" data-code-line="1265"><code>AscendBackend.add_stages()</code></a> in <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/compiler.py#L1200" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/compiler.py" data-code-line="1200"><code>third_party/ascend/backend/compiler.py</code></a>.
 
 ```mermaid
 flowchart LR
@@ -149,7 +150,7 @@ The C++ MLIR passes live under `third_party/ascend/lib/` and `third_party/ascend
 | `TritonToStructured/` | Structured operations conversion |
 | `TritonToUnstructure/` | SIMT unstructured path conversion |
 
-The C++ components are bridged to Python via pybind11 in `third_party/ascend/triton_ascend.cc`.
+The C++ components are bridged to Python via pybind11 in <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/triton_ascend.cc#L54" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/triton_ascend.cc" data-code-line="54"><code>third_party/ascend/triton_ascend.cc</code></a>.
 
 ### Layer 4: Runtime Driver
 
@@ -157,9 +158,9 @@ The runtime layer handles kernel loading and execution on the Ascend NPU.
 
 | File | Role |
 |------|------|
-| `third_party/ascend/backend/driver.py` | `NPUDriver` (device management) and `NPULauncher` (kernel launch) |
-| `third_party/ascend/backend/npu_utils.cpp` | C++ bridge: registers kernel binaries via `rtDevBinary`, integrates with ACL |
-| `third_party/ascend/backend/runtime/autotuner.py` | Ascend autotuner with CV autotune, UB (Unified Buffer) tuning, and DSL analysis |
+| <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/driver.py#L150" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/driver.py" data-code-line="150"><code>third_party/ascend/backend/driver.py</code></a> | `NPUDriver` (device management) and `NPULauncher` (kernel launch) |
+| <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/npu_utils.cpp#L55" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/npu_utils.cpp" data-code-line="55"><code>third_party/ascend/backend/npu_utils.cpp</code></a> | C++ bridge: registers kernel binaries via `rtDevBinary`, integrates with ACL |
+| <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/runtime/autotuner.py#L205" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/runtime/autotuner.py" data-code-line="205"><code>third_party/ascend/backend/runtime/autotuner.py</code></a> | Ascend autotuner with CV autotune, UB (Unified Buffer) tuning, and DSL analysis |
 
 **How kernel launch works:**
 
@@ -182,7 +183,7 @@ Triton Ascend exposes Ascend-specific hardware features through the `triton.lang
 | `conv1d` | 1D convolution using Ascend's cube unit |
 | `ascend_address_space` | Ascend memory address space specification |
 
-These ops live in `third_party/ascend/language/cann/extension/` and have their own semantic checker, code generator, and MLIR builder.
+These ops live in <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/language/cann/extension/__init__.py#L1" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/language/cann/extension/__init__.py" data-code-line="1"><code>third_party/ascend/language/cann/extension/</code></a> and have their own semantic checker, code generator, and MLIR builder.
 
 ## Key Design Decisions
 
@@ -190,7 +191,7 @@ Understanding these decisions will help you navigate the codebase:
 
 ### 1. Monkey-patching, not forking
 
-Triton Ascend does **not** fork Triton. It [monkey-patches](../../terms/monkey-patching.md) upstream Triton's `CodeGenerator.__init__` to inject the `hacc.target` attribute. This is done in `third_party/ascend/backend/__init__.py`:
+Triton Ascend does **not** fork Triton. It [monkey-patches](../../terms/monkey-patching.md) upstream Triton's `CodeGenerator.__init__` to inject the `hacc.target` attribute. This is done in <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/__init__.py#L27" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/__init__.py" data-code-line="27"><code>third_party/ascend/backend/__init__.py</code></a>:
 
 ```python
 # Injects hacc.target into the code generator
@@ -215,7 +216,7 @@ Triton Ascend supports three compilation modes to balance performance and correc
 
 ### 3. Auto-tuning is Ascend-specific
 
-The Ascend autotuner (`autotuner.py`) is fundamentally different from NVIDIA's. It includes:
+The Ascend autotuner (<a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/runtime/autotuner.py#L205" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/runtime/autotuner.py" data-code-line="205"><code>autotuner.py</code></a>) is fundamentally different from NVIDIA's. It includes:
 
 - **CV autotune:** Tunes the Cube-Vector pipeline balance for Ascend's hardware.
 - **UB tuning:** Manages the Unified Buffer (UB) memory, which is the Ascend equivalent of GPU shared memory.
@@ -252,17 +253,17 @@ Start with the [Triton overview page](../triton/index.md). Understand: tile-base
 
 Read these files in order:
 
-1. `python/triton/backends/__init__.py` — How backends are discovered.
-2. `python/triton/backends/compiler.py` — The `BaseBackend` abstract class.
-3. `python/triton/backends/driver.py` — The `DriverBase` abstract class.
+1. <a class="code-link" href="../../../external-repos/triton-ascend/python/triton/backends/__init__.py#L38" data-code-repo="triton-ascend-41f499924da1" data-code-path="python/triton/backends/__init__.py" data-code-line="38"><code>python/triton/backends/__init__.py</code></a> — How backends are discovered.
+2. <a class="code-link" href="../../../external-repos/triton-ascend/python/triton/backends/compiler.py#L23" data-code-repo="triton-ascend-41f499924da1" data-code-path="python/triton/backends/compiler.py" data-code-line="23"><code>python/triton/backends/compiler.py</code></a> — The `BaseBackend` abstract class.
+3. <a class="code-link" href="../../../external-repos/triton-ascend/python/triton/backends/driver.py#L11" data-code-repo="triton-ascend-41f499924da1" data-code-path="python/triton/backends/driver.py" data-code-line="11"><code>python/triton/backends/driver.py</code></a> — The `DriverBase` abstract class.
 
 These three files define the contract that any backend (including triton-ascend) must implement.
 
 ### Stage 3: Read the Ascend backend entry point
 
-1. `third_party/ascend/backend/__init__.py` — See the monkey-patching and registration.
-2. `third_party/ascend/backend/compiler.py` — `AscendBackend.add_stages()` is the heart. Read only this method first.
-3. `third_party/ascend/backend/driver.py` — `NPULauncher.__call__()` shows the kernel launch flow.
+1. <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/__init__.py#L27" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/__init__.py" data-code-line="27"><code>third_party/ascend/backend/__init__.py</code></a> — See the monkey-patching and registration.
+2. <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/compiler.py#L1265" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/compiler.py" data-code-line="1265"><code>third_party/ascend/backend/compiler.py</code></a> — `AscendBackend.add_stages()` is the heart. Read only this method first.
+3. <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/driver.py#L150" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/driver.py" data-code-line="150"><code>third_party/ascend/backend/driver.py</code></a> — `NPULauncher.__call__()` shows the kernel launch flow.
 
 ### Stage 4: Trace one compilation end-to-end
 
@@ -275,7 +276,7 @@ Pick a simple test kernel (e.g., vector-add from `python/examples/`) and trace:
 
 ### Stage 5: Explore advanced features
 
-- `third_party/ascend/backend/runtime/autotuner.py` — Auto-tuning.
+- <a class="code-link" href="../../../external-repos/triton-ascend/third_party/ascend/backend/runtime/autotuner.py#L205" data-code-repo="triton-ascend-41f499924da1" data-code-path="third_party/ascend/backend/runtime/autotuner.py" data-code-line="205"><code>third_party/ascend/backend/runtime/autotuner.py</code></a> — Auto-tuning.
 - `third_party/ascend/language/cann/extension/` — CANN extension ops.
 - `third_party/ascend/lib/` — C++ MLIR pass implementations.
 

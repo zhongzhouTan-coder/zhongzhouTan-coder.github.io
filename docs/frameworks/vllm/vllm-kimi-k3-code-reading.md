@@ -3,6 +3,7 @@ title: "vLLM Kimi K3 Code Reading Map"
 summary: "Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model, KDA/MLA attention, latent MoE, MegaMoE, MTP, and K3-specific kernels."
 layout: default
 confidence: medium
+code_links: strict
 sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
@@ -22,13 +23,13 @@ The latest local upstream vLLM checkout now has a real `vllm/models/kimi_k3/` im
 
 The code path is:
 
-1. `KimiK3ForConditionalGeneration` wraps image processing plus an inner `KimiLinearForCausalLM`.
-2. `KimiLinearModel` runs decoder layers with hybrid KDA/MLA attention.
-3. `KimiDecoderLayer` chooses `KimiK3DeltaAttention` for KDA layers and `MultiHeadLatentAttention` for NoPE MLA layers.
-4. MoE layers use `KimiMoE`, which implements latent routed experts, optional shared experts, optional DeepGEMM MegaMoE, and generic `FusedMoE + LatentMoERunner`.
+1. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L1441" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="1441"><code>KimiK3ForConditionalGeneration</code></a> wraps image processing plus an inner `KimiLinearForCausalLM`.
+2. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L941" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="941"><code>KimiLinearModel</code></a> runs decoder layers with hybrid KDA/MLA attention.
+3. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L689" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="689"><code>KimiDecoderLayer</code></a> chooses <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/kda.py#L284" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/kda.py" data-code-line="284"><code>KimiK3DeltaAttention</code></a> for KDA layers and <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mla.py#L102" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mla.py" data-code-line="102"><code>MultiHeadLatentAttention</code></a> for NoPE MLA layers.
+4. MoE layers use <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L381" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="381"><code>KimiMoE</code></a>, which implements latent routed experts, optional shared experts, optional DeepGEMM MegaMoE, and generic `FusedMoE + LatentMoERunner`.
 5. K3-specific serving pieces include XTML rendering/parsing, multimodal preprocessing, attention-residual kernels, fused MLA cache-insert kernels, optional low-latency GEMM, MTP draft model, and optional SM100 latent-MoE tail fusion.
 
-The important engineering shift is that Kimi K3 is implemented as a hardware-isolated model package under `vllm/models/kimi_k3/`, while still reusing vLLM's generic model registry, multimodal registry, attention backend interface, `FusedMoE`, speculative decoding, and parser infrastructure.
+The important engineering shift is that Kimi K3 is implemented as a hardware-isolated model package under <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/__init__.py#L10" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/__init__.py" data-code-line="10"><code>vllm/models/kimi_k3/</code></a>, while still reusing vLLM's generic model registry, multimodal registry, attention backend interface, `FusedMoE`, speculative decoding, and parser infrastructure.
 
 [Mermaid source](../assets/vllm-kimi-k3-code-reading.mmd)
 
@@ -75,44 +76,44 @@ vllm/models/kimi_k3/
   nvidia/
 ```
 
-`__init__.py` is a hardware-isolated entrypoint. It imports NVIDIA classes by default and switches to AMD classes when `current_platform.is_rocm()` is true. The public classes are:
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/__init__.py#L10" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/__init__.py" data-code-line="10"><code>__init__.py</code></a> is a hardware-isolated entrypoint. It imports NVIDIA classes by default and switches to AMD classes when `current_platform.is_rocm()` is true. The public classes are:
 
 - `KimiK3ForConditionalGeneration`;
-- `KimiK3MTP`;
-- `KimiLinearForCausalLM`.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mtp.py#L202" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mtp.py" data-code-line="202"><code>KimiK3MTP</code></a>;
+- <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L1311" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="1311"><code>KimiLinearForCausalLM</code></a>.
 
 ## Request and Chat Surface
 
 Kimi K3 has dedicated request-surface handling because it uses XTML rather than a normal Jinja chat template.
 
-`vllm/config/model.py` adds `kimi_k3` as a tokenizer mode. During model config initialization, if the resolved architecture is `KimiK3ForConditionalGeneration`, vLLM sets:
+<a class="code-link" href="../../../external-repos/vllm/vllm/config/model.py#L647" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/config/model.py" data-code-line="647"><code>vllm/config/model.py</code></a> adds `kimi_k3` as a tokenizer mode. During model config initialization, if the resolved architecture is `KimiK3ForConditionalGeneration`, vLLM sets:
 
 ```text
 tokenizer_mode = "kimi_k3"
 ```
 
-The tokenizer itself still uses the Hugging Face cached tokenizer path through `vllm/tokenizers/registry.py`, but rendering changes:
+The tokenizer itself still uses the Hugging Face cached tokenizer path through <a class="code-link" href="../../../external-repos/vllm/vllm/tokenizers/registry.py#L57" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/tokenizers/registry.py" data-code-line="57"><code>vllm/tokenizers/registry.py</code></a>, but rendering changes:
 
-- `vllm/renderers/registry.py` maps `kimi_k3` to `KimiK3Renderer`.
-- `vllm/renderers/kimi_k3.py` calls the tokenizer's Python `apply_chat_template(..., tokenize=True)` so XTML structural markers keep their special token IDs.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/renderers/registry.py#L27" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/renderers/registry.py" data-code-line="27"><code>vllm/renderers/registry.py</code></a> maps `kimi_k3` to `KimiK3Renderer`.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/renderers/kimi_k3.py#L143" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/renderers/kimi_k3.py" data-code-line="143"><code>vllm/renderers/kimi_k3.py</code></a> calls the tokenizer's Python `apply_chat_template(..., tokenize=True)` so XTML structural markers keep their special token IDs.
 - The renderer maps `reasoning_effort="none"` to `thinking=False`, supports `thinking_effort` values `low`, `high`, and `max`, preserves image alpha by default, and reorders consecutive tool-result messages to match assistant tool-call order.
-- `vllm/parser/parser_manager.py` selects `KimiK3Parser` when either the reasoning parser or tool parser name is `kimi_k3`.
-- `vllm/parser/kimi_k3.py` composes the reasoning parser and tool parser, and handles `tool_choice="none"` without leaking tool calls.
-- `vllm/tool_parsers/structural_tag_registry.py` registers a `kimi_k3` structural tag grammar for constrained response/tool-call output.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/parser/parser_manager.py#L128" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/parser/parser_manager.py" data-code-line="128"><code>vllm/parser/parser_manager.py</code></a> selects `KimiK3Parser` when either the reasoning parser or tool parser name is `kimi_k3`.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/parser/kimi_k3.py#L23" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/parser/kimi_k3.py" data-code-line="23"><code>vllm/parser/kimi_k3.py</code></a> composes the reasoning parser and tool parser, and handles `tool_choice="none"` without leaking tool calls.
+- <a class="code-link" href="../../../external-repos/vllm/vllm/tool_parsers/structural_tag_registry.py#L581" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/tool_parsers/structural_tag_registry.py" data-code-line="581"><code>vllm/tool_parsers/structural_tag_registry.py</code></a> registers a `kimi_k3` structural tag grammar for constrained response/tool-call output.
 
 This is not cosmetic. If the renderer re-tokenized XTML as plain text, structural markers would not stay aligned with K3's expected special-token IDs.
 
 ## Multimodal Wrapper
 
-`vllm/transformers_utils/configs/kimi_k3.py` defines the model config:
+<a class="code-link" href="../../../external-repos/vllm/vllm/transformers_utils/configs/kimi_k3.py#L86" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/transformers_utils/configs/kimi_k3.py" data-code-line="86"><code>vllm/transformers_utils/configs/kimi_k3.py</code></a> defines the model config:
 
 - `KimiK3Config` owns a `KimiLinearConfig` text config and `KimiK3VisionConfig`;
 - it forces `vision_config.text_hidden_size` to match `text_config.hidden_size`;
 - it defines the media placeholder token ID and image placeholder string.
 
-`vllm/transformers_utils/processors/kimi_k3.py` adapts ordinary vLLM image inputs into the media dictionaries expected by the K3 vision image processor.
+<a class="code-link" href="../../../external-repos/vllm/vllm/transformers_utils/processors/kimi_k3.py#L9" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/transformers_utils/processors/kimi_k3.py" data-code-line="9"><code>vllm/transformers_utils/processors/kimi_k3.py</code></a> adapts ordinary vLLM image inputs into the media dictionaries expected by the K3 vision image processor.
 
-`KimiK3ForConditionalGeneration` in `vllm/models/kimi_k3/nvidia/model.py` then builds:
+`KimiK3ForConditionalGeneration` in <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L1441" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="1441"><code>vllm/models/kimi_k3/nvidia/model.py</code></a> then builds:
 
 - `MoonViT3dPretrainedModel` for vision;
 - `KimiK25MultiModalProjector`;
@@ -124,7 +125,7 @@ The class description says it directly: K3 is implemented as Kimi-K2.5 vision pl
 
 ## Text Model: KimiLinearForCausalLM
 
-`KimiLinearForCausalLM` owns:
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L1311" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="1311"><code>KimiLinearForCausalLM</code></a> owns:
 
 - `KimiLinearModel`;
 - `ParallelLMHead`;
@@ -135,7 +136,7 @@ The class description says it directly: K3 is implemented as Kimi-K2.5 vision pl
 
 One non-obvious design: the final norm is applied in `compute_logits()` rather than at the end of `forward()`. The comment says this keeps pre-norm hidden states available for the MTP draft model.
 
-`KimiLinearModel.forward()` handles:
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L941" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="941"><code>KimiLinearModel.forward()</code></a> handles:
 
 1. token embedding or pipeline intermediate tensors;
 2. optional sequence-parallel sharding;
@@ -149,7 +150,7 @@ The layer stack is still recognizably vLLM, but K3 inserts several specialized p
 
 ## Decoder Layer: Hybrid KDA/MLA + MoE
 
-`KimiDecoderLayer` is where architecture selection happens.
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L689" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="689"><code>KimiDecoderLayer</code></a> is where architecture selection happens.
 
 For attention:
 
@@ -168,7 +169,7 @@ The layer also implements attention residuals through `attn_res()` before attent
 
 ## KDA Path: KimiK3DeltaAttention
 
-`vllm/models/kimi_k3/nvidia/kda.py` specializes KDA beyond the shared Kimi Linear implementation.
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/kda.py#L284" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/kda.py" data-code-line="284"><code>vllm/models/kimi_k3/nvidia/kda.py</code></a> specializes KDA beyond the shared Kimi Linear implementation.
 
 The forward path is:
 
@@ -191,7 +192,7 @@ The failure mode is clear: unsupported shapes or speculative decode fall back to
 
 ## MLA Path: MultiHeadLatentAttention
 
-`vllm/models/kimi_k3/nvidia/mla.py` is a self-contained MLA layer rather than a thin wrapper around a generic attention module.
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mla.py#L102" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mla.py" data-code-line="102"><code>vllm/models/kimi_k3/nvidia/mla.py</code></a> is a self-contained MLA layer rather than a thin wrapper around a generic attention module.
 
 Its constructor owns:
 
@@ -240,7 +241,7 @@ If `g_proj` is enabled, K3 overlaps the output-gate GEMM with the attention fron
 
 ## MoE Path: KimiMoE
 
-`KimiMoE` is the main answer to “how does K3 MoE forward run in upstream vLLM?”
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L381" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="381"><code>KimiMoE</code></a> is the main answer to “how does K3 MoE forward run in upstream vLLM?”
 
 It constructs:
 
@@ -305,7 +306,7 @@ when `VLLM_ENABLE_K3_LATENT_MOE_TAIL_FUSION=1`.
 
 ## LatentMoERunner: Why K3 Needs a Special Runner
 
-`LatentMoERunner` lives in generic vLLM MoE code but exists for latent MoE models such as K3.
+<a class="code-link" href="../../../external-repos/vllm/vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py#L22" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py" data-code-line="22"><code>LatentMoERunner</code></a> lives in generic vLLM MoE code but exists for latent MoE models such as K3.
 
 Its fused path is enabled when:
 
@@ -324,7 +325,7 @@ The core idea:
 
 The code path reduces communication compared with treating latent routed output and shared output as independent full-size paths.
 
-If optional K3 tail fusion is enabled, `LatentMoERunner` calls `KimiK3LatentMoETailOp` for small decode batches. That op fuses collective, RMSNorm, up-projection, and shared add with CuTe DSL kernels.
+If optional K3 tail fusion is enabled, `LatentMoERunner` calls <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py#L40" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py" data-code-line="40"><code>KimiK3LatentMoETailOp</code></a> for small decode batches. That op fuses collective, RMSNorm, up-projection, and shared add with CuTe DSL kernels.
 
 Hard constraints for the optional tail fusion:
 
@@ -340,7 +341,7 @@ If those constraints are not met, the runner uses the normal fused/native latent
 
 ## MTP Draft Model
 
-`vllm/models/kimi_k3/nvidia/mtp.py` defines `KimiK3MTP`.
+<a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mtp.py#L202" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mtp.py" data-code-line="202"><code>vllm/models/kimi_k3/nvidia/mtp.py</code></a> defines `KimiK3MTP`.
 
 The MTP path:
 
@@ -352,21 +353,21 @@ The MTP path:
 
 Weight loading mirrors the base text model: packed KDA projections, optional q-LoRA fused QKV weights, and expert mapping for either MegaMoE or generic FusedMoE.
 
-There is also `vllm/models/kimi_k3/nvidia/dspark_mla.py`, a dense MLA DSpark draft model path.
+There is also <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/dspark_mla.py#L437" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/dspark_mla.py" data-code-line="437"><code>vllm/models/kimi_k3/nvidia/dspark_mla.py</code></a>, a dense MLA DSpark draft model path.
 
 ## How To Read the Code in Order
 
 Use this order when debugging or modifying K3 support:
 
-1. `vllm/config/model.py` — confirms `KimiK3ForConditionalGeneration` selects `tokenizer_mode="kimi_k3"`.
-2. `vllm/renderers/kimi_k3.py` — understand XTML prompt rendering and thinking/tool parameters.
-3. `vllm/models/kimi_k3/__init__.py` — understand NVIDIA/AMD platform dispatch.
-4. `vllm/models/kimi_k3/nvidia/model.py` — start with `KimiK3ForConditionalGeneration`, then `KimiLinearForCausalLM`, `KimiLinearModel`, `KimiDecoderLayer`, and `KimiMoE`.
-5. `vllm/models/kimi_k3/nvidia/kda.py` — read the KDA path and metadata dependencies.
-6. `vllm/models/kimi_k3/nvidia/mla.py` — read prefill/decode split and cache-insert kernels.
-7. `vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py` — read latent routed-output finalization.
-8. `vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py` — read optional SM100 decode-tail fusion.
-9. `vllm/models/kimi_k3/nvidia/mtp.py` — read speculative draft-model support.
+1. <a class="code-link" href="../../../external-repos/vllm/vllm/config/model.py#L647" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/config/model.py" data-code-line="647"><code>vllm/config/model.py</code></a> — confirms `KimiK3ForConditionalGeneration` selects `tokenizer_mode="kimi_k3"`.
+2. <a class="code-link" href="../../../external-repos/vllm/vllm/renderers/kimi_k3.py#L143" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/renderers/kimi_k3.py" data-code-line="143"><code>vllm/renderers/kimi_k3.py</code></a> — understand XTML prompt rendering and thinking/tool parameters.
+3. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/__init__.py#L10" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/__init__.py" data-code-line="10"><code>vllm/models/kimi_k3/__init__.py</code></a> — understand NVIDIA/AMD platform dispatch.
+4. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L1441" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="1441"><code>vllm/models/kimi_k3/nvidia/model.py</code></a> — start with `KimiK3ForConditionalGeneration`, then `KimiLinearForCausalLM`, `KimiLinearModel`, `KimiDecoderLayer`, and `KimiMoE`.
+5. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/kda.py#L284" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/kda.py" data-code-line="284"><code>vllm/models/kimi_k3/nvidia/kda.py</code></a> — read the KDA path and metadata dependencies.
+6. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mla.py#L102" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mla.py" data-code-line="102"><code>vllm/models/kimi_k3/nvidia/mla.py</code></a> — read prefill/decode split and cache-insert kernels.
+7. <a class="code-link" href="../../../external-repos/vllm/vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py#L22" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py" data-code-line="22"><code>vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py</code></a> — read latent routed-output finalization.
+8. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py#L40" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py" data-code-line="40"><code>vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py</code></a> — read optional SM100 decode-tail fusion.
+9. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mtp.py#L202" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mtp.py" data-code-line="202"><code>vllm/models/kimi_k3/nvidia/mtp.py</code></a> — read speculative draft-model support.
 
 ## Where It Breaks
 

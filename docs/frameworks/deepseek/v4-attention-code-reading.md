@@ -3,6 +3,7 @@ title: "DeepSeek V4 Attention: Code Reading Map"
 summary: "A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU), covering CSA/HCA compressors, sparse MLA backends, heterogeneous KV cache, multi-stream overlap, and platform-specific kernel dispatch."
 layout: default
 confidence: high
+code_links: strict
 sources:
   - raw/frameworks/vllm-codebase--github-d18ed2304a27.md
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
@@ -26,7 +27,7 @@ updated: 2026-07-28
 
 **How:** vLLM dispatches to FlashMLA, FlashInfer, or Triton kernels depending on GPU architecture; vllm-ascend uses a custom AscendDSA (Deepseek Sparse Attention) NPU operator. Both share the same `DeepseekV4Attention` base class and heterogeneous KV cache design.
 
-**Where to start:** `vllm/models/deepseek_v4/attention.py` — the ~700-line `DeepseekV4Attention` class is the single source of truth for the attention pipeline, with platform subclasses in `nvidia/`, `amd/`, and `xpu/`.
+**Where to start:** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/attention.py#L71" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/attention.py" data-code-line="71"><code>vllm/models/deepseek_v4/attention.py</code></a> — the ~700-line `DeepseekV4Attention` class is the single source of truth for the attention pipeline, with platform subclasses in `nvidia/`, `amd/`, and `xpu/`.
 
 ## What This Repo Is For
 
@@ -42,17 +43,17 @@ The DeepSeek V4 attention code is a production serving implementation of the hyb
 
 | If you want to... | Start here |
 |---|---|
-| Understand the attention pipeline end-to-end | `vllm/models/deepseek_v4/attention.py` → `DeepseekV4Attention.forward()` |
-| See how KV compression works | `vllm/models/deepseek_v4/compressor.py` → `DeepseekCompressor` |
-| See the fused compressor+kernel+insert | `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` |
-| See the Lightning Indexer (sparse top-k) | `vllm/v1/attention/backends/mla/indexer.py` → `DeepseekV4IndexerBackend` |
-| See how fused indexer Q RoPE + quant works | `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` |
-| Understand the FlashMLA sparse backend | `vllm/models/deepseek_v4/sparse_mla.py` → `DeepseekV4FlashMLABackend` |
-| Understand FlashInfer sparse MLA dispatch | `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` |
-| See how the NVIDIA model wires everything together | `vllm/models/deepseek_v4/nvidia/model.py` → `DeepseekV4ForCausalLM` |
-| Understand the Ascend NPU DSA implementation | `vllm-ascend/vllm_ascend/attention/dsa_v1.py` → `AscendDSABackend` |
-| See Ascend KV cache specialization | `vllm-ascend/vllm_ascend/models/deepseek_v4.py` → `AscendCompressorStateCache` |
-| Understand heterogeneous KV cache shapes | `vllm/v1/kv_cache_interface.py` → `MLAAttentionSpec`, `SlidingWindowMLASpec` |
+| Understand the attention pipeline end-to-end | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/attention.py#L71" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/attention.py" data-code-line="71"><code>vllm/models/deepseek_v4/attention.py</code></a> → `DeepseekV4Attention.forward()` |
+| See how KV compression works | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/compressor.py#L39" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/compressor.py" data-code-line="39"><code>vllm/models/deepseek_v4/compressor.py</code></a> → `DeepseekCompressor` |
+| See the fused compressor+kernel+insert | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py#L32" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py" data-code-line="32"><code>vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py</code></a> |
+| See the Lightning Indexer (sparse top-k) | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/backends/mla/indexer.py#L46" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/backends/mla/indexer.py" data-code-line="46"><code>vllm/v1/attention/backends/mla/indexer.py</code></a> → `DeepseekV4IndexerBackend` |
+| See how fused indexer Q RoPE + quant works | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_indexer_q.py#L15" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_indexer_q.py" data-code-line="15"><code>vllm/models/deepseek_v4/common/ops/fused_indexer_q.py</code></a> |
+| Understand the FlashMLA sparse backend | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/sparse_mla.py#L35" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/sparse_mla.py" data-code-line="35"><code>vllm/models/deepseek_v4/sparse_mla.py</code></a> → `DeepseekV4FlashMLABackend` |
+| Understand FlashInfer sparse MLA dispatch | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py#L36" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py" data-code-line="36"><code>vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py</code></a> |
+| See how the NVIDIA model wires everything together | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/model.py#L82" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/model.py" data-code-line="82"><code>vllm/models/deepseek_v4/nvidia/model.py</code></a> → `DeepseekV4ForCausalLM` |
+| Understand the Ascend NPU DSA implementation | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/attention/dsa_v1.py#L62" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="62"><code>vllm-ascend/vllm_ascend/attention/dsa_v1.py</code></a> → `AscendDSABackend` |
+| See Ascend KV cache specialization | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/models/deepseek_v4.py#L95" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/models/deepseek_v4.py" data-code-line="95"><code>vllm-ascend/vllm_ascend/models/deepseek_v4.py</code></a> → `AscendCompressorStateCache` |
+| Understand heterogeneous KV cache shapes | <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/kv_cache_interface.py#L33" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/kv_cache_interface.py" data-code-line="33"><code>vllm/v1/kv_cache_interface.py</code></a> → `MLAAttentionSpec`, `SlidingWindowMLASpec` |
 
 ## The Big Picture
 
@@ -156,7 +157,7 @@ All four GEMM weights are **learned `nn.Parameters` loaded from the model checkp
 
 ### How Does Compression Actually Work?
 
-Compression is a **softmax-weighted sum** over $m$ consecutive tokens, driven by the learned gate scores. Here's the exact Triton kernel logic from `fused_compress_quant_cache.py`:
+Compression is a **softmax-weighted sum** over $m$ consecutive tokens, driven by the learned gate scores. Here's the exact Triton kernel logic from <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py#L32" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py" data-code-line="32"><code>fused_compress_quant_cache.py</code></a>:
 
 ```text
 For each token at position p where (p+1) % COMPRESS_RATIO == 0:
@@ -461,46 +462,46 @@ The base class declares `forward_mqa` as abstract. Each platform subclass implem
 
 | File | Lines | Role |
 |---|---|---|
-| `attention.py` | ~700+ | `DeepseekV4Attention` base class, fused GEMM dispatch, multi-stream overlap |
-| `compressor.py` | ~350 | `DeepseekCompressor`, `CompressorStateCache`, `CompressorBackend` |
-| `sparse_mla.py` | ~150 | `DeepseekV4FlashMLABackend`, `DeepseekV4FlashMLAMetadata` |
-| `__init__.py` | ~40 | Platform dispatch: picks `nvidia/`, `amd/`, or `xpu/` implementation |
-| `quant_config.py` | ~ | `DeepseekV4FP8Config` |
-| `nvidia/model.py` | ~600+ | `DeepseekV4ForCausalLM`, mHC integration, `DeepseekV4MegaMoE`, `SiluAndMulWithClamp` |
-| `nvidia/flashinfer_sparse.py` | ~200 | `DeepseekV4FlashInferMLASparseBackend` (SM10x/SM12x) |
-| `nvidia/flashmla.py` | ~ | `DeepseekV4FlashMLAAttention` |
-| `nvidia/ops/o_proj.py` | ~ | `deep_gemm_fp8_o_proj`, FP8 einsum output projection |
-| `common/ops/fused_compress_quant_cache.py` | ~400 | 3 Triton kernels for fused compress+norm+RoPE+quant+insert |
-| `common/ops/fused_indexer_q.py` | ~200 | Fused indexer Q RoPE + FP8/MXFP4 quantize kernel |
-| `common/ops/fused_qk_rmsnorm.py` | ~ | Fused Q/K RMSNorm kernel |
-| `common/ops/cache_utils.py` | ~ | Cache layout utilities |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/attention.py#L71" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/attention.py" data-code-line="71"><code>attention.py</code></a> | ~700+ | `DeepseekV4Attention` base class, fused GEMM dispatch, multi-stream overlap |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/compressor.py#L39" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/compressor.py" data-code-line="39"><code>compressor.py</code></a> | ~350 | `DeepseekCompressor`, `CompressorStateCache`, `CompressorBackend` |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/sparse_mla.py#L35" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/sparse_mla.py" data-code-line="35"><code>sparse_mla.py</code></a> | ~150 | `DeepseekV4FlashMLABackend`, `DeepseekV4FlashMLAMetadata` |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/__init__.py#L10" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/__init__.py" data-code-line="10"><code>__init__.py</code></a> | ~40 | Platform dispatch: picks `nvidia/`, `amd/`, or `xpu/` implementation |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/quant_config.py#L29" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/quant_config.py" data-code-line="29"><code>quant_config.py</code></a> | ~ | `DeepseekV4FP8Config` |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/model.py#L82" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/model.py" data-code-line="82"><code>nvidia/model.py</code></a> | ~600+ | `DeepseekV4ForCausalLM`, mHC integration, `DeepseekV4MegaMoE`, `SiluAndMulWithClamp` |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py#L36" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py" data-code-line="36"><code>nvidia/flashinfer_sparse.py</code></a> | ~200 | `DeepseekV4FlashInferMLASparseBackend` (SM10x/SM12x) |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/flashmla.py#L33" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/flashmla.py" data-code-line="33"><code>nvidia/flashmla.py</code></a> | ~ | `DeepseekV4FlashMLAAttention` |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/ops/o_proj.py#L13" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/ops/o_proj.py" data-code-line="13"><code>nvidia/ops/o_proj.py</code></a> | ~ | `deep_gemm_fp8_o_proj`, FP8 einsum output projection |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py#L32" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py" data-code-line="32"><code>common/ops/fused_compress_quant_cache.py</code></a> | ~400 | 3 Triton kernels for fused compress+norm+RoPE+quant+insert |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_indexer_q.py#L15" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_indexer_q.py" data-code-line="15"><code>common/ops/fused_indexer_q.py</code></a> | ~200 | Fused indexer Q RoPE + FP8/MXFP4 quantize kernel |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_qk_rmsnorm.py#L9" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_qk_rmsnorm.py" data-code-line="9"><code>common/ops/fused_qk_rmsnorm.py</code></a> | ~ | Fused Q/K RMSNorm kernel |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/cache_utils.py#L37" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/cache_utils.py" data-code-line="37"><code>common/ops/cache_utils.py</code></a> | ~ | Cache layout utilities |
 
 ### `vllm/v1/attention/backends/mla/` — V1 attention infrastructure
 
 | File | Role |
 |---|---|
-| `indexer.py` | `DeepseekV4IndexerBackend` — sparse indexer KV cache, top-k selection, slot mapping |
-| `sparse_swa.py` | `DeepseekV4SWACache` — sliding window attention cache |
-| `compressor_utils.py` | `get_compressed_slot_mapping` — expanded→compressed slot index mapping |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/backends/mla/indexer.py#L46" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/backends/mla/indexer.py" data-code-line="46"><code>indexer.py</code></a> | `DeepseekV4IndexerBackend` — sparse indexer KV cache, top-k selection, slot mapping |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/backends/mla/sparse_swa.py#L43" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/backends/mla/sparse_swa.py" data-code-line="43"><code>sparse_swa.py</code></a> | `DeepseekV4SWACache` — sliding window attention cache |
+| <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/backends/mla/compressor_utils.py#L9" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/backends/mla/compressor_utils.py" data-code-line="9"><code>compressor_utils.py</code></a> | `get_compressed_slot_mapping` — expanded→compressed slot index mapping |
 
 ### `vllm_ascend/` — Ascend NPU adaptation
 
 | File | Role |
 |---|---|
-| `models/deepseek_v4.py` | `AscendDeepseekV4ForCausalLM`, Ascend-specific KV cache subclasses |
-| `models/layer/attention/layer.py` | `DSAAttention` — Ascend MLA attention layer |
-| `attention/dsa_v1.py` | `AscendDSABackend` — DSA backend with NPU stream overlap, Hadamard rotation |
-| `attention/context_parallel/dsa_cp.py` | Context-parallel DSA |
-| `ops/dsa.py` | `AscendDeepseekSparseAttention` — the actual NPU-optimized DSA kernel |
-| `ops/rope_dsv4.py` | `ComplexExpRotaryEmbedding` — Ascend-native RoPE |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/models/deepseek_v4.py#L95" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/models/deepseek_v4.py" data-code-line="95"><code>models/deepseek_v4.py</code></a> | `AscendDeepseekV4ForCausalLM`, Ascend-specific KV cache subclasses |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/models/layer/attention/layer.py#L32" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/models/layer/attention/layer.py" data-code-line="32"><code>models/layer/attention/layer.py</code></a> | `DSAAttention` — Ascend MLA attention layer |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/attention/dsa_v1.py#L62" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="62"><code>attention/dsa_v1.py</code></a> | `AscendDSABackend` — DSA backend with NPU stream overlap, Hadamard rotation |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/attention/context_parallel/dsa_cp.py#L40" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/attention/context_parallel/dsa_cp.py" data-code-line="40"><code>attention/context_parallel/dsa_cp.py</code></a> | Context-parallel DSA |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/dsa.py#L41" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/dsa.py" data-code-line="41"><code>ops/dsa.py</code></a> | `AscendDeepseekSparseAttention` — the actual NPU-optimized DSA kernel |
+| <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/rope_dsv4.py#L12" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/rope_dsv4.py" data-code-line="12"><code>ops/rope_dsv4.py</code></a> | `ComplexExpRotaryEmbedding` — Ascend-native RoPE |
 
 ## Extension Points
 
 The codebase is designed for platform extensibility:
 
-1. **New GPU backend:** Create a subclass of `DeepseekV4Attention` implementing `forward_mqa()`, `get_padded_num_q_heads()`, `_o_proj()`, and `backend_cls`. Register in `__init__.py`.
+1. **New GPU backend:** Create a subclass of `DeepseekV4Attention` implementing `forward_mqa()`, `get_padded_num_q_heads()`, `_o_proj()`, and `backend_cls`. Register in <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/__init__.py#L10" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/__init__.py" data-code-line="10"><code>__init__.py</code></a>.
 
-2. **New quantization format:** Extend `fused_compress_quant_cache.py` with a new kernel variant, add a dtype branch in `compress_norm_rope_store_triton()`, and update `_resolve_dsv4_kv_cache_dtype()`.
+2. **New quantization format:** Extend <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py#L32" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py" data-code-line="32"><code>fused_compress_quant_cache.py</code></a> with a new kernel variant, add a dtype branch in `compress_norm_rope_store_triton()`, and update `_resolve_dsv4_kv_cache_dtype()`.
 
 3. **New compressor strategy:** The `DeepseekCompressor` class can be subclassed or configured via `compress_ratio`. The `_prefer_two_stage_compressor()` hook allows platform-specific dispatch to the two-stage variant.
 
@@ -523,12 +524,12 @@ The codebase is designed for platform extensibility:
 For a first-time reader, follow this order:
 
 1. **Start with the paper insight page** ([DeepSeek-V4](../../training/deepseek/deepseek-v4/index.md)) to understand the architecture conceptually.
-2. **Read `attention.py`** — focus on `forward()` and `attention_impl()` to see the pipeline. Skip the platform-specific `forward_mqa` for now.
-3. **Read `compressor.py`** — understand how KV compression is fused with norm, RoPE, quantization, and cache insertion.
-4. **Read `common/ops/fused_compress_quant_cache.py`** — see the Triton kernel that does the heavy lifting.
-5. **Read `nvidia/flashinfer_sparse.py`** — understand how the NVIDIA backend dispatches to FlashInfer's sparse MLA kernel.
-6. **Read `vllm_ascend/attention/dsa_v1.py`** — contrast with the Ascend NPU approach (custom DSA operator, NPU stream overlap, Hadamard rotation).
-7. **Read `vllm/v1/attention/backends/mla/indexer.py`** — understand the Lightning Indexer and how top-k sparse selection works at serving time.
+2. **Read** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/attention.py#L71" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/attention.py" data-code-line="71"><code>attention.py</code></a> — focus on `forward()` and `attention_impl()` to see the pipeline. Skip the platform-specific `forward_mqa` for now.
+3. **Read** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/compressor.py#L39" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/compressor.py" data-code-line="39"><code>compressor.py</code></a> — understand how KV compression is fused with norm, RoPE, quantization, and cache insertion.
+4. **Read** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py#L32" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py" data-code-line="32"><code>common/ops/fused_compress_quant_cache.py</code></a> — see the Triton kernel that does the heavy lifting.
+5. **Read** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py#L36" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py" data-code-line="36"><code>nvidia/flashinfer_sparse.py</code></a> — understand how the NVIDIA backend dispatches to FlashInfer's sparse MLA kernel.
+6. **Read** <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/attention/dsa_v1.py#L62" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="62"><code>vllm_ascend/attention/dsa_v1.py</code></a> — contrast with the Ascend NPU approach (custom DSA operator, NPU stream overlap, Hadamard rotation).
+7. **Read** <a class="code-link" href="../../../external-repos/vllm-d18ed2304a27/vllm/v1/attention/backends/mla/indexer.py#L46" data-code-repo="vllm-d18ed2304a27" data-code-path="vllm/v1/attention/backends/mla/indexer.py" data-code-line="46"><code>vllm/v1/attention/backends/mla/indexer.py</code></a> — understand the Lightning Indexer and how top-k sparse selection works at serving time.
 
 ## Go Deeper
 
