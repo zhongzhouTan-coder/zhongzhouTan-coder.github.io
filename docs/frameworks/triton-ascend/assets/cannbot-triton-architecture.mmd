@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph Plugin["PLUGIN: triton-op-generator"]
+        Orchestrator["Orchestrator (6-phase pipeline)"]
+    end
+
+    subgraph Skills["SKILLS (7 Triton-domain experts)"]
+        Extractor["triton-task-extractor: PyTorch → standardized task file"]
+        Designer["triton-op-designer: Algorithm sketch in UnifiedSketch DSL"]
+        Coder["triton-op-coding: Generate @triton.jit kernel code"]
+        Verifier["triton-op-verifier: Compile, run, compare precision & perf"]
+        Precision["triton-precision-debug: Five-stage ULP isolation"]
+        Optimizer["triton-latency-optimizer: 25 ordered optimization points"]
+        Simulator["triton-simulator-optimizer: msprof perf diagnosis"]
+    end
+
+    Orchestrator -->|"Phase 1"| Extractor
+    Orchestrator -->|"Phase 2"| Designer
+    Orchestrator -->|"Phase 3 (loop ≤5)"| Coder
+    Orchestrator -->|"Phase 3 (loop ≤5)"| Verifier
+    Orchestrator -->|"Phase 3 (on fail)"| Precision
+    Orchestrator -->|"Phase 4 (loop ≤5)"| Optimizer
+    Orchestrator -->|"Phase 4 (loop ≤5)"| Verifier
+    Orchestrator -->|"Phase 4 (on stall)"| Simulator
+
+    Simulator -.->|"diagnosis →"| Optimizer

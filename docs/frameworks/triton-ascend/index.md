@@ -15,7 +15,7 @@ updated: 2026-07-28
 **Inspected revision:** `41f499924da1d58955196c946895597e992127f0` (main, 2026-07-28)  
 **Version:** 3.6.0-dev (pip release: 3.2.1)
 
-**Related pages:** [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Frameworks Overview](../index.md)
+**Related pages:** [CANNBot Skills: Triton Ascend Workflow](./cannbot-skills-workflow.md), [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Triton Ascend Operator Mechanisms](./operator-mechanisms.md), [Frameworks Overview](../index.md)
 
 ## TL;DR
 

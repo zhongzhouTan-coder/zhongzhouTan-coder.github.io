@@ -794,6 +794,24 @@
     }
   ,
     {
+      "id": "github:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c",
+      "title": "CANNBot Skills — Triton Ascend Development Skills",
+      "slug": "cannbot-skills-codebase",
+      "repo_slug": "cannbot-skills",
+      "revision": "326a6b47210fc31a9c225f1643778a4cc733e57c",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": [
+        "raw/frameworks/cannbot-skills-codebase--github-326a6b47210f.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/",
+      "docs_paths": [
+        "docs/frameworks/triton-ascend/cannbot-skills-workflow.md"
+      ],
+      "status": "ingested"
+    }
+  ,
+    {
       "id": "web:blog.easecloud.io/increase-throughput-with-vllm-serving@2026-08-02-348cdcbaa1cd",
       "title": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
       "slug": "increase-throughput-with-vllm-serving",

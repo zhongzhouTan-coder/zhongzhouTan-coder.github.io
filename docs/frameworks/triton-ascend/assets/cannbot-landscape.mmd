@@ -1,0 +1,34 @@
+flowchart LR
+    subgraph "Code Assistants"
+        Copilot["GitHub Copilot"]
+        Claude["Claude Code"]
+        Cursor["Cursor"]
+    end
+
+    subgraph "Domain DSLs"
+        Triton["OpenAI Triton"]
+        TileLang["TileLang DSL"]
+        AscendC["Ascend C (Huawei)"]
+    end
+
+    subgraph "Agent Skills"
+        CANNBot["CANNBot Skills (this system)"]
+        Aider["Aider"]
+        Swe["SWE-Agent"]
+    end
+
+    subgraph "Huawei Toolchain"
+        Bisheng["Bisheng Compiler"]
+        ACL["ACL Runtime"]
+        msprof["msprof Profiler"]
+    end
+
+    Copilot --> CANNBot
+    Claude --> CANNBot
+    Cursor --> CANNBot
+    CANNBot --> Triton
+    CANNBot --> Bisheng
+    CANNBot --> msprof
+    CANNBot --> ACL
+    CANNBot -.->|"alternate paths"| TileLang
+    CANNBot -.->|"alternate paths"| AscendC
