@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Wiki"
+  short_description: "Maintain and compound the repository wiki"
+  default_prompt: "Use $maintain-wiki to ingest a source or answer a knowledge-base question while preserving provenance and navigation."

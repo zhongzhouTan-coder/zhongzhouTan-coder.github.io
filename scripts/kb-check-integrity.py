@@ -525,6 +525,11 @@ def main() -> int:
         help="Knowledge-base root (defaults to this script's repository).",
     )
     parser.add_argument("--manifest", default="sources.json")
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Emit a machine-readable result on stdout.",
+    )
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -700,10 +705,25 @@ def main() -> int:
                     )
 
     if errors:
+        if args.json:
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "error_count": len(errors),
+                        "errors": errors,
+                    },
+                    indent=2,
+                )
+            )
+            return 1
         for error in errors:
             print(f"kb integrity: {error}", file=sys.stderr)
         return 1
 
+    if args.json:
+        print(json.dumps({"ok": True, "error_count": 0, "errors": []}, indent=2))
+        return 0
     print("kb integrity ok")
     return 0
 

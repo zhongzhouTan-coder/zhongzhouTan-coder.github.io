@@ -9,6 +9,8 @@
   "scripts": {
     "test": "python3 -m unittest discover -s tests -p 'test_*.py'",
     "ingest:web": "node scripts/web-source-to-markdown.mjs",
+    "wiki:search": "python3 scripts/kb-search.py",
+    "wiki:graph": "python3 scripts/kb-graph.py",
     "lint:md": "markdownlint-cli2",
     "lint:docs": "./scripts/lint-docs.sh",
     "lint": "npm run lint:md && npm run lint:docs"

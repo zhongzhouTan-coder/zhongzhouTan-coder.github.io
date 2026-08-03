@@ -147,14 +147,19 @@ updated: 2026-07-28
 """,
         )
 
-    def run_integrity(self) -> subprocess.CompletedProcess[str]:
+    def run_integrity(
+        self, *, json_output: bool = False
+    ) -> subprocess.CompletedProcess[str]:
+        command = [
+            "python3",
+            str(INTEGRITY_SCRIPT),
+            "--root",
+            str(self.root),
+        ]
+        if json_output:
+            command.append("--json")
         return subprocess.run(
-            [
-                "python3",
-                str(INTEGRITY_SCRIPT),
-                "--root",
-                str(self.root),
-            ],
+            command,
             check=False,
             capture_output=True,
             text=True,
@@ -168,6 +173,18 @@ updated: 2026-07-28
     def test_valid_revision_supports_multiple_categories(self) -> None:
         result = self.run_integrity()
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_json_output_is_structured_for_errors(self) -> None:
+        (self.root / ANALYSIS_PATH).unlink()
+        result = self.run_integrity(json_output=True)
+        payload = json.loads(result.stdout)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse(payload["ok"])
+        self.assertEqual(payload["error_count"], len(payload["errors"]))
+        self.assertTrue(
+            any("missing required repo analysis file" in error for error in payload["errors"])
+        )
+        self.assertEqual(result.stderr, "")
 
     def test_raw_commit_must_match_manifest_id(self) -> None:
         raw_file = self.root / RAW_PATH

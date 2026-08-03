@@ -106,30 +106,63 @@ def main() -> int:
         help="Knowledge-base root (defaults to this script's repository).",
     )
     parser.add_argument("--manifest", default="sources.json")
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Emit a machine-readable result on stdout.",
+    )
     args = parser.parse_args()
 
     root = args.root.resolve()
     manifest = json.loads(
         (root / args.manifest).read_text(encoding="utf-8")
     )["sources"]
-    mismatches = 0
+    mismatches: list[dict[str, str]] = []
 
     for entry in manifest:
         for raw_path in entry.get("raw_paths", []):
             expected = expected_raw_path(entry, raw_path)
             if expected and raw_path != expected:
-                print(f"{raw_path} -> {expected}")
-                mismatches += 1
+                mismatches.append(
+                    {"kind": "raw", "actual": raw_path, "expected": expected}
+                )
 
         expected_derived = expected_derived_path(entry)
         if expected_derived and entry["derived_path"] != expected_derived:
-            print(f"{entry['derived_path']} -> {expected_derived}")
-            mismatches += 1
+            mismatches.append(
+                {
+                    "kind": "derived",
+                    "actual": entry["derived_path"],
+                    "expected": expected_derived,
+                }
+            )
 
     if mismatches:
-        print(f"{mismatches} path(s) do not match the naming policy")
+        if args.json:
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "mismatch_count": len(mismatches),
+                        "mismatches": mismatches,
+                    },
+                    indent=2,
+                )
+            )
+            return 1
+        for mismatch in mismatches:
+            print(f"{mismatch['actual']} -> {mismatch['expected']}")
+        print(f"{len(mismatches)} path(s) do not match the naming policy")
         return 1
 
+    if args.json:
+        print(
+            json.dumps(
+                {"ok": True, "mismatch_count": 0, "mismatches": []},
+                indent=2,
+            )
+        )
+        return 0
     print("source names ok")
     return 0
 
