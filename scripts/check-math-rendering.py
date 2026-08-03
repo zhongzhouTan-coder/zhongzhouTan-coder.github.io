@@ -75,7 +75,9 @@ def main() -> int:
         destination = Path(temp_dir)
         try:
             build_site(destination)
-        except (FileNotFoundError, subprocess.CalledProcessError) as error:
+        except FileNotFoundError as error:
+            print(f"math formulation: skipping Jekyll build ({error})")
+        except subprocess.CalledProcessError as error:
             print(f"math formulation: unable to build Jekyll site: {error}")
             return 1
 
