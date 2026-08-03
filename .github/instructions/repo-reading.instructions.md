@@ -13,8 +13,8 @@ PDF, benchmark report, or web reference.
 Select one mode before reading code:
 
 - **Reuse an existing revision** when its pinned commit still supports the
-  requested docs change. Do not refresh evidence merely because checkout
-  `HEAD` has moved.
+  requested docs change. Check the latest upstream commit first, but do not
+  refresh evidence merely because unrelated code changed.
 - **Add a new revision** when the implementation evidence must be refreshed.
   Create a new immutable source record and analysis directory.
 - **Add a new repository** when no source entry exists for the checkout.
@@ -26,10 +26,19 @@ derived revision to point at a different commit.
 
 - Local third-party checkouts live under `external-repos/`.
 - `external-repos/` must be ignored by git and must not be committed.
+- Store shared bare object databases under
+  `external-repos/.cache/{provider}/{owner}/{repo}.git`. Materialized revision
+  worktrees share this object database instead of cloning full history again.
+- Treat a registered `local_checkout` as a stable materialization path. It may
+  be absent after an inactive worktree is retired; its immutable raw record,
+  derived evidence, manifest entry, registry metadata, and protected Git ref
+  remain canonical.
 - Inspect checkouts with read-only tools such as `rg`, `sed`, `find`, package
   metadata readers, and test discovery.
-- Do not edit, format, delete, switch, pull, or vendor files inside
-  `external-repos/` as part of docs work.
+- Do not edit, format, switch, pull, or vendor files inside a materialized
+  worktree as part of docs work. Use `scripts/kb-repo-worktree.py` for shared
+  cache refresh, revision materialization, and explicit retirement; do not
+  manage those worktrees with ad hoc destructive commands.
 - Capture the origin clone URL, normalized provider and repository web URL,
   exact 40-character commit SHA, branch or tag, inspected date, and checkout
   state before writing docs.
@@ -46,6 +55,57 @@ git -C external-repos/<repo> rev-parse HEAD
 git -C external-repos/<repo> branch --show-current
 git -C external-repos/<repo> status --porcelain
 ```
+
+## Latest-First Refresh Without Revision Sprawl
+
+For an existing repository, identify the newest registry key that supports the
+question and run a scoped freshness check before inspecting code:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
+  <repo-slug>-<pinned-short-sha> \
+  --path path/to/subsystem \
+  --sparse path/to/subsystem
+```
+
+The command fetches upstream into a partial bare cache, protects the pinned
+commit under `refs/kb/revisions/`, and compares the pinned revision with the
+upstream default branch. Its decision controls the workflow:
+
+- `decision: reuse` means the inspected paths are unchanged. Continue with the
+  existing raw record and derived evidence even if upstream has newer commits.
+- `decision: new revision` means relevant files changed. The command creates a
+  detached shared-object worktree at a revision-specific path; pass that path
+  to `scripts/kb-init-repo-source.py` before writing new evidence.
+
+Repeat `--path` for every directory or file in scope. Omit it only when the
+whole repository is genuinely relevant. Pass `--remote-ref` when the upstream
+default branch is neither `main` nor `master`, or cannot be resolved from
+`origin/HEAD`.
+
+Do not use `git pull` for freshness. Pulling mutates a checkout that may already
+back immutable evidence. Fetching the shared cache separates discovery of new
+upstream commits from the decision to register a new evidence revision.
+
+Retire a clean inactive shared worktree without deleting its evidence:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py retire \
+  <repo-slug>-<short-sha>
+```
+
+Restore it later at the same registered path:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py materialize \
+  <repo-slug>-<short-sha>
+```
+
+Retirement is optional and must be intentional. The helper refuses dirty,
+wrong-revision, or independently cloned directories, and protects the commit
+before removing a shared worktree. `check-code-links.py --local` requires all
+referenced worktrees to be materialized; the normal docs lint validates remote
+pinned links without requiring inactive local worktrees.
 
 ## Immutable Source Revision
 
@@ -294,7 +354,9 @@ Apply the most conservative matching rule:
 
 ## Canonical Workflow
 
-1. Choose `reuse`, `new revision`, or `new repository`.
+1. For an existing repository, run the scoped latest-first refresh. Use its
+   result to choose `reuse` or `new revision`; choose `new repository` only
+   when no source entry exists.
 2. Validate checkout location and ignored status; capture remote, SHA, ref, and
    dirty state.
 3. Reuse the exact existing revision or scaffold a new immutable revision:
@@ -322,6 +384,8 @@ Apply the most conservative matching rule:
 ## Completion Checklist
 
 - [ ] Workflow mode was chosen explicitly.
+- [ ] Latest upstream was checked against the relevant paths, or an offline or
+      explicitly pinned limitation was recorded.
 - [ ] Checkout is beneath ignored `external-repos/`.
 - [ ] Remote, full SHA, ref, inspected date, and checkout state were captured.
 - [ ] Exact immutable raw revision exists or was reused.

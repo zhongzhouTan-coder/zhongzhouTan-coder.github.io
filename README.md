@@ -93,6 +93,26 @@ Markdown source, so editor previews open the local dependency checkout. Jekyll
 pages resolve the same references to provider-correct GitHub or GitCode links
 pinned to the inspected commit.
 
+**Refresh repository evidence:**
+
+```bash
+# Fetch latest upstream and compare only the subsystem being studied.
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
+  vllm-a0c092ee72c0 \
+  --path vllm/v1/core \
+  --sparse vllm/v1/core
+
+# Retire or restore an inactive pinned worktree without losing its evidence.
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py retire \
+  vllm-a0c092ee72c0
+./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py materialize \
+  vllm-a0c092ee72c0
+```
+
+The helper keeps one partial bare object cache per upstream repository. It
+creates a detached revision worktree only when the requested paths changed, so
+immutable evidence remains versioned without accumulating independent clones.
+
 **Lint docs:**
 
 ```bash

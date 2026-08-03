@@ -44,9 +44,13 @@ This repository is a markdown knowledge base.
 - When a new web page source is added: capture it with `scripts/web-source-to-markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical
   `reuse` / `new revision` / `new repository` workflow in
-  `.github/instructions/repo-reading.instructions.md`. Do not automatically
-  refresh evidence to checkout `HEAD`; reuse the recorded revision unless the
-  implementation evidence is intentionally being updated.
+  `.github/instructions/repo-reading.instructions.md`. For an existing
+  repository, refresh the shared cache and compare the latest upstream commit
+  against the pinned revision with `scripts/kb-repo-worktree.py sync`, scoped
+  to the subsystem being inspected. Reuse the recorded revision when that
+  scope is unchanged; create a new immutable revision only when relevant
+  implementation changed. Never pull into a checkout that already supports
+  pinned evidence.
 - When adding a new paper or docs page, inspect existing related pages from `docs/logs/index.md` and the target topic folder. Update those pages when the new material changes the landscape, supersedes an older claim, adds a needed comparison, or should be linked as related context.
 - Do not rewrite related pages just because a new page exists. Keep related-page edits scoped to factual corrections, changed confidence, cross-links, short comparison notes, or synthesis that improves retrieval.
 - If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.

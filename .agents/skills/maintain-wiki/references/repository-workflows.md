@@ -42,6 +42,12 @@ Apply `.github/instructions/web-source.instructions.md`. Capture an immutable HT
 
 Apply `.github/instructions/repo-reading.instructions.md`. Choose deliberately among `reuse`, `new revision`, and `new repository`. Never refresh to checkout `HEAD` merely because it exists. Read `external-repos/` without editing it, store the pinned source record under `raw/`, and keep generated notes under the recorded revision in `derived/repo-analysis/`.
 
+For an existing repository, run the repository worktree helper against the
+newest relevant registry entry before choosing between `reuse` and `new
+revision`. It fetches into one shared bare cache, compares only the requested
+paths when `--path` is supplied, and materializes a detached worktree only when
+that scope changed. Do not treat an unrelated upstream commit as new evidence.
+
 #### Markdown or other directly readable source
 
 Require the canonical evidence to live under `raw/`. If the requested source is outside `raw/`, identify the appropriate category and canonical path; copy or move it only when the request clearly authorizes adding it. Read it directly, add or update its manifest entry, and cite its canonical raw path.

@@ -16,7 +16,10 @@ Treat the wiki as a compiled, source-backed knowledge layer: preserve immutable 
 - Inspect `docs/logs/index.md` before ingesting, answering, or creating a page.
 - Prefer improving an existing page over creating a parallel summary.
 - Make evidence-shaped edits. Do not force an arbitrary number of related-page changes.
-- Keep `external-repos/` read-only and reuse pinned repository revisions unless the user intentionally requests newer evidence.
+- Keep materialized `external-repos/` worktrees read-only. Refresh the shared
+  repository cache before existing-repository work, but reuse pinned evidence
+  unless the inspected scope changed upstream or the user intentionally
+  requests a different revision.
 
 ## Select the Operation
 
