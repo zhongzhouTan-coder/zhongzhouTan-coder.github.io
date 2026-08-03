@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-30
+updated: 2026-08-02
 ---
 
 # Wiki Index
@@ -43,6 +43,7 @@ updated: 2026-07-30
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
+- [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek-v4-attention-code-reading.md) — Navigable implementation map of DeepSeek V4's hybrid compressed attention across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU), covering CSA/HCA compressors, sparse MLA backends, heterogeneous KV cache, multi-stream overlap, and platform-specific kernel dispatch.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend-kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 
@@ -93,6 +94,7 @@ updated: 2026-07-30
 ## Terms
 
 - [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
+- [Continuous Batching](../terms/continuous-batching.md) — Iteration-level LLM-serving scheduler that rebuilds active work every model step.
 - [Kimi Delta Attention](../terms/kimi-delta-attention.md) — Gated linear-attention mechanism that extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
 - [Microbatch](../terms/microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work in a pipeline schedule.
 - [Mixture of Experts](../terms/mixture-of-experts.md) — Sparse model architecture that routes each token through a few experts to increase total capacity without activating every parameter.

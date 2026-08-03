@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
-updated: 2026-07-15
+updated: 2026-08-02
 ---
 
 # vLLM: PagedAttention Serving Framework
@@ -14,7 +14,7 @@ updated: 2026-07-15
 **Authors:** Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph E. Gonzalez, Hao Zhang, Ion Stoica
 **Venue / arXiv:** SOSP 2023; arXiv:2309.06180v1 - 12 Sep 2023
 
-**Related page:** [SGLang: Structured Language Model Programs](sglang-framework.md)
+**Related pages:** [vLLM Continuous Batching](vllm-continuous-batching/index.md), [SGLang: Structured Language Model Programs](sglang-framework.md)
 
 ## TL;DR
 
@@ -191,7 +191,7 @@ The results show that vLLM is strongest when memory is the limiting factor: long
 
 ## Relationship to Orca and SGLang
 
-Orca and vLLM are complementary. Orca improves throughput through iteration-level scheduling and interleaving, while vLLM improves throughput by increasing KV-cache memory utilization so more working sets fit into GPU memory. The paper argues that fine-grained scheduling makes memory management more difficult, which makes vLLM's block-level design more important.
+Orca and vLLM are complementary. Orca improves throughput through [iteration-level scheduling](../terms/continuous-batching.md) and interleaving, while vLLM improves throughput by increasing KV-cache memory utilization so more working sets fit into GPU memory. The paper argues that fine-grained scheduling makes memory management more difficult, which makes vLLM's block-level design more important. The current V1 implementation path is traced separately in [vLLM Continuous Batching](vllm-continuous-batching/index.md).
 
 Compared with [SGLang](sglang-framework.md), vLLM is lower in the stack. vLLM is an inference-serving engine centered on paged KV-cache memory management. SGLang is a programming and runtime framework for structured multi-call language-model programs, and its RadixAttention generalizes KV-cache reuse around prefix trees and cache-aware scheduling.
 

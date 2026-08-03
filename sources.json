@@ -675,7 +675,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/",
       "docs_paths": [
-        "docs/frameworks/vllm-kimi-k3-code-reading.md"
+        "docs/frameworks/vllm-kimi-k3-code-reading.md",
+        "docs/frameworks/vllm-continuous-batching/index.md"
       ],
       "status": "ingested"
     },
@@ -790,6 +791,63 @@
       "derived_path": "derived/web-markdown/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.md",
       "status": "ingested",
       "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
+    }
+  ,
+    {
+      "id": "web:blog.easecloud.io/increase-throughput-with-vllm-serving@2026-08-02-348cdcbaa1cd",
+      "title": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
+      "slug": "increase-throughput-with-vllm-serving",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/",
+      "final_url": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/",
+      "captured_at": "2026-08-02T09:30:51.850Z",
+      "revision": "348cdcbaa1cd823a9b4e9bf7590a745b4645639ee4669bf4231fc8b5675f9a50",
+      "raw_paths": [
+        "raw/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.html",
+        "raw/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/vllm-continuous-batching/index.md"
+    }
+  ,
+    {
+      "id": "web:vllm.ai/vllm-easy-fast-cheap-llm-serving@2026-08-02-4ac3b3ecb767",
+      "title": "vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention",
+      "slug": "vllm-easy-fast-cheap-llm-serving",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://vllm.ai/blog/2023-06-20-vllm",
+      "final_url": "https://vllm.ai/blog/2023-06-20-vllm",
+      "captured_at": "2026-08-02T09:31:01.156Z",
+      "revision": "4ac3b3ecb76736a3b8cd00f34b43405e30847b14acd90868188e8d7108662e99",
+      "raw_paths": [
+        "raw/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.html",
+        "raw/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/vllm-continuous-batching/index.md"
+    }
+  ,
+    {
+      "id": "web:www.anyscale.com/continuous-batching-llm-inference@2026-08-02-083bded3a6af",
+      "title": "Achieve 23x LLM Inference Throughput & Reduce p50 Latency",
+      "slug": "continuous-batching-llm-inference",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://www.anyscale.com/blog/continuous-batching-llm-inference",
+      "final_url": "https://www.anyscale.com/blog/continuous-batching-llm-inference",
+      "captured_at": "2026-08-02T09:31:06.909Z",
+      "revision": "083bded3a6af1e15dee4aad260660a5e6ffb4ed6b42964097d70cec2a70d650d",
+      "raw_paths": [
+        "raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html",
+        "raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md",
+      "status": "ingested",
+      "docs_path": "docs/frameworks/vllm-continuous-batching/index.md"
     }
   ]
 }

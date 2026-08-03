@@ -45,9 +45,32 @@ This repository is a markdown knowledge base.
 
 ## Diagram Conventions
 
-- **Always save diagrams locally** in the docs folder (e.g., `docs/topic/assets/`) — never only open them in a browser. Use `.drawio` for complex architecture diagrams, `.mmd` for Mermaid flowcharts, and `.excalidraw` for hand-drawn explainers.
-- **Avoid opening diagrams in the browser.** Generate the diagram content and save it directly to a local file via `create_file`. Do not use tools that open a browser tab (e.g., `open_drawio_*`); use the MCP tools only to obtain the XML/JSON content, then write it to disk.
-- **Mermaid for simple flows.** Use Mermaid (`.mmd`) for straightforward flowcharts, decision trees, and sequence diagrams — keep Draw.io for diagrams that need swimlanes, rich shapes, containers, custom positioning, or industry-specific icons.
-- **Link all diagram files** from the docs page so they are discoverable and editable.
+- **Original source figures are the first choice.** Before creating any visual,
+  inspect the paper's extracted figures and the captured web page's images. For
+  every section except **The Landscape**, use a suitable original paper/web
+  figure whenever one exists; do not replace it with Mermaid, Draw.io, or an
+  AI-generated visual merely for stylistic consistency.
+- **Preserve selected source figures locally.** Copy or download each selected
+  original figure into the consuming page's `assets/` directory, use a
+  descriptive filename, embed the local relative path, and add a caption that
+  identifies and links to the source. Never rely on a remote image URL as the
+  page's only copy, and never modify files under `raw/`.
+- **The Landscape always uses Mermaid.** Represent the evolutionary tree of
+  prior work, siblings, and the current method as a locally saved `.mmd` file.
+  This is the standard exception to the original-figure-first rule.
+- **Synthesized visuals are fallback-only outside The Landscape.** If no usable
+  original source figure exists, prefer a table or prose. Create a Mermaid,
+  Draw.io, Excalidraw, or AI-generated explanatory visual only when the user
+  explicitly requests one or when the mechanism cannot be understood clearly
+  without it; label the caption as a synthesized explanation rather than a
+  source figure.
+- **Always save editable diagrams locally** in the docs folder (for example,
+  `docs/topic/assets/`). Use `.mmd` for the Landscape and any approved simple
+  fallback flow, `.drawio` for approved complex architecture diagrams, and
+  `.excalidraw` for approved hand-drawn explainers.
+- **Avoid opening diagrams in the browser.** Generate diagram content and save
+  it directly to a local file. Do not use tools that open a browser tab.
+- **Link all editable diagram files** from the docs page so they are
+  discoverable and reusable.
 
 Run `./scripts/lint-docs.sh` after docs or logs changes.

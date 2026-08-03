@@ -87,9 +87,13 @@ When the resulting docs page is ready:
   authenticated, lazy-loaded, or interactive content as a limitation.
 - The extractor normalizes common lazy-loaded image attributes and preserves
   meaningful inline SVG diagrams as local files next to the derived Markdown.
-  Ordinary remote raster images remain remote and are not immutable. Save
-  essential figures under the final docs page's assets directory when they
-  must remain reproducible.
+  Ordinary remote raster images remain remote in the extraction and are not
+  immutable. During synthesis, inspect those images before creating any new
+  visual. Download every selected original figure into the final docs page's
+  `assets/` directory, embed the local copy, and cite the captured web page in
+  its caption. Original source figures are preferred over newly synthesized
+  visuals everywhere except The Landscape, which uses a locally saved Mermaid
+  diagram.
 - Do not treat a browser-rendered snapshot as proof of content that was hidden
   behind an inaccessible interaction.
 - Response metadata excludes cookie and proxy-authentication headers so session

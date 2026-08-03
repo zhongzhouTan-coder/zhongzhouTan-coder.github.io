@@ -1,0 +1,2909 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-mode">
+<head>
+
+    <title>vLLM Throughput Guide - PagedAttention and Batching Tips (2026)</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="preload" as="style" href="/assets/built/screen.css?v=def73d8a9b" />
+    <link rel="preload" as="script" href="/assets/built/casper.js?v=def73d8a9b" />
+
+    <link rel="stylesheet" type="text/css" href="/assets/built/screen.css?v=def73d8a9b" />
+    
+        <link rel="stylesheet" href="/assets/css/prism.css?v=def73d8a9b" class="prism-light-theme" />
+        <link rel="stylesheet" href="/assets/css/prism-dark.css?v=def73d8a9b" class="prism-dark-theme" />
+
+    <link rel="alternate" hreflang="en" href="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/" />
+    <link rel="alternate" hreflang="x-default" href="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/" />
+
+    <meta name="description" content="Maximize vLLM throughput with PagedAttention, continuous batching, and optimal max_num_batched_tokens — A100 benchmarks and production config examples. 2026.">
+    <link rel="icon" href="https://blog.easecloud.io/content/images/size/w256h256/format/png/2025/08/icon.svg" type="image/png">
+    <link rel="canonical" href="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="Cloud Technology Blog - EaseCloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="vLLM Throughput Guide - PagedAttention and Batching Tips (2026)">
+    <meta property="og:description" content="Get the highest tokens/sec from vLLM with continuous batching and PagedAttention. Benchmark results, best practices checklist, and tuning guide for 2026.">
+    <meta property="og:url" content="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/">
+    <meta property="og:image" content="https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png">
+    <meta property="article:published_time" content="2026-02-11T08:07:48.000Z">
+    <meta property="article:modified_time" content="2026-04-10T19:53:17.000Z">
+    <meta property="article:tag" content="AI Cloud">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/easecloudio/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="vLLM Throughput Guide - PagedAttention and Batching Tips (2026)">
+    <meta name="twitter:description" content="Get the highest tokens/sec from vLLM with continuous batching and PagedAttention. Benchmark results, best practices checklist, and tuning guide for 2026.">
+    <meta name="twitter:url" content="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/">
+    <meta name="twitter:image" content="https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="The EaseCloud Team">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="AI Cloud">
+    <meta name="twitter:site" content="@easecloudio">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Cloud Technology Blog - EaseCloud",
+        "url": "https://blog.easecloud.io/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://blog.easecloud.io/content/images/size/w256h256/format/png/2025/08/icon.svg"
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "The EaseCloud Team",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.easecloud.io/blog/2026/06/EaseCloud_Dp-01.svg",
+            "width": 501,
+            "height": 500
+        },
+        "url": "https://blog.easecloud.io/author/easecloudio/",
+        "sameAs": []
+    },
+    "headline": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
+    "url": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/",
+    "datePublished": "2026-02-11T08:07:48.000Z",
+    "dateModified": "2026-04-10T19:53:17.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png",
+        "width": 1200,
+        "height": 600
+    },
+    "keywords": "AI Cloud",
+    "description": "Get the highest tokens/sec from vLLM with continuous batching and PagedAttention. Benchmark results, best practices checklist, and tuning guide for 2026.",
+    "mainEntityOfPage": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 6.0">
+    <link rel="alternate" type="application/rss+xml" title="Cloud Technology Blog - EaseCloud" href="https://blog.easecloud.io/rss/">
+    <script defer src="https://cdn.jsdelivr.net/ghost/portal@~2.51/umd/portal.min.js" data-i18n="true" data-ghost="https://blog.easecloud.io/" data-key="d1096734e2d760efe068a14252" data-api="https://blog.easecloud.io/ghost/api/content/" data-locale="en" crossorigin="anonymous"></script><style id="gh-members-styles">.gh-post-upgrade-cta-content,
+.gh-post-upgrade-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.gh-post-upgrade-cta-content {
+    border-radius: 8px;
+    padding: 40px 4vw;
+}
+
+.gh-post-upgrade-cta h2 {
+    color: #ffffff;
+    font-size: 28px;
+    letter-spacing: -0.2px;
+    margin: 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta p {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta small {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.gh-post-upgrade-cta a {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a:hover {
+    color: #ffffff;
+    opacity: 0.8;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a.gh-btn {
+    display: block;
+    background: #ffffff;
+    text-decoration: none;
+    margin: 28px 0 0;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gh-post-upgrade-cta a.gh-btn:hover {
+    opacity: 0.92;
+}</style>
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.8/umd/sodo-search.min.js" data-key="d1096734e2d760efe068a14252" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.8/umd/main.css" data-sodo-search="https://blog.easecloud.io/" data-locale="en" crossorigin="anonymous"></script>
+    
+    <link href="https://blog.easecloud.io/webmentions/receive/" rel="webmention">
+    <script defer src="/public/cards.min.js?v=def73d8a9b"></script>
+    <link rel="stylesheet" type="text/css" href="/public/cards.min.css?v=def73d8a9b">
+    <script defer src="/public/member-attribution.min.js?v=def73d8a9b"></script><style>:root {--ghost-accent-color: #000000;}</style>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W593QBBF');</script>
+<!-- End Google Tag Manager -->
+
+    <link rel="stylesheet" href="/assets/built/easecloud-brand.css?v=def73d8a9b" />
+    <link rel="stylesheet" href="/assets/built/code-enhanced.css?v=def73d8a9b" />
+
+    <script>
+    (function() {
+        var saved = localStorage.getItem('ec-theme');
+        var html = document.documentElement;
+        if (saved === 'light') {
+            html.classList.remove('dark-mode');
+            html.classList.add('light-mode');
+        } else if (saved === 'dark') {
+            html.classList.remove('light-mode');
+            html.classList.add('dark-mode');
+        }
+        // No saved preference → respect the server-rendered class (dark-mode default)
+    }());
+    </script>
+
+    <style>
+    /* EaseCloud Header Logo */
+    .easecloud-logo-svg {
+        height: 28px;
+        width: auto;
+        color: #ffffff;
+        transition: opacity 0.15s ease-in-out;
+        display: block;
+    }
+
+    .gh-head-logo {
+        display: flex;
+        align-items: center;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /* Force show logo on all templates and layouts */
+    .is-head-left-logo.home-template .gh-head:not(.is-header-hidden) .gh-head-logo,
+    .gh-head .gh-head-logo {
+        display: flex;
+        visibility: visible;
+    }
+
+    .gh-head-logo:hover .easecloud-logo-svg {
+        opacity: 0.8;
+    }
+
+    /* EaseCloud Header - dark default */
+    .gh-head {
+        background-color: #000000;
+        border-bottom: 1px solid #333333;
+    }
+
+    /* Light mode header overrides */
+    html:not(.dark-mode) .gh-head {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    html:not(.dark-mode) .easecloud-logo-svg {
+        color: #0a0a0a;
+    }
+
+    /* EaseCloud Footer */
+    .easecloud-footer {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        padding: 64px 0 40px;
+        margin-top: 80px;
+        border-top: 1px solid #1a1a1a;
+    }
+
+    .easecloud-footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .easecloud-footer-main {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        gap: 48px;
+        margin-bottom: 48px;
+    }
+
+    .easecloud-footer-brand {
+        max-width: 260px;
+    }
+
+    .easecloud-footer-logo {
+        height: 32px;
+        width: auto;
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .easecloud-footer-description {
+        color: #808080; /* #808080 on #0a0a0a = 5.01:1 — WCAG AA ✅ (was #737373 = 4.18:1 ❌) */
+        font-size: 14px;
+        line-height: 1.65;
+        margin: 0;
+    }
+
+    .easecloud-footer-column h3 {
+        color: #ffffff;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 0 0 16px;
+    }
+
+    .easecloud-footer-column ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .easecloud-footer-column li {
+        margin-bottom: 10px;
+    }
+
+    .easecloud-footer-column a {
+        color: #808080;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.15s ease;
+    }
+
+    .easecloud-footer-column a:hover {
+        color: #ffffff;
+    }
+
+    .easecloud-footer-bottom {
+        border-top: 1px solid #262626;
+        padding-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .easecloud-footer-copyright {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .easecloud-footer-copyright p {
+        color: #808080; /* #808080 on #0a0a0a = 5.01:1 ✅ (was #737373 = 4.17:1 ❌ at 13px) */
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .easecloud-footer-legal {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .easecloud-footer-legal a {
+        color: #808080; /* #808080 on #0a0a0a = 5.01:1 ✅ */
+        text-decoration: none;
+        font-size: 13px;
+        transition: color 0.15s ease;
+    }
+
+    .easecloud-footer-legal a:hover {
+        color: #a3a3a3;
+    }
+
+    .easecloud-footer-social {
+        display: flex;
+        gap: 12px;
+    }
+
+    .easecloud-footer-social a {
+        color: #525252;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.15s ease;
+    }
+
+    .easecloud-footer-social a:hover {
+        color: #ffffff;
+    }
+
+    /* Footer responsive */
+    @media (max-width: 1024px) {
+        .easecloud-footer-main {
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        .easecloud-footer-brand {
+            max-width: none;
+            grid-column: 1 / -1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .easecloud-footer {
+            padding: 48px 0 32px;
+            margin-top: 48px;
+        }
+        .easecloud-footer-main {
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .easecloud-footer-brand {
+            grid-column: 1 / -1;
+        }
+        .easecloud-footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .easecloud-footer-copyright {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .easecloud-footer {
+            padding: 40px 0 24px;
+            margin-top: 40px;
+        }
+        .easecloud-footer-content {
+            padding: 0 20px;
+        }
+        .easecloud-footer-main {
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .easecloud-footer-social {
+            gap: 10px;
+        }
+    }
+
+    /* ============================================
+       ANNOUNCEMENT BAR — EaseCloud Brand Override
+       Ghost renders .gh-announcement-bar with
+       optional .light / .dark modifier class.
+       We override both to use Google Blue.
+       ============================================ */
+
+    .gh-announcement-bar,
+    .gh-announcement-bar.light,
+    .gh-announcement-bar.dark,
+    .gh-announcement-bar.accent {
+        background: #1a56db; /* #fff on #1a56db = 6.18:1 — WCAG AA ✅ (was #4285f4 = 3.56:1 ❌) */
+        color: #ffffff;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        position: relative;
+    }
+
+    .gh-announcement-bar-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 11px 56px 11px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    .gh-announcement-bar-content p {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffffff !important;
+        margin: 0;
+        text-align: center;
+        line-height: 1.45;
+    }
+
+    .gh-announcement-bar-content p span {
+        color: #ffffff !important;
+    }
+
+    /* Links inside announcement content */
+    .gh-announcement-bar-content a {
+        color: #ffffff;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: opacity 0.15s;
+    }
+
+    .gh-announcement-bar-content a:hover {
+        opacity: 0.85;
+    }
+
+    /* CTA-style link — wrap with class ec-ann-cta in Admin for pill style */
+    .gh-announcement-bar-content .ec-ann-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.35);
+        border-radius: 20px;
+        padding: 2px 12px 2px 10px;
+        margin-left: 8px;
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none;
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+    .gh-announcement-bar-content .ec-ann-cta:hover {
+        background: rgba(255,255,255,0.28);
+        border-color: rgba(255,255,255,0.55);
+        opacity: 1;
+    }
+
+    /* Close button */
+    .gh-announcement-bar > button,
+    .gh-announcement-bar button[aria-label="close"] {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent !important;
+        border: none !important;
+        color: rgba(255,255,255,0.75) !important;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: color 0.15s, background 0.15s;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .gh-announcement-bar > button:hover,
+    .gh-announcement-bar button[aria-label="close"]:hover {
+        color: #ffffff !important;
+        background: rgba(255,255,255,0.15) !important;
+    }
+
+    .gh-announcement-bar button svg path {
+        stroke: currentColor !important;
+        fill: currentColor !important;
+    }
+
+    /* Light mode — accessible blue (white on #1a56db = 6.18:1 ✅) */
+    html:not(.dark-mode) .gh-announcement-bar,
+    html:not(.dark-mode) .gh-announcement-bar.light {
+        background: #1a56db;
+    }
+
+    /* Dark mode — accessible blue so bar stays visible against dark page */
+    html.dark-mode .gh-announcement-bar,
+    html.dark-mode .gh-announcement-bar.light,
+    html.dark-mode .gh-announcement-bar.dark,
+    html.dark-mode .gh-announcement-bar.accent {
+        background: #1a56db !important;
+        color: #ffffff !important;
+        border-color: transparent !important;
+    }
+
+    @media (max-width: 640px) {
+        .gh-announcement-bar-content {
+            padding: 10px 40px 10px 12px;
+        }
+        .gh-announcement-bar-content p {
+            font-size: 13px;
+        }
+        .gh-announcement-bar > button,
+        .gh-announcement-bar button[aria-label="close"] {
+            right: 6px;
+            width: 28px;
+            height: 28px;
+        }
+    }
+    </style>
+
+</head>
+<body class="post-template tag-ai-cloud tag-hash-type-cluster tag-hash-topic-llm-deployment is-head-left-logo has-cover">
+<a href="#site-main" class="skip-link">Skip to main content</a>
+<div class="viewport">
+
+    <nav class="easecloud-nav">
+    <div class="easecloud-nav-container">
+        <div class="easecloud-nav-brand">
+            <a href="https://blog.easecloud.io" class="easecloud-nav-logo" aria-label="Cloud Technology Blog - EaseCloud">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 577.8 87.9" class="easecloud-logo-svg" aria-label="EaseCloud Logo">
+                    <path fill="currentColor" d="M550 77.7c5.7 0 10.1-2.1 13.1-6.4 3.1-4.3 4.6-10.1 4.6-17.4 0-7.4-1.5-13.2-4.6-17.4-3-4.3-7.3-6.4-13.1-6.4-5.6 0-10.2 2.1-13.6 6.4-3.3 4.2-5 10-5 17.4 0 7.3 1.7 13.1 5 17.4 3.4 4.2 7.9 6.4 13.6 6.4zm-2.1 9.7c-5.6 0-10.4-1.4-14.5-4.1-4-2.7-7.1-6.6-9.3-11.6-2.2-5-3.3-10.9-3.3-17.8s1.1-12.8 3.3-17.8c2.2-5 5.3-8.9 9.3-11.6 4.1-2.7 9-4.1 14.5-4.1 4.3 0 8.2.9 11.7 2.8 3.5 1.8 6.2 4.3 8 7.6V0h10.2v85.9h-9.2l-.4-9.7c-1.8 3.5-4.5 6.2-8.1 8.2-3.6 2-7.7 3-12.2 3zm-70.1 0c-6.4 0-11.5-2.1-15.4-6.4-3.8-4.4-5.7-10.3-5.7-17.9V21.8h10.2v38.5c0 6.2 1.1 10.8 3.3 13.8 2.3 2.9 5.7 4.4 10.3 4.4 5.1 0 9.1-1.6 12-4.8 2.9-3.3 4.4-7.8 4.4-13.6V21.8H507v64.1h-9.7V75.5c-3.6 7.9-10.1 11.9-19.5 11.9zm-64.2-9.7c5.9 0 10.4-2.1 13.7-6.3 3.3-4.3 5-10.1 5-17.5s-1.7-13.2-5-17.4c-3.2-4.3-7.8-6.4-13.7-6.4s-10.5 2.1-13.8 6.4c-3.3 4.2-5 10-5 17.4 0 7.4 1.7 13.3 5 17.5 3.3 4.2 7.9 6.3 13.8 6.3zm0 9.7c-5.9 0-11.1-1.4-15.5-4.1-4.4-2.7-7.9-6.6-10.3-11.6-2.4-5.1-3.6-11-3.6-17.8 0-6.9 1.2-12.8 3.6-17.8 2.4-5 5.8-8.9 10.3-11.6 4.4-2.7 9.6-4.1 15.5-4.1s11 1.4 15.4 4.1c4.4 2.7 7.9 6.6 10.3 11.6 2.4 5 3.6 10.9 3.6 17.8 0 6.8-1.2 12.7-3.6 17.8-2.4 5-5.8 8.9-10.3 11.6-4.4 2.7-9.5 4.1-15.4 4.1zm-44-1.5c-3.7 0-6.7-1-9.1-2.9-2.3-1.9-3.5-5-3.5-9.2V0h10.2v73c0 2.7 1.3 4 4 4h5.6v9h-7.2zm-53 1.5c-6 0-11.2-1.4-15.6-4.1-4.4-2.7-7.7-6.6-10.2-11.6-2.4-5.1-3.6-11-3.6-17.8s1.2-12.7 3.6-17.7 5.8-8.9 10.2-11.6c4.4-2.8 9.6-4.2 15.6-4.2 7.4 0 13.6 1.9 18.4 5.8 4.8 3.8 7.8 9.3 8.8 16.5l-10.6.7c-.7-4.3-2.6-7.5-5.6-9.8-3-2.3-6.7-3.5-11-3.5-5.9 0-10.5 2.1-13.8 6.4-3.3 4.2-5 10-5 17.4 0 7.4 1.7 13.3 5 17.5 3.3 4.2 7.9 6.3 13.8 6.3 4.4 0 8-1.2 11-3.6s4.8-6 5.6-10.9l10.6.7c-1 7.1-4 12.8-8.8 17.1-4.9 4.2-11 6.4-18.4 6.4zm-84.8-40.2h27c-.2-4.8-1.6-8.3-4-10.6-2.3-2.3-5.4-3.5-9.2-3.5-3.8 0-6.9 1.3-9.4 3.8-2.4 2.3-3.9 5.8-4.4 10.3zm14 40.2c-6.6 0-12.4-1.4-17.3-4.2-4.8-2.8-8.6-6.7-11.4-11.7-2.7-5.1-4-11.1-4-17.9 0-6.8 1.3-12.7 4-17.8 2.7-5.1 6.4-9 11.3-11.9 4.9-2.8 10.7-4.2 17.3-4.2 6.5 0 12.1 1.4 16.8 4.2 4.8 2.8 8.4 6.9 11 12.1 2.7 5.2 4 11.5 4 18.8v3.6h-45.6c.2 5.2 1.6 9 4.1 11.5 2.6 2.5 6 3.8 10.2 3.8 6.3 0 10.3-2.6 12.1-7.9l18.3 1.1c-1.8 6.5-5.4 11.5-10.9 15.1-5.5 3.5-12.1 5.4-19.9 5.4zm-69.4 0c-10.1 0-17.7-2.1-22.9-6.2-5.1-4.1-7.9-9.4-8.3-15.7l18.4-.6c.6 3.1 1.9 5.4 3.9 7.1 2 1.7 5 2.5 9 2.5 3.2 0 5.7-.5 7.5-1.6 1.9-1 2.8-2.7 2.8-4.8 0-1.4-.3-2.5-1-3.4-.6-1-1.9-1.8-3.9-2.4-1.9-.7-4.6-1.4-8.3-1.9-6.9-1.1-12.2-2.5-16.1-4.2-3.9-1.7-6.6-3.8-8.2-6.3-1.6-2.6-2.4-5.7-2.4-9.4 0-6.2 2.4-11.2 7.1-15 4.8-3.9 12.1-5.8 21.7-5.8 9.2 0 16.2 2.1 20.9 6.3 4.8 4.2 7.6 9.5 8.5 16l-18.3.7c-.4-3.1-1.6-5.6-3.5-7.4-1.9-1.9-4.5-2.8-7.7-2.8s-5.7.7-7.5 2.1c-1.7 1.3-2.5 3-2.5 5.2 0 2.3.9 4.1 2.7 5.3 1.9 1.1 5 2 9.4 2.7 6.9 1 12.4 2.4 16.5 4.1 4.1 1.7 7.1 3.8 8.8 6.4 1.8 2.6 2.7 5.8 2.7 9.6 0 6.3-2.7 11.1-8 14.5-5.5 3.3-12.6 5-21.3 5zm-74.8-12.5c4.5 0 8.1-1.3 10.9-4 2.8-2.7 4.2-6.3 4.2-10.9v-3.1L101.9 60c-5.9 1.1-8.8 3.8-8.8 8 0 4.6 2.8 6.9 8.5 6.9zm-4.4 12.5c-6.8 0-12.3-1.5-16.5-4.6-4.2-3.1-6.3-7.5-6.3-13.1 0-5.7 1.8-10.1 5.3-13.2 3.6-3.1 9-5.4 16-6.9l20.9-4.1c0-8.5-3.7-12.7-11-12.7-6.7 0-10.6 3.1-11.9 9.3l-18.3-.8c1.2-7.1 4.4-12.5 9.6-16.1 5.2-3.7 12.1-5.6 20.6-5.6 9.7 0 16.9 2.3 21.8 7 4.9 4.6 7.4 11.3 7.4 20.1v22.1c0 1.9.3 3.1.8 3.8.6.6 1.6.8 2.8.8h1.8v12.5c-.6.2-1.5.3-2.8.5-1.2.2-2.4.2-3.6.2-3.4 0-6.4-.7-9.1-2.2-2.7-1.5-4.4-4.4-5.2-8.5-1.6 3.5-4.4 6.3-8.2 8.3-3.8 2.2-8.5 3.2-14.1 3.2z"></path>
+                    <path fill="#808080" d="M46 65.9c-3.1 3.1-7.3 5-12 5s-9-1.9-12-5-5-7.3-5-12H0c0 9.4 3.8 17.9 10 24 6.2 6.2 14.7 10 24 10s17.9-3.8 24-10l-12-12z"></path>
+                    <path fill="currentColor" d="M58 29.9c-6.2-6.2-14.7-10-24-10v34h34c0-9.4-3.8-17.9-10-24z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="easecloud-nav-menu">
+            <a href="https://blog.easecloud.io" class="easecloud-nav-link">Home</a>
+
+<a href="https://blog.easecloud.io/about/" class="easecloud-nav-link">About</a>
+        </div>
+
+        <div class="easecloud-nav-actions">
+            <div class="easecloud-search-trigger">
+                <button class="easecloud-nav-icon-btn" aria-label="Search" data-ghost-search>
+                    <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <circle cx="8.5" cy="8.5" r="5.75" stroke-width="1.5"/>
+                        <path d="M12.5 12.5L16.5 16.5" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <kbd class="easecloud-search-kbd" id="easecloud-search-kbd" aria-hidden="true">Ctrl K</kbd>
+            </div>
+
+            <button class="easecloud-nav-icon-btn ec-theme-toggle" id="ec-theme-toggle" aria-label="Switch to light mode" title="Toggle theme">
+                <svg class="ec-icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="ec-icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                    <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+                </svg>
+            </button>
+
+            <a href="https://www.easecloud.io/contact-us/?utm_source=blog&utm_medium=nav&utm_campaign=blog_consulting" class="easecloud-nav-consult" target="_blank" rel="noopener">Talk to an Expert</a>
+
+                <a href="#/portal/signup" class="easecloud-nav-cta" data-portal="signup">Subscribe</a>
+
+            <button class="easecloud-nav-mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="easecloud-nav-mobile-menu">
+        <a href="https://blog.easecloud.io" class="easecloud-nav-mobile-link">Home</a>
+
+<a href="https://blog.easecloud.io/about/" class="easecloud-nav-mobile-link">About</a>
+
+            <a href="#/portal/signup" class="easecloud-nav-cta-mobile" data-portal="signup">Subscribe</a>
+
+        <a href="https://www.easecloud.io/contact-us/?utm_source=blog&utm_medium=mobile_nav&utm_campaign=blog_consulting" class="easecloud-nav-consult-mobile" target="_blank" rel="noopener">Talk to an Expert →</a>
+    </div>
+</nav>
+
+<nav class="easecloud-subnav" aria-label="Categories">
+    <div class="easecloud-subnav-container">
+        <a href="/cloud-infrastructure/" class="easecloud-subnav-link">Cloud Infrastructure</a>
+        <a href="/cost-optimization/" class="easecloud-subnav-link">Cost Optimization</a>
+        <a href="/ai-cloud/" class="easecloud-subnav-link">AI Cloud</a>
+        <a href="/devops-cicd/" class="easecloud-subnav-link">DevOps CICD</a>
+        <a href="/startup-tech/" class="easecloud-subnav-link">Startup Tech</a>
+    </div>
+</nav>
+
+<style>
+/* Navigation Styles */
+.easecloud-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #000;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.easecloud-nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+}
+
+/* Secondary category nav — desktop only, same container width as the
+   header above so the two bars line up. Hidden below 901px; the mobile
+   menu already surfaces categories via the tag pages linked from posts. */
+.easecloud-subnav {
+    display: none;
+}
+
+@media (min-width: 901px) {
+    .easecloud-subnav {
+        display: block;
+        background: #000;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    .easecloud-subnav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 36px;
+    }
+
+    .easecloud-subnav-link {
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #9a9a9a;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.15s ease;
+    }
+
+    .easecloud-subnav-link:hover {
+        color: #ffffff;
+    }
+
+    .easecloud-subnav-link.is-active {
+        color: #4285f4;
+        font-weight: 600;
+    }
+
+    html:not(.dark-mode) .easecloud-subnav {
+        background: #ffffff;
+        border-bottom-color: #e5e5e5;
+    }
+
+    html:not(.dark-mode) .easecloud-subnav-link {
+        color: #525252;
+    }
+
+    html:not(.dark-mode) .easecloud-subnav-link:hover {
+        color: #0a0a0a;
+    }
+
+    html:not(.dark-mode) .easecloud-subnav-link.is-active {
+        color: #4285f4;
+    }
+}
+
+.easecloud-logo-svg {
+    height: 28px;
+    width: auto;
+    color: #fff;
+    transition: opacity 0.2s;
+}
+
+.easecloud-nav-logo:hover .easecloud-logo-svg {
+    opacity: 0.8;
+}
+
+.easecloud-nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.easecloud-nav-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.easecloud-nav-link:hover {
+    color: #4285f4;
+}
+
+.easecloud-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.easecloud-nav-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.easecloud-nav-icon-btn:hover {
+    background: #1a1a1a;
+    color: #4285f4;
+}
+
+/* Ghost injects .gh-search class and replaces SVG — override its 32px size */
+.easecloud-nav-actions .gh-search,
+button[data-ghost-search] {
+    width: 40px !important;
+    height: 40px !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+}
+
+.easecloud-nav-actions .gh-search:hover,
+button[data-ghost-search]:hover {
+    background: #1a1a1a !important;
+    color: #4285f4 !important;
+    opacity: 1 !important;
+}
+
+/* Light mode — the two rules above are !important and dark-only by
+   default (predate the light/dark toggle), so they need their own
+   !important overrides here rather than the usual html:not(.dark-mode)
+   pattern being enough on its own. Without this the search icon was
+   white-on-white (invisible) and hover painted it dark blue on light. */
+html:not(.dark-mode) .easecloud-nav-actions .gh-search,
+html:not(.dark-mode) button[data-ghost-search] {
+    color: #404040 !important;
+}
+
+html:not(.dark-mode) .easecloud-nav-actions .gh-search:hover,
+html:not(.dark-mode) button[data-ghost-search]:hover {
+    background: #f5f5f5 !important;
+    color: #262626 !important;
+}
+
+.easecloud-nav-actions .gh-search svg,
+button[data-ghost-search] svg {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+}
+
+.easecloud-search-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.easecloud-search-kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    color: #8a8a8a;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Desktop: merge the search icon + kbd hint into a single pill so they
+   read as one control instead of two unrelated elements bumping together. */
+@media (min-width: 901px) {
+    .easecloud-search-trigger {
+        gap: 8px;
+        height: 40px;
+        padding: 0 10px 0 8px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        background: #141414;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+    }
+
+    .easecloud-search-trigger:hover {
+        background: #1a1a1a;
+        border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    .easecloud-search-trigger .easecloud-nav-icon-btn,
+    .easecloud-search-trigger button[data-ghost-search],
+    .easecloud-search-trigger .gh-search {
+        width: auto !important;
+        height: auto !important;
+        padding: 0 !important;
+        background: none !important;
+    }
+
+    /* The icon has its own :hover (from the legacy rules above) that only
+       fires when the mouse is directly over it, separate from the pill's
+       own :hover — that's what caused "two different hovers". Freeze the
+       icon's own hover back to its normal color here, then drive the
+       color change from the pill's :hover instead, so every part of the
+       pill (icon, kbd, empty space) produces the identical hover look. */
+    .easecloud-search-trigger .easecloud-nav-icon-btn:hover,
+    .easecloud-search-trigger button[data-ghost-search]:hover,
+    .easecloud-search-trigger .gh-search:hover {
+        background: none !important;
+        color: #fff !important;
+    }
+
+    .easecloud-search-trigger:hover .easecloud-nav-icon-btn,
+    .easecloud-search-trigger:hover button[data-ghost-search],
+    .easecloud-search-trigger:hover .gh-search {
+        color: #4285f4 !important;
+    }
+
+    html:not(.dark-mode) .easecloud-search-trigger .easecloud-nav-icon-btn:hover,
+    html:not(.dark-mode) .easecloud-search-trigger button[data-ghost-search]:hover,
+    html:not(.dark-mode) .easecloud-search-trigger .gh-search:hover {
+        color: #404040 !important;
+    }
+
+    html:not(.dark-mode) .easecloud-search-trigger:hover .easecloud-nav-icon-btn,
+    html:not(.dark-mode) .easecloud-search-trigger:hover button[data-ghost-search],
+    html:not(.dark-mode) .easecloud-search-trigger:hover .gh-search {
+        color: #4285f4 !important;
+    }
+
+    .easecloud-search-trigger .easecloud-nav-icon-btn svg,
+    .easecloud-search-trigger button[data-ghost-search] svg,
+    .easecloud-search-trigger .gh-search svg {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+    }
+}
+
+.easecloud-nav-consult {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e5e5e5;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 9px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.easecloud-nav-consult:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.easecloud-nav-cta {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background: #4285f4;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.easecloud-nav-cta:hover {
+    background: #5a95f5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.easecloud-nav-mobile-toggle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.easecloud-nav-mobile-toggle span {
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.easecloud-nav-mobile-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.easecloud-nav-mobile-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.easecloud-nav-mobile-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.easecloud-nav-mobile-menu {
+    display: none;
+    background: #0a0a0a;
+    border-top: 1px solid #1a1a1a;
+    padding: 24px;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.easecloud-nav-mobile-menu[data-open="true"] {
+    display: flex;
+}
+
+.easecloud-nav-mobile-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.easecloud-nav-mobile-link:hover {
+    background: #1a1a1a;
+    color: #4285f4;
+}
+
+.easecloud-nav-cta-mobile {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: #4285f4;
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 16px;
+    transition: all 0.2s;
+}
+
+.easecloud-nav-cta-mobile:hover {
+    background: #5a95f5;
+}
+
+.easecloud-nav-consult-mobile {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e5e5e5;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 8px;
+    transition: all 0.2s;
+    display: block;
+}
+
+.easecloud-nav-consult-mobile:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 768px) {
+    .easecloud-nav-menu {
+        display: none;
+    }
+
+    .easecloud-nav-cta {
+        display: none;
+    }
+
+    .easecloud-nav-consult {
+        display: none;
+    }
+
+    .easecloud-nav-icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Ghost search button — match theme toggle size on mobile */
+    .easecloud-nav-actions .gh-search,
+    button[data-ghost-search] {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .easecloud-nav-mobile-toggle {
+        display: flex;
+        width: 36px;
+        height: 36px;
+    }
+
+    .easecloud-nav-container {
+        padding: 0 16px;
+        height: 64px;
+    }
+}
+
+/* ============================================
+   THEME TOGGLE ICONS
+   Sun = shown in dark mode (to switch to light)
+   Moon = shown in light mode (to switch to dark)
+   ============================================ */
+
+.ec-theme-toggle .ec-icon-sun,
+.ec-theme-toggle .ec-icon-moon {
+    display: block;
+    pointer-events: none;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    flex-shrink: 0;
+}
+
+/* Dark mode: show sun (to go light), hide moon */
+html.dark-mode .ec-theme-toggle .ec-icon-sun { display: block; }
+html.dark-mode .ec-theme-toggle .ec-icon-moon { display: none; }
+
+/* Light mode: show moon (to go dark), hide sun */
+html:not(.dark-mode) .ec-theme-toggle .ec-icon-sun { display: none; }
+html:not(.dark-mode) .ec-theme-toggle .ec-icon-moon { display: block; }
+
+/* ============================================
+   LIGHT MODE OVERRIDES
+   ============================================ */
+html:not(.dark-mode) .easecloud-nav {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+html:not(.dark-mode) .easecloud-logo-svg {
+    color: #0a0a0a;
+}
+
+html:not(.dark-mode) .easecloud-nav-link {
+    color: #262626;
+}
+
+html:not(.dark-mode) .easecloud-nav-link:hover {
+    color: #4285f4;
+}
+
+html:not(.dark-mode) .easecloud-nav-icon-btn {
+    color: #404040;
+}
+
+html:not(.dark-mode) .easecloud-nav-icon-btn:hover {
+    background: #f5f5f5;
+    color: #262626;
+}
+
+html:not(.dark-mode) .easecloud-nav-consult {
+    color: #262626;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+html:not(.dark-mode) .easecloud-nav-consult:hover {
+    color: #0a0a0a;
+    border-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark-mode) .easecloud-nav-mobile-toggle span {
+    background: #0a0a0a;
+}
+
+html:not(.dark-mode) .easecloud-nav-mobile-menu {
+    background: #ffffff;
+    border-top-color: #e5e5e5;
+}
+
+html:not(.dark-mode) .easecloud-nav-mobile-link {
+    color: #262626;
+}
+
+html:not(.dark-mode) .easecloud-nav-mobile-link:hover {
+    background: #f5f5f5;
+    color: #4285f4;
+}
+
+html:not(.dark-mode) .easecloud-nav-consult-mobile {
+    color: #262626;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+html:not(.dark-mode) .easecloud-nav-consult-mobile:hover {
+    color: #0a0a0a;
+    border-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark-mode) .easecloud-search-kbd {
+    color: #737373;
+}
+
+@media (min-width: 901px) {
+    html:not(.dark-mode) .easecloud-search-trigger {
+        background: #f5f5f5;
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    html:not(.dark-mode) .easecloud-search-trigger:hover {
+        background: #ececec;
+        border-color: rgba(0, 0, 0, 0.22);
+    }
+}
+
+@media (max-width: 900px) {
+    .easecloud-search-kbd {
+        display: none;
+    }
+}
+</style>
+
+<script>
+(function() {
+    'use strict';
+
+    // Mobile menu
+    var mobileToggle = document.querySelector('.easecloud-nav-mobile-toggle');
+    var mobileMenu = document.querySelector('.easecloud-nav-mobile-menu');
+
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', function() {
+            var isOpen = mobileToggle.getAttribute('aria-expanded') === 'true';
+            mobileToggle.setAttribute('aria-expanded', !isOpen);
+            mobileMenu.setAttribute('data-open', !isOpen);
+        });
+    }
+
+    // ── Secondary category nav — active state ───────────────────
+    // Permalinks are /{primary_tag}/{slug}/, so a "starts with" match
+    // against the link's own path correctly highlights both the tag
+    // archive page and every post under that category.
+    document.querySelectorAll('.easecloud-subnav-link').forEach(function (link) {
+        var linkPath = new URL(link.href).pathname;
+        if (window.location.pathname.indexOf(linkPath) === 0) {
+            link.classList.add('is-active');
+        }
+    });
+
+    // ── Search shortcut hint (⌘K on Mac, Ctrl K elsewhere) ──────
+    var searchKbd = document.getElementById('easecloud-search-kbd');
+    if (searchKbd) {
+        var isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+        searchKbd.textContent = isMac ? '⌘K' : 'Ctrl K';
+    }
+
+    // Desktop pill wraps the search button + kbd hint — forward clicks
+    // anywhere on the pill (e.g. on the kbd text) to the actual button,
+    // since that's the element Ghost's search script binds to.
+    var searchTrigger = document.querySelector('.easecloud-search-trigger');
+    var searchBtn = searchTrigger && searchTrigger.querySelector('[data-ghost-search]');
+    if (searchTrigger && searchBtn) {
+        searchTrigger.addEventListener('click', function (e) {
+            if (!searchBtn.contains(e.target)) {
+                searchBtn.click();
+            }
+        });
+    }
+
+    // ── Theme Toggle ─────────────────────────────────────────
+    var themeToggleBtn = document.getElementById('ec-theme-toggle');
+    if (themeToggleBtn) {
+        function updateToggleLabel() {
+            var isDark = document.documentElement.classList.contains('dark-mode');
+            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            var html = document.documentElement;
+            var isDark = html.classList.contains('dark-mode');
+            if (isDark) {
+                html.classList.remove('dark-mode');
+                html.classList.add('light-mode');
+                localStorage.setItem('ec-theme', 'light');
+            } else {
+                html.classList.remove('light-mode');
+                html.classList.add('dark-mode');
+                localStorage.setItem('ec-theme', 'dark');
+            }
+            updateToggleLabel();
+        });
+
+        updateToggleLabel();
+    }
+
+    // Force search icon size — Ghost portal JS injects its own SVG with inline styles
+    function fixSearchIcon() {
+        var btn = document.querySelector('button[data-ghost-search]');
+        if (!btn) return false;
+        var svg = btn.querySelector('svg');
+        if (svg) {
+            svg.style.setProperty('width', '24px', 'important');
+            svg.style.setProperty('height', '24px', 'important');
+            svg.setAttribute('width', '24');
+            svg.setAttribute('height', '24');
+            return true;
+        }
+        return false;
+    }
+
+    // Watch for Ghost portal injection, disconnect immediately once fixed
+    var searchObserver = new MutationObserver(function() {
+        if (fixSearchIcon()) {
+            searchObserver.disconnect();
+        }
+    });
+    searchObserver.observe(document.querySelector('.easecloud-nav-actions') || document.body, { childList: true, subtree: true });
+    // Fallback: also try after load
+    window.addEventListener('load', function() { fixSearchIcon(); });
+})();
+</script>
+
+    <div class="site-content">
+        
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://blog.easecloud.io"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "AI Cloud",
+      "item": "https://blog.easecloud.io/ai-cloud/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
+      "item": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+  },
+  "headline": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
+  "description": "Get the highest tokens/sec from vLLM with continuous batching and PagedAttention. Benchmark results, best practices checklist, and tuning guide for 2026.",
+  "image": "https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png",
+  "author": {
+    "@type": "Person",
+    "name": "The EaseCloud Team",
+    "url": "https://blog.easecloud.io/author/easecloudio/",
+    "image": "https://cdn.easecloud.io/blog/2026/06/EaseCloud_Dp-01.svg"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Cloud Technology Blog - EaseCloud"
+  },
+  "datePublished": "2026-02-11T08:07:48.000+00:00",
+  "dateModified": "2026-04-10T19:53:17.000+00:00",
+  "articleSection": "AI Cloud",
+  "keywords": "AI Cloud",
+  "timeRequired": "PT7M",
+  "inLanguage": "en-US"
+}
+</script>
+
+<style>
+/* ============================================
+   TWO-COLUMN POST LAYOUT
+   ============================================ */
+
+.post-layout-wrap {
+    padding: 32px 0 max(8vmin, 64px);
+}
+
+.post-layout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 56px;
+    align-items: stretch;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Tighten article header vertical spacing */
+.post-layout-content .article-header {
+    padding-bottom: 24px;
+}
+
+/* Remove browser default h1 top margin so breadcrumb sits close to title */
+.post-layout-content .article-title {
+    margin-top: 8px;
+}
+
+/* Tighten gap between byline and feature image */
+.post-layout-content .article-image {
+    margin-top: 24px;
+}
+
+/* Override article padding - outer wrap handles vertical spacing */
+.post-layout-wrap .post-layout-content .article {
+    padding: 0;
+}
+
+/* Left-align content: override gh-canvas grid centering */
+.post-layout-content .gh-canvas {
+    display: block;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.post-layout-content .gh-canvas > * {
+    max-width: 100%;
+}
+
+/* Sidebar - stretch full height so sticky group has room to travel */
+.post-layout-sidebar {
+    display: block;
+    position: relative;
+}
+
+/* TOC + social share stick and scroll together as one unit */
+.post-sidebar-sticky-group {
+    position: sticky;
+    top: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Responsive: collapse to single column on tablet/mobile. TOC doesn't
+   make sense on mobile, but social-share keeps its own floating pill
+   (see social-share.hbs), so only the TOC + the sticky wrapper's own
+   layout are switched off here — social-share isn't display:none'd. */
+@media (max-width: 1023px) {
+    .post-layout-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .post-sidebar-sticky-group {
+        position: static;
+        display: block;
+    }
+
+    #easecloud-toc {
+        display: none;
+    }
+}
+
+/* ============================================
+   ARTICLE BYLINE — category tag on the right
+   ============================================ */
+
+.article-byline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* Mobile: stack author info and category tag vertically */
+@media (max-width: 767px) {
+    .article-byline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* Move category tag before author info visually */
+    .article-tag {
+        order: -1;
+    }
+
+    /* Hide the current page from breadcrumb — h1 right below makes it redundant */
+    .article-breadcrumb-item.article-breadcrumb-current {
+        display: none;
+    }
+}
+
+/* ============================================
+   ARTICLE BREADCRUMB
+   ============================================ */
+
+.article-breadcrumb {
+    margin-bottom: 20px;
+}
+
+.article-breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.article-breadcrumb-item {
+    display: flex;
+    align-items: baseline;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #a3a3a3;
+}
+
+.article-breadcrumb-item + .article-breadcrumb-item::before {
+    content: '/';
+    padding: 0 6px;
+    color: #d4d4d4;
+}
+
+.article-breadcrumb-item a {
+    color: #737373;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.article-breadcrumb-item a:hover {
+    color: #0a0a0a;
+}
+
+.article-breadcrumb-current {
+    color: #a3a3a3;
+}
+
+html.dark-mode .article-breadcrumb-item {
+    color: #a3a3a3; /* was #404040 = 1.73:1 ❌ on #151719, now #a3a3a3 = 7.11:1 ✅ */
+}
+
+html.dark-mode .article-breadcrumb-item + .article-breadcrumb-item::before {
+    color: #525252;
+}
+
+html.dark-mode .article-breadcrumb-item a {
+    color: #a3a3a3; /* was #525252 = 2.3:1 ❌ on #151719, now 7.11:1 ✅ */
+}
+
+html.dark-mode .article-breadcrumb-item a:hover {
+    color: #fafafa;
+}
+
+html.dark-mode .article-breadcrumb-current {
+    color: #a3a3a3; /* was #404040 = 1.73:1 ❌, now 7.11:1 ✅ */
+}
+</style>
+
+<main id="site-main" class="site-main">
+
+    <div class="easecloud-progress-container" id="reading-progress-container">
+    <div class="easecloud-progress-bar" id="reading-progress-bar"></div>
+</div>
+
+<style>
+/* ============================================
+   READING PROGRESS BAR - EASECLOUD BRAND
+   ============================================ */
+
+.easecloud-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(26, 26, 26, 0.8);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.dark-mode .easecloud-progress-container {
+    background: rgba(26, 26, 26, 0.9);
+}
+
+.easecloud-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4285f4 0%, #5a95f5 100%);
+    width: 0%;
+    transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 16px rgba(66, 133, 244, 0.6),
+                0 0 32px rgba(66, 133, 244, 0.4);
+    position: relative;
+}
+
+.easecloud-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+    opacity: 0.6;
+}
+
+/* Hide on non-post pages */
+body:not(.post-template) .easecloud-progress-container {
+    display: none;
+}
+
+/* Completion pulse effect */
+@keyframes progressPulse {
+    0%, 100% {
+        box-shadow: 0 0 16px rgba(66, 133, 244, 0.6),
+                    0 0 32px rgba(66, 133, 244, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 24px rgba(66, 133, 244, 0.8),
+                    0 0 48px rgba(66, 133, 244, 0.6);
+    }
+}
+
+.easecloud-progress-bar.completed {
+    animation: progressPulse 2s ease-in-out infinite;
+}
+</style>
+
+<script>
+(function() {
+    var progressBar = document.getElementById('reading-progress-bar');
+    var progressContainer = document.getElementById('reading-progress-container');
+
+    if (!progressBar || !progressContainer) return;
+
+    function updateProgress() {
+        // Get article content element
+        var article = document.querySelector('.gh-content');
+        if (!article) return;
+
+        var articleTop = article.offsetTop;
+        var articleHeight = article.offsetHeight;
+        var windowHeight = window.innerHeight;
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Calculate progress
+        var articleStart = articleTop - windowHeight / 2;
+        var articleEnd = articleTop + articleHeight - windowHeight / 2;
+        var progress = Math.max(0, Math.min(100, ((scrollTop - articleStart) / (articleEnd - articleStart)) * 100));
+
+        progressBar.style.width = progress + '%';
+
+        // Add completed class when reaching 100%
+        if (progress >= 99) {
+            progressBar.classList.add('completed');
+        } else {
+            progressBar.classList.remove('completed');
+        }
+    }
+
+    // Update on scroll with throttling
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Update on resize
+    window.addEventListener('resize', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateProgress();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Initial update
+    updateProgress();
+})();
+</script>
+
+    <div class="post-layout-wrap">
+        <div class="post-layout-grid">
+
+            <div class="post-layout-content">
+                <article class="article post tag-ai-cloud tag-hash-type-cluster tag-hash-topic-llm-deployment ">
+
+                    <header class="article-header gh-canvas">
+
+                        <nav class="article-breadcrumb" aria-label="Breadcrumb">
+                            <ol class="article-breadcrumb-list">
+                                <li class="article-breadcrumb-item">
+                                    <a href="https://blog.easecloud.io">Blog</a>
+                                </li>
+                                <li class="article-breadcrumb-item">
+                                    <a href="/ai-cloud/">AI Cloud</a>
+                                </li>
+                                <li class="article-breadcrumb-item article-breadcrumb-current" aria-current="page">
+                                    vLLM Throughput Guide - PagedAttention and Batching Tips (2026)
+                                </li>
+                            </ol>
+                        </nav>
+
+                        <h1 class="article-title">vLLM Throughput Guide - PagedAttention and Batching Tips (2026)</h1>
+
+                        <p class="article-excerpt">Get the highest tokens/sec from vLLM with continuous batching and PagedAttention. Benchmark results, best practices checklist, and tuning guide for 2026.</p>
+
+                        <div class="article-byline">
+                            <section class="article-byline-content">
+
+                                <ul class="author-list instapaper_ignore">
+                                    <li class="author-list-item">
+                                        <a href="/author/easecloudio/" class="author-avatar" aria-label="Read more of The EaseCloud Team">
+                                            <img class="author-profile-image" src="https://cdn.easecloud.io/blog/2026/06/EaseCloud_Dp-01.svg"
+                                                alt="The EaseCloud Team" />
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="article-byline-meta">
+                                    <p class="author-name"><a href="/author/easecloudio/">The EaseCloud Team</a></p>
+                                    <div class="byline-meta-content">
+                                        <time class="byline-meta-date" datetime=" 2026-02-11">11 Feb 2026</time>
+                                        <span class="byline-reading-time"><span class="bull">&bull;</span> 7 min read</span>
+                                    </div>
+                                </div>
+
+                            </section>
+
+                            <div class="article-tag post-card-tags">
+                                <span class="post-card-primary-tag">
+                                    <a href="/ai-cloud/">AI Cloud</a>
+                                </span>
+                            </div>
+                        </div>
+
+                        <figure class="article-image">
+                            <img srcset="https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png 300w, https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png 600w,
+                                https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png 1000w, https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png 2000w"
+                                sizes="(min-width: 1400px) 1400px, 92vw" src="https://cdn.easecloud.io/blog/2026/02/3-Increase-Throughput--1-.png"
+                                alt="vLLM Throughput Guide - PagedAttention and Batching Tips (2026)" />
+                        </figure>
+
+                    </header>
+
+                    <section class="gh-content gh-canvas">
+                        <h2 id="tldr"><strong>TLDR;</strong></h2><ul><li><strong>2-3x higher throughput</strong> than traditional serving through PagedAttention and continuous batching</li><li>Llama 2 70B on 4x A100 achieves <strong>2,200 tokens/second</strong> with 256 concurrent users</li><li>PagedAttention cuts memory waste by <strong>55-80%</strong> through dynamic allocation</li><li><strong>AWQ 4-bit quantization</strong> reduces memory 4x, improves performance 10-20%</li></ul><hr><p>Deploy production-grade LLM inference with vLLM on bare metal servers and achieve 2-3x higher throughput than traditional serving methods.This guide covers installation, optimization, monitoring, and <a href="https://blog.easecloud.io/startup-growth/building-your-startups-cloud-strategy/" rel="noreferrer">scaling strategies for maximum performance</a> on NVIDIA GPUs.</p><p>vLLM delivers the best throughput-to-cost ratio for LLM inference through PagedAttention and continuous batching. Traditional LLM serving wastes GPU memory by pre-allocating memory for the maximum sequence length.</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://cdn.easecloud.io/blog/2026/04/kv-cache-vllm-pagedattention-memory-1.png" class="kg-image" alt="" loading="lazy" width="640" height="640"><figcaption><span style="white-space: pre-wrap;">KV cache comparison: traditional wastes 87% memory, vLLM PagedAttention uses non-contiguous blocks with no waste.</span></figcaption></figure><p>If your limit is 4,096 tokens but the average request uses 512 tokens, you waste 87% of your memory. PagedAttention solves this by storing attention key-value tensors in non-contiguous memory blocks, like virtual memory in operating systems.</p><p>Memory allocates dynamically as requests generate tokens, cutting memory waste by 55-80%. Continuous batching fills the gaps by adding new requests to the batch as soon as any request completes, keeping GPUs fully utilized.</p><p>Real numbers prove the impact: vLLM serves Llama 2 70B on 4x A100 GPUs at 2,200 tokens per second with 256 concurrent users, which is 2.3x faster than Text Generation Inference and 3.1x faster than vanilla PyTorch serving.</p><h2 id="installation-and-setup">Installation and Setup</h2><p>Install vLLM on your bare metal server with NVIDIA GPUs. You need CUDA 12.1 or later, Python 3.8+, and NVIDIA drivers 530+. Check your driver version with nvidia-smi to verify you have driver version 530 or higher. Before installing, review the <a href="https://blog.easecloud.io/ai-cloud/gpu-for-your-llm-deployment/">GPU requirements for vLLM deployment</a> to ensure your hardware meets specifications.</p><p>If you don't have CUDA 12.1 or later, download and install it. Download CUDA 12.1 from NVIDIA's website and run the installer, selecting only the CUDA Toolkit if you already have drivers installed.</p><p>Add CUDA to your PATH by appending the bin and lib64 directories to your bashrc file, then verify the installation with nvcc --version.</p><p>Create a virtual environment for vLLM to isolate dependencies. Install vLLM via pip, which includes PyTorch, xFormers, and other required dependencies. The package is about 2GB due to PyTorch and CUDA libraries.</p><p>For better performance, install FlashAttention support as well. Verify the installation by importing vLLM in Python and checking the version number.</p><h2 id="production-server-configuration">Production Server Configuration</h2><p>Configure vLLM for production workloads with OpenAI-compatible endpoints. Start a production API server that serves your model across multiple GPUs using tensor parallelism.</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://cdn.easecloud.io/blog/2026/04/vllm-serving-architecture-load-balancer-metrics.png" class="kg-image" alt="" loading="lazy" width="640" height="512"><figcaption><span style="white-space: pre-wrap;">vLLM serving architecture with Nginx load balancer, multiple GPU nodes, and Prometheus/Grafana monitoring for throughput and latency.</span></figcaption></figure><p>The server exposes /v1/completions and /v1/chat/completions endpoints compatible with OpenAI's API, making integration straightforward for existing applications.</p><p>For maximum performance, tune parameters based on your hardware. Set tensor-parallel-size equal to the number of GPUs in your server to split the model evenly across all GPUs.</p><p>Use gpu-memory-utilization between 0.90 and 0.95 for production deployments, which provides good capacity with a safety margin. Configure max-model-len based on your context requirements, and max-num-batched-tokens to control the maximum tokens processed in one batch.</p><p>Set max-num-seqs to define maximum concurrent sequences, with higher values providing better throughput for many small requests. Add swap-space to handle traffic spikes, and disable request logging in production to reduce overhead.</p><p>Embed vLLM directly in Python applications for custom batching and request handling. Initialize the model with your desired tensor parallelism, memory utilization, and context length settings.</p><p>Configure sampling parameters including temperature, top-p, and max tokens. Generate outputs by passing prompts and sampling parameters, which gives you full control over the inference pipeline.</p><h2 id="performance-optimization">Performance Optimization</h2><p>Maximize throughput and minimize latency through careful parameter tuning. GPU memory utilization controls the tradeoff between capacity and stability. </p><table>
+<thead>
+<tr>
+<th style="text-align:left">Setting Type</th>
+<th style="text-align:left">Utilization Range</th>
+<th style="text-align:left">Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Conservative</td>
+<td style="text-align:left">0.85-0.90</td>
+<td style="text-align:left">Variable traffic patterns, leaving headroom for request spikes</td>
+</tr>
+<tr>
+<td style="text-align:left">Balanced</td>
+<td style="text-align:left">0.90-0.95</td>
+<td style="text-align:left">Most production deployments with good capacity and safety margin</td>
+</tr>
+<tr>
+<td style="text-align:left">Aggressive</td>
+<td style="text-align:left">0.95-0.98</td>
+<td style="text-align:left">Maximum capacity only with consistent traffic patterns and active monitoring</td>
+</tr>
+</tbody>
+</table>
+<p>Test different utilization levels with your actual traffic pattern. Monitor GPU memory during load tests with nvidia-smi, and if you see out-of-memory errors, reduce utilization by 0.05 increments until stable.</p><p>Batch size impacts both throughput and latency. Larger batches increase throughput but also increase latency. For high throughput with many short requests, use larger max-num-batched-tokens values of 32,768 and higher max-num-seqs values of 512.</p><p>For low latency with fewer long requests, use smaller batch sizes of 8,192 tokens and fewer sequences of 64. Benchmark with your specific request patterns to find the optimal configuration.</p><p>Quantization reduces memory usage and can increase throughput. vLLM supports AWQ 4-bit and GPTQ quantization methods. Serve AWQ quantized models by specifying the quantization parameter when starting the server.</p><p>AWQ reduces memory by approximately 4x with minimal quality loss, allowing Llama 2 70B to fit on 2x A100 40GB instead of 4x. Performance improves by 10-20% due to reduced memory bandwidth requirements.</p><p>For models exceeding single-server GPU limits, use multi-node tensor parallelism. This requires a Ray cluster with GPU nodes and fast interconnect such as InfiniBand for production.</p><p>Start a Ray cluster on the head node, join worker nodes to the cluster, then serve with tensor parallelism split across multiple servers. This approach splits the model across 8 or more GPUs on multiple physical servers.</p><h3 id="want-2-3x-better-throughput-than-these-benchmarks">Want 2-3x Better Throughput Than These Benchmarks?</h3><div class="kg-card kg-cta-card kg-cta-bg-grey kg-cta-minimal    " data-layout="minimal">
+            
+            <div class="kg-cta-content">
+                
+                
+                    <div class="kg-cta-content-inner">
+                    
+                        <div class="kg-cta-text">
+                            <p><span style="white-space: pre-wrap;">The configuration above works, but every workload is different. Our GPU engineers have deployed vLLM across 100+ production clusters and can help you:</span></p><ul><li value="1"><b><strong style="white-space: pre-wrap;">Quantize your models </strong></b><span style="white-space: pre-wrap;">– AWQ/GPTQ with &lt;1% accuracy loss, 4x memory reduction </span></li><li value="2"><b><strong style="white-space: pre-wrap;">Optimize batch sizing</strong></b><span style="white-space: pre-wrap;"> – Find your exact `max_num_batched_tokens` sweet spot </span></li><li value="3"><b><strong style="white-space: pre-wrap;">Configure multi-node</strong></b><span style="white-space: pre-wrap;"> – Ray + InfiniBand for 70B+ models across servers </span></li></ul>
+                        </div>
+                    
+                    
+                        <a href="https://easecloud.io/gpu-infrastructure/?ref=blog.easecloud.io" class="kg-cta-button " style="background-color: #000000; color: #ffffff;">
+                            Get vLLM Optimization Consultation
+                        </a>
+                        
+                    </div>
+                
+            </div>
+        </div><h2 id="monitoring-and-production-deployment">Monitoring and Production Deployment</h2><p>Production deployments require monitoring and reliable service management. vLLM exposes Prometheus metrics at the /metrics endpoint, providing visibility into system performance.</p><p>Key metrics include: </p><ul><li>Number of running requests</li><li>Waiting requests in the queue</li><li>GPU cache usage percentage</li><li>Average generation throughput (tokens per second)</li><li>Average time to first token (TTFT)</li><li>Average time per output token</li></ul><p>Configure Prometheus to scrape vLLM metrics every 15 seconds. Create Grafana dashboards tracking throughput over time, latency percentiles (P50, P95, P99), queue depth, GPU utilization, and error rates.</p><table>
+<thead>
+<tr>
+<th style="text-align:left">Alert Condition</th>
+<th style="text-align:left">Threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Queue depth (capacity warning)</td>
+<td style="text-align:left">Exceeding 100</td>
+</tr>
+<tr>
+<td style="text-align:left">P95 latency (performance degradation)</td>
+<td style="text-align:left">Exceeding 2x baseline</td>
+</tr>
+<tr>
+<td style="text-align:left">GPU memory (out-of-memory risk)</td>
+<td style="text-align:left">Above 98%</td>
+</tr>
+<tr>
+<td style="text-align:left">Error rate (system issues)</td>
+<td style="text-align:left">Above 1%</td>
+</tr>
+</tbody>
+</table>
+<p>Run vLLM as a systemd service for automatic restarts and reliable operation. Create a systemd unit file that starts vLLM with your production configuration, sets the service to restart automatically on failure, and runs under a dedicated user account. Enable the service to start on boot and monitor status with systemctl commands.</p><p>For high availability, run multiple vLLM instances behind a load balancer. Configure nginx or another load balancer with least-connection routing to send requests to the least busy server.</p><p>Add health checks with fail timeouts to automatically remove unhealthy instances. Set appropriate proxy timeouts for long-running inference requests, typically 300 seconds for read timeout.</p><p>Deploy vLLM in containers for easier deployment and portability. Create a Dockerfile based on the NVIDIA CUDA image, install vLLM via pip, and configure the container to start the API server with your desired parameters. Run containers with GPU support using the --gpus flag to expose all GPUs to the container.</p><h2 id="vllm-throughput-benchmark-results">vLLM Throughput Benchmark Results</h2><p>Measured on a single A100 80GB with Llama 2 13B (FP16), batch size 32, context 2048 tokens:</p>
+<!--kg-card-begin: html-->
+<table><thead><tr><th>Configuration</th><th>Throughput (tok/s)</th><th>Latency (ms/tok)</th></tr></thead><tbody><tr><td>Baseline (no batching)</td><td>120</td><td>8.3</td></tr><tr><td>Continuous batching</td><td>890</td><td>1.1</td></tr><tr><td>+ PagedAttention</td><td>1,240</td><td>0.8</td></tr><tr><td>+ max_num_batched_tokens=8192</td><td>1,580</td><td>0.6</td></tr></tbody></table>
+<!--kg-card-end: html-->
+<h2 id="vllm-best-practices-checklist">vLLM Best Practices Checklist</h2><ul><li><strong>Enable continuous batching:</strong> Default in vLLM — verify with <code>--disable-log-stats</code> off</li><li><strong>Set max_num_batched_tokens:</strong> Match to GPU memory. A100 80GB: 8192–16384</li><li><strong>PagedAttention block size:</strong> Use 16 for most models, 32 for long-context</li><li><strong>tensor_parallel_size:</strong> Set to number of GPUs for multi-GPU setups</li><li><strong>quantization:</strong> Use AWQ for 2x throughput with &lt;2% accuracy loss</li><li><strong>gpu_memory_utilization:</strong> Set to 0.90 (not default 0.95) to avoid OOM on variable batches</li><li><strong>max_model_len:</strong> Cap at actual use case — shorter = faster</li></ul><hr><h2 id="conclusion">Conclusion</h2><p>vLLM provides <a href="https://medium.com/@davechirav/building-production-ready-llm-inferencing-pipeline-a-step-by-step-guide-6622fc510a3b?source=rss-4a5d258fa3c0------2" rel="noreferrer">production-ready LLM inference</a> with 2-3x better throughput than traditional serving methods through PagedAttention and continuous batching.</p><p>Start with conservative GPU memory utilization of 0.90, then tune batch sizes and quantization based on your traffic patterns and quality requirements.</p><p>Deploy with systemd for single-server reliability or behind load balancers for high availability. Monitor key metrics including throughput, latency percentiles, and queue depth to identify capacity issues before they impact users.</p><p>For teams needing maximum performance on NVIDIA GPUs with straightforward deployment, vLLM offers an excellent balance of simplicity and efficiency for bare metal LLM serving.</p><h2 id="frequently-asked-questions">Frequently Asked Questions</h2><p>How do I increase vLLM throughput? Enable continuous batching (default in vLLM v0.3+), set --max-num-batched-tokens to 32768 or higher, and use --gpu-memory-utilization 0.9. For multi-GPU, add --tensor-parallel-size 2 or 4. These settings combined typically yield a 2-4x throughput increase over default configuration.</p><p>What is PagedAttention in vLLM? PagedAttention manages the KV cache in non-contiguous memory blocks, similar to OS virtual memory pages. This eliminates KV cache fragmentation and reduces wasted VRAM by up to 55%. The result: more concurrent requests per GPU and higher overall throughput.</p><p>How many tokens per second does vLLM achieve on A100? On a single A100 80GB with Llama 2 7B: approximately 2,500 tokens/second (batch throughput). For 13B models: approximately 800 tokens/second. For 70B with 2x A100 tensor parallel: approximately 200-300 tokens/second. These figures use continuous batching at gpu_memory_utilization 0.9.</p>
+                    </section>
+
+                    <div class="ai-summarize gh-canvas">
+    <p class="ai-summarize-label">Summarize this post with:</p>
+    <div class="ai-summarize-buttons" id="ai-summarize-buttons">
+
+        <a href="#" class="ai-summarize-btn" data-ai="chatgpt" target="_blank" rel="noopener noreferrer">
+            <svg class="ai-summarize-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387 2.02-1.168a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.412-.663zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/>
+            </svg>
+            ChatGPT
+        </a>
+
+        <a href="#" class="ai-summarize-btn" data-ai="perplexity" target="_blank" rel="noopener noreferrer">
+            <svg class="ai-summarize-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#20B8CD" d="M22.464 8.003h-5.151L22.5 2.571V.44L15.964 7.5H13.5V.44L11.5 2.02V7.5H8.036L1.5.44v2.131L6.687 8.003H1.536L0 9.503h7.5v5h-6l1.5 1.5H7.5v7.556L11.5 24v-8.997h1v8.85l4-1.556v-6.294h1.5l1.5-1.5h-6v-5H22l.464-1.5zM13.5 9.503h5.013l-5.013 4.674V9.503zm-2 5.5H6.487L11.5 10.33v4.673zm0 5.853l-2-1.275v-3.078H11.5v4.353zm4-.578-2 .778V15.003h2v5.275zm-2-6.275v-.5h2v.5h-2z"/>
+            </svg>
+            Perplexity
+        </a>
+
+        <a href="#" class="ai-summarize-btn" data-ai="claude" target="_blank" rel="noopener noreferrer">
+            <svg class="ai-summarize-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#D97757" d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-1.07-.048-.643-.024L1.2 12.5l-.048-.592.048-.025.42-.033.643.049 1.045.072 2.339.122 2.722.146.717.049h.341l.097-.146-.072-.196-.243-.146-4.256-2.353-2.722-1.555-.996-.546-.546-.34-.146-.194.388-.79.437.05.42.218.947.522 2.625 1.555 3.947 2.37.267.146.122-.049.049-.17-.049-.268-1.336-4.426-.778-2.381-.413-1.336-.17-.62-.097-.413.024-.146L7.32.7l.73-.146.17.049.146.243.243.984.292 1.19.972 3.222 1.288 4.062.34 1.094.194.607.146.049.146-.049.34-1.094 1.264-4.062.972-3.222.267-1.19.316-.984.17-.243.146-.049.73.146.34.365-.097.413-.17.62-.413 1.336-.778 2.381-1.336 4.426-.049.268.049.17.122.049.267-.146 3.947-2.37 2.625-1.555.947-.522.42-.218.437-.05.388.79-.146.195-.546.34-.996.546-2.722 1.555-4.256 2.353-.243.146-.072.196.097.146h.341l.717-.049 2.722-.146 2.339-.122 1.045-.072.643-.049.42.033.048.025.048.592-.46.232-.643.024-1.07.048-2.339.097-2.698.073-.79.048h-.23l-.08.128.08.23 4.72 2.647 2.16 1.264.67.413.267.194-.146.729-.413.073-1.045-.608-2.282-1.336-4.257-2.574-.462-.267-.243.024-.049.194.073.462.34 1.264.972 3.27.778 2.793.34 1.264.097.51-.049.243-.73.243-.194-.097-.243-.413-.34-1.264-.85-2.793-.996-3.27-.34-1.264-.122-.462-.049-.048-.122.024-.073.073-.073.389-.34 1.264-.996 3.27-.85 2.793-.34 1.264-.243.413-.194.097-.73-.243-.049-.243.097-.51.34-1.264.778-2.793.972-3.27.34-1.264.073-.462-.049-.194-.243-.024-.462.267-4.257 2.574-2.282 1.336-1.045.608-.413-.073-.146-.73.267-.194.67-.413 2.16-1.264z"/>
+            </svg>
+            Claude
+        </a>
+
+        <a href="#" class="ai-summarize-btn" data-ai="grok" target="_blank" rel="noopener noreferrer">
+            <svg class="ai-summarize-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.001 4.148a11.507 11.507 0 0 0-8.165-3.39c-3.07.002-5.965 1.199-8.134 3.373-2.17 2.174-3.362 5.068-3.358 8.138a11.45 11.45 0 0 0 3.358 8.134c2.17 2.175 5.064 3.369 8.134 3.371a11.51 11.51 0 0 0 8.165-3.371 11.508 11.508 0 0 0 3.374-8.134 11.505 11.505 0 0 0-3.374-8.121zm-8.165 18.13a9.773 9.773 0 0 1-6.926-2.877 9.773 9.773 0 0 1-2.866-6.932 9.773 9.773 0 0 1 2.866-6.929A9.773 9.773 0 0 1 11.836 3.66a9.78 9.78 0 0 1 6.93 2.88l-6.93 6.928-3.452-3.455-1.237 1.237 4.689 4.692 8.167-8.167a9.78 9.78 0 0 1 2.248 6.094 9.773 9.773 0 0 1-2.866 6.931 9.773 9.773 0 0 1-6.549 2.877z"/>
+            </svg>
+            Grok
+        </a>
+
+    </div>
+</div>
+
+<style>
+/* ============================================
+   AI SUMMARIZE BLOCK
+   ============================================ */
+
+.ai-summarize {
+    margin: var(--space-16) 0;
+    padding: 1.25rem 0;
+}
+
+
+.ai-summarize-label {
+    /* Was 1.3rem (13px at this theme's 10px-per-rem base) — noticeably
+       smaller than comparable labels like "More from" (2rem / 20px). */
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    margin: 0 0 0.875rem 0;
+    letter-spacing: -0.01em;
+}
+
+html.dark-mode .ai-summarize-label {
+    color: #fafafa;
+}
+
+.ai-summarize-buttons {
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.ai-summarize-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #262626;
+    background: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.ai-summarize-btn:hover {
+    border-color: #a3a3a3;
+    background: #fafafa;
+    color: #0a0a0a;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+}
+
+html.dark-mode .ai-summarize-btn {
+    color: #d4d4d4;
+    background: #111111;
+    border-color: #333333;
+}
+
+html.dark-mode .ai-summarize-btn:hover {
+    border-color: #525252;
+    background: #1a1a1a;
+    color: #fafafa;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ai-summarize-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .ai-summarize-buttons {
+        gap: 0.5rem;
+    }
+
+    .ai-summarize-btn {
+        font-size: 1.2rem;
+        padding: 0.7rem 1.1rem;
+    }
+}
+</style>
+
+<script>
+(function () {
+    var pageUrl = encodeURIComponent(window.location.href);
+    var prompt = encodeURIComponent("Summarize this post: ");
+
+    var links = {
+        chatgpt: "https://chatgpt.com/?q=" + prompt + pageUrl,
+        perplexity: "https://www.perplexity.ai/?q=" + prompt + pageUrl,
+        claude: "https://claude.ai/new?q=" + prompt + pageUrl,
+        grok: "https://grok.com/?q=" + prompt + pageUrl,
+    };
+
+    document
+        .querySelectorAll("#ai-summarize-buttons [data-ai]")
+        .forEach(function (btn) {
+            var ai = btn.getAttribute("data-ai");
+            if (links[ai]) {
+                btn.setAttribute("href", links[ai]);
+            }
+        });
+})();
+</script>
+
+                    
+
+<div class="newsletter-sticky-bar" id="newsletter-sticky">
+    <div class="newsletter-sticky-content">
+        <div class="newsletter-sticky-text">
+            <strong>Don't miss cloud insights.</strong>
+            <span>Get expert articles delivered weekly.</span>
+        </div>
+        <div class="newsletter-sticky-actions">
+            <a href="#/portal/signup" class="btn-brand btn-sm" data-portal="signup">
+                Subscribe
+            </a>
+            <button class="newsletter-sticky-close" id="newsletter-sticky-close" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                    <path d="M12 4L4 12M4 4l8 8" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Sticky footer bar logic
+    const stickyBar = document.getElementById('newsletter-sticky');
+    const closeBtn = document.getElementById('newsletter-sticky-close');
+
+    if (!stickyBar) return;
+
+    // Check if user has dismissed the bar
+    const isDismissed = localStorage.getItem('newsletter-sticky-dismissed') === 'true';
+    if (isDismissed) {
+        stickyBar.remove();
+        return;
+    }
+
+    // Show sticky bar after scrolling 60%
+    let hasShown = false;
+
+    function checkScroll() {
+        if (hasShown) return;
+
+        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+        if (scrollPercent > 60) {
+            stickyBar.classList.add('visible');
+            hasShown = true;
+        }
+    }
+
+    window.addEventListener('scroll', checkScroll);
+
+    // Close button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            stickyBar.classList.remove('visible');
+            localStorage.setItem('newsletter-sticky-dismissed', 'true');
+            setTimeout(() => stickyBar.remove(), 300);
+        });
+    }
+
+
+})();
+</script>
+
+
+                    <section class="author-bio-section">
+    <div class="author-bio-card">
+        <div class="author-bio-header">
+                <a href="/author/easecloudio/" class="author-bio-avatar">
+                    <img src="https://cdn.easecloud.io/blog/2026/06/EaseCloud_Dp-01.svg" alt="The EaseCloud Team" />
+                </a>
+
+            <div class="author-bio-info">
+                <h2 class="author-bio-name">
+                    <a href="/author/easecloudio/">The EaseCloud Team</a>
+                </h2>
+
+                    <p class="author-bio-stats">
+                        <span class="author-stat">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path d="M14 2.5H2a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5z" stroke-width="1.5"/>
+                                <path d="M4.5 5.5h7M4.5 8h7M4.5 10.5h4" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            312 articles
+                        </span>
+                    </p>
+
+                <div class="author-bio-social">
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="author-bio-more">
+    <div class="author-bio-posts">
+        <h3 class="author-bio-posts-title">More from </h3>
+
+        <div class="author-bio-posts-list">
+                <a href="/devops-cicd/platform-engineering-on-aws/" class="author-bio-post-link">
+                    <span class="author-bio-post-title">Platform Engineering on AWS: Build Internal Developer Platforms</span>
+                        <span class="author-bio-post-meta">16 min read</span>
+                </a>
+                <a href="/learn/terraform-vs-cloudformation/" class="author-bio-post-link">
+                    <span class="author-bio-post-title">Terraform vs CloudFormation: Which Should You Choose?</span>
+                        <span class="author-bio-post-meta">2 min read</span>
+                </a>
+                <a href="/learn/terraform-vs-ansible/" class="author-bio-post-link">
+                    <span class="author-bio-post-title">Terraform vs Ansible: Which Should You Choose?</span>
+                        <span class="author-bio-post-meta">2 min read</span>
+                </a>
+        </div>
+
+        <a href="" class="author-bio-view-all btn-outline btn-sm">
+            View all articles
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                <path d="M6 12l4-4-4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+
+                </article>
+            </div>
+
+            <aside class="post-layout-sidebar">
+                <div class="post-sidebar-sticky-group">
+                    <aside class="easecloud-toc" id="easecloud-toc">
+    <div class="easecloud-toc-container">
+        <div class="easecloud-toc-header">
+            <h2 class="easecloud-toc-title">Contents</h2>
+        </div>
+        <nav class="easecloud-toc-nav" id="toc-nav">
+            <ul class="easecloud-toc-list" id="toc-list">
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+<style>
+/* ============================================
+   TABLE OF CONTENTS - STICKY SIDEBAR
+   ============================================ */
+
+.easecloud-toc {
+    /* Sticky positioning now lives on the shared .post-sidebar-sticky-group
+       wrapper (post.hbs) so TOC and social-share move together as one unit. */
+    width: 100%;
+    max-height: calc(100vh - 120px);
+    display: block;
+}
+
+.easecloud-toc-container {
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 18px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Light mode */
+html:not(.dark-mode) .easecloud-toc-container {
+    background: #ffffff;
+    border-color: #e5e5e5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.easecloud-toc-header {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+html:not(.dark-mode) .easecloud-toc-header {
+    border-bottom-color: #e5e5e5;
+}
+
+.easecloud-toc-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a3a3a3;
+    margin: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+html:not(.dark-mode) .easecloud-toc-title {
+    color: #525252;
+}
+
+.easecloud-toc-nav {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a transparent;
+}
+
+html:not(.dark-mode) .easecloud-toc-nav {
+    scrollbar-color: #e5e5e5 transparent;
+}
+
+.easecloud-toc-nav::-webkit-scrollbar {
+    width: 3px;
+}
+
+.easecloud-toc-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.easecloud-toc-nav::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 2px;
+}
+
+html:not(.dark-mode) .easecloud-toc-nav::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+}
+
+.easecloud-toc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.easecloud-toc-item {
+    margin-bottom: 2px;
+}
+
+.easecloud-toc-link {
+    display: block;
+    padding: 6px 8px 6px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #737373;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    line-height: 1.45;
+}
+
+html:not(.dark-mode) .easecloud-toc-link {
+    color: #737373;
+}
+
+.easecloud-toc-link:hover {
+    color: #e5e5e5;
+    background: rgba(255, 255, 255, 0.04);
+    border-left-color: #404040;
+}
+
+html:not(.dark-mode) .easecloud-toc-link:hover {
+    color: #0a0a0a;
+    background: rgba(0, 0, 0, 0.04);
+    border-left-color: #d4d4d4;
+}
+
+.easecloud-toc-link.active {
+    color: #ffffff;
+    border-left-color: #4285f4;
+    background: rgba(66, 133, 244, 0.1);
+    font-weight: 500;
+}
+
+html:not(.dark-mode) .easecloud-toc-link.active {
+    color: #0a0a0a;
+    border-left-color: #4285f4;
+    background: rgba(66, 133, 244, 0.08);
+}
+
+/* Heading level indentation */
+.easecloud-toc-link[data-level="2"] {
+    padding-left: 10px;
+    font-size: 13px;
+}
+
+.easecloud-toc-link[data-level="3"] {
+    padding-left: 20px;
+    font-size: 12px;
+}
+
+.easecloud-toc-link[data-level="4"] {
+    padding-left: 30px;
+    font-size: 11px;
+    color: #525252;
+}
+
+html:not(.dark-mode) .easecloud-toc-link[data-level="4"] {
+    color: #a3a3a3;
+}
+</style>
+
+                    <aside class="social-share-sidebar" id="social-share" aria-label="Share this post">
+    <div class="social-share-container">
+        <div class="social-share-header">
+            <h2 class="social-share-title">Share</h2>
+        </div>
+
+        <ul class="social-share-list">
+            <li class="social-share-item">
+                <a href="https://twitter.com/intent/tweet?text=vLLM%20Throughput%20Guide%20-%20PagedAttention%20and%20Batching%20Tips%20(2026)&url=https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="social-share-btn social-share-twitter"
+                   aria-label="Share on Twitter / X"
+                   title="Share on Twitter / X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </li>
+
+            <li class="social-share-item">
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="social-share-btn social-share-linkedin"
+                   aria-label="Share on LinkedIn"
+                   title="Share on LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+            </li>
+
+            <li class="social-share-item">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="social-share-btn social-share-facebook"
+                   aria-label="Share on Facebook"
+                   title="Share on Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+            </li>
+
+            <li class="social-share-item">
+                <button class="social-share-btn social-share-copy"
+                        data-url="https://blog.easecloud.io/ai-cloud/increase-throughput-with-vllm-serving/"
+                        aria-label="Copy link"
+                        title="Copy link">
+                    <svg class="social-share-icon-link" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="social-share-icon-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<style>
+/* ============================================
+   SOCIAL SHARING — matches .easecloud-toc-container exactly so the two
+   sidebar cards (TOC above, this below) read as one visual system.
+   ============================================ */
+
+.social-share-sidebar {
+    width: 100%;
+    display: block;
+}
+
+.social-share-container {
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 18px 16px 22px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.social-share-header {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+html:not(.dark-mode) .social-share-header {
+    border-bottom-color: #e5e5e5;
+}
+
+.social-share-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a3a3a3;
+    margin: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.social-share-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.social-share-item {
+    flex: 1;
+}
+
+.social-share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #8a8a8a;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.social-share-btn:hover {
+    background: #1a1a1a;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Platform-specific hover colors */
+.social-share-twitter:hover {
+    color: #ffffff;
+    background: #000000;
+}
+
+.social-share-linkedin:hover {
+    color: #0A66C2;
+    background: rgba(10, 102, 194, 0.12);
+}
+
+.social-share-facebook:hover {
+    color: #1877F2;
+    background: rgba(24, 119, 242, 0.12);
+}
+
+.social-share-copy:hover {
+    color: #4285f4;
+    background: rgba(66, 133, 244, 0.12);
+}
+
+.social-share-icon-check {
+    display: none;
+}
+
+.social-share-copy.copied {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.social-share-copy.copied .social-share-icon-link {
+    display: none;
+}
+
+.social-share-copy.copied .social-share-icon-check {
+    display: block;
+}
+
+/* LIGHT MODE */
+html:not(.dark-mode) .social-share-container {
+    background: #ffffff;
+    border-color: #e5e5e5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark-mode) .social-share-btn {
+    color: #737373;
+}
+
+html:not(.dark-mode) .social-share-btn:hover {
+    background: #f5f5f5;
+    color: #0a0a0a;
+}
+
+html:not(.dark-mode) .social-share-twitter:hover {
+    color: #ffffff;
+    background: #000000;
+}
+
+/* Mobile / tablet: the sidebar column is hidden entirely (see post.hbs),
+   so this switches to a floating pill, bottom-right, icon-only. */
+@media (max-width: 1023px) {
+    .social-share-sidebar {
+        position: fixed;
+        top: auto;
+        bottom: var(--space-6, 24px);
+        left: auto;
+        right: var(--space-6, 24px);
+        width: auto;
+        z-index: var(--z-sticky, 40);
+    }
+
+    .social-share-container {
+        padding: 5px;
+    }
+
+    .social-share-header {
+        display: none;
+    }
+
+    .social-share-list {
+        flex-direction: row;
+    }
+
+    .social-share-item {
+        flex: none;
+    }
+
+    .social-share-btn {
+        width: 42px;
+        height: 42px;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // Copy link functionality
+    const copyBtn = document.querySelector('.social-share-copy');
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showCopyFeedback(this);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                    fallbackCopy(url, this);
+                });
+            } else {
+                fallbackCopy(url, this);
+            }
+        });
+    }
+
+    function showCopyFeedback(btn) {
+        btn.classList.add('copied');
+        btn.setAttribute('aria-label', 'Link copied');
+
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.setAttribute('aria-label', 'Copy link');
+        }, 2000);
+    }
+
+    function fallbackCopy(text, btn) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            showCopyFeedback(btn);
+        } catch (err) {
+            console.error('Fallback copy failed:', err);
+        }
+
+        document.body.removeChild(textArea);
+    }
+
+    // Track share clicks (optional - integrate with analytics)
+    const shareButtons = document.querySelectorAll('.social-share-btn');
+    shareButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.classList.contains('social-share-copy')) return;
+
+            const platform = this.classList.contains('social-share-twitter') ? 'Twitter' :
+                           this.classList.contains('social-share-linkedin') ? 'LinkedIn' :
+                           this.classList.contains('social-share-facebook') ? 'Facebook' : 'Unknown';
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'share', {
+                    method: platform,
+                    content_type: 'article',
+                    item_id: window.location.pathname
+                });
+            }
+        });
+    });
+})();
+</script>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+
+    
+
+</main>
+
+
+    </div>
+
+    <footer class="easecloud-footer">
+        <div class="easecloud-footer-content">
+            <div class="easecloud-footer-main">
+                <div class="easecloud-footer-brand">
+                    <a href="https://www.easecloud.io/">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 577.8 87.9" class="easecloud-footer-logo" aria-label="EaseCloud Logo">
+                            <path d="M550 77.7c5.7 0 10.1-2.1 13.1-6.4 3.1-4.3 4.6-10.1 4.6-17.4 0-7.4-1.5-13.2-4.6-17.4-3-4.3-7.3-6.4-13.1-6.4-5.6 0-10.2 2.1-13.6 6.4-3.3 4.2-5 10-5 17.4 0 7.3 1.7 13.1 5 17.4 3.4 4.2 7.9 6.4 13.6 6.4zm-2.1 9.7c-5.6 0-10.4-1.4-14.5-4.1-4-2.7-7.1-6.6-9.3-11.6-2.2-5-3.3-10.9-3.3-17.8s1.1-12.8 3.3-17.8c2.2-5 5.3-8.9 9.3-11.6 4.1-2.7 9-4.1 14.5-4.1 4.3 0 8.2.9 11.7 2.8 3.5 1.8 6.2 4.3 8 7.6V0h10.2v85.9h-9.2l-.4-9.7c-1.8 3.5-4.5 6.2-8.1 8.2-3.6 2-7.7 3-12.2 3zm-70.1 0c-6.4 0-11.5-2.1-15.4-6.4-3.8-4.4-5.7-10.3-5.7-17.9V21.8h10.2v38.5c0 6.2 1.1 10.8 3.3 13.8 2.3 2.9 5.7 4.4 10.3 4.4 5.1 0 9.1-1.6 12-4.8 2.9-3.3 4.4-7.8 4.4-13.6V21.8H507v64.1h-9.7V75.5c-3.6 7.9-10.1 11.9-19.5 11.9zm-64.2-9.7c5.9 0 10.4-2.1 13.7-6.3 3.3-4.3 5-10.1 5-17.5s-1.7-13.2-5-17.4c-3.2-4.3-7.8-6.4-13.7-6.4s-10.5 2.1-13.8 6.4c-3.3 4.2-5 10-5 17.4 0 7.4 1.7 13.3 5 17.5 3.3 4.2 7.9 6.3 13.8 6.3zm0 9.7c-5.9 0-11.1-1.4-15.5-4.1-4.4-2.7-7.9-6.6-10.3-11.6-2.4-5.1-3.6-11-3.6-17.8 0-6.9 1.2-12.8 3.6-17.8 2.4-5 5.8-8.9 10.3-11.6 4.4-2.7 9.6-4.1 15.5-4.1s11 1.4 15.4 4.1c4.4 2.7 7.9 6.6 10.3 11.6 2.4 5 3.6 10.9 3.6 17.8 0 6.8-1.2 12.7-3.6 17.8-2.4 5-5.8 8.9-10.3 11.6-4.4 2.7-9.5 4.1-15.4 4.1zm-44-1.5c-3.7 0-6.7-1-9.1-2.9-2.3-1.9-3.5-5-3.5-9.2V0h10.2v73c0 2.7 1.3 4 4 4h5.6v9h-7.2zm-53 1.5c-6 0-11.2-1.4-15.6-4.1-4.4-2.7-7.7-6.6-10.2-11.6-2.4-5.1-3.6-11-3.6-17.8s1.2-12.7 3.6-17.7 5.8-8.9 10.2-11.6c4.4-2.8 9.6-4.2 15.6-4.2 7.4 0 13.6 1.9 18.4 5.8 4.8 3.8 7.8 9.3 8.8 16.5l-10.6.7c-.7-4.3-2.6-7.5-5.6-9.8-3-2.3-6.7-3.5-11-3.5-5.9 0-10.5 2.1-13.8 6.4-3.3 4.2-5 10-5 17.4 0 7.4 1.7 13.3 5 17.5 3.3 4.2 7.9 6.3 13.8 6.3 4.4 0 8-1.2 11-3.6s4.8-6 5.6-10.9l10.6.7c-1 7.1-4 12.8-8.8 17.1-4.9 4.2-11 6.4-18.4 6.4zm-84.8-40.2h27c-.2-4.8-1.6-8.3-4-10.6-2.3-2.3-5.4-3.5-9.2-3.5-3.8 0-6.9 1.3-9.4 3.8-2.4 2.3-3.9 5.8-4.4 10.3zm14 40.2c-6.6 0-12.4-1.4-17.3-4.2-4.8-2.8-8.6-6.7-11.4-11.7-2.7-5.1-4-11.1-4-17.9 0-6.8 1.3-12.7 4-17.8 2.7-5.1 6.4-9 11.3-11.9 4.9-2.8 10.7-4.2 17.3-4.2 6.5 0 12.1 1.4 16.8 4.2 4.8 2.8 8.4 6.9 11 12.1 2.7 5.2 4 11.5 4 18.8v3.6h-45.6c.2 5.2 1.6 9 4.1 11.5 2.6 2.5 6 3.8 10.2 3.8 6.3 0 10.3-2.6 12.1-7.9l18.3 1.1c-1.8 6.5-5.4 11.5-10.9 15.1-5.5 3.5-12.1 5.4-19.9 5.4zm-69.4 0c-10.1 0-17.7-2.1-22.9-6.2-5.1-4.1-7.9-9.4-8.3-15.7l18.4-.6c.6 3.1 1.9 5.4 3.9 7.1 2 1.7 5 2.5 9 2.5 3.2 0 5.7-.5 7.5-1.6 1.9-1 2.8-2.7 2.8-4.8 0-1.4-.3-2.5-1-3.4-.6-1-1.9-1.8-3.9-2.4-1.9-.7-4.6-1.4-8.3-1.9-6.9-1.1-12.2-2.5-16.1-4.2-3.9-1.7-6.6-3.8-8.2-6.3-1.6-2.6-2.4-5.7-2.4-9.4 0-6.2 2.4-11.2 7.1-15 4.8-3.9 12.1-5.8 21.7-5.8 9.2 0 16.2 2.1 20.9 6.3 4.8 4.2 7.6 9.5 8.5 16l-18.3.7c-.4-3.1-1.6-5.6-3.5-7.4-1.9-1.9-4.5-2.8-7.7-2.8s-5.7.7-7.5 2.1c-1.7 1.3-2.5 3-2.5 5.2 0 2.3.9 4.1 2.7 5.3 1.9 1.1 5 2 9.4 2.7 6.9 1 12.4 2.4 16.5 4.1 4.1 1.7 7.1 3.8 8.8 6.4 1.8 2.6 2.7 5.8 2.7 9.6 0 6.3-2.7 11.1-8 14.5-5.5 3.3-12.6 5-21.3 5zm-74.8-12.5c4.5 0 8.1-1.3 10.9-4 2.8-2.7 4.2-6.3 4.2-10.9v-3.1L101.9 60c-5.9 1.1-8.8 3.8-8.8 8 0 4.6 2.8 6.9 8.5 6.9zm-4.4 12.5c-6.8 0-12.3-1.5-16.5-4.6-4.2-3.1-6.3-7.5-6.3-13.1 0-5.7 1.8-10.1 5.3-13.2 3.6-3.1 9-5.4 16-6.9l20.9-4.1c0-8.5-3.7-12.7-11-12.7-6.7 0-10.6 3.1-11.9 9.3l-18.3-.8c1.2-7.1 4.4-12.5 9.6-16.1 5.2-3.7 12.1-5.6 20.6-5.6 9.7 0 16.9 2.3 21.8 7 4.9 4.6 7.4 11.3 7.4 20.1v22.1c0 1.9.3 3.1.8 3.8.6.6 1.6.8 2.8.8h1.8v12.5c-.6.2-1.5.3-2.8.5-1.2.2-2.4.2-3.6.2-3.4 0-6.4-.7-9.1-2.2-2.7-1.5-4.4-4.4-5.2-8.5-1.6 3.5-4.4 6.3-8.2 8.3-3.8 2.2-8.5 3.2-14.1 3.2z" fill="#fff"></path>
+                            <path d="M46 65.9c-3.1 3.1-7.3 5-12 5s-9-1.9-12-5-5-7.3-5-12H0c0 9.4 3.8 17.9 10 24 6.2 6.2 14.7 10 24 10s17.9-3.8 24-10l-12-12z" fill="#808080"></path>
+                            <path d="M58 29.9c-6.2-6.2-14.7-10-24-10v34h34c0-9.4-3.8-17.9-10-24z" fill="#fff"></path>
+                        </svg>
+                    </a>
+                    <p class="easecloud-footer-description">EaseCloud engineers build, optimize, and manage cloud infrastructure for growing businesses. Backed by 100+ production deployments and a 99.99% uptime SLA.</p>
+                </div>
+
+                <div class="easecloud-footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="https://www.easecloud.io/your-startup-partner/">Your Startup Partner</a></li>
+                        <li><a href="https://www.easecloud.io/docker-and-kubernetes/">Docker & Kubernetes</a></li>
+                        <li><a href="https://www.easecloud.io/cloud-native-product-development/">Cloud-Native Development</a></li>
+                        <li><a href="https://www.easecloud.io/microservices-consulting/">Microservices Consulting</a></li>
+                        <li><a href="https://www.easecloud.io/aws-consulting/">AWS Consulting</a></li>
+                        <li><a href="https://www.easecloud.io/cloud-support/">Cloud Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="easecloud-footer-column">
+                    <h3>Industries</h3>
+                    <ul>
+                        <li><a href="https://www.easecloud.io/industries/saas/">SaaS & Software</a></li>
+                        <li><a href="https://www.easecloud.io/industries/smb/">Small & Mid-Sized Business</a></li>
+                        <li><a href="https://www.easecloud.io/industries/nonprofit/">Non-Profit</a></li>
+                        <li><a href="https://www.easecloud.io/industries/telecom/">Telecom & Media</a></li>
+                        <li><a href="https://www.easecloud.io/industries/financial/">Finance</a></li>
+                        <li><a href="https://www.easecloud.io/industries/healthcare/">Healthcare</a></li>
+                    </ul>
+                </div>
+
+                <div class="easecloud-footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="https://www.easecloud.io/about-us/">About Us</a></li>
+                        <li><a href="https://www.easecloud.io/careers/">Careers</a></li>
+                        <li><a href="https://www.easecloud.io/case-studies/">Case Studies</a></li>
+                        <li><a href="https://www.easecloud.io/contact-us/?utm_source=blog&utm_medium=footer&utm_campaign=blog_consulting">Contact us</a></li>
+                        <li><a href="https://www.easecloud.io/tools/">Tools</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="easecloud-footer-bottom">
+                <div class="easecloud-footer-copyright">
+                    <p>&copy; 2026 EaseCloud. All rights reserved.</p>
+                    <div class="easecloud-footer-legal">
+                        <a href="https://www.easecloud.io/privacy-policy/">Privacy Policy</a>
+                        <a href="https://www.easecloud.io/terms-and-conditions/">Terms & Conditions</a>
+                    </div>
+                </div>
+
+                <div class="easecloud-footer-social">
+                    <a href="https://www.linkedin.com/company/easecloud/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/easecloudio/" target="_blank" rel="noopener" aria-label="GitHub">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://facebook.com/easecloudio/" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://x.com/easecloudio/" target="_blank" rel="noopener" aria-label="X (Twitter)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>window.jQuery = { fn: {}, extend: function(a, b) { return Object.assign(a, b); } };</script>
+<script src="/assets/built/casper.js?v=def73d8a9b"></script>
+
+    <script src="/assets/js/prism.min.js?v=def73d8a9b"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Prism.js
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+    </script>
+
+
+<script>
+(function () {
+    // Mobile Menu Trigger
+    var burger = document.querySelector('.gh-burger');
+    if (burger) {
+        burger.addEventListener('click', function () {
+            document.body.classList.toggle('gh-head-open');
+        });
+    }
+}());
+</script>
+
+<style>
+/* Responsive video embeds — replaces jQuery FitVids for bare iframes */
+.gh-content iframe[src*="youtube.com"],
+.gh-content iframe[src*="youtube-nocookie.com"],
+.gh-content iframe[src*="vimeo.com"],
+.gh-content iframe[src*="player.vimeo.com"],
+.gh-content iframe[src*="kickstarter.com"] {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    display: block;
+}
+</style>
+
+<button class="back-to-top" id="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 14V4M4 9l5-5 5 5"/>
+    </svg>
+</button>
+
+<style>
+.back-to-top svg {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    flex-shrink: 0;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    background: #111;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    color: #c0c0c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease, color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    z-index: 200;
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    color: #ffffff;
+    border-color: #666;
+    background: #1a1a1a;
+}
+
+html:not(.dark-mode) .back-to-top {
+    background: #ffffff;
+    border-color: #c8c8c8;
+    color: #444444;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+html:not(.dark-mode) .back-to-top:hover {
+    color: #0a0a0a;
+    border-color: #888;
+    background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 80px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+}
+</style>
+
+<script>
+(function() {
+    var btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+            btn.classList.add('is-visible');
+        } else {
+            btn.classList.remove('is-visible');
+        }
+    }, { passive: true });
+    btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}());
+</script>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W593QBBF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script>
+(function() {
+    var URL_RE = /(https?:\/\/[^\s<>"']+)/g;
+
+    function ecAnnLinks() {
+        var content = document.querySelector('.gh-announcement-bar-content');
+        if (!content || content.querySelector('a')) return;
+        var original = content.innerHTML;
+        var updated = original.replace(URL_RE,
+            '<a href="$1" class="ec-ann-cta" target="_blank" rel="noopener">$1 &rarr;</a>');
+        if (updated !== original) content.innerHTML = updated;
+    }
+
+    // Watch the entire body — Ghost Portal may replace the bar element itself
+    var obs = new MutationObserver(function() { ecAnnLinks(); });
+    obs.observe(document.body, { childList: true, subtree: true });
+    // Stop watching after portal is definitely done
+    setTimeout(function() { obs.disconnect(); }, 6000);
+
+    // Also fire at known intervals in case observer misses rapid replacement
+    [0, 200, 500, 1000, 2000].forEach(function(ms) {
+        setTimeout(ecAnnLinks, ms);
+    });
+}());
+</script>
+
+<script>
+(function() {
+    var PSWP_LABELS = {
+        'pswp__button--close': 'Close lightbox',
+        'pswp__button--zoom': 'Zoom image',
+        'pswp__button--arrow--left': 'Previous image',
+        'pswp__button--arrow--right': 'Next image'
+    };
+    function patchPswpAria() {
+        var pswp = document.querySelector('.pswp');
+        if (!pswp) return;
+        Object.keys(PSWP_LABELS).forEach(function(cls) {
+            var el = pswp.querySelector('.' + cls);
+            if (el && !el.getAttribute('aria-label')) el.setAttribute('aria-label', PSWP_LABELS[cls]);
+        });
+    }
+    var pswpObs = new MutationObserver(patchPswpAria);
+    pswpObs.observe(document.body, { childList: true, subtree: true });
+}());
+</script>
+
+</body>
+</html>

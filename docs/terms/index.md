@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-07-29
+updated: 2026-08-02
 ---
 
 # Terms Glossary
@@ -35,7 +35,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Frameworks
 
-_No terms yet._
+- [Continuous Batching](continuous-batching.md) — Rebuilds the active LLM-serving batch at each model iteration so finished work can leave and newly ready work can enter.
 
 ## Benchmarks
 

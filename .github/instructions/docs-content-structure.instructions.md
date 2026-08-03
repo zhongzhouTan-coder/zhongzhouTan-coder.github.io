@@ -48,19 +48,26 @@ Three distinct sentences answering three distinct questions. These serve as retr
 
 ### 3. The Big Picture
 
-A diagram placed **before** any explanatory prose. The diagram should tell the full story: inputs, outputs, data flow, and where the novelty lives.
+Place the best original figure from the paper or captured web source **before**
+any explanatory prose. The selected source figure should communicate the main
+inputs, outputs, data flow, or novelty as directly as possible. Preserve it
+under the page's local `assets/` directory and identify its source in the
+caption.
 
 Add numbered annotation captions so the reader can reconstruct the method from the diagram alone:
 
 ```markdown
 ## The Big Picture
 
-![Diagram](./diagram.svg)
+![Descriptive alt text](./assets/original-figure-name.png)
 
-*① [Step one.] ② [Step two.] ③ [Step three.]*
+*Source: [paper or captured web page]. ① [Step one.] ② [Step two.] ③ [Step three.]*
 ```
 
-Prefer Mermaid diagrams for pipelines, architectures, and evolutionary trees. Prefer SVG/Draw.io for complex annotated figures.
+Do not redraw a suitable source figure in Mermaid, Draw.io, or another format.
+If the sources contain no suitable Big Picture figure, use a compact table or
+prose unless a synthesized visual is explicitly requested or materially
+necessary; label any such fallback as synthesized.
 
 ### 4. Why This Exists
 
@@ -68,7 +75,11 @@ Concrete failure example that makes the reader feel the pain. Walk through a spe
 
 ### 5. The Landscape
 
-An evolutionary tree, not a flat list. Show which prior ideas are parents, siblings, or dead ends. A Mermaid flowchart is strongly preferred.
+An evolutionary tree, not a flat list. Show which prior ideas are parents,
+siblings, or dead ends. **The Landscape must use Mermaid**, even when the paper
+contains a related-work figure, because this diagram represents the knowledge
+base's cross-source synthesis rather than a single source's framing. Save the
+editable Mermaid source locally as `.mmd` and link it from the page.
 
 ```markdown
 ## The Landscape
@@ -238,11 +249,23 @@ When creating or updating a paper-insight page:
 
 ## Diagrams
 
-- Use Mermaid for pipelines, flowcharts, evolutionary trees, and sequence diagrams.
-- Use SVG/Draw.io for complex annotated architecture figures. Store the editable `.drawio` source alongside the `.svg`.
-- Every diagram must have a caption explaining what the reader should see.
-- Prefer numbered annotations (①, ②, ③) that are referenced in surrounding prose.
-- Place diagrams before the text that explains them.
+- Search the paper extraction and captured web Markdown for relevant figures
+  before creating a visual.
+- Use original paper/web figures for the Big Picture, architecture, mechanism,
+  ablation, result, and runtime sections whenever suitable figures exist.
+- Preserve every selected source figure under the consuming page's local
+  `assets/` directory; do not hotlink remote images as the only copy.
+- Use Mermaid for **The Landscape**, save its editable `.mmd` source locally,
+  and link that file from the page.
+- Outside The Landscape, use a synthesized Mermaid, SVG/Draw.io, Excalidraw, or
+  AI-generated visual only when there is no suitable source figure and the
+  visual is explicitly requested or materially necessary.
+- Every visual must have a caption explaining what the reader should see and
+  whether it is an original source figure or a synthesized explanation.
+- Source-figure captions must identify and link the paper or web source.
+- Prefer numbered annotations (①, ②, ③) that are referenced in surrounding
+  prose, without altering the original image.
+- Place visuals before the text that explains them.
 
 ## Style Rules
 
@@ -260,7 +283,10 @@ Before publishing a page, verify:
 
 1. **Scan headings only.** Can you reconstruct the paper's argument? If not, headings are too generic.
 2. **Read only TL;DR + One Thing to Remember.** Do you understand the contribution? If not, those sections are too vague.
-3. **Cover the diagram and read the text.** Can you redraw the diagram? If yes, the text is too verbose — the diagram should carry the visual load.
+3. **Audit every visual.** Is The Landscape a linked local Mermaid file? For
+   every other visual, was a suitable original paper/web figure used and saved
+   locally? If a synthesized fallback was used, is its necessity and synthesized
+   status clear?
 4. **Is there a concrete example in "Why This Exists"?** If not, add one.
 5. **If the page uses dense notation, is there a Symbol Map before Deep Dive?** If not, add a naming-convention paragraph and a compact symbol table.
 6. **Does every Deep Dive subsection have an "intuition" sentence?** If not, you don't understand it well enough yet.
@@ -275,4 +301,5 @@ This instruction file does not modify the confidence mapping from `docs-front-ma
 
 - Shorter reference pages (pure data, glossary entries) may omit sections 5 (The Landscape) and 8 (Putting It Together) if they add no value.
 - Pages that are not paper insights (e.g., framework overviews, learning paths) should adapt this structure rather than follow it rigidly. The cognitive principles still apply.
-- If a page has no visual content, section 3 (The Big Picture) may be omitted, but this should be rare — nearly every technical concept benefits from a diagram.
+- If the sources have no suitable original Big Picture figure and a synthesized
+  fallback is not justified, section 3 may use a compact table or be omitted.

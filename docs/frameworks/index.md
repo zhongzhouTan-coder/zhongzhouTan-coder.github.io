@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-30
+updated: 2026-08-02
 ---
 
 # Frameworks
@@ -20,5 +20,6 @@ updated: 2026-07-30
 - [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md)
 - [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md)
+- [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm-continuous-batching/index.md)
 - [DeepSeek V4 Attention: Code Reading Map](deepseek-v4-attention-code-reading.md)
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](vllm-ascend-kimi-k3-moe-forward.md)

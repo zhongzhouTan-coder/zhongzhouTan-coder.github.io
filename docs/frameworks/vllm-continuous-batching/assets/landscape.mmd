@@ -1,0 +1,10 @@
+flowchart LR
+    STATIC["Static request batches"] --> DYNAMIC["Request-level dynamic batching"]
+    STATIC --> ORCA["Orca iteration-level scheduling"]
+    ORCA --> TGI["TGI continuous batching"]
+    ORCA --> VLLM["vLLM continuous batching"]
+    PAGING["Virtual-memory paging"] --> PAGED["PagedAttention KV blocks"]
+    PAGED --> VLLM
+    VLLM --> CURRENT["vLLM V1 token-budget scheduler"]
+    PREFIX["Prefix caching and KV transfer"] --> CURRENT
+    SPEC["Speculative decoding"] --> CURRENT

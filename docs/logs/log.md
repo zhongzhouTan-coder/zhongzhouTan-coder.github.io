@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-07-30
+updated: 2026-08-02
 ---
 
 # Wiki Log
@@ -196,3 +196,10 @@ updated: 2026-07-30
 - Added and expanded [Triton Ascend 算子机制学习路径](../frameworks/triton-ascend/operator-mechanisms.md), connecting AI Core compute/storage/movement/synchronization mechanisms to Triton Ascend tile design, physical-core reuse, UB/L1/L0 budgeting, Vector/Cube selection, CV Fusion, profiling diagnosis, and a four-stage practice plan. Preserved seven official CANN architecture/dataflow figures locally and added editable unified-dataflow and CV-pipeline Mermaid diagrams.
 - Added [Global Memory](../terms/global-memory.md) term page (category `hardware`, first Hardware term in the glossary) defining GM as the off-chip device memory on an accelerator (GPU HBM or Ascend GM), with aliases `GM`/`HBM`/`device memory`. Back-linked the term from [Triton Ascend 算子机制](../frameworks/triton-ascend/operator-mechanisms.md), [FlatQuant](../hardware/flatquant.md), and [MiniMax Sparse Attention](../training/minimax-sparse-attention/index.md), and added the entry to [Terms Glossary](../terms/index.md).
 - Expanded [Triton Ascend 算子机制学习路径](../frameworks/triton-ascend/operator-mechanisms.md) with a dedicated "5.4 Multibuffering: Hiding the A/B Load Behind Cube Compute" subsection covering the double-buffered K-loop timeline, the separate-queue overlap model that makes it legal, the `BLOCK_K`/occupancy vs. buffering-depth tradeoff, the MTE-bound failure signature, and the Triton Ascend `multibuffer=True` / `set_workspace_multibuffer` compile hints; renumbered the Cube failure modes section to 5.5.
+
+## 2026-08-02
+
+- Captured the EaseCloud vLLM throughput guide, the official vLLM launch article, and AnyScale's continuous-batching analysis as immutable web sources, then ingested them into [vLLM Continuous Batching](../frameworks/vllm-continuous-batching/index.md).
+- Added a medium-confidence, code-backed V1 runtime synthesis at pinned clean vLLM commit `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`, covering token/sequence budgets, running-before-waiting scheduling, chunked prefill, paged KV admission, persistent worker-batch reconciliation, completion, and preemption; saved an editable Mermaid Landscape, three locally preserved source figures, and derived runtime evidence.
+- Created the [Continuous Batching](../terms/continuous-batching.md) glossary entry, back-linked the existing vLLM framework page, and updated the KV Cache term with the new serving-mechanism page.
+- Updated the repository visual workflow: original paper/web figures are now the first choice and must be preserved locally with source captions; The Landscape always uses a linked local Mermaid diagram; synthesized visuals outside The Landscape are fallback-only.
