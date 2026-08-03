@@ -391,6 +391,23 @@
       "status": "ingested"
     },
     {
+      "id": "github:vllm-project/vllm-ascend@32a59d4e349c12c32cdbc1916436c16e39939afc",
+      "title": "vLLM Ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "32a59d4e349c12c32cdbc1916436c16e39939afc",
+      "category": "frameworks",
+      "kind": "repository",
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/",
+      "docs_paths": [
+        "docs/frameworks/vllm-ascend/architecture.md"
+      ],
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2410.09426v4",
       "title": "FlatQuant: Fast Learnable Affine Quantization",
       "slug": "flatquant-fast-learnable-affine-quantization",
@@ -866,6 +883,42 @@
       "derived_path": "derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md",
       "status": "ingested",
       "docs_path": "docs/frameworks/vllm/vllm-continuous-batching/index.md"
+    }
+  ,
+    {
+      "id": "web:docs.pytest.org/pytest-monkeypatch-documentation@2026-08-03-71ec0c060fa3",
+      "title": "Monkeypatching/mocking modules and environments — pytest documentation",
+      "slug": "pytest-monkeypatch-documentation",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.pytest.org/en/6.2.x/monkeypatch.html",
+      "final_url": "https://docs.pytest.org/en/6.2.x/monkeypatch.html",
+      "captured_at": "2026-08-03T09:25:30.316Z",
+      "revision": "71ec0c060fa32bae29652a72751e0d73cfc50bb4b263948ce16ff0ecf732a669",
+      "raw_paths": [
+        "raw/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.html",
+        "raw/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.md",
+      "status": "captured"
+    }
+  ,
+    {
+      "id": "web:naddod.medium.com/ai-distributed-training-communication-primitives@2026-08-03-bc80f96db386",
+      "title": "In-Depth Understanding of AI Distributed Training Communication Primitives",
+      "slug": "ai-distributed-training-communication-primitives",
+      "category": "training",
+      "kind": "web",
+      "source_url": "https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07",
+      "final_url": "https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07",
+      "captured_at": "2026-08-03T09:40:00.000Z",
+      "revision": "bc80f96db38670545547c4e96c2731285e43c5c50416f1e156a4ee3c7a51e854",
+      "raw_paths": [
+        "raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html",
+        "raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md",
+      "status": "captured"
     }
   ]
 }

@@ -190,7 +190,7 @@ Understanding these decisions will help you navigate the codebase:
 
 ### 1. Monkey-patching, not forking
 
-Triton Ascend does **not** fork Triton. It monkey-patches upstream Triton's `CodeGenerator.__init__` to inject the `hacc.target` attribute. This is done in `third_party/ascend/backend/__init__.py`:
+Triton Ascend does **not** fork Triton. It [monkey-patches](../../terms/monkey-patching.md) upstream Triton's `CodeGenerator.__init__` to inject the `hacc.target` attribute. This is done in `third_party/ascend/backend/__init__.py`:
 
 ```python
 # Injects hacc.target into the code generator

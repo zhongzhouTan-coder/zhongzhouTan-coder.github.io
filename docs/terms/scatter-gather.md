@@ -1,35 +1,42 @@
 ---
 title: "Scatter/Gather"
-summary: "A cross-node communication optimization in pipeline parallelism that reduces redundant activation transfers over slow inter-node links."
-tooltip: "Scatter/gather is a communication pattern that sends only the needed shard of an activation tensor across a slow inter-node link, then reconstructs the full tensor inside the destination node. In pipeline-parallel training with tensor parallelism, this avoids sending the same activation redundantly from every tensor-parallel rank. It matters most when inter-node bandwidth is the bottleneck."
+summary: "A pipeline-boundary optimization that sends different activation shards across slow links, then reconstructs the full tensor on the destination side with fast local collectives."
+tooltip: "Scatter/gather in this knowledge base means a practical pipeline-parallel optimization built from the generic scatter and gather-style primitives. It sends only one shard per tensor-parallel rank across the slow link, then reconstructs the tensor on the receiving node, usually with intra-node all-gather."
 layout: default
 confidence: high
 category: training
 sources:
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
 aliases:
   - scatter-gather
   - scatter gather
 appears_in:
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-07-27
+updated: 2026-08-03
 ---
 
 # Scatter/Gather
 
-**Scatter/Gather** is a communication optimization in Megatron-LM that reduces the amount of cross-node data sent at pipeline-stage boundaries when tensor parallelism is active. It avoids sending the same activation tensor redundantly from every tensor-parallel rank.
+**Scatter/Gather** is a pipeline-boundary communication optimization that reduces redundant cross-node activation transfers by sending different shards across the slow link and reconstructing the full tensor on the destination side.
 
 ## Why It Exists
 
-In a pipeline-parallel setup with tensor parallelism (e.g., $t = 8$ within a DGX node), the activation tensor at a pipeline boundary is often replicated across all $t$ ranks. Naively, every rank sends its copy to the next pipeline stage over inter-node InfiniBand (IB). That means the **same tensor crosses the slow IB link $t$ times** — wasting bandwidth that could otherwise carry useful work.
+The generic primitives behind this optimization are the same ones described in the Medium article: **scatter** sends different shards to different ranks, while **gather** or **all-gather** reconstructs the larger tensor later. In a pipeline-parallel setup with tensor parallelism, that decomposition matters because inter-node links are slower than intra-node links. Without scatter/gather, the same full activation can cross the slow link once per tensor-parallel rank.
 
 ## How It Works
 
-1. **Scatter (sender side):** The activation tensor is split into $t$ equal chunks. Each tensor-parallel rank sends only one chunk over IB to the corresponding rank in the next pipeline stage.
+1. **Scatter (sender side):** The activation tensor is split into $t$ equal chunks. Each tensor-parallel rank sends only one chunk over the inter-node link to the corresponding rank in the next pipeline stage.
 
-2. **Gather (receiver side):** The receiving ranks perform an intra-node all-gather over fast NVLink to reconstruct the full tensor.
+2. **Gather (receiver side):** The receiving ranks reconstruct the tensor locally. In Megatron-LM this is commonly an intra-node all-gather over the faster link inside the node.
 
 This reduces the cross-node payload from $b \cdot s \cdot h$ (full tensor, $t$ redundant copies) to $\frac{b \cdot s \cdot h}{t}$ (one shard per rank).
+
+![Scatter source figure](./assets/medium-communication-primitives-scatter.png)
+
+*Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article's scatter figure shows the sender-side half of the optimization: different shards go to different GPUs instead of broadcasting the same full tensor to all of them.*
 
 ## Impact
 

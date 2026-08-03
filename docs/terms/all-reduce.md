@@ -1,13 +1,16 @@
 ---
 title: "All-Reduce"
-summary: "An NCCL collective that sums tensors element-wise across ranks and delivers the result to every rank."
-tooltip: "All-reduce is the most common communication collective in distributed training. Every rank contributes a tensor, the tensors are summed element-wise across all ranks, and every rank receives the identical sum. It powers gradient synchronization in data parallelism and output aggregation in tensor parallelism. The key cost is that all-reduce bandwidth scales with tensor size, not with the number of ranks — so large tensors and frequent calls are the bottlenecks."
+summary: "A many-to-many collective that reduces equally shaped tensors across ranks and delivers the identical reduced result to every rank."
+tooltip: "All-reduce combines one tensor from each rank with a reduction such as sum, then returns the same reduced tensor to every rank. It is the workhorse collective for gradient synchronization and tensor-parallel aggregation, and it can be viewed as reduce plus broadcast or as reduce-scatter plus all-gather."
 layout: default
 confidence: high
 category: training
 sources:
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
   - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
 aliases:
   - allreduce
   - all_reduce
@@ -17,18 +20,18 @@ appears_in:
   - docs/training/parallelism/sequence-parallelism/index.md
   - docs/training/foundation-models/llama.md
   - docs/frameworks/vllm/vllm-framework.md
-updated: 2026-07-27
+updated: 2026-08-03
 ---
 
 # All-Reduce
 
-**All-reduce** is an NCCL collective communication primitive that sums tensors element-wise across a group of ranks and delivers the identical summed tensor to every rank in the group.
+**All-Reduce** is a many-to-many collective communication primitive that applies the same reduction operation to equally shaped tensors across ranks and returns the identical reduced tensor to every rank.
 
 ## Why It Exists
 
-Distributed training constantly needs to combine partial results from multiple GPUs. When each data-parallel replica computes its own gradient, you need to average those gradients before the optimizer step. When tensor parallelism splits a matrix multiplication, the partial outputs must be summed across ranks. All-reduce is the one collective that does both jobs: reduce (sum) across ranks and broadcast the result to everyone.
+Distributed training constantly needs to merge partial work from many accelerators. When each data-parallel replica computes a gradient, those gradients must be combined before the optimizer step. When tensor parallelism splits a matrix multiply, the partial outputs must be aggregated before the next layer can proceed. All-reduce exists because both situations require the same result on every participating rank.
 
-Without all-reduce, distributed training would need a separate reduce followed by a broadcast — doubling the communication time. All-reduce folds these into a single optimized operation, typically implemented as a ring or tree algorithm that keeps all links busy simultaneously.
+The Medium article frames all-reduce as either **reduce + broadcast** or **reduce-scatter + all-gather**. That decomposition is useful operationally: if the next step only needs a shard of the reduced tensor, reduce-scatter may be cheaper than materializing the full all-reduced tensor everywhere.
 
 ## How It Works
 
@@ -39,6 +42,10 @@ $$\text{result} = \sum_{i=0}^{t-1} \text{tensor}_i$$
 and delivers `result` to every rank. The dominant implementation is the **ring all-reduce**: ranks are arranged in a logical ring, each rank sends its data to the next rank while receiving from the previous, and partial sums accumulate as data circulates. After $2(t-1)$ steps, every rank has the full sum.
 
 The bandwidth cost is $2 \cdot \frac{t-1}{t} \cdot \text{size}$ — nearly independent of $t$ for large $t$, meaning the cost is dominated by the tensor size, not the number of ranks.
+
+![All-reduce source figure](./assets/medium-communication-primitives-all-reduce.png)
+
+*Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article visualizes all-reduce as a cluster-wide reduction whose reduced output is delivered back to every GPU.*
 
 ## Where All-Reduce Appears in Training
 
@@ -58,7 +65,7 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 
 - **All-reduce vs. all-gather:** All-reduce sums tensors element-wise; all-gather concatenates shards. All-reduce preserves element count; all-gather increases it by $t \times$.
 - **All-reduce vs. reduce:** Reduce sums across ranks but delivers the result to only one rank. All-reduce delivers it to everyone.
-- **All-reduce vs. reduce-scatter:** Reduce-scatter sums and then scatters the result so each rank gets a different shard. All-reduce = reduce-scatter followed by all-gather.
+- **All-reduce vs. reduce-scatter:** Reduce-scatter performs the reduction but leaves each rank with only one shard of the reduced result. All-reduce = reduce-scatter followed by all-gather.
 
 ## Where It Appears
 

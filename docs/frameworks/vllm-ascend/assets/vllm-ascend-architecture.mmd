@@ -1,0 +1,34 @@
+flowchart TD
+    subgraph PLUGIN["Plugin Layer (entry_points)"]
+        A["vllm.platform_plugins<br/>→ NPUPlatform"]
+        B["vllm.general_plugins<br/>→ models, KV connectors, loaders"]
+    end
+    subgraph PLATFORM["Platform (platform.py)"]
+        C["NPUPlatform(Platform)<br/>enum=OOT, device=npu"]
+        D["compile_backend → AscendCompiler"]
+        E["simple_compile_backend=eager"]
+    end
+    subgraph EXEC["Execution Layer"]
+        F["NPUWorker(WorkerBase)<br/>CaMemAllocator + sleep/wakeup"]
+        G["NPUModelRunner(GPUModelRunner)<br/>ACL graphs + Ascend backends"]
+    end
+    subgraph BACKEND["Custom Backends"]
+        H["Attention: FIA / MLAPO / SFA / DSA<br/>+ context-parallel variants"]
+        I["Communication: HCCL<br/>PyHcclCommunicator"]
+        J["Ops: linear, RoPE, MoE, norm, activation<br/>torch.ops._C_ascend.*"]
+    end
+    subgraph PATCH["Monkey-Patches (patch/)"]
+        K["platform/: FusedMoE, KV cache, distributed init"]
+        L["worker/: cudagraph, speculative, FP8, model-specific"]
+    end
+    subgraph UPSTREAM["Upstream vLLM (reused as-is)"]
+        M["Scheduler + Block Manager"]
+        N["Prefix Caching + Preemption"]
+        O["OpenAI API Server"]
+    end
+    UPSTREAM --> PLUGIN
+    PLUGIN --> PLATFORM
+    PLATFORM --> EXEC
+    EXEC --> BACKEND
+    PATCH -.-> EXEC
+    PATCH -.-> PLATFORM

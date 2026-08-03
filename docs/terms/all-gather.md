@@ -1,13 +1,16 @@
 ---
 title: "All-Gather"
-summary: "An NCCL collective that gathers shards distributed across ranks into a full replicated tensor on every rank."
-tooltip: "All-gather is a collective communication primitive where each rank contributes a shard of a tensor, and every rank receives the full concatenated tensor. In distributed training, the split/all-gather pattern is a key optimization at pipeline boundaries: split a tensor into shards before a slow cross-node link, transmit one shard per rank, then all-gather over fast intra-node NVLink to reconstruct the full tensor on the receiving side."
+summary: "A many-to-many collective that gathers per-rank shards into one full tensor and delivers that complete result to every rank."
+tooltip: "All-gather is a many-to-many collective where every rank contributes one shard and every rank receives the full concatenated tensor. You can view it as gather followed by broadcast, and it commonly appears when distributed training needs to reconstruct a split activation or parameter tensor."
 layout: default
 confidence: high
 category: training
 sources:
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
   - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
 aliases:
   - allgather
   - all_gather
@@ -16,36 +19,40 @@ aliases:
 appears_in:
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-07-27
+updated: 2026-08-03
 ---
 
 # All-Gather
 
-**All-gather** is an NCCL collective communication primitive that gathers equally-sized tensor shards distributed across a group of ranks, and delivers the full concatenated tensor to every rank in the group.
+**All-Gather** is a many-to-many collective communication primitive in which each rank contributes one shard of data and every rank receives the full concatenated result.
 
 ## Why It Exists
 
-Distributed training constantly moves tensors across device boundaries. When you split a model or data across GPUs, you often need to reassemble a partial tensor so every rank has a complete copy — for example, to reconstruct an activation tensor after it crosses a pipeline boundary, or to gather gradients before an optimizer step. All-gather is the standard collective for this: every rank contributes its shard, and every rank gets the full result.
+Distributed training frequently splits activations, parameters, or optimizer state across ranks to save memory and bandwidth. But some steps still need a full view of that tensor on every participating device. All-gather exists for that moment: each rank contributes its shard, and everyone receives the identical reconstructed tensor.
 
-In the context of pipeline-parallel training with tensor parallelism, the **split/all-gather** pattern addresses a specific bottleneck: inter-node links (InfiniBand) are much slower than intra-node links (NVLink). Sending the same activation tensor from every tensor-parallel rank over IB wastes bandwidth.
+The Medium source explains all-gather as the conceptual composition of **gather + broadcast**: first collect every shard, then redistribute the whole tensor to all ranks. That mental model is useful when deciding whether you truly need full replication, or whether a cheaper reduce-scatter or point-to-point exchange would suffice.
 
 ## How It Works
 
-An all-gather over $t$ ranks, each holding a shard of size $s$, proceeds as:
+For $t$ ranks, each holding one shard of size $s$, all-gather proceeds as:
 
 1. Each rank $i$ holds shard $i$ of the tensor (equally sized).
-2. After the collective, every rank holds the concatenation of all $t$ shards — a tensor $t \times$ the size of each shard.
+2. After the collective, every rank holds the concatenation of all $t$ shards — a tensor with $t \times s$ total logical size.
 
-NCCL implements all-gather efficiently via a ring algorithm: each rank sends its shard to the next rank and forwards received shards around the ring until all ranks have all shards.
+In practice, libraries such as NCCL implement this with topology-aware algorithms such as rings or trees, but the observable contract is simple: everyone ends with the same full tensor.
+
+![All-gather source figure](./assets/medium-communication-primitives-all-gather.png)
+
+*Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article visualizes all-gather as a full collection step whose end state is identical on every GPU.*
 
 ### The Split/All-Gather Pattern at Pipeline Boundaries
 
-When tensor parallelism and pipeline parallelism are composed (e.g., Megatron-LM PTD-P), activations at pipeline boundaries are often replicated across all $t$ tensor-parallel ranks inside a node. The naive approach sends the full tensor $t$ times over IB. The optimized pattern instead:
+When tensor parallelism and pipeline parallelism are composed, activations at pipeline boundaries are often replicated across all $t$ tensor-parallel ranks inside a node. The naive approach sends the full tensor $t$ times over the slower inter-node link. The optimized pattern instead:
 
 1. **Split (sender side):** The activation tensor is divided into $t$ shards. Each tensor-parallel rank sends only its shard over IB to the corresponding rank at the next pipeline stage.
 2. **All-gather (receiver side):** The $t$ receiving ranks perform an intra-node all-gather over NVLink to reconstruct the full tensor.
 
-This reduces cross-node traffic from $b \cdot s \cdot h$ (redundant copies) to $\frac{b \cdot s \cdot h}{t}$ (one shard per rank per send).
+This reduces cross-node traffic from redundant full copies to one shard per rank, then reconstructs the tensor locally with a fast intra-node all-gather.
 
 ## Why Sequence Parallelism Avoids This Cost
 
@@ -54,7 +61,7 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 ## Common Confusions
 
 - **All-gather vs. [all-reduce](all-reduce.md):** All-reduce sums tensors element-wise and delivers the sum; all-gather concatenates shards and delivers the full tensor. All-reduce preserves element count; all-gather increases it by $t \times$.
-- **All-gather vs. scatter/gather:** Scatter distributes a full tensor into shards across ranks; gather collects shards into one rank. All-gather does both — distributes and collects — delivering the full result to every rank.
+- **All-gather vs. scatter/gather:** Scatter distributes different shards to different ranks; gather collects them onto one rank. All-gather generalizes that idea so every rank finishes with the full result.
 - **Split/all-gather vs. scatter/gather (Megatron-LM optimization):** These are the same pattern described from different angles. "Scatter/gather" is Megatron-LM's name for the pipeline-boundary optimization; "split/all-gather" is the same two-step process: split the tensor, send shards, all-gather to reconstruct.
 
 ## Where It Appears

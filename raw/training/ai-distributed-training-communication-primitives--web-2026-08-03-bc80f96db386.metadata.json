@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07",
+  "final_url": "https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07",
+  "canonical_url": "https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07",
+  "title": "In-Depth Understanding of AI Distributed Training Communication Primitives",
+  "author": "NADDOD",
+  "published_at": "2026-01-08T02:20:38Z",
+  "captured_at": "2026-08-03T09:40:00.000Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "local-html",
+  "content_sha256": "bc80f96db38670545547c4e96c2731285e43c5c50416f1e156a4ee3c7a51e854",
+  "raw_html_bytes": 218481,
+  "extracted_markdown_characters": 12521,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {},
+  "limitations": [
+    "HTML was supplied from a local file; HTTP status and response headers are unavailable."
+  ]
+}

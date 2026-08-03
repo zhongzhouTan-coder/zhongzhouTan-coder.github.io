@@ -6,20 +6,25 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-02
+updated: 2026-08-03
 ---
 
 # Terms Glossary
 
 Quick-lookup definitions for technical concepts that appear across multiple papers in this knowledge base. Each term page is a self-contained definition page with backlinks to the papers that use it.
 
+## General
+
+- [Monkey-Patching](monkey-patching.md) — Runtime replacement, deletion, or redirection of functions, attributes, modules, or environment lookups so code runs against controlled behavior without editing the original source.
+
 ## Training
 
 - [Microbatch](microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work injected into a pipeline schedule.
 - [Mixture of Experts](mixture-of-experts.md) — Routes each token through a small subset of many expert feed-forward networks to increase total capacity without activating every parameter.
-- [Scatter/Gather](scatter-gather.md) — A cross-node communication optimization in pipeline parallelism that avoids sending redundant activation tensors over slow inter-node links.
-- [All-Gather](all-gather.md) — An NCCL collective that gathers shards across ranks into a full replicated tensor; the split/all-gather pattern reduces cross-node traffic at pipeline boundaries.
-- [All-Reduce](all-reduce.md) — An NCCL collective that sums tensors element-wise across ranks; powers gradient synchronization and tensor-parallel output aggregation.
+- [Scatter/Gather](scatter-gather.md) — A pipeline-boundary optimization that sends different activation shards across slow links, then reconstructs the full tensor on the destination side with fast local collectives.
+- [All-Gather](all-gather.md) — A many-to-many collective that gathers per-rank shards into one full tensor and delivers that complete result to every rank.
+- [All-to-All](all-to-all.md) — A many-to-many collective that scatters each rank's data to all ranks while gathering from all ranks, effectively performing a distributed matrix transpose.
+- [All-Reduce](all-reduce.md) — A many-to-many collective that reduces equally shaped tensors across ranks and delivers the identical reduced result to every rank.
 - [Sequence Parallelism](sequence-parallelism.md) — A distributed training strategy that splits the input sequence along the length dimension across GPUs, forming a fourth parallelism dimension orthogonal to data, pipeline, and tensor parallelism.
 
 ## Algorithms

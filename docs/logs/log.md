@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-02
+updated: 2026-08-03
 ---
 
 # Wiki Log
@@ -215,3 +215,6 @@ updated: 2026-08-02
 - `docs/hardware/` is now grouped into `quantization/` (FlatQuant, NVFP4).
 - Added 15 subcategory hub pages, rewrote the five category index pages to group by subcategory, updated `docs/README.md` structure notes, and refreshed all term-page back-links and the chronological log links to the new paths.
 - Codified the subcategory workflow in `AGENTS.md` (new "Docs Organization" section) and in `.github/instructions/docs-front-matter.instructions.md` and `.github/instructions/source-organization.instructions.md`: subcategory folders with hub `index.md` pages, the `sources.json` `docs_path` category-prefix invariant that discourages cross-category moves, and a move/rename checklist (git mv, link recomputation, manifest and index updates, lint).
+- Added [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) to `docs/frameworks/vllm-ascend/architecture.md`, sourced from a fresh main-branch inspection of `vllm-project/vllm-ascend` at `32a59d4e349c`. Covers the five integration mechanisms (plugin registration, NPUPlatform switchboard, ModelRegistry overrides, monkey-patch layer, custom backends), end-to-end execution flow with a sequence diagram, ACL graph capture as CUDA graph replacement, HCCL communication replacing NCCL, Ascend-specific attention backends (FIA/MLAPO/SFA/DSA), CaMemAllocator sleep mode, and a clear inventory of what upstream vLLM code is reused as-is versus replaced.
+- Added [Monkey-Patching](../terms/monkey-patching.md) to `docs/terms/monkey-patching.md`, sourced from the captured pytest monkeypatch documentation page. Defined the term around runtime substitution of functions, attributes, modules, and environment lookups; added it to the glossary; and back-linked its first meaningful in-content mentions from DeepSWE v1.1, Triton Ascend, vLLM Ascend, and the vLLM-Ascend architecture page.
+- Rewrote [All-Gather](../terms/all-gather.md), [All-Reduce](../terms/all-reduce.md), and [Scatter/Gather](../terms/scatter-gather.md) using the captured Medium article on distributed training communication primitives. Added the article's raw HTML, metadata, and derived markdown as sources, refreshed the glossary summaries to emphasize the collectives as many-to-many communication patterns, and preserved three original source figures locally under `docs/terms/assets/` for the updated term pages.

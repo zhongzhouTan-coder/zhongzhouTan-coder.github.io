@@ -72,7 +72,7 @@ The source presents v1.1 as a cleanup of the benchmark environment rather than a
 
 1. **Reproducibility:** grading occurs in a clean verifier container.
 2. **Auditability:** structured test reports expose exactly which benchmark tests passed or failed.
-3. **Anti-gaming:** grading only the committed patch blocks shortcuts such as monkey-patching the test framework in the agent runtime.
+3. **Anti-gaming:** grading only the committed patch blocks shortcuts such as [monkey-patching](../../../terms/monkey-patching.md) the test framework in the agent runtime.
 
 The source also notes that they checked upstream repositories as of **June 5, 2026** for implementations similar to DeepSWE tasks and found no such instances, so they argue DeepSWE v1.0 was already free of that specific git-history cheating mode.
 
