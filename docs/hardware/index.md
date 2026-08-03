@@ -10,5 +10,8 @@ updated: 2026-07-15
 
 # Hardware and Numerics
 
-- [FlatQuant: Fast Learnable Affine Quantization](flatquant.md)
-- [NVFP4: Blackwell 4-Bit Floating Point](nvfp4.md)
+## Quantization
+
+- [Quantization](quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
+- [FlatQuant: Fast Learnable Affine Quantization](quantization/flatquant.md)
+- [NVFP4: Blackwell 4-Bit Floating Point](quantization/nvfp4.md)

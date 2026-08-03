@@ -13,10 +13,10 @@ aliases:
   - all_reduce
   - all-reduce collective
 appears_in:
-  - docs/training/megatron-lm/index.md
-  - docs/training/sequence-parallelism/index.md
-  - docs/training/llama.md
-  - docs/frameworks/vllm-framework.md
+  - docs/training/parallelism/megatron-lm/index.md
+  - docs/training/parallelism/sequence-parallelism/index.md
+  - docs/training/foundation-models/llama.md
+  - docs/frameworks/vllm/vllm-framework.md
 updated: 2026-07-27
 ---
 
@@ -62,10 +62,10 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 
 ## Where It Appears
 
-- [Megatron-LM: GPU-Cluster Training Parallelism](../training/megatron-lm/index.md) — Tensor parallelism creates frequent all-reduces inside each Transformer layer; keeping them within a DGX node over NVLink is a core design constraint.
-- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/sequence-parallelism/index.md) — Sequence parallelism avoids all-reduces in MLP blocks entirely because each chunk's linear layers operate independently.
-- [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
-- [LLaMA: Open and Efficient Foundation Language Models](../training/llama.md) — LLaMA overlaps all-reduce communication with computation to hide gradient-synchronization latency.
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Tensor parallelism creates frequent all-reduces inside each Transformer layer; keeping them within a DGX node over NVLink is a core design constraint.
+- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids all-reduces in MLP blocks entirely because each chunk's linear layers operate independently.
+- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
+- [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — LLaMA overlaps all-reduce communication with computation to hide gradient-synchronization latency.
 
 ## Related Terms
 

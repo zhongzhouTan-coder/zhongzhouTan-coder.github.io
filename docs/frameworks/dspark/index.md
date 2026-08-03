@@ -14,7 +14,7 @@ updated: 2026-07-15
 **Authors:** Xin Cheng, Xingkai Yu, Chenze Shao, Jiashi Li, Yunfan Xiong, Yi Qian, Jiaqi Zhu, Shirong Ma, Xiaokang Zhang, Jiasheng Ye, Qinyu Chen, Chengqi Deng, Jiping Yu, Damai Dai, Zhengyan Zhang, Yixuan Wei, Yixuan Tan, Wenkai Yang, Runxin Xu, Yu Wu, Zhean Xu, Xuanyu Wang, Muyang Chen, Rui Tian, Xiao Bi, Zhewen Hao, Shaoyuan Chen, Huanqi Cao, Wentao Zhang, Anyi Xu, Huishuai Zhang, Dongyan Zhao, Wenfeng Liang  
 **arXiv:** 2607.05147v1 - 6 Jul 2026
 
-**Related pages:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md), [SGLang: Structured Language Model Programs](../sglang-framework.md)
+**Related pages:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [SGLang: Structured Language Model Programs](../sglang/index.md)
 
 ## TL;DR
 
@@ -24,7 +24,7 @@ updated: 2026-07-15
 
 ## The Big Picture
 
-![DSpark decoding cycle](./dspark-decoding-cycle.drawio.svg)
+![DSpark decoding cycle](dspark-decoding-cycle.drawio.svg)
 
 *1. A parallel backbone proposes a multi-token draft block. 2. A lightweight sequential head corrects the suffix using the sampled draft prefix. 3. A calibrated confidence scheduler decides how much of each request is worth verifying on the target model.*
 
@@ -250,5 +250,5 @@ DSpark's memorable frame is **speculative decoding as batch-capacity allocation*
 
 - **Read:** `raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf`
 - **Build on:** Eagle3, DFlash, and MTP-1 as the main comparison points discussed by the paper.
-- **Understand the context:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md) and [SGLang: Structured Language Model Programs](../sglang-framework.md)
+- **Understand the context:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md) and [SGLang: Structured Language Model Programs](../sglang/index.md)
 - **Reproduce:** Code is not listed in this repository at the time of writing.

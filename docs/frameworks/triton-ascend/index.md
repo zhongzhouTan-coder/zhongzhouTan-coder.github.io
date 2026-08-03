@@ -15,7 +15,7 @@ updated: 2026-07-28
 **Inspected revision:** `41f499924da1d58955196c946895597e992127f0` (main, 2026-07-28)  
 **Version:** 3.6.0-dev (pip release: 3.2.1)
 
-**Related pages:** [Triton: Tiled GPU Kernel Language](../triton-language/index.md), [Triton in vLLM and vllm-ascend](../triton-language/triton-in-vllm.md), [Frameworks Overview](../index.md)
+**Related pages:** [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Frameworks Overview](../index.md)
 
 ## TL;DR
 
@@ -246,7 +246,7 @@ If you are new to both Triton and triton-ascend, here is the recommended reading
 
 ### Stage 1: Understand what Triton is
 
-Start with the [Triton overview page](../triton-language/index.md). Understand: tile-based programming, `@triton.jit`, `tl.program_id`, `tl.load`/`tl.store`, and the basic matmul kernel.
+Start with the [Triton overview page](../triton/index.md). Understand: tile-based programming, `@triton.jit`, `tl.program_id`, `tl.load`/`tl.store`, and the basic matmul kernel.
 
 ### Stage 2: Understand Triton's backend system
 
@@ -283,7 +283,7 @@ Pick a simple test kernel (e.g., vector-add from `python/examples/`) and trace:
 
 Triton Ascend is a **kernel-level backend** — it compiles and launches individual Triton kernels on Ascend NPUs. [vllm-ascend](https://github.com/vllm-project/vllm-ascend) is a **serving-system backend** that adapts the vLLM serving framework to run on Ascend hardware.
 
-vllm-ascend uses triton-ascend for its Triton kernels but also implements custom AscendC kernels for performance-critical operations. See [Triton in vLLM and vllm-ascend](../triton-language/triton-in-vllm.md) for how they work together.
+vllm-ascend uses triton-ascend for its Triton kernels but also implements custom AscendC kernels for performance-critical operations. See [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md) for how they work together.
 
 ## Limitations
 

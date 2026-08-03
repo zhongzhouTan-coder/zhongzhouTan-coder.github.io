@@ -16,12 +16,12 @@ This repository is an AI-maintained personal knowledge base published on GitHub 
 
 - `raw/` — Canonical source files. File content is not modified; filenames and category paths are maintained for retrieval.
 - `derived/pdf-markdown/` — Generated Markdown extracted from PDFs, organized under the same category names as `raw/` and `docs/`.
-- `docs/` — AI-maintained markdown knowledge pages, divided into topic categories.
-  - `benchmarks/` — Benchmark designs, tasks, metrics, and empirical findings.
-  - `frameworks/` — LLM serving and language-model programming systems.
-  - `algorithms/` — Inference algorithms and kernel-level methods.
-  - `training/` — Model training, fine-tuning, transfer learning, and generalization.
-  - `hardware/` — Numerics, hardware features, and accelerator-specific notes.
+- `docs/` — AI-maintained markdown knowledge pages, divided into topic categories, each with subcategory folders for related projects or themes.
+  - `benchmarks/` — Benchmark designs, tasks, metrics, and empirical findings; subfolders `agent-eval/` and `serving-perf/`.
+  - `frameworks/` — LLM serving and language-model programming systems; per-project subfolders such as `vllm/`, `vllm-ascend/`, `triton/`, `triton-ascend/`, `sglang/`, `dspark/`, `harbor/`, and `deepseek/`.
+  - `algorithms/` — Inference algorithms and kernel-level methods; subfolders `foundations/`, `flashattention/`, `attention-variants/`, and `linear-attention/`.
+  - `training/` — Model training, fine-tuning, transfer learning, and generalization; subfolders `parallelism/`, `foundation-models/`, `deepseek/`, `kimi/`, `efficient-attention/`, and `fine-tuning/`.
+  - `hardware/` — Numerics, hardware features, and accelerator-specific notes; subfolder `quantization/`.
 - `sources.json` — Machine-readable manifest linking raw sources, generated Markdown, and docs pages.
 - `kb-categories.json` — Canonical category registry and legacy category aliases.
 - `logs/`

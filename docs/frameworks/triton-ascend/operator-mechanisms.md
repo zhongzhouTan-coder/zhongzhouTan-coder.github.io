@@ -27,7 +27,7 @@ The goal of this note is not to memorize APIs. It is to build a mental model tha
 
 Once these six questions are clear, `BLOCK_SIZE`, `BLOCK_M/N/K`, the grid, multibuffering, and CV balance stop being parameters tuned by guesswork.
 
-**Related pages:** [Triton Ascend compiler architecture](index.md), [Triton's tile programming model](../triton-language/index.md), and [Using Triton in vLLM](../triton-language/triton-in-vllm.md)
+**Related pages:** [Triton Ascend compiler architecture](index.md), [Triton's tile programming model](../triton/index.md), and [Using Triton in vLLM](../triton/triton-in-vllm.md)
 
 ## At a Glance
 

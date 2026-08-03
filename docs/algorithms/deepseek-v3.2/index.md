@@ -15,7 +15,7 @@ updated: 2026-07-26
 **Authors:** DeepSeek-AI  
 **arXiv:** 2026 (<research@deepseek.com>)  
 
-**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../grouped-query-attention/index.md) · [Multi-Query Attention](../multi-query-attention.md) · [The Transformer](../transformer.md)
+**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md)
 
 ## TL;DR
 
@@ -144,7 +144,7 @@ This design has two critical differences from standard multi-head attention: (1)
 
 **Remember:** DSA is instantiated under MLA's MQA mode — each selected KV latent is shared across all query heads of a token, enabling efficient kernel implementation.
 
-![DSA architecture under MLA](./assets/dsa-architecture.jpg)
+![DSA architecture under MLA](assets/dsa-architecture.jpg)
 
 *The DSA architecture instantiated under MLA. The green portion shows how the lightning indexer selects top-k KV entries (latent vectors) for each query token. Only selected entries participate in the expensive MLA attention computation.*
 
@@ -162,11 +162,11 @@ This design has two critical differences from standard multi-head attention: (1)
 
 **Inference cost savings.** DSA reduces the core attention complexity from $O(L^2)$ to $O(Lk)$. The lightning indexer still runs at $O(L^2)$ but with far fewer FLOPs. On H800 GPUs:
 
-![Prefilling costs comparison](./assets/prefilling-costs.jpg)
+![Prefilling costs comparison](assets/prefilling-costs.jpg)
 
 *Per-token prefill cost vs. token position. DSA (V3.2) shows near-constant cost as sequence length grows, while dense MLA (V3.1-Terminus) grows quadratically.*
 
-![Decoding costs comparison](./assets/decoding-costs.jpg)
+![Decoding costs comparison](assets/decoding-costs.jpg)
 
 *Per-token decode cost vs. token position. DSA maintains flat cost at long contexts while dense attention cost climbs.*
 
@@ -206,7 +206,7 @@ This design has two critical differences from standard multi-head attention: (1)
 | Another tool output | Discard old reasoning | **Retain** reasoning — continue building context |
 | Tool call history | Lost with reasoning | **Preserved** even when reasoning is discarded |
 
-![Thinking retention mechanism](./assets/thinking-retention.jpg)
+![Thinking retention mechanism](assets/thinking-retention.jpg)
 
 *Illustration of V3.2's context management in tool-calling scenarios. Reasoning content (brown) is retained across tool-call turns and discarded only when a new user message arrives. Tool call history (blue) is preserved even when reasoning is removed.*
 
@@ -216,7 +216,7 @@ This design has two critical differences from standard multi-head attention: (1)
 
 **Remember:** This context management also enables the **Discard-all** strategy for search-agents exceeding 128K context — discarding all tool-call history (but not the thinking) works surprisingly well, achieving 67.6% on BrowseComp versus 51.4% without it.
 
-![Context management strategies on BrowseComp](./assets/context-management.jpg)
+![Context management strategies on BrowseComp](assets/context-management.jpg)
 
 *BrowseComp accuracy under different test-time compute expansion strategies. Discard-all achieves the best accuracy-efficiency tradeoff, matching parallel scaling (Parallel-fewest-step) with significantly fewer total steps.*
 
@@ -263,7 +263,7 @@ For search agents: multi-agent pipeline samples long-tail entities → question-
 
 **Remember:** RL on synthetic general-agent data alone (no code/search RL) produces substantial gains on τ²-bench, MCP-Mark, and MCP-Universe — proving these synthetic tasks teach transferable agentic reasoning.
 
-![RL training with synthetic general agent data](./assets/synthetic-data-rl.jpg)
+![RL training with synthetic general agent data](assets/synthetic-data-rl.jpg)
 
 *RL training of DeepSeek-V3.2-SFT using exclusively synthetic general agent data. Performance on τ²-bench, MCP-Mark, and MCP-Universe improves steadily with RL steps, demonstrating that synthetic tasks teach transferable agentic reasoning.*
 
@@ -297,7 +297,7 @@ flowchart LR
 
 DeepSeek-V3.2 achieves GPT-5-level reasoning performance at substantially lower inference cost (fewer output tokens), while being the first open model to demonstrate strong thinking-in-tool-use capability.
 
-![Benchmark comparison](./assets/benchmark.jpg)
+![Benchmark comparison](assets/benchmark.jpg)
 
 *Benchmark overview of DeepSeek-V3.2 and its counterparts across reasoning and agentic capabilities. For HMMT 2025, the February competition is reported, consistent with baselines. For HLE, the text-only subset is reported.*
 
@@ -352,9 +352,9 @@ V3.2's reasoning performance comes from scaled RL compute: the post-training bud
 
 ## Go Deeper
 
-- [DeepSeek-V2 Multi-Head Latent Attention](../deepseek-v2-mla.md) — The MLA architecture that DSA builds upon.
-- [Grouped-Query Attention in Llama 2](../grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode.
-- [Multi-Query Attention](../multi-query-attention.md) — The original shared-KV-head insight.
-- [The Transformer](../transformer.md) — The vanilla attention baseline.
+- [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) — The MLA architecture that DSA builds upon.
+- [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode.
+- [Multi-Query Attention](../attention-variants/multi-query-attention.md) — The original shared-KV-head insight.
+- [The Transformer](../foundations/transformer.md) — The vanilla attention baseline.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../../frameworks/dspark/index.md) — DeepSeek's speculative decoding framework deployed on V4.
 - Open-source code: DeepSeek-V3.2 implementation specifies DSA kernel details.

@@ -11,8 +11,8 @@ sources:
 aliases:
   - KDA
 appears_in:
-  - docs/training/kimi-linear/index.md
-  - docs/training/kimi-k3/index.md
+  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/kimi/kimi-k3/index.md
 updated: 2026-07-29
 ---
 
@@ -45,8 +45,8 @@ KDA is still a compressed recurrent memory, so it can blur exact token identitie
 
 ## Where It Appears
 
-- [Kimi Linear](../training/kimi-linear/index.md) — Introduces KDA as the central 3:1 hybrid attention operator.
-- [Kimi K3](../training/kimi-k3/index.md) — Scales KDA to a 2.8T MoE and modifies decay numerics for large-scale training kernels.
+- [Kimi Linear](../training/kimi/kimi-linear/index.md) — Introduces KDA as the central 3:1 hybrid attention operator.
+- [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales KDA to a 2.8T MoE and modifies decay numerics for large-scale training kernels.
 
 ## Related Terms
 

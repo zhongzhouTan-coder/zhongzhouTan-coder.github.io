@@ -16,9 +16,9 @@ aliases:
   - key/value cache
 appears_in:
   - docs/algorithms/linear-attention/index.md
-  - docs/training/kimi-linear/index.md
-  - docs/training/kimi-k3/index.md
-  - docs/frameworks/vllm-continuous-batching/index.md
+  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/kimi/kimi-k3/index.md
+  - docs/frameworks/vllm/vllm-continuous-batching/index.md
 updated: 2026-08-02
 ---
 
@@ -46,9 +46,9 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 ## Where It Appears
 
 - [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Contrasts explicit growing key/value history with a fixed-size recurrent summary.
-- [Kimi Linear](../training/kimi-linear/index.md) — Uses recurrent KDA states in most layers and full KV caches in periodic MLA layers.
-- [Kimi K3](../training/kimi-k3/index.md) — Adds external KV-cache retention for million-token partial rollouts and aligns KDA state lifecycles with MLA cache blocks.
-- [vLLM Continuous Batching](../frameworks/vllm-continuous-batching/index.md) — Shows how paged KV capacity gates per-iteration admission, completion, and preemption.
+- [Kimi Linear](../training/kimi/kimi-linear/index.md) — Uses recurrent KDA states in most layers and full KV caches in periodic MLA layers.
+- [Kimi K3](../training/kimi/kimi-k3/index.md) — Adds external KV-cache retention for million-token partial rollouts and aligns KDA state lifecycles with MLA cache blocks.
+- [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) — Shows how paged KV capacity gates per-iteration admission, completion, and preemption.
 
 ## Related Terms
 

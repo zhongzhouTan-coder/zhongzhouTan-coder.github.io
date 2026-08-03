@@ -1,0 +1,16 @@
+---
+title: "Foundation Models"
+summary: "Classic decoder-only foundation model papers: GPT-1, GPT-2, GPT-3, and LLaMA."
+layout: default
+confidence: high
+sources:
+  - logs/index.md
+updated: 2026-08-03
+---
+
+# Foundation Models
+
+- [GPT-1: Improving Language Understanding by Generative Pre-Training](gpt-1.md) — Introduces the decoder-only Transformer, the pre-train + fine-tune paradigm, task-agnostic input transformations, long-contiguous-text motivation, and transfer ablations.
+- [GPT-2: Language Models are Unsupervised Multitask Learners](gpt-2.md) — Scales to 1.5B on WebText; demonstrates zero-shot task transfer, byte-level BPE evaluation, prompt-only task conditioning, and contamination analysis.
+- [GPT-3: Language Models are Few-Shot Learners](gpt-3.md) — Scales to 175B; demonstrates in-context few-shot learning, scaling-law behavior, prompt-format evaluation settings, and limitations of context-only adaptation.
+- [LLaMA: Open and Efficient Foundation Language Models](llama.md) — Original LLaMA family: 7B-65B decoder-only models trained on 1.0T-1.4T public-data tokens, inference-budget motivation, architecture defaults, efficient training implementation, benchmark comparisons, and safety limitations.

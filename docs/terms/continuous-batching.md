@@ -13,8 +13,8 @@ aliases:
   - iteration-level scheduling
   - in-flight batching
 appears_in:
-  - docs/frameworks/vllm-framework.md
-  - docs/frameworks/vllm-continuous-batching/index.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-continuous-batching/index.md
 updated: 2026-08-02
 ---
 
@@ -62,10 +62,10 @@ is sparse or request lengths are uniform.
 
 ## Where It Appears
 
-- [vLLM: PagedAttention Serving Framework](../frameworks/vllm-framework.md) —
+- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) —
   Relates Orca-style iteration-level scheduling to vLLM's paged KV-memory
   management.
-- [vLLM Continuous Batching](../frameworks/vllm-continuous-batching/index.md) —
+- [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) —
   Traces the current V1 scheduler, KV allocation, worker-batch update, finish,
   and preemption paths.
 

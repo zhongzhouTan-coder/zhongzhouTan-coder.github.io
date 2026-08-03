@@ -15,7 +15,7 @@ updated: 2026-07-29
 **Authors:** Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, and François Fleuret  
 **arXiv:** [2006.16236v3](https://arxiv.org/abs/2006.16236) (June 2020; revised August 2020)
 
-**Related pages:** [Recurrent Neural Networks](../recurrent-neural-networks/index.md), [The Transformer](../transformer.md), [FlashAttention](../flashattention.md), [Kimi Linear](../../training/kimi-linear/index.md)
+**Related pages:** [Recurrent Neural Networks](../foundations/recurrent-neural-networks/index.md), [The Transformer](../foundations/transformer.md), [FlashAttention](../flashattention/flashattention.md), [Kimi Linear](../../training/kimi/kimi-linear/index.md)
 
 ## TL;DR
 
@@ -56,7 +56,7 @@ flowchart LR
 
 *① Ordinary attention materializes all query–key pair scores. ② Reordering computes a compact key–value summary first. ③ Every query reads that summary and uses a second key summary for normalization; the red $N \times N$ matrix disappears.*
 
-*Editable source: [associative-reordering.mmd](./assets/associative-reordering.mmd).*
+*Editable source: [associative-reordering.mmd](assets/associative-reordering.mmd).*
 
 **The novelty is not faster multiplication of the same softmax matrix.** It changes the similarity function so the computation can be reassociated without ever constructing that matrix.
 
@@ -88,7 +88,7 @@ flowchart TD
 
 *Softmax attention spawned sparse approximations that retain selected pairwise comparisons, while the kernel view plus associativity produced a different branch: fixed-size recurrent summaries. Performer later approximated the softmax kernel; gated and hybrid descendants made the recurrent memory more selective.*
 
-*Editable source: [landscape.mmd](./assets/landscape.mmd).*
+*Editable source: [landscape.mmd](assets/landscape.mmd).*
 
 ## The Core Idea
 
@@ -221,7 +221,7 @@ The famous 4,000× figure is **throughput against the paper's uncached softmax i
 ## Go Deeper
 
 - **Read:** [arXiv paper](https://arxiv.org/abs/2006.16236) and the repository source PDF.
-- **Build on:** [Performer](https://arxiv.org/abs/2009.14794) for random-feature softmax approximation; [Kimi Linear](../../training/kimi-linear/index.md) for modern gated, hybrid linear attention.
-- **Understand the context:** [The Transformer](../transformer.md) for softmax attention; [FlashAttention](../flashattention.md) for exact, IO-aware softmax attention.
+- **Build on:** [Performer](https://arxiv.org/abs/2009.14794) for random-feature softmax approximation; [Kimi Linear](../../training/kimi/kimi-linear/index.md) for modern gated, hybrid linear attention.
+- **Understand the context:** [The Transformer](../foundations/transformer.md) for softmax attention; [FlashAttention](../flashattention/flashattention.md) for exact, IO-aware softmax attention.
 - **Reproduce:** [idiap/fast-transformers](https://github.com/idiap/fast-transformers), the authors' implementation.
-- **Edit diagrams:** [Associative reordering](./assets/associative-reordering.mmd) and [landscape](./assets/landscape.mmd).
+- **Edit diagrams:** [Associative reordering](assets/associative-reordering.mmd) and [landscape](assets/landscape.mmd).

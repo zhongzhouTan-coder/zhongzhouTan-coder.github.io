@@ -12,8 +12,8 @@ aliases:
   - micro-batch
   - micro batch
 appears_in:
-  - docs/training/gpipe/index.md
-  - docs/training/megatron-lm/index.md
+  - docs/training/parallelism/gpipe/index.md
+  - docs/training/parallelism/megatron-lm/index.md
 updated: 2026-07-27
 ---
 
@@ -46,8 +46,8 @@ Two main ways to order microbatches:
 
 ## Where It Appears
 
-- [GPipe: Micro-Batch Pipeline Parallelism](../training/gpipe/index.md) — Introduces microbatches as the core mechanism for synchronous pipeline-parallel training; defines the bubble overhead formula $O(\frac{K-1}{M+K-1})$ and the $M \ge 4K$ rule.
-- [Megatron-LM: GPU-Cluster Training Parallelism](../training/megatron-lm/index.md) — Defines the microbatch-bubble tradeoff for PTD-P training and reports throughput sensitivity to microbatch size.
+- [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md) — Introduces microbatches as the core mechanism for synchronous pipeline-parallel training; defines the bubble overhead formula $O(\frac{K-1}{M+K-1})$ and the $M \ge 4K$ rule.
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Defines the microbatch-bubble tradeoff for PTD-P training and reports throughput sensitivity to microbatch size.
 - [GPipe (Huang et al., 2019)](https://arxiv.org/abs/1811.06965) — Introduced microbatches as the mechanism for pipeline-parallel training of giant neural networks.
 
 ## Related Terms

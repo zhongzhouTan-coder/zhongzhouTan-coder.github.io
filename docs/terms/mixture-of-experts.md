@@ -14,10 +14,10 @@ aliases:
   - MoE
   - sparse expert model
 appears_in:
-  - docs/algorithms/deepseek-v2-mla.md
-  - docs/training/deepseek-v4/index.md
-  - docs/training/kimi-linear/index.md
-  - docs/training/kimi-k3/index.md
+  - docs/algorithms/attention-variants/deepseek-v2-mla.md
+  - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/kimi/kimi-k3/index.md
 updated: 2026-07-29
 ---
 
@@ -44,10 +44,10 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 
 ## Where It Appears
 
-- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/deepseek-v2-mla.md) — Uses DeepSeekMoE alongside MLA to reduce active FFN compute.
-- [DeepSeek-V4](../training/deepseek-v4/index.md) — Uses a 1.6T/284B-active MoE model with hybrid compressed attention.
-- [Kimi Linear](../training/kimi-linear/index.md) — Evaluates KDA/MLA hybrid attention on a 48B MoE with 3B active parameters.
-- [Kimi K3](../training/kimi-k3/index.md) — Scales to 2.8T total parameters, 104B active, and 896 routed experts per layer.
+- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention-variants/deepseek-v2-mla.md) — Uses DeepSeekMoE alongside MLA to reduce active FFN compute.
+- [DeepSeek-V4](../training/deepseek/deepseek-v4/index.md) — Uses a 1.6T/284B-active MoE model with hybrid compressed attention.
+- [Kimi Linear](../training/kimi/kimi-linear/index.md) — Evaluates KDA/MLA hybrid attention on a 48B MoE with 3B active parameters.
+- [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales to 2.8T total parameters, 104B active, and 896 routed experts per layer.
 
 ## Related Terms
 

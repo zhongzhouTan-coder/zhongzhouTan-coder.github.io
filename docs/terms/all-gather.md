@@ -14,8 +14,8 @@ aliases:
   - all-gather collective
   - split/all-gather
 appears_in:
-  - docs/training/megatron-lm/index.md
-  - docs/training/sequence-parallelism/index.md
+  - docs/training/parallelism/megatron-lm/index.md
+  - docs/training/parallelism/sequence-parallelism/index.md
 updated: 2026-07-27
 ---
 
@@ -59,8 +59,8 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 
 ## Where It Appears
 
-- [Megatron-LM: GPU-Cluster Training Parallelism](../training/megatron-lm/index.md) — The scatter/gather optimization uses split + all-gather at pipeline boundaries, yielding up to 11% throughput improvement.
-- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/sequence-parallelism/index.md) — Sequence parallelism avoids the split/all-gather cost entirely because activations are already chunked along the sequence dimension.
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — The scatter/gather optimization uses split + all-gather at pipeline boundaries, yielding up to 11% throughput improvement.
+- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids the split/all-gather cost entirely because activations are already chunked along the sequence dimension.
 
 ## Related Terms
 
