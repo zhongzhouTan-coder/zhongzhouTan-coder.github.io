@@ -1,5 +1,7 @@
 ---
 kind: repository-source
+provider: github
+clone_url: https://github.com/vllm-project/vllm-ascend.git
 repository_url: https://github.com/vllm-project/vllm-ascend
 local_checkout: external-repos/vllm-ascend-e3bb5f570/
 commit: e3bb5f570f0b7d7fef9df3190a450052bee090cc

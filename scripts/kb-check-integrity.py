@@ -12,11 +12,14 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+from repository_remote import expected_repository_url, parse_repository_remote
+
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 REPOSITORY_ID_RE = re.compile(
-    r"^github:(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)@"
+    r"^(?P<provider>github|gitcode):"
+    r"(?P<repository_path>[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+)@"
     r"(?P<commit>[0-9a-f]{40})$"
 )
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -84,7 +87,7 @@ def source_id_suffix(source_id: str) -> str:
     prefix, _, value = source_id.partition(":")
     if prefix == "arxiv":
         return f"arxiv-{value}"
-    if prefix in {"github", "nvidia", "paper", "web"}:
+    if prefix in {"github", "gitcode", "nvidia", "paper", "web"}:
         return prefix
     return source_id.replace(":", "-")
 
@@ -110,9 +113,10 @@ def expected_raw_name(entry: dict[str, Any], raw_path: str) -> str | None:
         return None
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
         repo_slug = entry.get("repo_slug")
+        provider = entry.get("provider") or entry.get("id", "").partition(":")[0]
         revision = entry.get("revision", "")
-        if repo_slug and SHA_RE.fullmatch(revision):
-            return f"{repo_slug}-codebase--github-{revision[:12]}{suffix}"
+        if repo_slug and provider in {"github", "gitcode"} and SHA_RE.fullmatch(revision):
+            return f"{repo_slug}-codebase--{provider}-{revision[:12]}{suffix}"
         return None
     if suffix == ".pdf":
         source_suffix = entry.get("source_suffix", source_id_suffix(entry["id"]))
@@ -357,12 +361,13 @@ def validate_repository_entry(
     match = REPOSITORY_ID_RE.fullmatch(source_id)
     if not match:
         errors.append(
-            f"{source_id}: repository id must be github:owner/repo@<40-char-sha>"
+            f"{source_id}: repository id must be "
+            "<github|gitcode>:owner/repo@<40-char-sha>"
         )
         return
 
-    owner = match.group("owner")
-    repo = match.group("repo")
+    provider = match.group("provider")
+    repository_path = match.group("repository_path")
     id_commit = match.group("commit")
     category = entry["category"]
     repo_slug = entry.get("repo_slug")
@@ -379,6 +384,14 @@ def validate_repository_entry(
         )
     if revision != id_commit:
         errors.append(f"{source_id}: revision does not match id commit")
+    if entry.get("provider") != provider:
+        errors.append(f"{source_id}: provider must match repository id")
+    expected_url = expected_repository_url(provider, repository_path)
+    if entry.get("repository_url") != expected_url:
+        errors.append(
+            f"{source_id}: repository_url must be {expected_url}, "
+            f"got {entry.get('repository_url')}"
+        )
     if "docs_path" in entry:
         errors.append(f"{source_id}: repository entries must use docs_paths")
     if entry.get("status") != "ingested":
@@ -396,9 +409,9 @@ def validate_repository_entry(
         return
 
     metadata = parse_front_matter(full_raw_path)
-    expected_url = f"https://github.com/{owner}/{repo}"
     expected_metadata = {
         "kind": "repository-source",
+        "provider": provider,
         "repository_url": expected_url,
         "commit": id_commit,
     }
@@ -408,6 +421,23 @@ def validate_repository_entry(
                 f"{source_id}: raw metadata {key} must be {expected}, "
                 f"got {metadata.get(key)}"
             )
+
+    clone_url = metadata.get("clone_url")
+    if not isinstance(clone_url, str):
+        errors.append(f"{source_id}: raw metadata missing clone_url")
+    else:
+        try:
+            normalized_remote = parse_repository_remote(clone_url)
+        except ValueError as exc:
+            errors.append(f"{source_id}: invalid clone_url: {exc}")
+        else:
+            if (
+                normalized_remote.provider != provider
+                or normalized_remote.repository_url != expected_url
+            ):
+                errors.append(
+                    f"{source_id}: clone_url does not match repository identity"
+                )
 
     checkout = metadata.get("local_checkout")
     if not isinstance(checkout, str):

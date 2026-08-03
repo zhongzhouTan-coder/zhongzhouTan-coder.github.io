@@ -46,7 +46,9 @@ updated: 2026-05-28
 
 - After the front matter, start the body with a single `#` heading that matches the `title` in meaning.
 - Use relative markdown links for internal references.
-- Keep markdown GitHub Pages friendly: no embedded scripts and no unnecessary raw HTML.
+- Keep markdown GitHub Pages friendly: no embedded scripts and no unnecessary
+  raw HTML. Revision-aware repository code anchors are the standard exception;
+  use the exact `code-link` structure from `repo-reading.instructions.md`.
 - **Body content structure is defined in [`docs-content-structure.instructions.md`](docs-content-structure.instructions.md).** Follow that file for the required section order, cognitive principles, and self-test checklist when creating or updating paper-insight pages.
 
 ## Confidence Mapping

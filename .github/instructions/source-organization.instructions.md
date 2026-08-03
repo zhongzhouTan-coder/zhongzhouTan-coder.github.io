@@ -37,7 +37,7 @@ raw/{category}/{short-title-slug}.md
 Repository source records should use:
 
 ```text
-raw/{category}/{repo-slug}-codebase--github-{short-sha}.md
+raw/{category}/{repo-slug}-codebase--{provider}-{short-sha}.md
 ```
 
 Generated Markdown should use:
@@ -77,7 +77,8 @@ Rules:
 - Do not store full repository checkouts under `raw/`; store them under ignored `external-repos/` and keep only the pinned source record under `raw/`.
 - Treat each repository commit as an immutable source revision. Use the first
   12 commit characters in the raw filename and the full 40-character commit
-  in the derived directory.
+  in the derived directory. Derive `{provider}` from the checkout's `origin`;
+  supported values are `github` and `gitcode`.
 - Treat each web capture as an immutable source revision. Hash the rendered
   HTML with SHA-256, use the first 12 characters in filenames and the source
   ID, and store the full hash in `sources.json` and the metadata sidecar.
@@ -99,8 +100,8 @@ Every ingested source should have an entry in `sources.json` with:
 - `status`
 
 Add `derived_path` when a generated Markdown extraction exists.
-For `kind: "repository"`, require `repo_slug`, `revision`, `docs_paths`, and a
-`derived_path` ending in
+For `kind: "repository"`, require `repo_slug`, `provider`, `repository_url`,
+`revision`, `docs_paths`, and a `derived_path` ending in
 `derived/repo-analysis/{category}/{repo-slug}/{full-sha}/`.
 For `kind: "web"`, require `source_url`, `final_url`, `captured_at`, a
 64-character SHA-256 `revision`, two immutable `raw_paths`, and a

@@ -144,6 +144,25 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
             (self.root / "sources.json").read_text(encoding="utf-8")
         )
         self.assertEqual(len(manifest["sources"]), 1)
+        self.assertEqual(manifest["sources"][0]["provider"], "github")
+        self.assertEqual(
+            manifest["sources"][0]["repository_url"],
+            "https://github.com/owner/repo",
+        )
+        registry = json.loads(
+            (self.root / "docs/_data/code_repositories.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(
+            registry[f"repo-{short_sha}"],
+            {
+                "local_checkout": "external-repos/repo",
+                "provider": "github",
+                "repository_url": "https://github.com/owner/repo",
+                "revision": self.commit,
+            },
+        )
         self.assertEqual(
             manifest["sources"][0]["docs_paths"],
             [
@@ -157,6 +176,39 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         result = self.run_scaffold()
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("checkout is dirty", result.stderr)
+
+    def test_gitcode_ssh_origin_sets_provider_and_filename(self) -> None:
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.checkout),
+                "remote",
+                "set-url",
+                "origin",
+                "git@gitcode.com:owner/repo.git",
+            ],
+            check=True,
+        )
+
+        result = self.run_scaffold()
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("created gitcode:owner/repo@", result.stdout)
+        raw_path = (
+            self.root
+            / f"raw/frameworks/repo-codebase--gitcode-{self.commit[:12]}.md"
+        )
+        raw_text = raw_path.read_text(encoding="utf-8")
+        self.assertIn("provider: gitcode", raw_text)
+        self.assertIn("clone_url: git@gitcode.com:owner/repo.git", raw_text)
+        self.assertIn("repository_url: https://gitcode.com/owner/repo", raw_text)
+        registry = json.loads(
+            (self.root / "docs/_data/code_repositories.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(registry[f"repo-{self.commit[:12]}"]["provider"], "gitcode")
 
 
 if __name__ == "__main__":

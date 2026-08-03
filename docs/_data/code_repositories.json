@@ -1,0 +1,44 @@
+{
+  "cannbot-skills-326a6b47210f": {
+    "local_checkout": "external-repos/cannbot-skills",
+    "provider": "gitcode",
+    "repository_url": "https://gitcode.com/cann/cannbot-skills",
+    "revision": "326a6b47210fc31a9c225f1643778a4cc733e57c"
+  },
+  "triton-ascend-41f499924da1": {
+    "local_checkout": "external-repos/triton-ascend",
+    "provider": "github",
+    "repository_url": "https://github.com/triton-lang/triton-ascend",
+    "revision": "41f499924da1d58955196c946895597e992127f0"
+  },
+  "vllm-a0c092ee72c0": {
+    "local_checkout": "external-repos/vllm",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b"
+  },
+  "vllm-d18ed2304a27": {
+    "local_checkout": "external-repos/vllm-d18ed2304a27",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "d18ed2304a2703e3211fc384a58607e754f5b723"
+  },
+  "vllm-ascend-32a59d4e349c": {
+    "local_checkout": "external-repos/vllm-ascend",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "32a59d4e349c12c32cdbc1916436c16e39939afc"
+  },
+  "vllm-ascend-8645122088f5": {
+    "local_checkout": "external-repos/vllm-ascend-8645122088f5",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "8645122088f5cad1701205310573c5ee05c809f5"
+  },
+  "vllm-ascend-e3bb5f570f0b": {
+    "local_checkout": "external-repos/vllm-ascend-e3bb5f570",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "e3bb5f570f0b7d7fef9df3190a450052bee090cc"
+  }
+}

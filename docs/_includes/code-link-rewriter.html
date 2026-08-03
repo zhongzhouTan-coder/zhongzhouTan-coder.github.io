@@ -1,0 +1,30 @@
+<script>
+  (function () {
+    const repositories = {{ site.data.code_repositories | jsonify }};
+    const providers = {
+      github: function (repository, revision, path) {
+        return repository + '/blob/' + revision + '/' + path;
+      },
+      gitcode: function (repository, revision, path) {
+        return repository + '/blob/' + revision + '/' + path;
+      }
+    };
+
+    document.querySelectorAll('a.code-link[data-code-repo]').forEach(function (link) {
+      const repository = repositories[link.dataset.codeRepo];
+      const buildUrl = repository && providers[repository.provider];
+      if (!buildUrl) return;
+
+      const encodedPath = link.dataset.codePath
+        .split('/')
+        .map(encodeURIComponent)
+        .join('/');
+      let fragment = '#L' + link.dataset.codeLine;
+      if (link.dataset.codeEndLine) fragment += '-L' + link.dataset.codeEndLine;
+
+      link.href = buildUrl(repository.repository_url, repository.revision, encodedPath) + fragment;
+      link.classList.add('code-link--remote');
+      link.title = 'View the pinned source on ' + (repository.provider === 'gitcode' ? 'GitCode' : 'GitHub');
+    });
+  }());
+</script>

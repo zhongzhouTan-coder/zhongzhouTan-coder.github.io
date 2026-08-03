@@ -1,5 +1,7 @@
 ---
 kind: repository-source
+provider: github
+clone_url: https://github.com/vllm-project/vllm.git
 repository_url: https://github.com/vllm-project/vllm
 local_checkout: external-repos/vllm/
 commit: d18ed2304a2703e3211fc384a58607e754f5b723

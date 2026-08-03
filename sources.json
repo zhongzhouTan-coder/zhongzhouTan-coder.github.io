@@ -3,7 +3,7 @@
   "naming_policy": {
     "pdf": "raw/{category}/{slug}--{source_id}.pdf",
     "markdown": "raw/{category}/{slug}.md",
-    "repository": "raw/{category}/{repo_slug}-codebase--github-{short_sha}.md",
+    "repository": "raw/{category}/{repo_slug}-codebase--{provider}-{short_sha}.md",
     "web_html": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.html",
     "web_metadata": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.metadata.json",
     "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md",
@@ -345,6 +345,8 @@
       "revision": "d18ed2304a2703e3211fc384a58607e754f5b723",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
         "raw/frameworks/vllm-codebase--github-d18ed2304a27.md"
       ],
@@ -363,6 +365,8 @@
       "revision": "8645122088f5cad1701205310573c5ee05c809f5",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
         "raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"
       ],
@@ -381,6 +385,8 @@
       "revision": "e3bb5f570f0b7d7fef9df3190a450052bee090cc",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
         "raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md"
       ],
@@ -398,6 +404,8 @@
       "revision": "32a59d4e349c12c32cdbc1916436c16e39939afc",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
         "raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md"
       ],
@@ -569,6 +577,8 @@
       "revision": "41f499924da1d58955196c946895597e992127f0",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/triton-lang/triton-ascend",
       "raw_paths": [
         "raw/frameworks/triton-ascend-codebase--github-41f499924da1.md"
       ],
@@ -687,6 +697,8 @@
       "revision": "a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
         "raw/frameworks/vllm-codebase--github-a0c092ee72c0.md"
       ],
@@ -811,15 +823,17 @@
     }
   ,
     {
-      "id": "github:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c",
+      "id": "gitcode:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c",
       "title": "CANNBot Skills — Triton Ascend Development Skills",
       "slug": "cannbot-skills-codebase",
       "repo_slug": "cannbot-skills",
       "revision": "326a6b47210fc31a9c225f1643778a4cc733e57c",
       "category": "frameworks",
       "kind": "repository",
+      "provider": "gitcode",
+      "repository_url": "https://gitcode.com/cann/cannbot-skills",
       "raw_paths": [
-        "raw/frameworks/cannbot-skills-codebase--github-326a6b47210f.md"
+        "raw/frameworks/cannbot-skills-codebase--gitcode-326a6b47210f.md"
       ],
       "derived_path": "derived/repo-analysis/frameworks/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/",
       "docs_paths": [

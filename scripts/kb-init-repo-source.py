@@ -12,6 +12,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from repository_remote import parse_repository_remote
+
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -37,19 +39,6 @@ def slugify(value: str) -> str:
     if not slug:
         fail(f"cannot derive a repository slug from {value!r}")
     return slug
-
-
-def parse_github_remote(remote: str) -> tuple[str, str]:
-    patterns = (
-        r"^https://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$",
-        r"^git@github\.com:([^/]+)/(.+?)(?:\.git)?$",
-        r"^ssh://git@github\.com/([^/]+)/(.+?)(?:\.git)?/?$",
-    )
-    for pattern in patterns:
-        match = re.fullmatch(pattern, remote)
-        if match:
-            return match.group(1), match.group(2)
-    fail(f"origin is not a recognized GitHub repository URL: {remote}")
 
 
 def parse_important_file(value: str) -> tuple[str, str]:
@@ -113,6 +102,8 @@ def update_manifest_text(
             "revision",
             "category",
             "kind",
+            "provider",
+            "repository_url",
             "raw_paths",
             "derived_path",
         )
@@ -144,7 +135,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Create or reuse an immutable raw/derived source revision for a "
-            "clean GitHub checkout under external-repos/."
+            "clean GitHub or GitCode checkout under external-repos/."
         )
     )
     parser.add_argument("checkout")
@@ -173,6 +164,7 @@ def main() -> int:
     root = args.root.resolve()
     categories_path = root / "kb-categories.json"
     manifest_path = root / "sources.json"
+    code_repositories_path = root / "docs/_data/code_repositories.json"
     categories = json.loads(categories_path.read_text(encoding="utf-8"))["categories"]
     if args.category not in categories:
         fail(f"unknown category: {args.category}")
@@ -203,7 +195,11 @@ def main() -> int:
         fail(f"checkout is not ignored by git: {checkout_rel}")
 
     remote = run_git(checkout, "remote", "get-url", "origin")
-    owner, repo = parse_github_remote(remote)
+    try:
+        repository_remote = parse_repository_remote(remote)
+    except ValueError as exc:
+        fail(str(exc))
+    repo = repository_remote.repository_path.rsplit("/", 1)[-1]
     commit = run_git(checkout, "rev-parse", "HEAD")
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         fail(f"git returned a non-canonical commit SHA: {commit}")
@@ -217,7 +213,7 @@ def main() -> int:
         fail("checkout is dirty; clean it or pass --allow-dirty")
 
     short_sha = commit[:12]
-    repository_id = f"github:{owner}/{repo}@{commit}"
+    repository_id = repository_remote.source_id(commit)
     manifest_text = manifest_path.read_text(encoding="utf-8")
     manifest_data = json.loads(manifest_text)
     existing_entry = next(
@@ -245,7 +241,8 @@ def main() -> int:
     )
     source_slug = f"{repo_slug}-codebase"
     raw_path = (
-        f"raw/{args.category}/{repo_slug}-codebase--github-{short_sha}.md"
+        f"raw/{args.category}/{repo_slug}-codebase--"
+        f"{repository_remote.provider}-{short_sha}.md"
     )
     derived_path = (
         f"derived/repo-analysis/{args.category}/{repo_slug}/{commit}/"
@@ -273,7 +270,9 @@ def main() -> int:
 
     raw_content = f"""---
 kind: repository-source
-repository_url: https://github.com/{owner}/{repo}
+provider: {repository_remote.provider}
+clone_url: {repository_remote.clone_url}
+repository_url: {repository_remote.repository_url}
 local_checkout: {checkout_rel}/
 commit: {commit}
 ref: {ref}
@@ -324,11 +323,45 @@ quantitative codebase claims.
         "revision": commit,
         "category": args.category,
         "kind": "repository",
+        "provider": repository_remote.provider,
+        "repository_url": repository_remote.repository_url,
         "raw_paths": [raw_path],
         "derived_path": derived_path,
         "docs_paths": docs_paths,
         "status": (existing_entry or {}).get("status", "pending"),
     }
+
+    code_repository_key = f"{repo_slug}-{short_sha}"
+    code_repository = {
+        "local_checkout": checkout_rel,
+        "provider": repository_remote.provider,
+        "repository_url": repository_remote.repository_url,
+        "revision": commit,
+    }
+    code_repositories = (
+        json.loads(code_repositories_path.read_text(encoding="utf-8"))
+        if code_repositories_path.is_file()
+        else {}
+    )
+    existing_code_repository = code_repositories.get(code_repository_key)
+    if (
+        existing_code_repository is not None
+        and existing_code_repository != code_repository
+    ):
+        fail(
+            f"code repository key {code_repository_key} has conflicting metadata"
+        )
+    for key, registered_repository in code_repositories.items():
+        if (
+            key != code_repository_key
+            and registered_repository.get("local_checkout") == checkout_rel
+            and registered_repository.get("revision") != commit
+        ):
+            fail(
+                f"checkout {checkout_rel} is already registered at another revision; "
+                "use a revision-specific checkout path"
+            )
+    code_repositories[code_repository_key] = code_repository
 
     updated_manifest, is_new = update_manifest_text(manifest_text, entry)
     raw_file = root / raw_path
@@ -339,6 +372,7 @@ quantitative codebase claims.
         print(f"action: {action}")
         print(f"raw: {raw_path}")
         print(f"derived: {derived_path}")
+        print(f"code repository: {code_repository_key}")
         print(json.dumps(entry, indent=2, ensure_ascii=False))
         return 0
 
@@ -353,6 +387,11 @@ quantitative codebase claims.
         fail("registered revision is missing its immutable raw or analysis file")
 
     manifest_path.write_text(updated_manifest, encoding="utf-8")
+    code_repositories_path.parent.mkdir(parents=True, exist_ok=True)
+    code_repositories_path.write_text(
+        f"{json.dumps(code_repositories, indent=2, ensure_ascii=False)}\n",
+        encoding="utf-8",
+    )
     print(f"{'created' if is_new else 'reused'} {repository_id}")
     print("Complete the docs citations, set status to ingested, then run integrity checks.")
     return 0

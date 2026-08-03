@@ -30,8 +30,9 @@ derived revision to point at a different commit.
   metadata readers, and test discovery.
 - Do not edit, format, delete, switch, pull, or vendor files inside
   `external-repos/` as part of docs work.
-- Capture the repository URL, exact 40-character commit SHA, branch or tag,
-  inspected date, and checkout state before writing docs.
+- Capture the origin clone URL, normalized provider and repository web URL,
+  exact 40-character commit SHA, branch or tag, inspected date, and checkout
+  state before writing docs.
 - A dirty checkout is not reproducible from its commit SHA alone. Prefer a
   clean checkout. If dirty state is explicitly accepted, record it and use
   `confidence: low` on every consuming docs page.
@@ -51,7 +52,7 @@ git -C external-repos/<repo> status --porcelain
 Each repository commit gets a distinct canonical record:
 
 ```text
-raw/{category}/{repo-slug}-codebase--github-{short-sha}.md
+raw/{category}/{repo-slug}-codebase--{provider}-{short-sha}.md
 ```
 
 `short-sha` is the first 12 characters of the full commit. The manifest keeps
@@ -65,7 +66,9 @@ Use this machine-readable source-record template:
 ```markdown
 ---
 kind: repository-source
-repository_url: https://github.com/owner/repo
+provider: gitcode
+clone_url: git@gitcode.com:owner/repo.git
+repository_url: https://gitcode.com/owner/repo
 local_checkout: external-repos/repo/
 commit: 0123456789abcdef0123456789abcdef01234567
 ref: main
@@ -92,15 +95,17 @@ The corresponding `sources.json` entry is:
 
 ```json
 {
-  "id": "github:owner/repo@0123456789abcdef0123456789abcdef01234567",
+  "id": "gitcode:owner/repo@0123456789abcdef0123456789abcdef01234567",
   "title": "Repo Codebase",
   "slug": "repo-codebase",
   "repo_slug": "repo",
   "revision": "0123456789abcdef0123456789abcdef01234567",
   "category": "frameworks",
   "kind": "repository",
+  "provider": "gitcode",
+  "repository_url": "https://gitcode.com/owner/repo",
   "raw_paths": [
-    "raw/frameworks/repo-codebase--github-0123456789ab.md"
+    "raw/frameworks/repo-codebase--gitcode-0123456789ab.md"
   ],
   "derived_path": "derived/repo-analysis/frameworks/repo/0123456789abcdef0123456789abcdef01234567/",
   "docs_paths": [
@@ -126,9 +131,9 @@ Every revision requires `important-files.md` with this front matter:
 ```yaml
 ---
 kind: repository-analysis
-repository_id: github:owner/repo@0123456789abcdef0123456789abcdef01234567
+repository_id: gitcode:owner/repo@0123456789abcdef0123456789abcdef01234567
 commit: 0123456789abcdef0123456789abcdef01234567
-source_record: raw/frameworks/repo-codebase--github-0123456789ab.md
+source_record: raw/frameworks/repo-codebase--gitcode-0123456789ab.md
 generated: 2026-07-28
 ---
 ```
@@ -197,6 +202,71 @@ Synthesis pages may use a free-form structure. Both page types must:
 - keep generated files, vendored dependencies, lockfiles, and large fixtures
   low-priority unless central to the question.
 
+Use revision-aware code links as the default drafting process, not as a
+cleanup pass after the analysis is written:
+
+1. Register the pinned checkout before drafting the page.
+2. While collecting evidence, record the repository-relative file path,
+   symbol, and smallest useful line range for each important finding.
+3. Insert the code link at the first meaningful occurrence of that file or
+   symbol as the finding is written.
+4. Before completion, enable `code_links: strict` and run the repository code
+   link checker through `./scripts/lint-docs.sh`.
+
+New repository-backed pages must use `code_links: strict` from their first
+draft. When materially updating an older repository-backed page, migrate its
+concrete file references and enable strict mode as part of the update. On
+strict pages, every concrete repository filename in inline code must use a
+validated `code-link` anchor. Rewrite bare extensions, generated output
+patterns, and hypothetical filenames as prose; they are not navigable
+repository evidence.
+
+### Link Directly to Inspected Code
+
+Make important file paths and symbols navigable with a revision-aware code
+anchor instead of leaving readers to search for inline-code paths manually:
+
+```html
+<a class="code-link"
+   href="../../../external-repos/vllm/vllm/v1/core/sched/scheduler.py#L248"
+   data-code-repo="vllm-a0c092ee72c0"
+   data-code-path="vllm/v1/core/sched/scheduler.py"
+   data-code-line="248"
+   data-code-end-line="312"><code>Scheduler.schedule()</code></a>
+```
+
+`scripts/kb-init-repo-source.py` registers each immutable revision in
+`docs/_data/code_repositories.json` from the checkout's normalized `origin`.
+The registry key must identify the revision, and its provider, web URL, and
+full `revision` must agree with the raw source record and `sources.json` entry.
+Keep `local_checkout` beneath `external-repos/`.
+
+The `href` must be a relative path from the Markdown page to the registered
+checkout, so a Markdown preview opens the local dependency. The Jekyll layout
+uses the `data-code-*` metadata and registered provider to replace that
+destination with a GitHub or GitCode `blob` URL pinned to the full commit.
+Local Jekyll serving follows the web behavior and also renders the remote URL.
+Never put a machine-specific absolute workspace path in a docs page or
+committed config.
+
+Use code links for:
+
+- the first meaningful occurrence of every important file or symbol;
+- each step in a runtime flow or recommended reading path;
+- exact implementation evidence behind a non-obvious architectural claim.
+
+Treat repository-specific class, function, method, constant, command, and
+configuration names as link candidates when a reader would reasonably search
+for their implementation. Link the symbol label to the defining or most
+relevant use site. Generic language keywords, API concepts, generated names,
+and repeated mentions do not need links. If a directory or module name matters
+but has no single source line, link its most useful entry-point file and name
+that entry point in the label rather than creating a non-navigable path.
+
+Always provide a start line. Add `end_line` when a short range contains the
+complete implementation being discussed. Keep ordinary backticks for repeated
+mentions that do not benefit from another link.
+
 When a flow diagram materially helps, save its Mermaid source as a local
 `.mmd` asset and link it from the page. An inline rendered copy may accompany
 the linked source.
@@ -261,6 +331,7 @@ Apply the most conservative matching rule:
 - [ ] Every consuming page appears in `docs_paths`.
 - [ ] Every consuming page cites the raw record and a derived revision file.
 - [ ] Every consuming page states the full SHA near the top.
+- [ ] Important files, symbols, and runtime-flow steps use revision-aware code links.
 - [ ] Confidence follows the most conservative applicable rule.
 - [ ] Navigation and log updates were made only when warranted.
 - [ ] Source normalization, integrity checks, and docs lint all pass.

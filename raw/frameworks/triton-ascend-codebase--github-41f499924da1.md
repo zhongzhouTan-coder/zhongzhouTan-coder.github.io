@@ -1,5 +1,7 @@
 ---
 kind: repository-source
+provider: github
+clone_url: https://github.com/triton-lang/triton-ascend.git
 repository_url: https://github.com/triton-lang/triton-ascend
 local_checkout: external-repos/triton-ascend/
 commit: 41f499924da1d58955196c946895597e992127f0

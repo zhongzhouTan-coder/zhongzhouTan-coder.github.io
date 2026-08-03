@@ -1,8 +1,8 @@
 ---
 kind: repository-analysis
-repository_id: github:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c
+repository_id: gitcode:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c
 commit: 326a6b47210fc31a9c225f1643778a4cc733e57c
-source_record: raw/frameworks/cannbot-skills-codebase--github-326a6b47210f.md
+source_record: raw/frameworks/cannbot-skills-codebase--gitcode-326a6b47210f.md
 generated: 2026-08-03
 ---
 

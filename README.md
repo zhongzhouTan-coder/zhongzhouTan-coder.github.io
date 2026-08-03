@@ -88,6 +88,11 @@ python3 scripts/kb-normalize-source-name.py --json
 bash scripts/serve-local.sh
 ```
 
+Repository code references use relative `external-repos/` targets in their
+Markdown source, so editor previews open the local dependency checkout. Jekyll
+pages resolve the same references to provider-correct GitHub or GitCode links
+pinned to the inspected commit.
+
 **Lint docs:**
 
 ```bash

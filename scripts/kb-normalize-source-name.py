@@ -19,7 +19,7 @@ def source_id_suffix(source_id: str) -> str:
     prefix, _, value = source_id.partition(":")
     if prefix == "arxiv":
         return f"arxiv-{value}"
-    if prefix in {"github", "nvidia", "paper", "web"}:
+    if prefix in {"github", "gitcode", "nvidia", "paper", "web"}:
         return prefix
     return source_id.replace(":", "-")
 
@@ -46,10 +46,11 @@ def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
         return None
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
         repo_slug = entry.get("repo_slug")
+        provider = entry.get("provider") or entry.get("id", "").partition(":")[0]
         revision = entry.get("revision", "")
-        if repo_slug and SHA_RE.fullmatch(revision):
+        if repo_slug and provider in {"github", "gitcode"} and SHA_RE.fullmatch(revision):
             return (
-                f"raw/{category}/{repo_slug}-codebase--github-"
+                f"raw/{category}/{repo_slug}-codebase--{provider}-"
                 f"{revision[:12]}{suffix}"
             )
         return None

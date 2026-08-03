@@ -232,4 +232,9 @@ if ! "$python_command" scripts/check-math-rendering.py; then
   exit 1
 fi
 
+printf '\n%s\n' '--- repository code links ---'
+if ! "$python_command" scripts/check-code-links.py; then
+  exit 1
+fi
+
 exit 0

@@ -1,6 +1,8 @@
 ---
 kind: repository-source
-repository_url: https://github.com/cann/cannbot-skills
+provider: gitcode
+clone_url: git@gitcode.com:cann/cannbot-skills.git
+repository_url: https://gitcode.com/cann/cannbot-skills
 local_checkout: external-repos/cannbot-skills/
 commit: 326a6b47210fc31a9c225f1643778a4cc733e57c
 ref: main

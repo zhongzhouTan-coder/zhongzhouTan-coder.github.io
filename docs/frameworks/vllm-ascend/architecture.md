@@ -86,7 +86,7 @@ When vLLM starts, it calls `register()` which returns `"vllm_ascend.platform.NPU
 
 ### 2. NPUPlatform — The Default Switchboard
 
-`NPUPlatform` (inheriting vLLM's `Platform`) is the central configuration point. Every vLLM component that needs platform-specific behavior queries the platform object:
+<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/platform.py#L127" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/platform.py" data-code-line="127"><code>NPUPlatform</code></a> (inheriting vLLM's `Platform`) is the central configuration point. Every vLLM component that needs platform-specific behavior queries the platform object:
 
 | Setting | Standard vLLM (CUDA) | vllm-ascend |
 |---|---|---|

@@ -60,6 +60,51 @@ class NormalizeSourceNameTests(unittest.TestCase):
         )
         self.assertEqual(result.stderr, "")
 
+    def test_gitcode_repository_uses_provider_suffix(self) -> None:
+        commit = "0123456789abcdef0123456789abcdef01234567"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = {
+                "sources": [
+                    {
+                        "id": f"gitcode:owner/repo@{commit}",
+                        "slug": "repo-codebase",
+                        "repo_slug": "repo",
+                        "provider": "gitcode",
+                        "revision": commit,
+                        "category": "frameworks",
+                        "kind": "repository",
+                        "raw_paths": ["raw/frameworks/wrong.md"],
+                        "derived_path": (
+                            f"derived/repo-analysis/frameworks/repo/{commit}/"
+                        ),
+                    }
+                ]
+            }
+            (root / "sources.json").write_text(
+                json.dumps(manifest), encoding="utf-8"
+            )
+
+            result = subprocess.run(
+                [
+                    "python3",
+                    str(NORMALIZE_SCRIPT),
+                    "--root",
+                    str(root),
+                    "--json",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(
+            payload["mismatches"][0]["expected"],
+            "raw/frameworks/repo-codebase--gitcode-0123456789ab.md",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

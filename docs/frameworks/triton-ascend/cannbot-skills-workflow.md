@@ -3,8 +3,9 @@ title: "CANNBot Skills: Triton Ascend Development Workflow"
 summary: "How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel development — from task extraction through design, coding, verification, and iterative optimization."
 layout: default
 confidence: high
+code_links: strict
 sources:
-  - raw/frameworks/cannbot-skills-codebase--github-326a6b47210f.md
+  - raw/frameworks/cannbot-skills-codebase--gitcode-326a6b47210f.md
   - derived/repo-analysis/frameworks/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/important-files.md
 updated: 2026-08-03
 ---
@@ -20,7 +21,7 @@ updated: 2026-08-03
 
 **What:** CANNBot provides seven specialized Triton-domain skills that together form an end-to-end AI-assisted pipeline for developing optimized Triton Ascend kernels — from extracting operator tasks out of existing PyTorch code, through algorithm design and code generation, to verification, precision debugging, latency optimization, and simulator-driven bottleneck diagnosis.
 
-**How:** A Plugin (`triton-op-generator`) orchestrates the skills across six phases in a structured pipeline. Each skill is an independent expert agent that receives structured inputs, produces structured outputs, and hands off to the next phase. The pipeline is iterative: both code generation (Phase 3) and performance optimization (Phase 4) loop up to 5 iterations, with a "Conductor" analyzing failures between attempts.
+**How:** The <a class="code-link" href="../../../external-repos/cannbot-skills/plugins-official/triton-op-generator/AGENTS.md#L35" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="plugins-official/triton-op-generator/AGENTS.md" data-code-line="35"><code>triton-op-generator</code></a> Plugin orchestrates the skills across six phases in a structured pipeline. Each skill is an independent expert agent that receives structured inputs, produces structured outputs, and hands off to the next phase. The pipeline is iterative: both code generation (Phase 3) and performance optimization (Phase 4) loop up to 5 iterations, with a "Conductor" analyzing failures between attempts.
 
 **The number:** The optimizer alone defines 25 distinct optimization points, each with explicit hit conditions and reference documentation — covering tiling, vectorization, memory access, loop transforms, and NPU-specific Cube/MTE3 pipeline decoupling.
 
@@ -134,8 +135,8 @@ Each CANNBot Triton skill is a **self-contained expert** that receives structure
 
 | Skill | Phase | Role | Inputs | Outputs |
 |-------|-------|------|--------|---------|
-| `triton-task-extractor` | 1 | Extract standardized task from PyTorch code | Source `.py`, optional `.json` for multi-case | Self-contained `{op_name}.py` with `Model` + `get_inputs()` |
-| `triton-op-designer` | 2 | Design algorithm sketch | `task_desc`, `arch`, optional GPU kernel ref, template constraints | `sketch.txt` in UnifiedSketch DSL |
+| `triton-task-extractor` | 1 | Extract standardized task from PyTorch code | Python source, optional JSON case manifest | Self-contained task module with `Model` + `get_inputs()` |
+| `triton-op-designer` | 2 | Design algorithm sketch | `task_desc`, `arch`, optional GPU kernel ref, template constraints | UnifiedSketch design document |
 | `triton-op-coding` | 3 | Generate `@triton.jit` kernel code | `task_desc`, `sketch`, optional GPU ref, previous errors | `ModelNew` with pure Triton kernel |
 | `triton-op-verifier` | 3, 4 | Compile, run, compare precision & benchmark | Generated code path, task file, op name | Pass/fail, error summary, perf data |
 | `triton-precision-debug` | 3 (on fail) | Five-stage ULP isolation | Code, task, verify failure JSON, iteration history | Root cause, fixed code, verification advice |
@@ -148,16 +149,16 @@ Each CANNBot Triton skill is a **self-contained expert** that receives structure
 
 This skill converts arbitrary PyTorch operator code into a **standardized task format** that all downstream skills can consume. It supports two modes:
 
-- **Single-case:** Source `.py` contains `Model(forward)` + `get_inputs()` returning one set of inputs. The skill inlines all custom dependencies into a self-contained file.
-- **Multi-case:** Source `.py` contains `get_input_groups()` with a companion `.json` file (JSONL, one case per line). The skill **byte-copies both files unchanged** — no rewriting, no downgrade to single-case.
+- **Single-case:** The Python source contains `Model(forward)` + `get_inputs()` returning one set of inputs. The skill inlines all custom dependencies into a self-contained file.
+- **Multi-case:** The Python source contains `get_input_groups()` with a companion JSONL case manifest. The skill **byte-copies both files unchanged** — no rewriting, no downgrade to single-case.
 
-The key design constraint: the output must pass `validate_task.py`, which statically checks the `Model`/`get_inputs`/`get_init_inputs` contract and runs a forward pass.
+The key design constraint: the output must pass <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-task-extractor/scripts/validate_task.py#L442" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-task-extractor/scripts/validate_task.py" data-code-line="442"><code>validate_task.py</code></a>, which statically checks the `Model`/`get_inputs`/`get_init_inputs` contract and runs a forward pass.
 
 ---
 
 ### 2. `triton-op-designer` — Algorithm Sketch Before Code
 
-This is the **most architecturally distinctive** skill. Before writing any code, it produces a `sketch.txt` in **UnifiedSketch DSL** — a structured, human-readable algorithm description that includes:
+This is the **most architecturally distinctive** skill. Before writing any code, it produces a **UnifiedSketch DSL design document** — a structured, human-readable algorithm description that includes:
 
 - Grid decomposition strategy
 - Tiling scheme (which dimensions, block sizes)
@@ -166,10 +167,10 @@ This is the **most architecturally distinctive** skill. Before writing any code,
 
 The designer loads:
 
-1. **Mandatory:** Sketch DSL syntax and design patterns from `references/sketch-design.md`
-2. **Mandatory:** Hardware specs from `npu-arch/references/npu-arch-guide-triton.md` and `npu-hardware-params.md`
-3. **Selective:** Exactly 2 case studies chosen by operator type match (e.g., `matmul-swizzle2d.md` for matmul, `reduction-amax-large.md` for reduction)
-4. **Conditional:** Template constraints from `.claude/template/{category}.md` if they exist
+1. **Mandatory:** Sketch DSL syntax and design patterns from <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-op-designer/references/sketch-design.md#L1" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-op-designer/references/sketch-design.md" data-code-line="1"><code>sketch-design.md</code></a>
+2. **Mandatory:** Hardware specs from <a class="code-link" href="../../../external-repos/cannbot-skills/ops/npu-arch/references/npu-arch-guide-triton.md#L1" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/npu-arch/references/npu-arch-guide-triton.md" data-code-line="1"><code>npu-arch-guide-triton.md</code></a> and <a class="code-link" href="../../../external-repos/cannbot-skills/ops/npu-arch/references/npu-hardware-params.md#L1" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/npu-arch/references/npu-hardware-params.md" data-code-line="1"><code>npu-hardware-params.md</code></a>
+3. **Selective:** Exactly 2 case studies chosen by operator type match, such as <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-op-designer/references/cases/matmul-swizzle2d.md#L1" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-op-designer/references/cases/matmul-swizzle2d.md" data-code-line="1"><code>matmul-swizzle2d.md</code></a> for matmul and <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-op-designer/references/cases/reduction-amax-large.md#L1" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-op-designer/references/cases/reduction-amax-large.md" data-code-line="1"><code>reduction-amax-large.md</code></a> for reduction
+4. **Conditional:** Category-specific template constraints when supplied in the generated task workspace
 
 The sketch is then checked against **Layer 1 constraints** (hard rules like "never flatten a 2D transpose into a 1D gather kernel") before proceeding.
 
@@ -206,7 +207,7 @@ For float compute, three conditions must ALL pass:
 2. **Matched ratio:** ≥90% of elements meet dtype-specific relative thresholds
 3. **MERE:** Mean element-wise relative error < dtype-specific threshold
 
-After precision passes, it runs `benchmark.py` and reports latency + speedup vs. the reference PyTorch implementation.
+After precision passes, it runs <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-op-verifier/scripts/benchmark.py#L774" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-op-verifier/scripts/benchmark.py" data-code-line="774"><code>benchmark.py</code></a> and reports latency + speedup vs. the reference PyTorch implementation.
 
 ---
 
@@ -301,11 +302,11 @@ Phase 6: Session export (session.jsonl + session.md for audit trail)
 The orchestrator detects the hardware architecture (`ascend910b1` by default, or from `npu-smi info`). It also classifies the input mode:
 
 - **Mode A (standard):** User provides a PyTorch reference implementation. The task extractor builds the task file.
-- **Mode B (GPU kernel):** User provides only a GPU Triton kernel. The orchestrator constructs a `Model` that wraps the kernel's semantics (using pre-computed GPU output if available from a `.pt` file).
+- **Mode B (GPU kernel):** User provides only a GPU Triton kernel. The orchestrator constructs a `Model` that wraps the kernel's semantics, using a pre-computed serialized GPU output when available.
 
 ### Phase 2: Layer 1 Compliance Gate
 
-Before calling the designer, the orchestrator checks for a template file at `.claude/template/{category}.md`. This file contains **Layer 1 constraints** — hard architectural rules derived from past experience with that operator category. Example constraints:
+Before calling the designer, the orchestrator checks the generated task workspace for a category-specific template. This file contains **Layer 1 constraints** — hard architectural rules derived from past experience with that operator category. Example constraints:
 
 > "For layout-transform operators, the sketch MUST NOT use a single 1D element-wise gather kernel as the main path. Instead, provide separate kernel paths for 2D transpose, batch transpose, swap adjacent dims, reverse dims, and move size-1 dims."
 
@@ -320,9 +321,9 @@ Both Phase 3 (code generation) and Phase 4 (optimization) run as iterative loops
 
 ## Design Patterns Worth Reusing for triton-ascend Development
 
-### 1. Progressive Disclosure via `references/` Directory
+### 1. Progressive Disclosure via Reference Directories
 
-Every skill keeps its core logic in `SKILL.md` and detailed reference material in a `references/` subdirectory. This is a clean separation that prevents context bloat. When writing triton-ascend code, the same pattern applies: keep the kernel logic concise and reference hardware specs from separate files.
+Every skill keeps its core logic in a skill definition, such as the <a class="code-link" href="../../../external-repos/cannbot-skills/ops/triton-task-extractor/SKILL.md#L14" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="ops/triton-task-extractor/SKILL.md" data-code-line="14"><code>task-extractor skill definition</code></a>, and stores detailed reference material separately. This is a clean separation that prevents context bloat. When writing triton-ascend code, the same pattern applies: keep the kernel logic concise and reference hardware specs from separate files.
 
 ### 2. The UnifiedSketch DSL as a Design Intermediate
 
@@ -334,7 +335,7 @@ The latency optimizer's strict "one point at a time, verify after each" discipli
 
 ### 4. Template Files as Institutional Memory
 
-The `.claude/template/{category}.md` files encode lessons learned from past kernels of the same category. For triton-ascend development, maintain a similar catalog: for each operator category (matmul, reduction, element-wise, normalization, attention), record which tiling strategies worked, which failed, and which NPU-specific gotchas apply.
+The category-specific templates encode lessons learned from past kernels of the same category. For triton-ascend development, maintain a similar catalog: for each operator category (matmul, reduction, element-wise, normalization, attention), record which tiling strategies worked, which failed, and which NPU-specific gotchas apply.
 
 ### 5. Simulator Profiling as a Last Resort, Not First Guess
 
@@ -372,6 +373,6 @@ Based on CANNBot's collected experience across hundreds of kernels, the optimiza
 
 ## Open Questions
 
-- The template file system (`.claude/template/{category}.md`) currently has no formal schema — Layer 1 constraints and Layer 2 algorithm skeletons are mixed in prose. A structured format would enable automated constraint checking.
+- The category-specific template system currently has no formal schema — Layer 1 constraints and Layer 2 algorithm skeletons are mixed in prose. A structured format would enable automated constraint checking.
 - The simulator-optimizer's mapping from `msprof` pipeline statistics to specific latency-optimizer points relies on heuristics. Quantifying how often these mappings are correct would improve trust in the diagnosis loop.
 - Multi-case kernel splitting (optimization point 18) uses a heuristic threshold (`speedup_vs_torch < 0.8`). This threshold may need tuning per operator category and NPU generation.

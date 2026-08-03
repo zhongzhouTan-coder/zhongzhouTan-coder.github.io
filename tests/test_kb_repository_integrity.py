@@ -45,6 +45,8 @@ class RepositoryIntegrityTests(unittest.TestCase):
             "revision": COMMIT,
             "category": "frameworks",
             "kind": "repository",
+            "provider": "github",
+            "repository_url": "https://github.com/owner/repo",
             "raw_paths": [RAW_PATH],
             "derived_path": DERIVED_PATH,
             "docs_paths": [
@@ -58,6 +60,8 @@ class RepositoryIntegrityTests(unittest.TestCase):
             RAW_PATH,
             f"""---
 kind: repository-source
+provider: github
+clone_url: git@github.com:owner/repo.git
 repository_url: https://github.com/owner/repo
 local_checkout: external-repos/repo/
 commit: {COMMIT}
@@ -196,6 +200,11 @@ updated: 2026-07-28
             encoding="utf-8",
         )
         self.assert_integrity_error("raw metadata commit must be")
+
+    def test_provider_must_match_repository_id(self) -> None:
+        self.entry["provider"] = "gitcode"
+        self.write_manifest()
+        self.assert_integrity_error("provider must match repository id")
 
     def test_important_files_is_required(self) -> None:
         (self.root / ANALYSIS_PATH).unlink()
