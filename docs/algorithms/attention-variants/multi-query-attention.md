@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/multi-query-attention-one-write-head--paper.pdf
   - derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md
-updated: 2026-07-26
+updated: 2026-08-03
 ---
 
 # Multi-Query Attention: One Write-Head is All You Need
@@ -229,9 +229,9 @@ Here is the end-to-end flow for incremental decoding with MQA:
 3. **Key projection (shared):** $\Delta K = \text{einsum}("bd, dk \to bk", x, P_k)$ — single new key.
 4. **Value projection (shared):** $\Delta V = \text{einsum}("bd, dv \to bv", x, P_v)$ — single new value.
 5. **KV cache append:** Append $\Delta K$ and $\Delta V$ to `prev_K` and `prev_V` — both shape $[b, m, k/v]$, not $[b, h, m, k/v]$.
-6. **Attention scores:** $\text{logits} = \text{einsum}("bhk, bmk \to bhm", q, \text{prev\_K})$ — K broadcasts across $h$.
+6. **Attention scores:** $\text{logits} = \text{einsum}("bhk, bmk \to bhm", q, \text{prevK})$ — K broadcasts across $h$.
 7. **Softmax:** `weights = softmax(logits)`.
-8. **Weighted sum:** $o = \text{einsum}("bhm, bmv \to bhv", \text{weights}, \text{prev\_V})$ — V broadcasts across $h$.
+8. **Weighted sum:** $o = \text{einsum}("bhm, bmv \to bhv", \text{weights}, \text{prevV})$ — V broadcasts across $h$.
 9. **Output projection (per-head):** $y = \text{einsum}("bhv, hdv \to bd", o, P_o)$ — each head writes through its own projection.
 
 The critical difference from MHA is in steps 5-8: `prev_K` and `prev_V` are $h$ times smaller, making every subsequent read $h$ times cheaper in memory bandwidth.

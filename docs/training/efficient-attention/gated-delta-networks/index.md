@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
   - derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md
-updated: 2026-07-29
+updated: 2026-08-03
 ---
 
 # Gated Delta Networks: Improving Mamba2 with Delta Rule
@@ -124,7 +124,7 @@ The update follows a three-stage **predict → measure → correct** cycle:
 
 | Stage | Operation | Role |
 |---|---|---|
-| ① **Predict** | $\hat{\mathbf v}_t = \alpha_t \mathbf S_{t-1} \mathbf k_t$ | Key→value lookup: retrieve whatever value the memory currently stores at $\mathbf k_t$ |
+| ① **Predict** | $\underset{t}{\hat{\mathbf v}} = \alpha_t \underset{t-1}{\mathbf S} \mathbf k_t$ | Key→value lookup: retrieve whatever value the memory currently stores at $\mathbf k_t$ |
 | ② **Measure** | $\mathbf e_t = \mathbf v_t - \hat{\mathbf v}_t$ | Compute how far the stored value is from the desired value |
 | ③ **Correct** | $\mathbf S_t = \alpha_t \mathbf S_{t-1} + \beta_t \mathbf e_t \mathbf k_t^T$ | Write only the error back, associated with the same key |
 

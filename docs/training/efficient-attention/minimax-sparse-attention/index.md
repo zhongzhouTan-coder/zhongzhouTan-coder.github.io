@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/minimax-sparse-attention--paper.pdf
   - derived/pdf-markdown/training/minimax-sparse-attention.md
-updated: 2026-07-28
+updated: 2026-08-03
 ---
 
 # MiniMax Sparse Attention (MSA)
@@ -185,8 +185,8 @@ MSA uses superscripts to distinguish branches and selects at block granularity w
 
 1. **Project:** $Q^{\text{idx}} = \text{stopgrad}(X) W_q^{\text{idx}}$ produces $H_{kv}$ index query heads. $K^{\text{idx}} = \text{stopgrad}(X) W_k^{\text{idx}}$ produces a single shared index key head (broadcast to all groups).
 2. **Score:** For query $i$, group $r$, and each key position $j \leq i$: $S_{i,j}^{\text{idx},(r)} = Q_i^{(r)} \cdot K_j^{\text{idx}} / \sqrt{d_{\text{idx}}}$.
-3. **Max-pool to blocks:** $M_{i,b}^{\text{idx},(r)} = \max_{j \in \mathcal{B}_b, j \leq i} S_{i,j}^{\text{idx},(r)}$. A block's score is its highest-scoring token.
-4. **Select:** $\mathcal{I}_i^{(r)} = \text{TopK}_b(M_{i,\cdot}^{\text{idx},(r)}, k)$, always including the local block.
+3. **Max-pool to blocks:** $M_{i,b}^{\text{idx},(r)} = \max_{j \in \underset{b}{\mathcal{B}}, j \leq i} \underset{i,j}{S}^{\text{idx},(r)}$. A block's score is its highest-scoring token.
+4. **Select:** $\underset{i}{\mathcal{I}}^{(r)} = \underset{b}{\text{TopK}}(\underset{i,\cdot}{M}^{\text{idx},(r)}, k)$, always including the local block.
 
 **The intuition:** The Index Branch is a "lens" that looks at the full context through a low-resolution view (one head shared across groups, smaller $d_{\text{idx}}$) and identifies which blocks are worth the Main Branch's expensive high-resolution attention.
 
@@ -204,9 +204,9 @@ MSA uses superscripts to distinguish branches and selects at block granularity w
 
 **How it works:**
 
-1. For each query $i$ and group $r$, compute the Index Branch softmax distribution $P^{\text{idx}}$ over the selected tokens: $P_{i,j}^{\text{idx},(r)} = \text{softmax}_{j \in \mathcal{I}_{i,\text{tok}}^{(r)}}(S_{i,j}^{\text{idx},(r)})$.
-2. Compute the Main Branch teacher distribution $P$ by averaging per-head softmax distributions over the same tokens: $P_{i,j}^{(r)} = \frac{1}{G}\sum_{\ell \in \mathcal{H}_r} \text{softmax}_{j \in \mathcal{I}_{i,\text{tok}}^{(r)}}(S_{i,j}^{(\ell)})$.
-3. $\mathcal{L}_{\text{KL}} = \frac{1}{N H_{kv}} \sum_i \sum_r D_{\text{KL}}(\text{stopgrad}(P_{i,\cdot}^{(r)}) \| P_{i,\cdot}^{\text{idx},(r)})$.
+1. For each query $i$ and group $r$, compute the Index Branch softmax distribution $P^{\text{idx}}$ over the selected tokens: $P_{i,j}^{\text{idx},(r)} = \underset{j \in \underset{i,\text{tok}}{\mathcal{I}}^{(r)}}{\text{softmax}}(S_{i,j}^{\text{idx},(r)})$.
+2. Compute the Main Branch teacher distribution $P$ by averaging per-head softmax distributions over the same tokens: $P_{i,j}^{(r)} = \frac{1}{G}\sum_{\ell \in \underset{r}{\mathcal{H}}} \underset{j \in \underset{i,\text{tok}}{\mathcal{I}}^{(r)}}{\text{softmax}}(\underset{i,j}{S}^{(\ell)})$.
+3. $\underset{\text{KL}}{\mathcal{L}} = \frac{1}{N \underset{kv}{H}} \sum_i \sum_r D_{\text{KL}}(\text{stopgrad}(P_{i,\cdot}^{(r)}) \| P_{i,\cdot}^{\text{idx},(r)})$.
 
 **The intuition:** The Index Branch learns to mimic the Main Branch's attention preferences — "you should have paid attention to these tokens, so learn to select blocks containing them."
 
@@ -287,7 +287,7 @@ MSA uses superscripts to distinguish branches and selects at block granularity w
 
 **How it works:**
 
-- **LSE fusion:** The attention forward kernel emits $\text{LSE}_{\text{main}}$ and $\text{LSE}_{\text{idx}}$ directly to [global memory](../../../terms/global-memory.md), so the KL loss backward kernel can load them without a dedicated KL forward pass.
+- **LSE fusion:** The attention forward kernel emits $\underset{\text{main}}{\text{LSE}}$ and $\underset{\text{idx}}{\text{LSE}}$ directly to [global memory](../../../terms/global-memory.md), so the KL loss backward kernel can load them without a dedicated KL forward pass.
 - **Dynamic load balancing:** A persistent grid with atomic work claiming handles variable per-tile work under data-dependent sparsity and variable-length sequences.
 
 **The intuition:** The KL loss's forward pass is a "free rider" on the attention computation — it gets the logsumexp values it needs without extra compute.
@@ -300,7 +300,7 @@ Here is a complete forward pass through one MSA layer at training time, for a si
 
 1. **Input:** Hidden states $X$ arrive at the MSA layer. The backbone computes $Q = XW_q$, $K = XW_k$, $V = XW_v$ (standard GQA with $H_q=64$, $H_{kv}=4$). In parallel, the Index Branch computes $Q^{\text{idx}} = \text{stopgrad}(X)W_q^{\text{idx}}$ and $K^{\text{idx}} = \text{stopgrad}(X)W_k^{\text{idx}}$.
 
-2. **Index scoring:** For query $i$ and each of the 4 GQA groups, the Index Branch computes dot-product scores against all causal key positions, then max-pools to block level: $M_{i,b}^{\text{idx},(r)} = \max_{j \in \mathcal{B}_b, j \leq i} S_{i,j}^{\text{idx},(r)}$.
+2. **Index scoring:** For query $i$ and each of the 4 GQA groups, the Index Branch computes dot-product scores against all causal key positions, then max-pools to block level: $M_{i,b}^{\text{idx},(r)} = \max_{j \in \underset{b}{\mathcal{B}}, j \leq i} \underset{i,j}{S}^{\text{idx},(r)}$.
 
 3. **Block selection:** For each group $r$, $\text{TopK}$ selects $k=16$ blocks. The local block (containing position $i$) is always included. The result is $\mathcal{I}_i^{(r)}$, a set of 16 block indices per group.
 
@@ -308,7 +308,7 @@ Here is a complete forward pass through one MSA layer at training time, for a si
 
 5. **KL loss computation:** Over the selected tokens, the Index Branch softmax $P^{\text{idx}}$ is compared to the group-averaged Main Branch softmax $P$ via KL divergence. Both distributions are computed only over $\mathcal{I}_{i,\text{tok}}^{(r)}$, the tokens in the selected blocks.
 
-6. **Output:** $O W_o$ produces the layer output. $\mathcal{L}_{\text{KL}}$ is accumulated for the training loop's total loss $\mathcal{L} = \mathcal{L}_{\text{LM}} + \lambda \sum_{\text{layers}} \mathcal{L}_{\text{KL}}$.
+6. **Output:** $O W_o$ produces the layer output. $\underset{\text{KL}}{\mathcal{L}}$ is accumulated for the training loop's total loss $\mathcal{L} = \underset{\text{LM}}{\mathcal{L}} + \lambda \sum_{\text{layers}} \mathcal{L}_{\text{KL}}$.
 
 ## What This Buys You
 

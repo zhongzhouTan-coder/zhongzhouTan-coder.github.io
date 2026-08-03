@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/deepseek-v4--paper.pdf
   - derived/pdf-markdown/training/deepseek-v4.md
-updated: 2026-07-28
+updated: 2026-08-03
 ---
 
 # DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention
@@ -99,7 +99,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 
 1. **Dual-series KV compression:** Two independent KV series $C^a$ and $C^b$ are produced from input hidden states. Each compressed entry $C_i^{\text{Comp}}$ is a weighted sum of 2$m$ entries — $m$ from $C^a$ at positions $[mi, m(i+1)-1]$ and $m$ from $C^b$ at positions $[m(i-1), mi-1]$. The overlapping $C^b$ indices mean each compressed block shares information with its neighbor, softening the compression boundary.
 
-2. **Lightning Indexer:** A separate compressed indexer key $K^{\text{IComp}}$ is produced (smaller head dim $c^I$). For each query token, indexer queries $\mathbf{q}_t^I$ are generated from a shared latent vector $\mathbf{c}_t^Q$. Per-block index scores $I_{t,s}$ aggregate over indexer heads with learned head weights.
+2. **Lightning Indexer:** A separate compressed indexer key $K^{\text{IComp}}$ is produced (smaller head dim $c^I$). For each query token, indexer queries $\underset{t}{\mathbf{q}}^I$ are generated from a shared latent vector $\underset{t}{\mathbf{c}}^Q$. Per-block index scores $\underset{t,s}{I}$ aggregate over indexer heads with learned head weights.
 
 3. **Top-k selection:** Only the top-k scoring compressed blocks participate in core attention. This is the sparse attention step — similar to DSA but operating on compressed blocks.
 
@@ -159,7 +159,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 
 **What it does:** mHC expands the residual stream width to $n_{\text{hc}} \times d$ (where $n_{\text{hc}}=4$) and constrains the residual transformation matrix $B_l$ to the manifold of doubly stochastic matrices, preventing signal explosion or vanishing in deep stacks.
 
-**Why it matters:** Standard residual connections can accumulate numerical instability across 43-61 layers. mHC's doubly stochastic constraint ensures $\|B_l\|_2 \leq 1$, making the residual transformation non-expansive — signals neither explode nor vanish during forward and backward passes. Both V4 models use $n_{\text{hc}}=4$.
+**Why it matters:** Standard residual connections can accumulate numerical instability across 43-61 layers. mHC's doubly stochastic constraint ensures $\underset{2}{\|\underset{l}{B}\|} \leq 1$, making the residual transformation non-expansive — signals neither explode nor vanish during forward and backward passes. Both V4 models use $\underset{\text{hc}}{n}=4$.
 
 **How it works:**
 
@@ -222,7 +222,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 A query token at position 500,000 in a 1M-token context, in a CSA layer:
 
 1. **KV compression:** The past 500K tokens have been compressed into ~125K CSA entries ($m=4$).
-2. **Lightning Indexer:** The token's latent query $\mathbf{c}_t^Q$ generates indexer queries — scores each compressed block, producing $I_{t,s}$.
+2. **Lightning Indexer:** The token's latent query $\underset{t}{\mathbf{c}}^Q$ generates indexer queries — scores each compressed block, producing $\underset{t,s}{I}$.
 3. **Top-k selection:** The top 1024 (Pro) or 512 (Flash) compressed blocks are selected.
 4. **Core attention:** MQA over these 1024 compressed entries plus 128 sliding-window entries — total ~1152 KV entries to attend to (vs. 500K without compression/sparsity).
 5. **Output projection:** Grouped projection reduces the $n_h \cdot c$ dimensional output efficiently.

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf
   - derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md
-updated: 2026-07-26
+updated: 2026-08-03
 ---
 
 # DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use
@@ -118,11 +118,11 @@ DSA notation. The indexer uses its own small attention heads (superscript $I$), 
 
 | Step | What happens | Computational cost |
 |---|---|---|
-| 1. Indexer scoring | For query $\mathbf{h}_t$, compute $I_{t,s} = \sum_j w_{t,j}^I \cdot \text{ReLU}(\mathbf{q}_{t,j}^I \cdot \mathbf{k}_s^I)$ for all $s < t$ | $O(L \cdot H^I \cdot d^I)$ — cheap |
-| 2. Top-k selection | Select $\{\mathbf{c}_s \mid I_{t,s} \in \text{Top-k}(I_{t,:})\}$ | $O(L \log k)$ — sorting |
+| 1. Indexer scoring | For query $\underset{t}{\mathbf{h}}$, compute $\underset{t,s}{I} = \underset{j}{\sum} \underset{t,j}{w}^I \cdot \text{ReLU}(\underset{t,j}{\mathbf{q}}^I \cdot \underset{s}{\mathbf{k}}^I)$ for all $s < t$ | $O(L \cdot H^I \cdot d^I)$ — cheap |
+| 2. Top-k selection | Select $\{\underset{s}{\mathbf{c}} \mid \underset{t,s}{I} \in \text{Top-k}(\underset{t,:}{I})\}$ | $O(L \log k)$ — sorting |
 | 3. Sparse attention | $\mathbf{u}_t = \text{Attn}(\mathbf{h}_t, \{\text{selected } \mathbf{c}_s\})$ | $O(k \cdot d)$ per query |
 
-**How the indexer projections work.** The paper states that $\mathbf{q}_{t,j}^I$, $w_{t,j}^I$, and $\mathbf{k}_s^I$ are "derived from" their respective hidden states and defers exact formulas to the open-source implementation. Based on the architecture and standard attention patterns, these are learned linear projections — small weight matrices that map $\mathbf{h}_t$ and $\mathbf{h}_s$ into the indexer's low-dimensional space:
+**How the indexer projections work.** The paper states that $\underset{t,j}{\mathbf{q}}^I$, $\underset{t,j}{w}^I$, and $\underset{s}{\mathbf{k}}^I$ are "derived from" their respective hidden states and defers exact formulas to the open-source implementation. Based on the architecture and standard attention patterns, these are learned linear projections — small weight matrices that map $\underset{t}{\mathbf{h}}$ and $\underset{s}{\mathbf{h}}$ into the indexer's low-dimensional space:
 
 | Component | Likely form | Key property |
 |---|---|---|

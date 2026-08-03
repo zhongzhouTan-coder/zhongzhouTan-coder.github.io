@@ -218,4 +218,9 @@ if ! python3 scripts/kb-check-integrity.py; then
   exit 1
 fi
 
+printf '\n%s\n' '--- math formulations ---'
+if ! python3 scripts/check-math-rendering.py; then
+  exit 1
+fi
+
 exit 0

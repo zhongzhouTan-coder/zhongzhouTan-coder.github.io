@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf
   - derived/pdf-markdown/algorithms/collaborative-multi-head-attention.md
-updated: 2026-07-25
+updated: 2026-08-03
 ---
 
 # Collaborative Multi-Head Attention: Collaborate Instead of Concatenate
@@ -130,8 +130,8 @@ $$a^{(i)}_{n,m} = (x_n^\top \tilde{W}_Q) \operatorname{diag}(m_i) (\tilde{W}_K^\
 
 | Component | Standard MHA | Collaborative MHA |
 |---|---|---|
-| Q projection | $W_Q^{(i)} \in \mathbb{R}^{D_{in} \times d_k}$ per head | $\tilde{W}_Q \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$ shared |
-| K projection | $W_K^{(i)} \in \mathbb{R}^{D_{in} \times d_k}$ per head | $\tilde{W}_K \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$ shared |
+| Q projection | $W_Q^{(i)} \in \mathbb{R}^{D_{in} \times d_k}$ per head | $\underset{Q}{\tilde{W}} \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$ shared |
+| K projection | $W_K^{(i)} \in \mathbb{R}^{D_{in} \times d_k}$ per head | $\underset{K}{\tilde{W}} \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$ shared |
 | Head differentiation | Independent projection matrices | Mixing vector $m_i \in \mathbb{R}^{\tilde{D}_k}$ |
 | Total QK params | $2 D_{in} D_k$ | $(2 D_{in} + N_h) \tilde{D}_k$ |
 | Compression ratio | — | $\approx D_k / \tilde{D}_k$ |
@@ -173,13 +173,13 @@ $$\text{score}^{(i)} \approx X \tilde{W}_Q \operatorname{diag}(m_i) \tilde{W}_K^
 
 **How it works:**
 
-1. Stack all heads' $W_Q^{(i)} W_K^{(i)\top} \in \mathbb{R}^{D_{in} \times D_{in}}$ into a 3D tensor $\mathsf{W}_{QK} \in \mathbb{R}^{N_h \times D_{in} \times D_{in}}$.
+1. Stack all heads' $W_Q^{(i)} W_K^{(i)\top} \in \mathbb{R}^{D_{in} \times D_{in}}$ into a 3D tensor $\underset{QK}{\mathsf{W}} \in \mathbb{R}^{N_h \times D_{in} \times D_{in}}$.
 2. Apply CP decomposition with rank $\tilde{D}_k$:
    $$\mathsf{W}_{QK} \approx \sum_{r=1}^{\tilde{D}_k} a_r \circ b_r \circ c_r = [\![A, B, C]\!]$$
 3. Extract:
    - Mixing matrix: $M = A \in \mathbb{R}^{N_h \times \tilde{D}_k}$
-   - Shared query projections: $\tilde{W}_Q = B \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$
-   - Shared key projections: $\tilde{W}_K = C \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$
+   - Shared query projections: $\underset{Q}{\tilde{W}} = B \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$
+   - Shared key projections: $\underset{K}{\tilde{W}} = C \in \mathbb{R}^{D_{in} \times \tilde{D}_k}$
 4. For biases: compute and store per-head $v_i = W_K^{(i)} b_Q^{(i)}$.
 
 | Property | Value |

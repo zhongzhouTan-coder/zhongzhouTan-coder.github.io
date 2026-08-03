@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
   - derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md
-updated: 2026-07-23
+updated: 2026-08-03
 ---
 
 # AutoJudger: Agent-Driven Efficient MLLM Benchmarking
@@ -144,7 +144,7 @@ Multimodal benchmarks add three challenges that text-only methods don't address:
 
 ### Agent-Driven Question Selection
 
-**What it does:** The interviewer agent (powered by Qwen2.5-VL-7B-Instruct) receives the candidate set $\mathcal{C}^*_k$, the current memory table $\mathcal{M}_k$, the estimated ability $a_{j,k}$, and candidate difficulties $D^*_k$ — then reasons about all four inputs to **select the single most informative next question**.
+**What it does:** The interviewer agent (powered by Qwen2.5-VL-7B-Instruct) receives the candidate set $\underset{k}{\mathcal{C}}^{\ast}$, the current memory table $\underset{k}{\mathcal{M}}$, the estimated ability $\underset{j,k}{a}$, and candidate difficulties $\underset{k}{D}^{\ast}$ — then reasons about all four inputs to **select the single most informative next question**.
 
 **Why it matters:** This is the core novelty and the biggest ablation impact. Removing the agent (`w/o agent`) drops MMT-Bench ranking accuracy from **93.38% to 86.62%** — a 6.76 percentage point drop. The agent's multimodal understanding captures fine-grained question semantics that pure embedding distances miss.
 
