@@ -3,6 +3,19 @@
 
 This repository is a markdown knowledge base.
 
+## Workspace Environment
+
+- Before running repository tools in a fresh checkout or agent environment, run
+  `./scripts/bootstrap-workspace.sh` once. It installs the locked Python, Node.js,
+  and Ruby dependencies under this workspace instead of relying on mutable
+  agent-global packages.
+- Run Python, Node.js, npm, Bundler, and Jekyll commands through
+  `./scripts/run-in-workspace.sh <command> [args...]`. Repository shell entry
+  points such as `./scripts/lint-docs.sh` and `./scripts/serve-local.sh` already
+  prefer the workspace environment.
+- If a workspace dependency is missing or stale, rerun the bootstrap script. Do
+  not install packages into the agent's global environment as a workaround.
+
 ## Source Locations
 
 - `raw/` stores original source files. Never modify them.
@@ -27,7 +40,7 @@ This repository is a markdown knowledge base.
 ## Workflow Triggers
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
-- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
+- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
 - When a new web page source is added: capture it with `scripts/web-source-to-markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical
   `reuse` / `new revision` / `new repository` workflow in

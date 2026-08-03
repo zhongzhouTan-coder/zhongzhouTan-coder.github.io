@@ -4,6 +4,15 @@ set -uo pipefail
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$repo_root" || exit 2
 
+# Prefer dependencies installed by scripts/bootstrap-workspace.sh while retaining
+# an ambient-runtime fallback for CI and first-time setup diagnostics.
+# shellcheck source=workspace-env.sh
+source "$repo_root/scripts/workspace-env.sh"
+python_command=python3
+if [[ -x "$repo_root/.workspace/python/bin/python" ]]; then
+  python_command="$repo_root/.workspace/python/bin/python"
+fi
+
 declare -A referenced_docs=()
 declare -A reported_links=()
 has_issue=0
@@ -209,17 +218,17 @@ if (( has_issue != 0 )); then
 fi
 
 printf '\n%s\n' '--- source names ---'
-if ! python3 scripts/kb-normalize-source-name.py; then
+if ! "$python_command" scripts/kb-normalize-source-name.py; then
   exit 1
 fi
 
 printf '\n%s\n' '--- kb integrity ---'
-if ! python3 scripts/kb-check-integrity.py; then
+if ! "$python_command" scripts/kb-check-integrity.py; then
   exit 1
 fi
 
 printf '\n%s\n' '--- math formulations ---'
-if ! python3 scripts/check-math-rendering.py; then
+if ! "$python_command" scripts/check-math-rendering.py; then
   exit 1
 fi
 
