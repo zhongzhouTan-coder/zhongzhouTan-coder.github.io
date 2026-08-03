@@ -57,6 +57,29 @@ class KnowledgeBaseGraphTests(unittest.TestCase):
             ["docs/algorithms/beta.md", "docs/training/orphan.md"],
         )
 
+    def test_dump_graph_uses_published_urls_and_stable_edge_order(self) -> None:
+        result = subprocess.run(
+            [
+                "python3",
+                str(GRAPH_SCRIPT),
+                "--root",
+                str(self.root),
+                "--dump-graph",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        payload = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        urls = {node["id"]: node["url"] for node in payload["nodes"]}
+        self.assertEqual(urls["docs/algorithms/index.md"], "/algorithms/")
+        self.assertEqual(urls["docs/algorithms/alpha.md"], "/algorithms/alpha/")
+        self.assertEqual(
+            payload["edges"],
+            sorted(payload["edges"], key=lambda edge: (edge["source"], edge["target"])),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body class="kb-graph-layout">
+
+    {%- include header.html -%}
+
+    <main class="kb-graph-main" aria-label="Content">
+      {{ content }}
+    </main>
+
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+    <script>
+      (function () {
+        function normalizedPath(rawHref) {
+          const url = new URL(rawHref, window.location.href);
+          let path = url.pathname;
+          if (path.endsWith('.md')) {
+            path = path.slice(0, -3);
+          }
+          return path.replace(/\/$/, '');
+        }
+
+        fetch('{{ "/terms.json" | relative_url }}')
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('terms index unavailable');
+            }
+            return response.json();
+          })
+          .then(function (terms) {
+            var links = document.querySelectorAll('.page-content a[href], .post-content a[href]');
+            links.forEach(function (link) {
+              var href = link.getAttribute('href');
+              if (!href) return;
+              var path = normalizedPath(href);
+              for (var key in terms) {
+                if (!Object.prototype.hasOwnProperty.call(terms, key)) continue;
+                var termPaths = terms[key];
+                if (Array.isArray(termPaths)) {
+                  for (var i = 0; i < termPaths.length; i++) {
+                    if (normalizedPath(termPaths[i]) === path) {
+                      link.classList.add('kb-term');
+                      break;
+                    }
+                  }
+                }
+              }
+            });
+          })
+          .catch(function () {});
+      })();
+    </script>
+
+  </body>
+
+</html>

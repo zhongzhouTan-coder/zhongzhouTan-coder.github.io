@@ -14,10 +14,12 @@ from urllib.parse import unquote, urlsplit
 
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
-MARKDOWN_LINK_RE = re.compile(
-    r"(?<!!)\[[^\]]+\]\(\s*(?:<([^>]+)>|([^\s)]+))"
-)
+MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(\s*(?:<([^>]+)>|([^\s)]+))")
 REMOTE_SCHEMES = {"http", "https", "mailto", "tel", "data"}
+FRONT_MATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+TITLE_IN_FRONT_MATTER_RE = re.compile(r"^title:\s*['\"]?(.+?)['\"]?\s*$", re.MULTILINE)
+H1_RE = re.compile(r"^#\s+(.+)$", re.MULTILINE)
+CATEGORY_RE = re.compile(r"^docs/([^/]+)/")
 
 
 def docs_pages(root: Path) -> list[Path]:
@@ -32,8 +34,46 @@ def docs_pages(root: Path) -> list[Path]:
     ]
 
 
+def _extract_title(path: Path) -> str:
+    """Extract a human-readable title from a Markdown file.
+
+    Prefers the ``title`` field in Jekyll front matter; falls back to the
+    first H1 heading; finally falls back to the filename stem.
+    """
+    text = path.read_text(encoding="utf-8", errors="replace")
+    fm_match = FRONT_MATTER_RE.match(text)
+    if fm_match:
+        fm = fm_match.group(1)
+        title_match = TITLE_IN_FRONT_MATTER_RE.search(fm)
+        if title_match:
+            return title_match.group(1).strip()
+    h1_match = H1_RE.search(text)
+    if h1_match:
+        return h1_match.group(1).strip()
+    return path.stem
+
+
+def _category_from_path(key: str) -> str:
+    m = CATEGORY_RE.match(key)
+    return m.group(1) if m else "other"
+
+
+def _url_from_key(key: str) -> str:
+    """Convert a repository-relative docs key to a published site URL."""
+    key = key.removeprefix("docs/")
+    if key.endswith("/index.md"):
+        url = "/" + key[: -len("index.md")]
+    elif key.endswith(".md"):
+        url = "/" + key[:-3] + "/"
+    else:
+        url = "/" + key
+    return url
+
+
 def link_targets(text: str) -> list[str]:
-    return [match.group(1) or match.group(2) for match in MARKDOWN_LINK_RE.finditer(text)]
+    return [
+        match.group(1) or match.group(2) for match in MARKDOWN_LINK_RE.finditer(text)
+    ]
 
 
 def resolve_docs_link(root: Path, source: Path, raw_target: str) -> Path | None:
@@ -46,7 +86,11 @@ def resolve_docs_link(root: Path, source: Path, raw_target: str) -> Path | None:
     path_text = parsed.path
     if not path_text:
         return None
-    candidate = root / path_text.lstrip("/") if path_text.startswith("/") else source.parent / path_text
+    candidate = (
+        root / path_text.lstrip("/")
+        if path_text.startswith("/")
+        else source.parent / path_text
+    )
     candidate = candidate.resolve()
     try:
         candidate.relative_to(root.resolve())
@@ -84,7 +128,72 @@ def connected_components(
             neighbors = outbound.get(current, set()) | inbound.get(current, set())
             pending.extend(sorted(neighbors - seen, reverse=True))
         components.append(component)
-    return sorted(components, key=lambda component: (-len(component), sorted(component)))
+    return sorted(
+        components, key=lambda component: (-len(component), sorted(component))
+    )
+
+
+def dump_graph(root: Path) -> dict[str, Any]:
+    """Build nodes and edges for a force-directed graph visualization.
+
+    Returns a dict with ``nodes`` (list of {id, label, category, isIndex, url,
+    degree}) and ``edges`` (list of {source, target}).
+    """
+    pages = docs_pages(root)
+    path_to_key = {path.resolve(): path.relative_to(root).as_posix() for path in pages}
+    nodes_map: dict[str, dict[str, Any]] = {}
+    edges: list[dict[str, str]] = []
+    outbound: dict[str, set[str]] = defaultdict(set)
+    inbound: dict[str, set[str]] = defaultdict(set)
+
+    for path in pages:
+        source_key = path_to_key[path.resolve()]
+        if source_key not in nodes_map:
+            nodes_map[source_key] = {
+                "id": source_key,
+                "label": _extract_title(path),
+                "category": _category_from_path(source_key),
+                "isIndex": Path(source_key).name == "index.md",
+                "url": _url_from_key(source_key),
+            }
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for raw_target in link_targets(text):
+            target = resolve_docs_link(root, path, raw_target)
+            target_key = path_to_key.get(target.resolve()) if target else None
+            if target_key and target_key != source_key:
+                if target_key not in nodes_map:
+                    target_path = root / target_key
+                    nodes_map[target_key] = {
+                        "id": target_key,
+                        "label": _extract_title(target_path)
+                        if target_path.is_file()
+                        else target_key,
+                        "category": _category_from_path(target_key),
+                        "isIndex": Path(target_key).name == "index.md",
+                        "url": _url_from_key(target_key),
+                    }
+                outbound[source_key].add(target_key)
+                inbound[target_key].add(source_key)
+
+    # Deduplicate edges (undirected for visualization)
+    seen_edges: set[tuple[str, str]] = set()
+    for src in sorted(outbound):
+        for tgt in sorted(outbound[src]):
+            pair = tuple(sorted([src, tgt]))
+            if pair not in seen_edges:
+                seen_edges.add(pair)
+                edges.append({"source": src, "target": tgt})
+
+    # Compute degree for sizing nodes
+    for node_id, node in nodes_map.items():
+        node["degree"] = len(outbound.get(node_id, set())) + len(
+            inbound.get(node_id, set())
+        )
+
+    return {
+        "nodes": sorted(nodes_map.values(), key=lambda n: n["id"]),
+        "edges": sorted(edges, key=lambda edge: (edge["source"], edge["target"])),
+    }
 
 
 def analyze(root: Path, top: int) -> dict[str, Any]:
@@ -142,7 +251,37 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT)
     parser.add_argument("--top", type=int, default=10)
     parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--dump-graph",
+        action="store_true",
+        help="Output nodes and edges JSON for graph visualization.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=None,
+        help="Write graph JSON to this file (default: stdout). Only used with --dump-graph.",
+    )
     args = parser.parse_args()
+
+    if args.dump_graph:
+        try:
+            graph_data = dump_graph(args.root.resolve())
+        except ValueError as error:
+            print(f"kb graph: {error}", file=sys.stderr)
+            return 2
+        json_text = json.dumps(graph_data, indent=2, ensure_ascii=False)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json_text, encoding="utf-8")
+            print(
+                f"Graph data written to {args.output} ({len(graph_data['nodes'])} nodes, {len(graph_data['edges'])} edges)"
+            )
+        else:
+            print(json_text)
+        return 0
+
     try:
         result = analyze(args.root.resolve(), args.top)
     except ValueError as error:

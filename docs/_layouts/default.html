@@ -8,8 +8,28 @@
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
+      <div class="wrapper kb-content-shell">
+        <header class="kb-page-header">
+          <p class="kb-page-header__eyebrow">Knowledge note</p>
+          <h1>{{ page.title | escape }}</h1>
+          {%- if page.summary -%}
+            <p class="kb-page-header__summary">{{ page.summary | escape }}</p>
+          {%- endif -%}
+          <div class="kb-page-header__meta" aria-label="Page metadata">
+            {%- if page.updated -%}<span>Updated {{ page.updated | date: "%B %-d, %Y" }}</span>{%- endif -%}
+            {%- if page.confidence -%}<span>Confidence: {{ page.confidence | capitalize }}</span>{%- endif -%}
+          </div>
+        </header>
+
+        <div class="kb-content-grid">
+          <article class="kb-article">
+            {{ content }}
+          </article>
+          <aside class="kb-page-toc" id="kb-page-toc" aria-label="On this page" hidden>
+            <p class="kb-page-toc__title">On this page</p>
+            <nav id="kb-page-toc-links"></nav>
+          </aside>
+        </div>
       </div>
     </main>
 
@@ -74,6 +94,31 @@
           .catch(function () {
             // Term previews are progressive enhancement; ordinary links still work.
           });
+      }());
+    </script>
+
+    <script>
+      (function () {
+        const article = document.querySelector('.kb-article');
+        const toc = document.getElementById('kb-page-toc');
+        const tocLinks = document.getElementById('kb-page-toc-links');
+        if (!article || !toc || !tocLinks) return;
+
+        const markdownTitle = article.querySelector(':scope > h1:first-child');
+        if (markdownTitle) markdownTitle.hidden = true;
+
+        const headings = Array.from(article.querySelectorAll('h2, h3'));
+        if (headings.length < 2) return;
+
+        headings.forEach(function (heading, index) {
+          if (!heading.id) heading.id = 'section-' + (index + 1);
+          const link = document.createElement('a');
+          link.href = '#' + heading.id;
+          link.textContent = heading.textContent;
+          if (heading.tagName === 'H3') link.classList.add('kb-page-toc__subitem');
+          tocLinks.appendChild(link);
+        });
+        toc.hidden = false;
       }());
     </script>
 

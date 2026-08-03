@@ -1,84 +1,379 @@
 ---
-layout: default
+layout: graph
 title: Knowledge Base
 ---
 
-<section class="kb-home" aria-labelledby="kb-home-title">
-  <header class="kb-hero">
-    <div class="kb-hero__copy">
-      <p class="kb-eyebrow">AI systems research notebook</p>
-      <h1 id="kb-home-title">Knowledge Base</h1>
-      <p class="kb-hero__lede">
-        A curated map of papers, frameworks, benchmarks, algorithms, and hardware notes for
-        long-term learning and engineering reference.
+<div class="kb-graph-page">
+  <header class="kb-graph-hero">
+    <div class="kb-graph-hero__copy">
+      <p class="kb-graph-eyebrow">AI systems research notebook</p>
+      <h1>Knowledge Base</h1>
+      <p class="kb-graph-hero__lede">
+        A curated map of papers, frameworks, benchmarks, algorithms, and hardware notes.
+        <span class="kb-graph-hero__stats">
+          <span class="kb-graph-hero__stat" id="graph-node-count">—</span> pages ·
+          <span class="kb-graph-hero__stat" id="graph-edge-count">—</span> links
+        </span>
       </p>
-      <div class="kb-actions" aria-label="Primary navigation">
-        <a class="kb-button" href="/logs/index">Browse the index</a>
-        <a class="kb-button" href="/logs/log/">See recent changes</a>
-      </div>
+    </div>
+    <div class="kb-graph-controls">
+      <input
+        type="text"
+        id="graph-search"
+        class="kb-graph-search"
+        placeholder="Search pages…"
+        autocomplete="off"
+      />
+      <a class="kb-graph-index-link" href="/logs/index">Index →</a>
+      <div class="kb-graph-legend" id="graph-legend" aria-label="Category legend"></div>
     </div>
   </header>
+  <div class="kb-graph-canvas" id="graph-canvas">
+    <svg id="graph-svg" aria-label="Interactive knowledge graph"></svg>
+  </div>
+  <aside class="kb-graph-detail" id="graph-detail" aria-live="polite">
+    <p class="kb-graph-detail__eyebrow" id="graph-detail-category">Explore the graph</p>
+    <h2 id="graph-detail-title">Choose a node</h2>
+    <p class="kb-graph-detail__meta" id="graph-detail-meta">
+      Hover over or focus a node to inspect it without covering the graph.
+    </p>
+    <a class="kb-graph-detail__link" id="graph-detail-link" href="/logs/index">Browse the full index →</a>
+  </aside>
+  <div class="kb-graph-zoom" aria-label="Graph view controls">
+    <button type="button" id="graph-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+    <button type="button" id="graph-zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+    <button type="button" id="graph-zoom-fit" aria-label="Fit graph to view" title="Fit graph to view">Fit</button>
+    <span id="graph-zoom-level" aria-live="polite">100%</span>
+  </div>
+  <p class="kb-graph-hint">Zoom to reveal more titles · drag the background to pan · drag nodes to rearrange</p>
+</div>
 
-  <section class="kb-section" aria-labelledby="topic-map-title">
-    <div class="kb-section__header">
-      <p class="kb-eyebrow">Topic map</p>
-      <h2 id="topic-map-title">Start from the problem domain</h2>
-    </div>
-    <div class="kb-card-grid">
-      <a class="kb-topic-card" href="/benchmarks/">
-        <span class="kb-topic-card__icon" aria-hidden="true">B</span>
-        <span class="kb-topic-card__title">Benchmarks</span>
-        <span class="kb-topic-card__body">Task designs, domains, metrics, scoring methods, and empirical findings.</span>
-      </a>
-      <a class="kb-topic-card" href="/frameworks/">
-        <span class="kb-topic-card__icon" aria-hidden="true">F</span>
-        <span class="kb-topic-card__title">Frameworks</span>
-        <span class="kb-topic-card__body">LLM serving systems, agent evaluation frameworks, and programming runtimes.</span>
-      </a>
-      <a class="kb-topic-card" href="/algorithms/">
-        <span class="kb-topic-card__icon" aria-hidden="true">A</span>
-        <span class="kb-topic-card__title">Algorithms</span>
-        <span class="kb-topic-card__body">Inference algorithms, attention kernels, scheduling methods, and reusable patterns.</span>
-      </a>
-      <a class="kb-topic-card" href="/training/">
-        <span class="kb-topic-card__icon" aria-hidden="true">T</span>
-        <span class="kb-topic-card__title">Training</span>
-        <span class="kb-topic-card__body">Fine-tuning, transfer learning, intrinsic dimension, and generalization notes.</span>
-      </a>
-      <a class="kb-topic-card" href="/hardware/">
-        <span class="kb-topic-card__icon" aria-hidden="true">H</span>
-        <span class="kb-topic-card__title">Hardware</span>
-        <span class="kb-topic-card__body">Precision formats, accelerator features, numerics, and implementation details.</span>
-      </a>
-    </div>
-  </section>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+(function () {
+  const CATEGORY_COLORS = {
+    algorithms: '#0f766e',
+    frameworks: '#7c3aed',
+    benchmarks: '#c2410c',
+    training: '#0369a1',
+    hardware: '#a21caf',
+    terms: '#b45309',
+    logs: '#4b5563',
+    other: '#6b7280',
+  };
 
-  <section class="kb-section kb-section--split" aria-labelledby="featured-title">
-    <div class="kb-featured">
-      <div class="kb-section__header">
-        <p class="kb-eyebrow">Featured paths</p>
-        <h2 id="featured-title">High-value reading trails</h2>
-      </div>
-      <div class="kb-reading-list">
-        <a href="/frameworks/vllm-code-learning-path/">vLLM Code Learning Path and Request Flow</a>
-        <a href="/algorithms/flashattention-4/">FlashAttention-4: Blackwell Attention Kernel Co-Design</a>
-        <a href="/benchmarks/pier/">Pier: Coding-Agent Evaluation Harness</a>
-        <a href="/frameworks/harbor-framework/">Harbor: Agent Evaluation Framework Design</a>
-        <a href="/hardware/nvfp4/">NVFP4: Blackwell 4-Bit Floating Point</a>
-      </div>
-    </div>
+  const CATEGORY_LABELS = {
+    algorithms: 'Algorithms',
+    frameworks: 'Frameworks',
+    benchmarks: 'Benchmarks',
+    training: 'Training',
+    hardware: 'Hardware',
+    terms: 'Terms',
+    logs: 'Logs',
+    other: 'Other',
+  };
 
-    <aside class="kb-log-panel" aria-labelledby="ops-title">
-      <p class="kb-eyebrow">Operations</p>
-      <h2 id="ops-title">Keep the map fresh</h2>
-      <p>
-        The index is the navigational source of truth. The changelog records each ingest,
-        synthesis pass, and structural edit.
-      </p>
-      <div class="kb-log-links">
-        <a href="/logs/index">Categorized index</a>
-        <a href="/logs/log/">Chronological log</a>
-      </div>
-    </aside>
-  </section>
-</section>
+  const canvas = document.getElementById('graph-canvas');
+  const hero = document.querySelector('.kb-graph-hero');
+  const graphPage = document.querySelector('.kb-graph-page');
+  const svg = d3.select('#graph-svg');
+  const searchInput = document.getElementById('graph-search');
+  const legendEl = document.getElementById('graph-legend');
+  const detailCategory = document.getElementById('graph-detail-category');
+  const detailTitle = document.getElementById('graph-detail-title');
+  const detailMeta = document.getElementById('graph-detail-meta');
+  const detailLink = document.getElementById('graph-detail-link');
+
+  let width, height;
+  let simulation;
+  let nodeElements, edgeElements, labelElements;
+  let viewport, zoomBehavior;
+  let graphData = null;
+  let activeCategory = null;
+  let currentZoom = 1;
+
+  function buildLegend() {
+    legendEl.innerHTML = Object.entries(CATEGORY_LABELS)
+      .map(function (entry) {
+        var key = entry[0], label = entry[1];
+        if (!graphData || !graphData.nodes.some(function (n) { return n.category === key; })) return '';
+        return '<button type="button" class="kb-graph-legend__item" data-category="' + key +
+          '" aria-pressed="false">' +
+          '<span class="kb-graph-legend__swatch" style="background:' + CATEGORY_COLORS[key] + '"></span>' +
+          label +
+        '</button>';
+      })
+      .join('');
+
+    legendEl.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-category]');
+      if (!button) return;
+      activeCategory = activeCategory === button.dataset.category ? null : button.dataset.category;
+      legendEl.querySelectorAll('[data-category]').forEach(function (item) {
+        item.setAttribute('aria-pressed', item.dataset.category === activeCategory ? 'true' : 'false');
+      });
+      updateVisibility();
+    });
+  }
+
+  function resize() {
+    graphPage.style.setProperty('--kb-graph-hero-height', hero.offsetHeight + 'px');
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    svg.attr('viewBox', '0 0 ' + width + ' ' + height)
+       .attr('width', width)
+       .attr('height', height);
+  }
+
+  fetch('/graph/graph-data.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      graphData = data;
+      document.getElementById('graph-node-count').textContent = data.nodes.length;
+      document.getElementById('graph-edge-count').textContent = data.edges.length;
+      buildLegend();
+      resize();
+      render();
+    })
+    .catch(function (err) {
+      console.error('Failed to load graph data:', err);
+      document.getElementById('graph-node-count').textContent = '—';
+    });
+
+  function render() {
+    resize();
+    svg.selectAll('*').remove();
+
+    var nodes = graphData.nodes.map(function (n) { return Object.assign({}, n); });
+    var edges = graphData.edges.map(function (e) { return Object.assign({}, e); });
+
+    zoomBehavior = d3.zoom()
+      .scaleExtent([0.2, 5])
+      .on('zoom', function (event) {
+        currentZoom = event.transform.k;
+        viewport.attr('transform', event.transform);
+        document.getElementById('graph-zoom-level').textContent = Math.round(event.transform.k * 100) + '%';
+        updateVisibility();
+      });
+    svg.call(zoomBehavior).on('dblclick.zoom', null);
+
+    // Defs for glow filter on hover
+    var defs = svg.append('defs');
+    var filter = defs.append('filter').attr('id', 'node-glow');
+    filter.append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
+    var merge = filter.append('feMerge');
+    merge.append('feMergeNode').attr('in', 'blur');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+    // Edges
+    viewport = svg.append('g').attr('class', 'kb-graph-viewport');
+    var linkGroup = viewport.append('g').attr('class', 'edges');
+    edgeElements = linkGroup.selectAll('line')
+      .data(edges)
+      .join('line')
+      .attr('class', 'kb-graph-edge')
+      .attr('stroke', '#cbd5e1')
+      .attr('stroke-width', 0.5)
+      .attr('stroke-opacity', 0.2);
+
+    // Node groups
+    var nodeGroup = viewport.append('g').attr('class', 'nodes');
+    nodeElements = nodeGroup.selectAll('g')
+      .data(nodes)
+      .join('g')
+      .attr('class', 'kb-graph-node')
+      .attr('role', 'link')
+      .attr('tabindex', 0)
+      .attr('aria-label', function (d) {
+        return 'Open ' + d.label + ', ' + CATEGORY_LABELS[d.category] + ', ' +
+          d.degree + ' connection' + (d.degree === 1 ? '' : 's');
+      })
+      .call(drag());
+
+    // Circles — larger for full-viewport
+    nodeElements.append('circle')
+      .attr('r', function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)); })
+      .attr('fill', function (d) { return CATEGORY_COLORS[d.category] || CATEGORY_COLORS.other; })
+      .attr('stroke', function (d) { return d.isIndex ? '#1e293b' : 'none'; })
+      .attr('stroke-width', function (d) { return d.isIndex ? 2.5 : 0; })
+      .attr('stroke-dasharray', function (d) { return d.isIndex ? '5 3' : 'none'; })
+      .attr('opacity', 0.88)
+      .attr('cursor', 'pointer');
+
+    // Labels
+    labelElements = nodeGroup.selectAll('text')
+      .data(nodes)
+      .join('text')
+      .text(function (d) { return d.label.length > 27 ? d.label.slice(0, 25) + '…' : d.label; })
+      .attr('class', 'kb-graph-label')
+      .attr('font-size', function (d) { return Math.max(8, Math.min(11.5, 8.5 + d.degree * 0.12)); })
+      .attr('dx', function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)) + 7; })
+      .attr('dy', '0.35em')
+      .attr('fill', '#334155')
+      .attr('pointer-events', 'none')
+      .attr('font-weight', function (d) { return d.isIndex ? '700' : '500'; });
+
+    updateVisibility();
+
+    // Interactions
+    nodeElements
+      .on('mouseenter', function (event, d) {
+        showNodeDetails(d);
+
+        edgeElements
+          .attr('stroke-opacity', function (e) {
+            return e.source.id === d.id || e.target.id === d.id ? 0.85 : 0.04;
+          })
+          .attr('stroke-width', function (e) {
+            return e.source.id === d.id || e.target.id === d.id ? 2 : 0.2;
+          })
+          .attr('stroke', function (e) {
+            return e.source.id === d.id || e.target.id === d.id
+              ? CATEGORY_COLORS[d.category]
+              : '#cbd5e1';
+          });
+        nodeElements.select('circle')
+          .attr('opacity', function (n) {
+            if (n.id === d.id) return 1;
+            var connected = edges.some(function (e) {
+              return (e.source.id === d.id && e.target.id === n.id) ||
+                     (e.target.id === d.id && e.source.id === n.id);
+            });
+            return connected ? 0.85 : 0.08;
+          })
+          .attr('filter', function (n) {
+            return n.id === d.id ? 'url(#node-glow)' : null;
+          });
+        labelElements
+          .attr('opacity', function (n) {
+            return n.id === d.id ? 1 : 0;
+          });
+      })
+      .on('mouseleave', function () {
+        updateVisibility();
+      })
+      .on('click', function (event, d) {
+        if (event.defaultPrevented) return;
+        window.location.href = d.url;
+      })
+      .on('keydown', function (event, d) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        window.location.href = d.url;
+      })
+      .on('focus', function (event, d) {
+        showNodeDetails(d);
+        labelElements
+          .filter(function (node) { return node.id === d.id; })
+          .attr('opacity', 1);
+      })
+      .on('blur', updateVisibility);
+
+    // Simulation — tuned for full-viewport
+    simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(edges).id(function (d) { return d.id; }).distance(70).strength(0.25))
+      .force('charge', d3.forceManyBody().strength(-160))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collision', d3.forceCollide().radius(function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)) + 5; }))
+      .on('tick', function () {
+        edgeElements
+          .attr('x1', function (d) { return d.source.x; })
+          .attr('y1', function (d) { return d.source.y; })
+          .attr('x2', function (d) { return d.target.x; })
+          .attr('y2', function (d) { return d.target.y; });
+        nodeElements.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+        labelElements
+          .attr('x', function (d) { return d.x; })
+          .attr('y', function (d) { return d.y; });
+      });
+
+    // Search
+    searchInput.addEventListener('input', updateVisibility);
+
+    document.getElementById('graph-zoom-in').addEventListener('click', function () {
+      svg.transition().duration(180).call(zoomBehavior.scaleBy, 1.35);
+    });
+    document.getElementById('graph-zoom-out').addEventListener('click', function () {
+      svg.transition().duration(180).call(zoomBehavior.scaleBy, 1 / 1.35);
+    });
+    document.getElementById('graph-zoom-fit').addEventListener('click', fitGraph);
+
+    window.addEventListener('resize', function () {
+      resize();
+      simulation.force('center', d3.forceCenter(width / 2, height / 2));
+      simulation.alpha(0.3).restart();
+    });
+  }
+
+  function updateVisibility() {
+    if (!nodeElements) return;
+    var query = searchInput.value.toLowerCase().trim();
+    function matches(node) {
+      var matchesQuery = !query || node.label.toLowerCase().indexOf(query) !== -1;
+      var matchesCategory = !activeCategory || node.category === activeCategory;
+      return matchesQuery && matchesCategory;
+    }
+    function showsLabel(node) {
+      if (!matches(node)) return false;
+      if (query) return true;
+      return node.isIndex;
+    }
+    var filtering = Boolean(query || activeCategory);
+    nodeElements.select('circle').attr('opacity', function (node) { return matches(node) ? 0.95 : 0.05; });
+    nodeElements
+      .attr('tabindex', function (node) { return matches(node) ? 0 : -1; })
+      .attr('aria-hidden', function (node) { return matches(node) ? null : 'true'; });
+    labelElements.attr('opacity', function (node) { return showsLabel(node) ? 1 : 0; });
+    edgeElements
+      .attr('stroke', '#cbd5e1')
+      .attr('stroke-width', filtering ? 0.2 : 0.5)
+      .attr('stroke-opacity', function (edge) {
+        if (!filtering) return 0.2;
+        return matches(edge.source) && matches(edge.target) ? 0.45 : 0.02;
+      });
+  }
+
+  function showNodeDetails(node) {
+    detailCategory.textContent = CATEGORY_LABELS[node.category] + (node.isIndex ? ' · Hub' : '');
+    detailTitle.textContent = node.label;
+    detailMeta.textContent = node.degree + ' connection' + (node.degree === 1 ? '' : 's') +
+      ' in the knowledge graph.';
+    detailLink.href = node.url;
+    detailLink.textContent = 'Open page →';
+  }
+
+  function fitGraph() {
+    if (!viewport || !nodeElements || nodeElements.empty()) return;
+    var bounds = viewport.node().getBBox();
+    if (!bounds.width || !bounds.height) return;
+    var padding = 70;
+    var scale = Math.max(0.2, Math.min(2.5,
+      0.9 / Math.max(bounds.width / (width - padding), bounds.height / (height - padding))));
+    var x = width / 2 - scale * (bounds.x + bounds.width / 2);
+    var y = height / 2 - scale * (bounds.y + bounds.height / 2);
+    svg.transition().duration(450).call(
+      zoomBehavior.transform,
+      d3.zoomIdentity.translate(x, y).scale(scale)
+    );
+  }
+
+  function drag() {
+    return d3.drag()
+      .on('start', function (event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      })
+      .on('drag', function (event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      })
+      .on('end', function (event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      });
+  }
+
+})();
+</script>
