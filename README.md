@@ -113,6 +113,25 @@ The helper keeps one partial bare object cache per upstream repository. It
 creates a detached revision worktree only when the requested paths changed, so
 immutable evidence remains versioned without accumulating independent clones.
 
+**Prepare external repositories in a fresh workspace:**
+
+```bash
+# Offline report: which registered pinned checkouts are locally readable?
+./scripts/bootstrap-external-repos.sh --status
+
+# Materialize only the repositories needed for the current task.
+./scripts/bootstrap-external-repos.sh vllm-a0c092ee72c0 vllm-ascend-32a59d4e349c
+
+# Or materialize every registered revision.
+./scripts/bootstrap-external-repos.sh
+```
+
+The tracked [`docs/_data/code_repositories.json`](docs/_data/code_repositories.json)
+file is the portable lock table: it records each checkout path, provider URL,
+and exact commit. The ignored `external-repos/` directory remains a disposable
+workspace cache. Repository hydration is explicit because cloning every codebase
+can consume substantial network bandwidth and disk space.
+
 **Lint docs:**
 
 ```bash

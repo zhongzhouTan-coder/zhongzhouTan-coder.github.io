@@ -101,6 +101,21 @@ Restore it later at the same registered path:
   <repo-slug>-<short-sha>
 ```
 
+In a fresh agent or checkout environment, inspect or hydrate the complete
+registered repository workspace with:
+
+```bash
+./scripts/bootstrap-external-repos.sh --status
+./scripts/bootstrap-external-repos.sh <repo-key> [<repo-key> ...]
+./scripts/bootstrap-external-repos.sh  # all registered revisions
+```
+
+Treat `docs/_data/code_repositories.json` as the portable lock table. Do not
+create a second checkout manifest: the registry already records the stable
+local path, canonical repository URL, provider, and exact revision used by
+code links. Hydration is deliberately separate from `bootstrap-workspace.sh`
+because most docs tasks do not need every large third-party codebase.
+
 Retirement is optional and must be intentional. The helper refuses dirty,
 wrong-revision, or independently cloned directories, and protects the commit
 before removing a shared worktree. `check-code-links.py --local` requires all

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-03
+updated: 2026-08-04
 ---
 
 # Wiki Log
@@ -227,3 +227,7 @@ updated: 2026-08-03
 - Converted `raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf` with MinerU precise mode to `derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md` (figures under its `images/` subfolder) and added the `derived_path` to its `sources.json` entry.
 - Added [Block Table](../terms/block-table.md) and [PagedAttention](../terms/pagedattention.md) term pages (category `frameworks` / `algorithms`), added the new page to [KV Cache](../terms/kv-cache.md) `appears_in`, and updated the glossary index.
 - Updated the vLLM hub (`docs/frameworks/vllm/index.md`) and [Wiki Index](../logs/index.md) with the new page and terms.
+
+## 2026-08-04
+
+- Made commit-pinned external code checkouts portable across agent environments: `docs/_data/code_repositories.json` is now documented as the single lock table, `kb-repo-worktree.py status` reports offline workspace readiness, `materialize-all` restores selected or all registered revisions, and `scripts/bootstrap-external-repos.sh` provides the fresh-workspace entry point without adding large codebase downloads to the normal dependency bootstrap.

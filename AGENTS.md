@@ -13,6 +13,12 @@ This repository is a markdown knowledge base.
   `./scripts/run-in-workspace.sh <command> [args...]`. Repository shell entry
   points such as `./scripts/lint-docs.sh` and `./scripts/serve-local.sh` already
   prefer the workspace environment.
+- For repository code reading in a fresh environment, run
+  `./scripts/bootstrap-external-repos.sh --status`, then materialize the needed
+  registry keys with `./scripts/bootstrap-external-repos.sh <repo-key> ...`.
+  Running it without keys materializes every pinned revision. Keep this step
+  separate from the normal dependency bootstrap because external repositories
+  can be large.
 - If a workspace dependency is missing or stale, rerun the bootstrap script. Do
   not install packages into the agent's global environment as a workaround.
 

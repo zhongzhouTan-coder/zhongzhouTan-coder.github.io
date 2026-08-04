@@ -46,9 +46,19 @@ def load_json(path: Path) -> Any:
         fail(f"cannot read {path}: {exc}")
 
 
-def registry_entry(root: Path, key: str) -> dict[str, str]:
+def load_registry(root: Path) -> dict[str, dict[str, str]]:
     registry = load_json(root / "docs/_data/code_repositories.json")
-    if not isinstance(registry, dict) or key not in registry:
+    if not isinstance(registry, dict):
+        fail("code repository registry must be a JSON object")
+    for key, entry in registry.items():
+        if not isinstance(key, str) or not isinstance(entry, dict):
+            fail("code repository registry contains an invalid entry")
+    return registry
+
+
+def registry_entry(root: Path, key: str) -> dict[str, str]:
+    registry = load_registry(root)
+    if key not in registry:
         fail(f"unknown code repository key: {key}")
     entry = registry[key]
     if not isinstance(entry, dict):
@@ -61,6 +71,14 @@ def registry_entry(root: Path, key: str) -> dict[str, str]:
     if not isinstance(revision, str) or not REVISION_RE.fullmatch(revision):
         fail(f"code repository {key} has an invalid revision")
     return entry
+
+
+def selected_registry_entries(
+    root: Path, keys: list[str]
+) -> list[tuple[str, dict[str, str]]]:
+    registry = load_registry(root)
+    selected_keys = keys or sorted(registry)
+    return [(key, registry_entry(root, key)) for key in selected_keys]
 
 
 def repo_slug(root: Path, entry: dict[str, str]) -> str:
@@ -312,6 +330,15 @@ def add_common_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help=argparse.SUPPRESS)
 
 
+def add_batch_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "repository_keys",
+        nargs="*",
+        help="Registry keys to process; omit to process every registered revision.",
+    )
+    parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help=argparse.SUPPRESS)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -339,7 +366,126 @@ def parse_args() -> argparse.Namespace:
         help="Remove a clean shared worktree while preserving its pinned commit.",
     )
     add_common_arguments(retire)
+
+    status = subparsers.add_parser(
+        "status",
+        help="Report whether registered pinned worktrees are ready in this workspace.",
+    )
+    add_batch_arguments(status)
+    status.add_argument("--json", action="store_true")
+
+    materialize_all = subparsers.add_parser(
+        "materialize-all",
+        help="Materialize selected or all registered pinned worktrees.",
+    )
+    add_batch_arguments(materialize_all)
+    materialize_all.add_argument(
+        "--remote-url",
+        help="Use a mirror for one explicitly selected repository key.",
+    )
     return parser.parse_args()
+
+
+def checkout_status(
+    root: Path, key: str, entry: dict[str, str]
+) -> dict[str, str]:
+    target = checkout_path(root, entry["local_checkout"])
+    cache = cache_path(root, entry)
+    result = {
+        "key": key,
+        "status": "not-materialized",
+        "revision": entry["revision"],
+        "local_checkout": entry["local_checkout"],
+        "repository_url": entry["repository_url"],
+        "cache": "ready" if cache.is_dir() else "missing",
+    }
+    if not target.exists():
+        return result
+    if not target.is_dir():
+        result["status"] = "invalid-path"
+        return result
+
+    revision_result = run_git(
+        "-C", str(target), "rev-parse", "HEAD", check=False
+    )
+    if revision_result.returncode != 0:
+        result["status"] = "not-a-git-checkout"
+        return result
+    actual_revision = revision_result.stdout.strip()
+    if actual_revision != entry["revision"]:
+        result["status"] = "wrong-revision"
+        result["actual_revision"] = actual_revision
+        return result
+
+    common_result = run_git(
+        "-C",
+        str(target),
+        "rev-parse",
+        "--path-format=absolute",
+        "--git-common-dir",
+        check=False,
+    )
+    if (
+        common_result.returncode != 0
+        or Path(common_result.stdout.strip()).resolve() != cache.resolve()
+    ):
+        result["status"] = "unmanaged-checkout"
+        return result
+
+    dirty_result = run_git(
+        "-C", str(target), "status", "--porcelain", check=False
+    )
+    if dirty_result.returncode != 0:
+        result["status"] = "invalid-checkout"
+    elif dirty_result.stdout.strip():
+        result["status"] = "dirty"
+    else:
+        result["status"] = "ready"
+    return result
+
+
+def command_status(args: argparse.Namespace, root: Path) -> None:
+    rows = [
+        checkout_status(root, key, entry)
+        for key, entry in selected_registry_entries(root, args.repository_keys)
+    ]
+    if args.json:
+        print(json.dumps(rows, indent=2, sort_keys=True))
+        return
+
+    headers = ("KEY", "STATUS", "CACHE", "REVISION", "CHECKOUT")
+    values = [
+        (
+            row["key"],
+            row["status"],
+            row["cache"],
+            row["revision"][:12],
+            row["local_checkout"],
+        )
+        for row in rows
+    ]
+    widths = [
+        max(len(headers[index]), *(len(row[index]) for row in values))
+        for index in range(len(headers))
+    ]
+    print("  ".join(value.ljust(widths[index]) for index, value in enumerate(headers)))
+    for row in values:
+        print("  ".join(value.ljust(widths[index]) for index, value in enumerate(row)))
+
+
+def command_materialize_all(args: argparse.Namespace, root: Path) -> None:
+    entries = selected_registry_entries(root, args.repository_keys)
+    if args.remote_url and len(entries) != 1:
+        fail("--remote-url requires exactly one repository key")
+    for index, (key, entry) in enumerate(entries):
+        if index:
+            print()
+        print(f"repository: {key}")
+        command_materialize(
+            argparse.Namespace(remote_url=args.remote_url, sparse=[]),
+            root,
+            entry,
+        )
 
 
 def command_sync(args: argparse.Namespace, root: Path, entry: dict[str, str]) -> None:
@@ -404,6 +550,13 @@ def command_retire(
 def main() -> int:
     args = parse_args()
     root = args.root.resolve()
+    if args.command == "status":
+        command_status(args, root)
+        return 0
+    if args.command == "materialize-all":
+        command_materialize_all(args, root)
+        return 0
+
     entry = registry_entry(root, args.repository_key)
     if args.command == "sync":
         command_sync(args, root, entry)

@@ -105,6 +105,23 @@ class RepositoryWorktreeTests(unittest.TestCase):
             text=True,
         )
 
+    def run_batch_script(
+        self, command: str, *extra: str
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [
+                "python3",
+                str(WORKTREE_SCRIPT),
+                command,
+                "--root",
+                str(self.root),
+                *extra,
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
     def test_sync_reuses_revision_when_only_unrelated_paths_changed(self) -> None:
         (self.author / "docs/readme.md").write_text("updated\n", encoding="utf-8")
         self.commit("docs only")
@@ -145,6 +162,41 @@ class RepositoryWorktreeTests(unittest.TestCase):
 
         restored = self.run_script("materialize")
         self.assertEqual(restored.returncode, 0, restored.stderr)
+        self.assertEqual(self.revision(checkout), self.pinned)
+
+    def test_status_reports_workspace_readiness_without_network(self) -> None:
+        missing = self.run_batch_script("status", "--json")
+        self.assertEqual(missing.returncode, 0, missing.stderr)
+        missing_rows = json.loads(missing.stdout)
+        self.assertEqual(missing_rows[0]["status"], "not-materialized")
+        self.assertEqual(missing_rows[0]["cache"], "missing")
+
+        restored = self.run_script("materialize")
+        self.assertEqual(restored.returncode, 0, restored.stderr)
+
+        ready = self.run_batch_script("status", "--json")
+        self.assertEqual(ready.returncode, 0, ready.stderr)
+        ready_rows = json.loads(ready.stdout)
+        self.assertEqual(ready_rows[0]["status"], "ready")
+        self.assertEqual(ready_rows[0]["cache"], "ready")
+
+    def test_materialize_all_restores_every_registered_revision(self) -> None:
+        # Seed the cache through the test-only local remote, then retire the
+        # worktree so materialize-all can run without network access.
+        restored = self.run_script("materialize")
+        self.assertEqual(restored.returncode, 0, restored.stderr)
+        retired = self.run_script("retire")
+        self.assertEqual(retired.returncode, 0, retired.stderr)
+
+        result = self.run_batch_script(
+            "materialize-all",
+            self.repository_key,
+            "--remote-url",
+            str(self.remote),
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        checkout = self.root / f"external-repos/repo-{self.pinned[:12]}"
         self.assertEqual(self.revision(checkout), self.pinned)
 
 
