@@ -39,6 +39,7 @@ updated: 2026-08-02
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
+- [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/vllm/vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group KV cache managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.
 - [vLLM Ascend](../frameworks/vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — Five integration mechanisms (plugin registration, NPUPlatform, ModelRegistry, monkey-patches, custom backends), end-to-end execution flow, ACL graph capture, HCCL communication, and what upstream vLLM code is reused as-is.
@@ -112,6 +113,8 @@ updated: 2026-08-02
 
 - [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
 - [Continuous Batching](../terms/continuous-batching.md) — Iteration-level LLM-serving scheduler that rebuilds active work every model step.
+- [Block Table](../terms/block-table.md) — The per-request logical-to-physical mapping that tells paged attention kernels which physical KV block holds each logical block of a sequence.
+- [PagedAttention](../terms/pagedattention.md) — Attention algorithm storing KV cache in fixed-size non-contiguous blocks addressed through a per-request block table.
 - [Kimi Delta Attention](../terms/kimi-delta-attention.md) — Gated linear-attention mechanism that extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
 - [Microbatch](../terms/microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work in a pipeline schedule.
 - [Mixture of Experts](../terms/mixture-of-experts.md) — Sparse model architecture that routes each token through a few experts to increase total capacity without activating every parameter.

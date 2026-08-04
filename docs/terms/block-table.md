@@ -1,0 +1,47 @@
+---
+title: "Block Table"
+summary: "The per-request logical-to-physical mapping that tells paged attention kernels which physical KV block holds each logical block of a sequence."
+tooltip: "A block table is a sequence's page table for its KV cache: logical block index i maps to one physical block ID. Kernels read it to fetch KV blocks in constant time, and the serving engine appends to it as tokens are generated."
+layout: default
+confidence: high
+category: frameworks
+sources:
+  - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
+aliases:
+  - block tables
+appears_in:
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-block-management/index.md
+updated: 2026-08-03
+---
+
+# Block Table
+
+**Block Table** is the per-request mapping from logical KV block index to physical block ID that lets paged attention kernels fetch a sequence's non-contiguous KV blocks in constant time.
+
+## Why It Exists
+
+Paged KV caches store a sequence's blocks at arbitrary physical addresses. Without a mapping, kernels could not find a logical block cheaply; with one, memory can be allocated on demand, shared across requests, and freed block-by-block without moving data.
+
+## How It Works
+
+A request's KV cache is a list of logical blocks filled left to right. The block table records, for each logical block, the physical block ID and how many slots are filled. Each table entry is fixed-size, so the mapping is dense and cheap to ship to the worker, where it becomes an int32 tensor that the attention kernel indexes as `block_table[row][col]`. A new row/block is appended only when the previous block fills.
+
+## Tradeoffs
+
+The table itself costs a small constant indirection per block per step. If block size is small, tables are long and kernel indirection overhead grows; if block size is large, internal fragmentation grows. Append-only maintenance keeps worker block tables stable across steps but means identical cached blocks are not de-duplicated.
+
+## Common Confusions
+
+- **Block table vs. slot mapping:** The block table maps logical blocks to physical blocks; the slot mapping maps individual scheduled tokens to exact physical slots. Both are passed to the kernel, the latter derived from the former.
+- **Block table vs. page table:** Same idea as OS page tables; block tables are per-request and per-KV-cache-group rather than per-process.
+
+## Where It Appears
+
+- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Introduces block tables as the vLLM analogue of an OS page table.
+- [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — How the V1 codebase builds, shares, prefixes-caches, and materializes block tables on the worker.
+
+## Related Terms
+
+- [PagedAttention](pagedattention.md) — The attention algorithm that consumes block tables.
+- [KV Cache](kv-cache.md) — The data the block table addresses.

@@ -321,6 +321,7 @@
       "raw_paths": [
         "raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"
       ],
+      "derived_path": "derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md",
       "docs_path": "docs/frameworks/vllm/vllm-framework.md",
       "status": "ingested"
     },
@@ -933,6 +934,25 @@
       ],
       "derived_path": "derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md",
       "status": "captured"
+    },
+    {
+      "id": "github:vllm-project/vllm@dd11df04f3b7046c40f13e586ac38a3725bc3c03",
+      "title": "vLLM Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "dd11df04f3b7046c40f13e586ac38a3725bc3c03",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-dd11df04f3b7.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/",
+      "docs_paths": [
+        "docs/frameworks/vllm/vllm-block-management/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

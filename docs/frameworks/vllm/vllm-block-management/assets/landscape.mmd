@@ -1,0 +1,13 @@
+flowchart LR
+    OSVM["OS virtual memory / paging"] --> PAGED["PagedAttention paper (SOSP 2023)"]
+    PAGED --> V0["vLLM V0 KV cache manager (vllm/core/block)"]
+    V0 --> V1["vLLM V1 block stack (vllm/v1/core)"]
+    ORCA["Orca iteration-level scheduling"] --> VLLM["vLLM serving engine"]
+    VLLM --> V1
+    SGLANG["SGLang RadixAttention"] -. "sibling: richer radix-tree reuse" .-> PREFIX["Hash-based prefix caching (APC)"]
+    PREFIX --> V1
+    SWA["Sliding window attention"] --> RECYCLE["Block recycling (remove_skipped_blocks)"]
+    RECYCLE --> V1
+    MAMBA["Mamba / linear-attention state cache"] --> RECYCLE
+    DCP["Decode context parallelism"] --> COORD["Multi-group KV cache coordinator"]
+    COORD --> V1

@@ -41,6 +41,8 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 ## Frameworks
 
 - [Continuous Batching](continuous-batching.md) — Rebuilds the active LLM-serving batch at each model iteration so finished work can leave and newly ready work can enter.
+- [Block Table](block-table.md) — The per-request logical-to-physical mapping that tells paged attention kernels which physical KV block holds each logical block of a sequence.
+- [PagedAttention](pagedattention.md) — An attention algorithm that stores a sequence's KV cache in fixed-size non-contiguous blocks addressed through a per-request block table, enabling paged memory management.
 
 ## Benchmarks
 
