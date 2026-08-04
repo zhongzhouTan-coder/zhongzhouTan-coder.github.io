@@ -155,7 +155,7 @@ This enables two implementation modes:
 
 1. **RNN mode (inference):** Maintain running states $S_i = S_{i-1} + \varphi(k_i)v_i^\top$ and $z_i = z_{i-1} + \varphi(k_i)$. Each new token costs $\mathcal{O}(d^2)$. Space is constant — no growing KV cache.
 
-2. **Parallel mode (training):** Compute all $\varphi(k_j)v_j^\top$ outer products simultaneously ($n \times d \times d$ tensor), then perform a cumulative sum over the sequence dimension. Fast but memory-intensive ($\mathcal{O}(n d^2)$).
+2. **Parallel mode (training):** Compute all $\varphi(k_j)v_j^\top$ [outer products](../../terms/outer-product.md) simultaneously ($n \times d \times d$ tensor), then perform a cumulative sum over the sequence dimension. Fast but memory-intensive ($\mathcal{O}(n d^2)$).
 
 In practice, the RNN mode dominates for decoding, while parallel mode is preferred when $n d^2$ fits in memory.
 

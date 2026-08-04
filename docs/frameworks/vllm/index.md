@@ -15,5 +15,6 @@ updated: 2026-08-03
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group KV cache managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
 - [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.
+- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](minimax-gqa-w4a4-quantization-path.md) — Beginner-oriented W4A4 mental model, layer placement, offline/load/runtime lifecycle, GPU and NPU implementation paths, hardware fallbacks, and pinned code evidence.
 
 Related: [vLLM Ascend](../vllm-ascend/index.md) — the Ascend NPU port of vLLM.

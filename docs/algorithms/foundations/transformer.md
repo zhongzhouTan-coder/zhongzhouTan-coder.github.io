@@ -112,7 +112,7 @@ Replace recurrence with self-attention. In an RNN, information flows sequentiall
 
 ### Scaled Dot-Product Attention
 
-**What it does:** Computes a weighted sum of value vectors, where the weight of each value is determined by the compatibility (dot product) between a query and the corresponding key, scaled by $1/\sqrt{d_k}$.
+**What it does:** Computes a weighted sum of value vectors, where the weight of each value is determined by the compatibility ([dot product](../../terms/inner-product.md)) between a query and the corresponding key, scaled by $1/\sqrt{d_k}$.
 
 **Why it matters:** This is the atomic operation that replaces recurrence. Every token interaction is a single matrix multiplication — $O(1)$ sequential steps instead of $O(n)$.
 

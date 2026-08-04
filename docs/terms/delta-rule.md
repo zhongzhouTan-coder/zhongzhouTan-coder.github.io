@@ -25,7 +25,7 @@ updated: 2026-07-29
 
 ## Why It Exists
 
-Simply adding key–value outer products makes a fixed-size associative memory accumulate interference. Global decay frees capacity but weakens every association together. The delta rule instead lets a new observation correct the memory specifically in the direction addressed by its key.
+Simply adding key–value [outer products](outer-product.md) makes a fixed-size associative memory accumulate interference. Global decay frees capacity but weakens every association together. The delta rule instead lets a new observation correct the memory specifically in the direction addressed by its key.
 
 ## How It Works
 

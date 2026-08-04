@@ -25,7 +25,7 @@ updated: 2026-07-24
 
 ## The Core Idea
 
-FlashAttention-2 reaches only about 35% utilization on H100, while optimized GEMM kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement (TMA), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
+FlashAttention-2 reaches only about 35% utilization on H100, while optimized [GEMM](../../terms/gemm.md) kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement (TMA), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
 
 ## The Big Picture
 

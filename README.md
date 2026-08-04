@@ -96,7 +96,8 @@ pinned to the inspected commit.
 **Refresh repository evidence:**
 
 ```bash
-# Fetch latest upstream and compare only the subsystem being studied.
+# Fetch latest upstream and compare only the subsystem being studied. Relevant
+# changes are deferred until the current evidence revision is 14 days old.
 ./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
   vllm-a0c092ee72c0 \
   --path vllm/v1/core \
@@ -110,8 +111,12 @@ pinned to the inspected commit.
 ```
 
 The helper keeps one partial bare object cache per upstream repository. It
-creates a detached revision worktree only when the requested paths changed, so
-immutable evidence remains versioned without accumulating independent clones.
+creates a detached revision worktree only when the requested paths changed and
+the default 14-day revision interval has elapsed. A deferred sync reports the
+next eligible date without creating a snapshot. Use
+`--min-revision-interval-days N` to tune the cadence, or
+`--force-new-revision` for an intentional urgent refresh. This keeps immutable
+evidence reproducible without producing a snapshot for every upstream change.
 
 **Prepare external repositories in a fresh workspace:**
 

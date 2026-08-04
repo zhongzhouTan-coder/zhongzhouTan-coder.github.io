@@ -54,9 +54,12 @@ This repository is a markdown knowledge base.
   repository, refresh the shared cache and compare the latest upstream commit
   against the pinned revision with `scripts/kb-repo-worktree.py sync`, scoped
   to the subsystem being inspected. Reuse the recorded revision when that
-  scope is unchanged; create a new immutable revision only when relevant
-  implementation changed. Never pull into a checkout that already supports
-  pinned evidence.
+  scope is unchanged. When relevant implementation changed, honor the sync
+  command's revision interval: defer the refresh while the latest evidence
+  snapshot is too recent, and create a new immutable revision only when it is
+  eligible. Override the interval only for an explicitly urgent or
+  release-specific inspection. Never pull into a checkout that already
+  supports pinned evidence.
 - When adding a new paper or docs page, inspect existing related pages from `docs/logs/index.md` and the target topic folder. Update those pages when the new material changes the landscape, supersedes an older claim, adds a needed comparison, or should be linked as related context.
 - Do not rewrite related pages just because a new page exists. Keep related-page edits scoped to factual corrections, changed confidence, cross-links, short comparison notes, or synthesis that improves retrieval.
 - If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.

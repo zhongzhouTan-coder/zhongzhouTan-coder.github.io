@@ -115,7 +115,7 @@ $N$ is sequence length, $D$ the query/key dimension, $M$ the value dimension, an
 
 **How it works:** The experiments use $\phi(x)=\operatorname{ELU}(x)+1$. Positivity keeps similarities and the normalization denominator non-negative. This is a different attention rule, not an exact softmax algorithm.
 
-**The intuition:** Turn each key and query into coordinates in which similarity is an ordinary dot product.
+**The intuition:** Turn each key and query into coordinates in which similarity is an ordinary [dot product](../../terms/inner-product.md).
 
 **A concrete example:** Each earlier CIFAR-10 pixel-channel becomes a positive feature vector rather than one row in a growing softmax score matrix.
 
@@ -174,7 +174,7 @@ The paper also derives forward and reverse cumulative-sum gradients so causal tr
 
 1. **Project:** The current pixel embedding becomes $Q_i$, $K_i$, and $V_i$.
 2. **Map:** Apply $\operatorname{ELU}(x)+1$ to the query and key.
-3. **Write:** Add the current key–value outer product to $S_i$ and the key feature to $Z_i$.
+3. **Write:** Add the current key–value [outer product](../../terms/outer-product.md) to $S_i$ and the key feature to $Z_i$.
 4. **Read:** Contract the current query feature with both states.
 5. **Normalize:** Divide the value read by the scalar normalizer read.
 6. **Predict:** Feed the result through the rest of the Transformer block to predict the next pixel-channel, carrying only $S_i$ and $Z_i$ forward.

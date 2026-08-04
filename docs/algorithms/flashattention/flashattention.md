@@ -68,7 +68,7 @@ flowchart TD
 
 **Siblings (approximate attention):** Sparse Transformer, Reformer, Linformer, Performer, Big Bird — all reduce FLOPs but often fail to deliver wall-clock speedup because they ignore memory access costs.
 
-**What FlashAttention uniquely does:** It combines online softmax tiling with recomputation-based backward to compute *exact* attention with dramatically fewer HBM accesses. It proved that the right optimization target is memory bandwidth, not FLOP count.
+**What FlashAttention uniquely does:** It combines online softmax [tiling](../../terms/matrix-tiling.md) with recomputation-based backward to compute *exact* attention with dramatically fewer HBM accesses. It proved that the right optimization target is memory bandwidth, not FLOP count.
 
 ## Why This Exists
 

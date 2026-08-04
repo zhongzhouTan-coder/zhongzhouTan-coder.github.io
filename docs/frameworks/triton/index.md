@@ -40,7 +40,7 @@ Before Triton, writing a fast GPU kernel for a novel DNN operation meant choosin
 
 2. **DSLs that are too slow.** Polyhedral compilers (Tensor Comprehensions) and loop synthesizers (Halide, TVM) could express arbitrary operations but produced kernels 2–3× slower than hand-tuned vendor libraries. You could write a CUDA micro-kernel by hand, but that takes expert-level effort and ties you to a specific GPU architecture.
 
-Concretely, for a transformer matrix multiplication with $A \in \mathbb{R}^{1760 \times 1760}$ and $B \in \mathbb{R}^{N \times 1760}$, existing DSLs hit only 30–60% of the GPU's roofline, while cuBLAS reaches ~90%. Triton's key insight is that **tiling is the universal primitive**: every efficient GPU kernel decomposes work into tiles that fit registers, shared memory, and compute units. By making tiles a first-class language concept and automating the tiling optimization, Triton closes the gap.
+Concretely, for a transformer matrix multiplication with $A \in \mathbb{R}^{1760 \times 1760}$ and $B \in \mathbb{R}^{N \times 1760}$, existing DSLs hit only 30–60% of the GPU's roofline, while cuBLAS reaches ~90%. Triton's key insight is that **[tiling](../../terms/matrix-tiling.md) is the universal primitive**: every efficient GPU kernel decomposes work into tiles that fit registers, shared memory, and compute units. By making tiles a first-class language concept and automating the tiling optimization, Triton closes the gap.
 
 ## The Landscape
 

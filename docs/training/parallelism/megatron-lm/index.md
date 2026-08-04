@@ -29,7 +29,7 @@ updated: 2026-07-27
 
 **What:** Megatron-LM introduces intra-layer tensor model parallelism using `f`/`g` conjugate operators that split Transformer attention and MLP blocks across GPUs with only two [all-reduces](../../../terms/all-reduce.md) per layer, later extended into PTD-P for trillion-parameter training.
 
-**How:** Paper 1 splits GEMMs column-wise and row-wise so nonlinearities (GeLU, softmax) stay local, needing only `f` (forward identity, backward all-reduce) and `g` (forward all-reduce, backward identity). Paper 2 composes tensor, pipeline, and data parallelism with interleaved 1F1B and scatter/gather communication.
+**How:** Paper 1 splits [GEMMs](../../../terms/gemm.md) column-wise and row-wise so nonlinearities (GeLU, softmax) stay local, needing only `f` (forward identity, backward all-reduce) and `g` (forward all-reduce, backward identity). Paper 2 composes tensor, pipeline, and data parallelism with interleaved 1F1B and scatter/gather communication.
 
 **The number:** Paper 1 achieves **15.1 PFLOP/s** (8.3B parameters, 512 V100 GPUs, 76% scaling efficiency). Paper 2 achieves **502 PFLOP/s** (1.008T parameters, 3072 A100 GPUs, 52% of peak).
 

@@ -1,0 +1,6 @@
+flowchart LR
+    OFFLINE["1. Offline checkpoint<br/>4-bit weights + scales<br/>quantization metadata"]
+    LOAD["2. Model load<br/>choose scheme<br/>register or repack weights<br/>prepare scales"]
+    RUNTIME["3. Each inference step<br/>quantize current activation<br/>run W4A4 GEMM<br/>rescale output"]
+
+    OFFLINE --> LOAD --> RUNTIME

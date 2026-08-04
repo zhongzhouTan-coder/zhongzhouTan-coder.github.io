@@ -1,65 +1,34 @@
 ---
-description: "Use when ingesting, inspecting, or documenting a local code repository checkout. Enforces immutable commit-pinned source revisions, ignored checkout handling, generated evidence notes, and reusable repository-backed docs."
+description: "Use when ingesting, inspecting, or documenting a local code repository checkout. Enforces immutable commit-pinned evidence and readable repository-backed docs."
 applyTo: "external-repos/**/*, raw/**/*.md, derived/repo-analysis/**/*, docs/**/*.md, sources.json"
 ---
 
 # Repository Reading Rules
 
-Use this instruction when a source is a code repository rather than a paper,
-PDF, benchmark report, or web reference.
+Use this instruction when the evidence is a code repository rather than a
+paper, PDF, benchmark report, or web source. General wiki navigation, logs,
+front matter, and confidence rules remain in `AGENTS.md` and their dedicated
+instruction files.
 
-## Choose the Workflow Mode
+## Core Invariants
 
-Select one mode before reading code:
+- Choose **reuse**, **defer**, **new revision**, or **new repository** before
+  reading code.
+- A repository source record is immutable and pinned to one full commit SHA.
+  Never rewrite old raw or derived evidence to point at another revision.
+- Keep third-party worktrees beneath ignored `external-repos/` and treat them as
+  read-only. Do not edit, format, switch, pull, or vendor their files.
+- Use `scripts/kb-repo-worktree.py` for refresh and materialization; do not
+  manage evidence worktrees with ad hoc destructive Git commands.
+- Keep factual, file-referenced evidence under `derived/repo-analysis/`; reserve
+  teaching, comparison, and interpretation for `docs/`.
+- Distinguish static code inference from behavior verified by tests or runtime
+  execution. Surface that boundary in every consuming page.
 
-- **Reuse an existing revision** when its pinned commit still supports the
-  requested docs change. Check the latest upstream commit first, but do not
-  refresh evidence merely because unrelated code changed.
-- **Add a new revision** when the implementation evidence must be refreshed.
-  Create a new immutable source record and analysis directory.
-- **Add a new repository** when no source entry exists for the checkout.
+## Choose and Prepare the Revision
 
-Repository source records are immutable. Never rewrite an old record or its
-derived revision to point at a different commit.
-
-## Local Checkout Rules
-
-- Local third-party checkouts live under `external-repos/`.
-- `external-repos/` must be ignored by git and must not be committed.
-- Store shared bare object databases under
-  `external-repos/.cache/{provider}/{owner}/{repo}.git`. Materialized revision
-  worktrees share this object database instead of cloning full history again.
-- Treat a registered `local_checkout` as a stable materialization path. It may
-  be absent after an inactive worktree is retired; its immutable raw record,
-  derived evidence, manifest entry, registry metadata, and protected Git ref
-  remain canonical.
-- Inspect checkouts with read-only tools such as `rg`, `sed`, `find`, package
-  metadata readers, and test discovery.
-- Do not edit, format, switch, pull, or vendor files inside a materialized
-  worktree as part of docs work. Use `scripts/kb-repo-worktree.py` for shared
-  cache refresh, revision materialization, and explicit retirement; do not
-  manage those worktrees with ad hoc destructive commands.
-- Capture the origin clone URL, normalized provider and repository web URL,
-  exact 40-character commit SHA, branch or tag, inspected date, and checkout
-  state before writing docs.
-- A dirty checkout is not reproducible from its commit SHA alone. Prefer a
-  clean checkout. If dirty state is explicitly accepted, record it and use
-  `confidence: low` on every consuming docs page.
-
-Use these read-only checks:
-
-```bash
-git check-ignore external-repos/<repo>
-git -C external-repos/<repo> remote get-url origin
-git -C external-repos/<repo> rev-parse HEAD
-git -C external-repos/<repo> branch --show-current
-git -C external-repos/<repo> status --porcelain
-```
-
-## Latest-First Refresh Without Revision Sprawl
-
-For an existing repository, identify the newest registry key that supports the
-question and run a scoped freshness check before inspecting code:
+For an existing repository, start from the newest relevant registry entry and
+compare only the requested scope:
 
 ```bash
 ./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
@@ -68,248 +37,144 @@ question and run a scoped freshness check before inspecting code:
   --sparse path/to/subsystem
 ```
 
-The command fetches upstream into a partial bare cache, protects the pinned
-commit under `refs/kb/revisions/`, and compares the pinned revision with the
-upstream default branch. Its decision controls the workflow:
+Repeat `--path` for every relevant file or directory. Omit it only when the
+whole repository is genuinely in scope.
 
-- `decision: reuse` means the inspected paths are unchanged. Continue with the
-  existing raw record and derived evidence even if upstream has newer commits.
-- `decision: new revision` means relevant files changed. The command creates a
-  detached shared-object worktree at a revision-specific path; pass that path
-  to `scripts/kb-init-repo-source.py` before writing new evidence.
+- `decision: reuse`: the scoped implementation is unchanged; reuse its raw
+  record, derived evidence, and pinned checkout.
+- `decision: defer`: relevant implementation changed, but the latest evidence
+  snapshot is less than 14 days old. Keep using the pinned revision and do not
+  scaffold or document the upstream candidate yet.
+- `decision: new revision`: relevant implementation changed; initialize the
+  revision-specific worktree created by the command.
+- **new repository**: use only when no registry or source entry exists.
 
-Repeat `--path` for every directory or file in scope. Omit it only when the
-whole repository is genuinely relevant. Pass `--remote-ref` when the upstream
-default branch is neither `main` nor `master`, or cannot be resolved from
-`origin/HEAD`.
+Do not create a new evidence revision for unrelated upstream changes, and do
+not use `git pull` for freshness. The default promotion interval limits an
+evidence chain to one new immutable revision every 14 days. Use
+`--min-revision-interval-days N` to tune that interval, or
+`--force-new-revision` only when a release, security fix, regression, or
+explicit user request makes an immediate refresh necessary. A deferred result
+is a successful freshness check, not permission to inspect the unpinned tip.
 
-Do not use `git pull` for freshness. Pulling mutates a checkout that may already
-back immutable evidence. Fetching the shared cache separates discovery of new
-upstream commits from the decision to register a new evidence revision.
+In a fresh workspace, check and materialize only the required registered
+revisions with
+`./scripts/bootstrap-external-repos.sh --status` and
+`./scripts/bootstrap-external-repos.sh <repo-key> ...`.
 
-Retire a clean inactive shared worktree without deleting its evidence:
+Before writing, confirm the checkout is clean and capture its normalized
+origin, provider, repository URL, full SHA, ref, and inspected date. A dirty
+checkout is not reproducible from its SHA alone; accept it only when explicitly
+required, record the dirty state, and use low confidence on consuming pages.
 
-```bash
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py retire \
-  <repo-slug>-<short-sha>
-```
+## Register Immutable Evidence
 
-Restore it later at the same registered path:
-
-```bash
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py materialize \
-  <repo-slug>-<short-sha>
-```
-
-In a fresh agent or checkout environment, inspect or hydrate the complete
-registered repository workspace with:
+Use the scaffolder rather than hand-writing repository metadata:
 
 ```bash
-./scripts/bootstrap-external-repos.sh --status
-./scripts/bootstrap-external-repos.sh <repo-key> [<repo-key> ...]
-./scripts/bootstrap-external-repos.sh  # all registered revisions
+./scripts/run-in-workspace.sh python scripts/kb-init-repo-source.py \
+  external-repos/<repo> \
+  --category <category> \
+  --docs-path docs/<category>/<page>.md \
+  --scope "Subsystem or question inspected" \
+  --important-file "path/to/file.py::Why it matters"
 ```
 
-Treat `docs/_data/code_repositories.json` as the portable lock table. Do not
-create a second checkout manifest: the registry already records the stable
-local path, canonical repository URL, provider, and exact revision used by
-code links. Hydration is deliberately separate from `bootstrap-workspace.sh`
-because most docs tasks do not need every large third-party codebase.
-
-Retirement is optional and must be intentional. The helper refuses dirty,
-wrong-revision, or independently cloned directories, and protects the commit
-before removing a shared worktree. `check-code-links.py --local` requires all
-referenced worktrees to be materialized; the normal docs lint validates remote
-pinned links without requiring inactive local worktrees.
-
-## Immutable Source Revision
-
-Each repository commit gets a distinct canonical record:
+The canonical artifacts are:
 
 ```text
 raw/{category}/{repo-slug}-codebase--{provider}-{short-sha}.md
-```
-
-`short-sha` is the first 12 characters of the full commit. The manifest keeps
-`repo_slug` separate from the source `slug` so the meanings do not drift:
-
-- `repo_slug`: stable repository name, such as `vllm`.
-- `slug`: source title slug, normally `{repo-slug}-codebase`.
-
-Use this machine-readable source-record template:
-
-```markdown
----
-kind: repository-source
-provider: gitcode
-clone_url: git@gitcode.com:owner/repo.git
-repository_url: https://gitcode.com/owner/repo
-local_checkout: external-repos/repo/
-commit: 0123456789abcdef0123456789abcdef01234567
-ref: main
-inspected: 2026-07-28
-checkout_state: clean
----
-
-# Repo Codebase Source Record
-
-## Reading Scope
-
-- Subsystem or question inspected.
-
-## Important Entry Files
-
-- `path/to/file.py` — why it matters.
-
-## Limitations
-
-- Static reading only; runtime behavior was not executed.
-```
-
-The corresponding `sources.json` entry is:
-
-```json
-{
-  "id": "gitcode:owner/repo@0123456789abcdef0123456789abcdef01234567",
-  "title": "Repo Codebase",
-  "slug": "repo-codebase",
-  "repo_slug": "repo",
-  "revision": "0123456789abcdef0123456789abcdef01234567",
-  "category": "frameworks",
-  "kind": "repository",
-  "provider": "gitcode",
-  "repository_url": "https://gitcode.com/owner/repo",
-  "raw_paths": [
-    "raw/frameworks/repo-codebase--gitcode-0123456789ab.md"
-  ],
-  "derived_path": "derived/repo-analysis/frameworks/repo/0123456789abcdef0123456789abcdef01234567/",
-  "docs_paths": [
-    "docs/frameworks/repo-code-reading.md"
-  ],
-  "status": "ingested"
-}
-```
-
-Repository entries use `docs_paths` because one revision may support multiple
-pages, including pages outside the source record's canonical category.
-
-## Derived Revision Evidence
-
-Generated notes belong to the exact revision:
-
-```text
 derived/repo-analysis/{category}/{repo-slug}/{full-sha}/
 ```
 
-Every revision requires `important-files.md` with this front matter:
+The scaffolder maintains the matching `sources.json` entry and
+`docs/_data/code_repositories.json` registry record. Repository manifest entries
+use `docs_paths` because one revision may support multiple pages. Every revision
+requires `important-files.md`; add purpose-specific notes such as
+`runtime-flow.md` or `module-map.md` only when they improve retrieval.
 
-```yaml
----
-kind: repository-analysis
-repository_id: gitcode:owner/repo@0123456789abcdef0123456789abcdef01234567
-commit: 0123456789abcdef0123456789abcdef01234567
-source_record: raw/frameworks/repo-codebase--gitcode-0123456789ab.md
-generated: 2026-07-28
----
-```
+Keep derived notes factual. Record the exact command behind quantitative
+codebase claims. Do not edit old revision evidence after it has been superseded;
+create a new revision instead.
 
-Add purpose-specific notes when they improve retrieval:
+## Build the Evidence Map First
 
-- `inventory.md` — top-level directory map and package metadata.
-- `entrypoints.md` — CLIs, servers, APIs, exports, and configuration loading.
-- `runtime-flow.md` — request, job, or command path through core modules.
-- `module-map.md` — major modules, responsibilities, and ownership boundaries.
-- `build-test-notes.md` — discovered build, test, and development commands.
+Before prose drafting, copy the sections from
+[`repository-evidence-template.md`](repository-evidence-template.md) into
+`important-files.md` or the directly supporting purpose-specific note.
 
-Keep derived notes factual and file-referenced. Record the exact search or
-counting command behind every quantitative codebase claim. Reserve teaching,
-comparisons, and interpretation for the docs page.
+For every important finding, record:
 
-Before drafting a consuming docs page, copy the machine-checkable evidence map
-from [repository-evidence-template.md](repository-evidence-template.md) into
-`important-files.md` or the directly supporting purpose-specific note. Add one
-row for every important finding that the docs page will explain. Each row must
-name the consuming docs page, a stable finding ID, repository-relative file,
-symbol, start line, and optional end line. The code-link checker verifies that
-the consuming page contains the declared link, so the evidence map is the handoff
-between code reading and prose drafting rather than a retrospective inventory.
+- consuming docs page;
+- stable finding ID;
+- repository-relative file and symbol;
+- smallest useful start and optional end line;
+- its position in the end-to-end runtime flow, when applicable.
 
-## Repository-Backed Docs
+The evidence table is the handoff between code reading and prose drafting. Add
+rows while investigating, not as a retrospective inventory. The code-link
+checker requires every declared row to have a matching link in its consuming
+page.
 
-First decide the page type:
+## Design the Page for Its Reader
+
+Choose the page type explicitly:
 
 - A **code-reading map** teaches navigation, runtime flow, modules, extension
   points, and failure surfaces.
-- A **synthesis page** teaches a cross-cutting concept using examples from one
-  or more repositories.
+- A **synthesis page** teaches a mechanism or comparison using evidence from
+  one or more repositories.
 
-Code-reading maps should normally use:
+Before drafting either type, record a small reader contract in the working
+notes:
 
-```markdown
-# Repo Name: Code Reading Map
+- intended audience and assumed prerequisites;
+- the question the page answers;
+- a one-sentence, code-free mental model;
+- which behavior occurs offline, at load time, and at runtime;
+- hardware, configuration, fallback, and verification limitations.
 
-**Repository:** [owner/repo]
-**Commit:** [full SHA]
+Draft concepts before implementation names. Expand important acronyms on first
+use, explain why each stage exists, and introduce concrete files and symbols
+only after the reader has a system-level map. For beginner-facing pages, keep
+the initial path to these answers short:
 
-**Related pages:** [Internal links]
+1. What is the mechanism and why does it exist?
+2. What data or state changes?
+3. When does each change happen?
+4. Where do the supported platforms diverge?
+5. What was inferred statically versus verified at runtime?
 
-## TL;DR
+Use a table or prose when sufficient. When a flow diagram materially improves
+the mechanism explanation, save its editable Mermaid source as a local `.mmd`
+asset and link it from the page. Prefer one reader question per visual; keep a
+symbol-heavy implementation map separate from the first conceptual visual.
 
-## What This Repo Is For
+## Draft Repository-Backed Docs
 
-## How To Navigate It
+Every new or materially updated repository-backed page must:
 
-## The Big Picture
+- cite every supporting raw revision and derived note in front matter;
+- state each inspected full commit SHA near the top;
+- set both `code_links: strict` and `code_evidence: strict`;
+- appear in each supporting manifest entry's `docs_paths`;
+- use concrete paths and symbols only when they help the reader navigate;
+- state static-reading, runtime-validation, dependency, and hardware limits;
+- follow confidence rules from `docs-front-matter.instructions.md`.
 
-## Main Runtime Flow
+Keep generated files, vendored dependencies, lockfiles, and large fixtures
+low-priority unless central to the question. Put detailed symbol indexes and
+recommended code-reading paths after the conceptual explanation when the page
+targets beginners.
 
-## Important Modules
+## Link Directly to Inspected Code
 
-## Extension Points
+Insert revision-aware links while drafting. Link the first meaningful
+occurrence of important files and symbols, every numbered runtime-flow step,
+and non-obvious implementation evidence. Repeated mentions and generic language
+constructs may remain ordinary inline code.
 
-## Build, Test, and Run Surface
-
-## Where It Breaks
-
-## Reading Path
-
-## Go Deeper
-```
-
-Synthesis pages may use a free-form structure. Both page types must:
-
-- list every raw repository revision and directly supporting derived note in
-  front matter;
-- state every inspected full commit SHA near the top of the body;
-- use concrete file paths and symbol names;
-- add every consuming page to the manifest entry's `docs_paths`;
-- keep generated files, vendored dependencies, lockfiles, and large fixtures
-  low-priority unless central to the question.
-
-Use revision-aware code links as the default drafting process, not as a
-cleanup pass after the analysis is written:
-
-1. Register the pinned checkout before drafting the page.
-2. While collecting evidence, record the repository-relative file path,
-   symbol, and smallest useful line range for each important finding.
-3. Insert the code link at the first meaningful occurrence of that file or
-   symbol as the finding is written.
-4. Before completion, enable `code_links: strict` and run the repository code
-   link checker through `./scripts/lint-docs.sh`.
-
-New repository-backed pages must use both `code_links: strict` and
-`code_evidence: strict` from their first draft. When materially updating an
-older repository-backed page, migrate its concrete file references and enable
-both strict modes as part of the update. `code_evidence: strict` requires at
-least one Required Code Evidence row targeting the page; `code_links: strict`
-requires every concrete repository filename in inline code to use a validated
-`code-link` anchor. Rewrite bare extensions, generated output patterns, and
-hypothetical filenames as prose; they are not navigable repository evidence.
-
-### Link Directly to Inspected Code
-
-Make important file paths and symbols navigable with a revision-aware code
-anchor instead of leaving readers to search for inline-code paths manually:
+Use this structure:
 
 ```html
 <a class="code-link"
@@ -320,117 +185,21 @@ anchor instead of leaving readers to search for inline-code paths manually:
    data-code-end-line="312"><code>Scheduler.schedule()</code></a>
 ```
 
-`scripts/kb-init-repo-source.py` registers each immutable revision in
-`docs/_data/code_repositories.json` from the checkout's normalized `origin`.
-The registry key must identify the revision, and its provider, web URL, and
-full `revision` must agree with the raw source record and `sources.json` entry.
-Keep `local_checkout` beneath `external-repos/`.
+The `href` is relative from the docs page to the registered checkout. The
+Jekyll layout converts its `data-code-*` metadata to a provider URL pinned to
+the full revision. Always provide a start line; use an end line only for a
+short, complete range. Never commit a machine-specific absolute path.
 
-The `href` must be a relative path from the Markdown page to the registered
-checkout, so a Markdown preview opens the local dependency. The Jekyll layout
-uses the `data-code-*` metadata and registered provider to replace that
-destination with a GitHub or GitCode `blob` URL pinned to the full commit.
-Local Jekyll serving follows the web behavior and also renders the remote URL.
-Never put a machine-specific absolute workspace path in a docs page or
-committed config.
+## Complete the Workflow
 
-Use code links for:
+1. Confirm the chosen mode and exact pinned revision.
+2. Inspect only the declared scope and finish the evidence map.
+3. Draft the page from the reader contract, then attach code evidence.
+4. Update `sources.json`, navigation, related pages, and the chronological log
+   only where repository rules require them.
+5. Run `./scripts/lint-docs.sh`.
 
-- the first meaningful occurrence of every important file or symbol;
-- each step in a runtime flow or recommended reading path;
-- exact implementation evidence behind a non-obvious architectural claim.
-
-For symbol-map tables, add a code link to the symbol cell or a dedicated
-`Code` column for every major implementation type or operation. For an
-end-to-end flow, every numbered step must contain at least one link declared in
-the derived evidence map. Do not rely on a later section to supply a link for a
-different runtime step.
-
-Treat repository-specific class, function, method, constant, command, and
-configuration names as link candidates when a reader would reasonably search
-for their implementation. Link the symbol label to the defining or most
-relevant use site. Generic language keywords, API concepts, generated names,
-and repeated mentions do not need links. If a directory or module name matters
-but has no single source line, link its most useful entry-point file and name
-that entry point in the label rather than creating a non-navigable path.
-
-Always provide a start line. Add `end_line` when a short range contains the
-complete implementation being discussed. Keep ordinary backticks for repeated
-mentions that do not benefit from another link.
-
-When a flow diagram materially helps, save its Mermaid source as a local
-`.mmd` asset and link it from the page. An inline rendered copy may accompany
-the linked source.
-
-## Related Page Maintenance
-
-Before writing, read `docs/logs/index.md` and inspect likely related pages.
-Update related pages only when the reading corrects a claim, changes a
-comparison, or deserves a retrieval-oriented cross-link.
-
-Update `docs/logs/index.md` when navigation changes. Append to
-`docs/logs/log.md` when a source revision or reusable docs page is added or
-materially refreshed. Do not add log noise for wording-only corrections.
-
-## Confidence
-
-Apply the most conservative matching rule:
-
-- Use `confidence: high` for narrow, directly verified facts from a clean
-  pinned revision when the relevant path was inspected end to end.
-- Use `confidence: medium` for architectural synthesis, broad comparisons, or
-  partially traced runtime flows, even when the revision is clean.
-- Use `confidence: low` for dirty checkouts, missing generated artifacts,
-  missing dependency context, or unverified runtime behavior.
-
-## Canonical Workflow
-
-1. For an existing repository, run the scoped latest-first refresh. Use its
-   result to choose `reuse` or `new revision`; choose `new repository` only
-   when no source entry exists.
-2. Validate checkout location and ignored status; capture remote, SHA, ref, and
-   dirty state.
-3. Reuse the exact existing revision or scaffold a new immutable revision:
-
-   ```bash
-   python3 scripts/kb-init-repo-source.py external-repos/<repo> \
-     --category <category> \
-     --docs-path docs/<category>/<page>.md \
-     --scope "Subsystem or question inspected" \
-     --important-file "path/to/file.py::Why it matters"
-   ```
-
-4. Inspect only the declared scope and write factual revision evidence.
-5. Create or update all consuming docs pages and their `sources` front matter.
-6. Update navigation and the chronological log when required.
-7. Run:
-
-   ```bash
-   python3 scripts/kb-normalize-source-name.py
-   python3 scripts/kb-check-integrity.py
-   ./scripts/lint-docs.sh
-   npx markdownlint-cli2
-   ```
-
-## Completion Checklist
-
-- [ ] Workflow mode was chosen explicitly.
-- [ ] Latest upstream was checked against the relevant paths, or an offline or
-      explicitly pinned limitation was recorded.
-- [ ] Checkout is beneath ignored `external-repos/`.
-- [ ] Remote, full SHA, ref, inspected date, and checkout state were captured.
-- [ ] Exact immutable raw revision exists or was reused.
-- [ ] Manifest revision, raw metadata, and derived metadata agree.
-- [ ] `important-files.md` exists under the full-SHA revision directory.
-- [ ] Commands supporting quantitative claims are recorded in derived notes.
-- [ ] A Required Code Evidence table declares each important finding, file,
-      symbol, line range, and consuming docs page.
-- [ ] New or materially updated pages enable `code_evidence: strict`.
-- [ ] Every consuming page appears in `docs_paths`.
-- [ ] Every consuming page cites the raw record and a derived revision file.
-- [ ] Every consuming page states the full SHA near the top.
-- [ ] Important files, symbols, and runtime-flow steps use revision-aware code links.
-- [ ] Every declared evidence row is covered by a matching code link.
-- [ ] Confidence follows the most conservative applicable rule.
-- [ ] Navigation and log updates were made only when warranted.
-- [ ] Source normalization, integrity checks, and docs lint all pass.
+Completion requires agreement among raw metadata, derived metadata, the
+manifest, and the code-repository registry; complete evidence coverage for
+strict pages; an explicit verification boundary; and no unreported lint
+failure.

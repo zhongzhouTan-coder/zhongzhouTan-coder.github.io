@@ -66,7 +66,7 @@ Sparse attention (Linformer, BigBird) reduces the algorithmic complexity of atte
 
 ## The Core Idea
 
-Instead of storing the full $L \times L$ attention matrix on one GPU, split the sequence into $N$ chunks of length $L/N$ across $N$ GPUs. Each GPU holds its chunk's $Q$, $K$, $V$. To compute the full attention output for chunk $n$, that GPU needs dot products between its $Q^n$ and **everyone else's** $K$ and $V$. The insight: circulate $K$ and $V$ around a logical ring so each GPU sees them all, one neighbor at a time, without ever materializing the full matrix anywhere.
+Instead of storing the full $L \times L$ attention matrix on one GPU, split the sequence into $N$ chunks of length $L/N$ across $N$ GPUs. Each GPU holds its chunk's $Q$, $K$, $V$. To compute the full attention output for chunk $n$, that GPU needs [dot products](../../../terms/inner-product.md) between its $Q^n$ and **everyone else's** $K$ and $V$. The insight: circulate $K$ and $V$ around a logical ring so each GPU sees them all, one neighbor at a time, without ever materializing the full matrix anywhere.
 
 > **Row split, not column split.** $Q^n, K^n, V^n$ each have shape $(B, Z, \frac{L}{N}, A)$ — the sequence length $L$ is divided into $N$ equal chunks, while the head dimension $A$ and the number of heads $Z$ remain whole on every device. This is a row-wise partition of the $(L, d)$ embedding matrix: each GPU owns $\frac{L}{N}$ rows (tokens) with all $d$ feature columns. Contrast with tensor parallelism, which column-splits weight matrices — dividing heads or hidden dimensions — and with pipeline parallelism, which splits by layer depth.
 

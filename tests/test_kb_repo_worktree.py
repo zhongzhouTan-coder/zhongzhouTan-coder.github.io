@@ -4,6 +4,7 @@ import json
 import subprocess
 import tempfile
 import unittest
+from datetime import date, timedelta
 from pathlib import Path
 
 
@@ -53,10 +54,22 @@ class RepositoryWorktreeTests(unittest.TestCase):
                     "repository_url": "https://github.com/owner/repo",
                     "revision": self.pinned,
                     "repo_slug": "repo",
+                    "raw_paths": [
+                        f"raw/frameworks/repo-codebase--github-{self.pinned[:12]}.md"
+                    ],
                 }
             ],
         }
         (self.root / "docs/_data").mkdir(parents=True)
+        self.raw_path = (
+            self.root
+            / f"raw/frameworks/repo-codebase--github-{self.pinned[:12]}.md"
+        )
+        self.raw_path.parent.mkdir(parents=True)
+        self.raw_path.write_text(
+            f"---\ninspected: {date.today().isoformat()}\n---\n",
+            encoding="utf-8",
+        )
         (self.root / "docs/_data/code_repositories.json").write_text(
             json.dumps(registry), encoding="utf-8"
         )
@@ -86,6 +99,13 @@ class RepositoryWorktreeTests(unittest.TestCase):
 
     def push(self) -> None:
         self.git("-C", str(self.author), "push", "-q", "origin", "main")
+
+    def set_inspected_days_ago(self, days: int) -> None:
+        inspected = date.today() - timedelta(days=days)
+        self.raw_path.write_text(
+            f"---\ninspected: {inspected.isoformat()}\n---\n",
+            encoding="utf-8",
+        )
 
     def run_script(self, command: str, *extra: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
@@ -137,6 +157,7 @@ class RepositoryWorktreeTests(unittest.TestCase):
         )
 
     def test_sync_materializes_latest_when_relevant_paths_changed(self) -> None:
+        self.set_inspected_days_ago(14)
         (self.author / "src/core.py").write_text("VALUE = 2\n", encoding="utf-8")
         self.commit("change core")
         self.push()
@@ -148,6 +169,55 @@ class RepositoryWorktreeTests(unittest.TestCase):
         self.assertIn("decision: new revision", result.stdout)
         checkout = self.root / f"external-repos/repo-{latest[:12]}"
         self.assertTrue(checkout.is_dir())
+        self.assertEqual(self.revision(checkout), latest)
+
+    def test_force_materializes_relevant_change_during_interval(self) -> None:
+        (self.author / "src/core.py").write_text("VALUE = 2\n", encoding="utf-8")
+        self.commit("change core")
+        self.push()
+        latest = self.revision(self.author)
+
+        result = self.run_script(
+            "sync", "--path", "src/core.py", "--force-new-revision"
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("decision: new revision", result.stdout)
+        checkout = self.root / f"external-repos/repo-{latest[:12]}"
+        self.assertEqual(self.revision(checkout), latest)
+
+    def test_sync_defers_relevant_change_during_revision_interval(self) -> None:
+        (self.author / "src/core.py").write_text("VALUE = 2\n", encoding="utf-8")
+        self.commit("change core")
+        self.push()
+        latest = self.revision(self.author)
+
+        result = self.run_script("sync", "--path", "src/core.py")
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("decision: defer", result.stdout)
+        self.assertIn("minimum revision interval: 14 days", result.stdout)
+        self.assertFalse(
+            (self.root / f"external-repos/repo-{latest[:12]}").exists()
+        )
+
+    def test_zero_revision_interval_materializes_relevant_change(self) -> None:
+        (self.author / "src/core.py").write_text("VALUE = 2\n", encoding="utf-8")
+        self.commit("change core")
+        self.push()
+        latest = self.revision(self.author)
+
+        result = self.run_script(
+            "sync",
+            "--path",
+            "src/core.py",
+            "--min-revision-interval-days",
+            "0",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("decision: new revision", result.stdout)
+        checkout = self.root / f"external-repos/repo-{latest[:12]}"
         self.assertEqual(self.revision(checkout), latest)
 
     def test_registered_revision_can_be_retired_and_restored(self) -> None:

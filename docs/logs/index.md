@@ -41,6 +41,7 @@ updated: 2026-08-02
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/vllm/vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group KV cache managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.
+- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — Beginner-oriented explanation of what W4A4 quantizes, when offline/load/runtime work happens, how GPU and NPU paths differ, and which hardware fallbacks prevent true W4A4 execution.
 - [vLLM Ascend](../frameworks/vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — Five integration mechanisms (plugin registration, NPUPlatform, ModelRegistry, monkey-patches, custom backends), end-to-end execution flow, ACL graph capture, HCCL communication, and what upstream vLLM code is reused as-is.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
@@ -108,6 +109,7 @@ updated: 2026-08-02
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical FP8/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, GEMM layout constraints, distributed training behavior, and deployment ecosystem.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
 
 ## Terms
 
@@ -119,5 +121,11 @@ updated: 2026-08-02
 - [Microbatch](../terms/microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work in a pipeline schedule.
 - [Mixture of Experts](../terms/mixture-of-experts.md) — Sparse model architecture that routes each token through a few experts to increase total capacity without activating every parameter.
 - [Scatter/Gather](../terms/scatter-gather.md) — Cross-node communication optimization that avoids redundant activation transfers over slow inter-node links.
+- [General Matrix Multiply (GEMM)](../terms/gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
+- [Inner Product](../terms/inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
+- [Matrix Tiling](../terms/matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
+- [Memory Banking](../terms/memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
+- [Outer Product](../terms/outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
+- [Systolic Array](../terms/systolic-array.md) — A regular grid of processing elements where data flows rhythmically between neighbors so each weight is reused across many multiply-accumulates without re-fetching.
 
 ## Sources

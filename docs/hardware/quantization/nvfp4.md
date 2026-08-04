@@ -154,7 +154,7 @@ The NVIDIA blog reports MSE of 0.08 for E4M3 encoding of scales versus 0.72 for 
 
 **What it does:** Applies scaling to 16×16 weight blocks instead of 1D 16-element strips.
 
-**Why it matters:** Weights participate in both rowwise and columnwise GEMM operands. 2D scaling ensures that the rowwise-quantized and columnwise-quantized views of a weight tensor produce numerically equivalent results — no mismatch between the forward and backward quantization paths.
+**Why it matters:** Weights participate in both rowwise and columnwise [GEMM](../../terms/gemm.md) operands. 2D scaling ensures that the rowwise-quantized and columnwise-quantized views of a weight tensor produce numerically equivalent results — no mismatch between the forward and backward quantization paths.
 
 **How it works:** By default, Transformer Engine uses 2D scaling for weights and 1D scaling for activations and gradients. Set `disable_2d_quantization=True` to force 1D for weights too. The NVFP4 paper provides the detailed derivation.
 

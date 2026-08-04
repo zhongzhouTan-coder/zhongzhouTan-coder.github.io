@@ -10,6 +10,10 @@ updated: 2026-07-15
 
 # Hardware and Numerics
 
+## Kernels and Dataflow
+
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
+
 ## Quantization
 
 - [Quantization](quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.

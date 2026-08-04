@@ -51,7 +51,7 @@ Do not equate a Triton tile with one particular Ascend buffer. A tile is a langu
 |---|---|---|
 | Scalar | Loops, branches, address/parameter calculation, and instruction dispatch | `program_id` calculation, loop bounds, pointer arithmetic, and control flow |
 | Vector | SIMD-style elementwise operations, reductions, comparisons, conversions, and rearrangement | `+ - * /`, `tl.max/sum`, `tl.where`, casts, masks, and slices |
-| Cube | Matrix multiply-accumulate | `tl.dot` and the GEMM or attention QK/PV operations built from it |
+| Cube | Matrix multiply-accumulate | `tl.dot` and the [GEMM](../../terms/gemm.md) or attention QK/PV operations built from it |
 
 Scalar behaves more like an in-core scheduler than a small CPU for large-scale numerical computation. Complex branches, repeated scalar address calculations, and fragmented loops increase Scalar pressure. A performant kernel generally lets Scalar dispatch a regular, repeated tile pipeline instead of handling large amounts of data-dependent control flow.
 

@@ -24,7 +24,7 @@ updated: 2026-08-03
 
 **How:** The <a class="code-link" href="../../../external-repos/cannbot-skills/plugins-official/triton-op-generator/AGENTS.md#L35" data-code-repo="cannbot-skills-326a6b47210f" data-code-path="plugins-official/triton-op-generator/AGENTS.md" data-code-line="35"><code>triton-op-generator</code></a> Plugin orchestrates the skills across six phases in a structured pipeline. Each skill is an independent expert agent that receives structured inputs, produces structured outputs, and hands off to the next phase. The pipeline is iterative: both code generation (Phase 3) and performance optimization (Phase 4) loop up to 5 iterations, with a "Conductor" analyzing failures between attempts.
 
-**The number:** The optimizer alone defines 25 distinct optimization points, each with explicit hit conditions and reference documentation — covering tiling, vectorization, memory access, loop transforms, and NPU-specific Cube/MTE3 pipeline decoupling.
+**The number:** The optimizer alone defines 25 distinct optimization points, each with explicit hit conditions and reference documentation — covering [tiling](../../terms/matrix-tiling.md), vectorization, memory access, loop transforms, and NPU-specific Cube/MTE3 pipeline decoupling.
 
 ## The Big Picture
 

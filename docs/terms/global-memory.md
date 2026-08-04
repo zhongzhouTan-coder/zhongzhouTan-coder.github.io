@@ -34,7 +34,7 @@ Kernels read tiles from global memory into on-chip buffers, compute, and write r
 
 ## Tradeoffs
 
-Global memory is the performance bottleneck of most kernels: bandwidth is far lower and latency far higher than on-chip storage. Tiling, double buffering, L1/L2 reuse, and kernel fusion all exist mainly to reduce GM traffic and avoid writing intermediate results back to GM.
+Global memory is the performance bottleneck of most kernels: bandwidth is far lower and latency far higher than on-chip storage. [Tiling](matrix-tiling.md), double buffering, L1/L2 reuse, and kernel fusion all exist mainly to reduce GM traffic and avoid writing intermediate results back to GM.
 
 ## Common Confusions
 

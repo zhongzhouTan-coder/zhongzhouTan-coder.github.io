@@ -46,5 +46,17 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm",
     "revision": "dd11df04f3b7046c40f13e586ac38a3725bc3c03"
+  },
+  "vllm-72cd5424da80": {
+    "local_checkout": "external-repos/vllm-72cd5424da80",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0"
+  },
+  "vllm-ascend-61221e9add8c": {
+    "local_checkout": "external-repos/vllm-ascend-61221e9add8c",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "61221e9add8c717b304005bd9d48d6215d035be7"
   }
 }

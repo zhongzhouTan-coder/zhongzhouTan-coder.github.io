@@ -953,6 +953,63 @@
         "docs/frameworks/vllm/vllm-block-management/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-72cd5424da80.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0/",
+      "docs_paths": [
+        "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@61221e9add8c717b304005bd9d48d6215d035be7",
+      "title": "vllm-ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "61221e9add8c717b304005bd9d48d6215d035be7",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-61221e9add8c.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/61221e9add8c717b304005bd9d48d6215d035be7/",
+      "docs_paths": [
+        "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+      ],
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:spatial-lang.org/spatial-gemm@2026-08-04-5ae8cd1f3ba2",
+      "title": "General Matrix Multiply (GeMM)",
+      "slug": "spatial-gemm",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://spatial-lang.org/gemm/",
+      "final_url": "https://spatial-lang.org/gemm/",
+      "captured_at": "2026-08-04T08:12:15.893Z",
+      "revision": "5ae8cd1f3ba2da484af3790005d75af15c06ee81e49292c2712f1196e6b3f5f4",
+      "raw_paths": [
+        "raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html",
+        "raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md",
+      "docs_path": "docs/hardware/spatial-gemm.md",
+      "status": "ingested"
     }
   ]
 }

@@ -1,0 +1,16 @@
+flowchart TB
+    INPUT["Decoder-layer input"]
+
+    subgraph ATTN["Grouped-query attention"]
+        QKV["qkv_proj<br/>quantized GEMM"]
+        CORE["Q/K/V normalization, RoPE, attention<br/>not this page's W4A4 GEMM"]
+        OUT["o_proj<br/>quantized GEMM"]
+    end
+
+    subgraph MOE["Mixture-of-experts feed-forward block"]
+        ROUTER["Router selects experts<br/>not a W4A4 expert GEMM"]
+        EXPERTS["Selected expert matrices<br/>w1 / w3 then w2<br/>quantized GEMMs"]
+    end
+
+    OUTPUT["Decoder-layer output"]
+    INPUT --> QKV --> CORE --> OUT --> ROUTER --> EXPERTS --> OUTPUT

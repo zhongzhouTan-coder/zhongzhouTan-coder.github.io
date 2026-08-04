@@ -8,6 +8,7 @@ import json
 import re
 import subprocess
 import sys
+from datetime import date, timedelta
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -15,6 +16,7 @@ from repository_remote import parse_repository_remote
 
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_MIN_REVISION_INTERVAL_DAYS = 14
 REVISION_RE = re.compile(r"[0-9a-f]{40}")
 
 
@@ -96,6 +98,66 @@ def repo_slug(root: Path, entry: dict[str, str]) -> str:
                 return value
     repository = parse_repository_remote(entry["repository_url"])
     return repository.repository_path.rsplit("/", 1)[-1]
+
+
+def source_entry(root: Path, entry: dict[str, str]) -> dict[str, Any]:
+    manifest = load_json(root / "sources.json")
+    for source in manifest.get("sources", []):
+        if (
+            source.get("kind") == "repository"
+            and source.get("provider") == entry["provider"]
+            and source.get("repository_url", "").rstrip("/")
+            == entry["repository_url"].rstrip("/")
+            and source.get("revision") == entry["revision"]
+        ):
+            return source
+    fail(
+        "cannot find the pinned repository revision in sources.json; "
+        "repair its provenance or pass --force-new-revision"
+    )
+
+
+def revision_inspected_date(root: Path, entry: dict[str, str]) -> date:
+    source = source_entry(root, entry)
+    raw_paths = source.get("raw_paths")
+    if not isinstance(raw_paths, list):
+        fail(
+            "repository source has no raw_paths; repair its provenance or "
+            "pass --force-new-revision"
+        )
+    for raw_value in raw_paths:
+        if not isinstance(raw_value, str) or not raw_value.endswith(".md"):
+            continue
+        raw_path = root / raw_value
+        try:
+            raw_text = raw_path.read_text(encoding="utf-8")
+        except OSError as exc:
+            fail(f"cannot read repository source record {raw_path}: {exc}")
+        match = re.search(
+            r"^inspected:\s*(\d{4}-\d{2}-\d{2})\s*$",
+            raw_text,
+            re.MULTILINE,
+        )
+        if not match:
+            continue
+        try:
+            return date.fromisoformat(match.group(1))
+        except ValueError:
+            fail(
+                "repository source record has an invalid inspected date: "
+                f"{raw_path}"
+            )
+    fail(
+        "repository source record has no inspected date; repair its provenance "
+        "or pass --force-new-revision"
+    )
+
+
+def non_negative_int(value: str) -> int:
+    parsed = int(value)
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("must be zero or greater")
+    return parsed
 
 
 def cache_path(root: Path, entry: dict[str, str]) -> Path:
@@ -353,6 +415,20 @@ def parse_args() -> argparse.Namespace:
     sync.add_argument("--no-fetch", action="store_true")
     sync.add_argument("--target")
     sync.add_argument("--sparse", action="append", default=[])
+    sync.add_argument(
+        "--min-revision-interval-days",
+        type=non_negative_int,
+        default=DEFAULT_MIN_REVISION_INTERVAL_DAYS,
+        help=(
+            "Minimum days between immutable evidence revisions (default: "
+            f"{DEFAULT_MIN_REVISION_INTERVAL_DAYS}; use 0 to disable)."
+        ),
+    )
+    sync.add_argument(
+        "--force-new-revision",
+        action="store_true",
+        help="Bypass the revision interval when scoped implementation changed.",
+    )
 
     restore = subparsers.add_parser(
         "materialize",
@@ -505,6 +581,20 @@ def command_sync(args: argparse.Namespace, root: Path, entry: dict[str, str]) ->
     if not changed:
         print("decision: reuse")
         return
+
+    if not args.force_new_revision and args.min_revision_interval_days:
+        inspected = revision_inspected_date(root, entry)
+        today = date.today()
+        if inspected > today:
+            fail(f"pinned revision inspection date {inspected.isoformat()} is in the future")
+        eligible_on = inspected + timedelta(days=args.min_revision_interval_days)
+        print(f"last snapshot: {inspected.isoformat()}")
+        print(f"minimum revision interval: {args.min_revision_interval_days} days")
+        if today < eligible_on:
+            print("decision: defer")
+            print(f"eligible on: {eligible_on.isoformat()}")
+            print("override: pass --force-new-revision for an intentional urgent refresh")
+            return
 
     target_value = args.target or f"external-repos/{repo_slug(root, entry)}-{tip[:12]}"
     target = checkout_path(root, target_value)
