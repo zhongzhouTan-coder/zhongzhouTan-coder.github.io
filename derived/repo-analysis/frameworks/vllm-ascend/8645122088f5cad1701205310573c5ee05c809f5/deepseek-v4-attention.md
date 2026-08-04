@@ -8,6 +8,24 @@ generated: 2026-07-28
 
 # vLLM-Ascend DeepSeek V4 Attention Implementation Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-kv-cache | `vllm_ascend/models/deepseek_v4.py` | `AscendDeepseekV4ForCausalLM` | 95 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-dsa-layer | `vllm_ascend/models/layer/attention/layer.py` | `DSAAttention` | 32 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-dsa-backend | `vllm_ascend/attention/dsa_v1.py` | `AscendDSABackend` | 62 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-dsa-cp | `vllm_ascend/attention/context_parallel/dsa_cp.py` | `AscendDSAMetadata` | 40 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-dsa-op | `vllm_ascend/ops/dsa.py` | `AscendDeepseekSparseAttention` | 41 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | ascend-rope-v4 | `vllm_ascend/ops/rope_dsv4.py` | `ComplexExpRotaryEmbedding` | 12 | — |
+
+## Runtime Flow Evidence
+
+1. Ascend KV cache specialization — `ascend-kv-cache`.
+2. Ascend MLA attention layer — `ascend-dsa-layer`.
+3. NPU DSA backend and kernels — `ascend-dsa-backend`, `ascend-dsa-op`, `ascend-rope-v4`.
+4. Distributed context parallelism — `ascend-dsa-cp`.
+
 ## Evidence Map
 
 ### Core Model (`vllm_ascend/models/deepseek_v4.py`)

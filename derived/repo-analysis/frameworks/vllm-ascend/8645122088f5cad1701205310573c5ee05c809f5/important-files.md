@@ -8,6 +8,23 @@ generated: 2026-07-28
 
 # vLLM Ascend Triton Reading Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-triton-wrapper | `vllm_ascend/ops/triton/triton_utils.py` | `_resolve_triton_ascend_op` | 17 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-fused-qkv | `vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py` | `split_qkv_rmsnorm_rope_kernel` | 26 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-kda | `vllm_ascend/ops/triton/kda/kda.py` | `fused_recurrent_kda_fwd` | 36 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-rmsnorm | `vllm_ascend/ops/triton/rms_norm.py` | `triton_rms_kernel` | 6 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-rope | `vllm_ascend/ops/triton/rope.py` | `_triton_rope` | 24 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | ascend-mul-add | `vllm_ascend/ops/triton/mul_add.py` | `muls_add_kernel` | 8 | — |
+
+## Runtime Flow Evidence
+
+1. Ascend Triton infrastructure — `ascend-triton-wrapper`.
+2. Fused QKV, normalization, and rotary — `ascend-fused-qkv`, `ascend-rmsnorm`, `ascend-rope`.
+3. Linear-attention and element-wise kernels — `ascend-kda`, `ascend-mul-add`.
+
 ## Evidence Map
 
 - `vllm_ascend/ops/triton/triton_utils.py` imports Triton through vLLM,

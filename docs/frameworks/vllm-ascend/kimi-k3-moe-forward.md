@@ -4,6 +4,7 @@ summary: "Fresh code-reading insight for how the latest vllm-ascend routed-MoE s
 layout: default
 confidence: medium
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md
   - derived/repo-analysis/frameworks/vllm-ascend/e3bb5f570f0b7d7fef9df3190a450052bee090cc/important-files.md

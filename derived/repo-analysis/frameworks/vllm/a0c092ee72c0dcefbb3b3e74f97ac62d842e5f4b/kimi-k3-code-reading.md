@@ -8,6 +8,29 @@ generated: 2026-07-29
 
 # vLLM Kimi K3 Code Reading Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | platform-dispatch | `vllm/models/kimi_k3/__init__.py` | `kimi_k3` platform dispatch | 10 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | model-entry | `vllm/models/kimi_k3/nvidia/model.py` | `KimiK3ForConditionalGeneration` | 1441 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | text-model | `vllm/models/kimi_k3/nvidia/model.py` | `KimiLinearForCausalLM` | 1311 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | decoder-selection | `vllm/models/kimi_k3/nvidia/model.py` | `KimiDecoderLayer` | 689 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | mla-layer | `vllm/models/kimi_k3/nvidia/mla.py` | `MultiHeadLatentAttention` | 102 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | moe-router | `vllm/models/kimi_k3/nvidia/model.py` | `KimiMoE` | 381 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | latent-moe-runner | `vllm/model_executor/layers/fused_moe/runner/latent_moe_runner.py` | `LatentMoERunner` | 22 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | latent-moe-tail | `vllm/models/kimi_k3/nvidia/ops/latent_moe_tail.py` | `KimiK3LatentMoETailOp` | 40 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | mtp-draft | `vllm/models/kimi_k3/nvidia/mtp.py` | `KimiK3MTP` | 202 | — |
+| `docs/frameworks/vllm/vllm-kimi-k3-code-reading.md` | renderer | `vllm/renderers/kimi_k3.py` | `KimiK3Renderer` | 143 | — |
+
+## Runtime Flow Evidence
+
+1. Registration and request surface — `platform-dispatch`, `renderer`.
+2. Model construction — `model-entry`, `text-model`.
+3. Hybrid attention selection — `decoder-selection`, `mla-layer`.
+4. Routed MoE forward — `moe-router`, `latent-moe-runner`, `latent-moe-tail`.
+5. Speculative decoding — `mtp-draft`.
+
 ## Evidence Map
 
 ### Registration and request surface

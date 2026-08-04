@@ -4,6 +4,7 @@ summary: "A beginner-friendly tour of triton-ascend: how it bridges the Triton G
 layout: default
 confidence: high
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/triton-ascend-codebase--github-41f499924da1.md
   - derived/repo-analysis/frameworks/triton-ascend/41f499924da1d58955196c946895597e992127f0/important-files.md

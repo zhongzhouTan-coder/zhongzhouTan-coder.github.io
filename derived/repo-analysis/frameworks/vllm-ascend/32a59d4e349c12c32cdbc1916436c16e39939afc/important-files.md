@@ -8,6 +8,33 @@ generated: 2026-08-03
 
 # vLLM-Ascend 32a59d4e349c Important Files
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm-ascend/architecture.md` | plugin-entry | `setup.py` | `entry_points` | 543 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | platform-switchboard | `vllm_ascend/platform.py` | `NPUPlatform` | 127 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | fused-moe-patch | `vllm_ascend/patch/platform/patch_fused_moe.py` | `_ascend_FusedMoE` | 45 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | distributed-adaptation | `vllm_ascend/patch/platform/patch_distributed.py` | `communication_adaptation_310p` | 33 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | parallel-groups | `vllm_ascend/distributed/parallel_state.py` | `init_model_parallel_group` | 86 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | compile-backend | `vllm_ascend/compilation/compiler_interface.py` | `compile_fx` | 39 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | mla-op | `vllm_ascend/ops/mla.py` | `AscendMultiHeadLatentAttention` | 66 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | dsa-op | `vllm_ascend/ops/dsa.py` | `AscendDeepseekSparseAttention` | 61 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | linear-op | `vllm_ascend/ops/linear.py` | `unquantized_gemm` | 53 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | rotary-op | `vllm_ascend/ops/rotary_embedding.py` | `set_cos_and_sin` | 63 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | rope-v4-op | `vllm_ascend/ops/rope_dsv4.py` | `RopeGlobalState` | 12 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | rmsnorm-op | `vllm_ascend/ops/layernorm.py` | `AscendRMSNorm` | 28 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | activation-op | `vllm_ascend/ops/activation.py` | `AscendQuickGELU` | 29 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | vocab-embedding-op | `vllm_ascend/ops/vocab_parallel_embedding.py` | `AscendVocabParallelEmbedding` | 45 | — |
+
+## Runtime Flow Evidence
+
+1. Discovery and registration — `plugin-entry`.
+2. Platform switchboard — `platform-switchboard`.
+3. Model and patch integration — `fused-moe-patch`, `distributed-adaptation`, `parallel-groups`.
+4. Graph capture and compilation — `compile-backend`.
+5. Custom kernel ops — `mla-op`, `dsa-op`, `linear-op`, `rotary-op`, `rope-v4-op`, `rmsnorm-op`, `activation-op`, `vocab-embedding-op`.
+
 ## Reading Scope
 
 Static inspection of the vllm-ascend plugin architecture and integration

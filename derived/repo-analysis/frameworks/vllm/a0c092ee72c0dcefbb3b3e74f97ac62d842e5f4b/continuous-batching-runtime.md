@@ -8,6 +8,25 @@ generated: 2026-08-02
 
 # vLLM V1 Continuous-Batching Runtime Evidence
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | engine-step | `vllm/v1/engine/core.py` | `EngineCore.step` | 584 | — |
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | scheduler-schedule | `vllm/v1/core/sched/scheduler.py` | `Scheduler.schedule` | 427 | — |
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | request-state | `vllm/v1/request.py` | `Request` | 59 | — |
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | kv-admission | `vllm/v1/core/kv_cache_manager.py` | `KVCacheManager.allocate_slots` | 344 | — |
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | worker-batch | `vllm/v1/worker/gpu_model_runner.py` | `GPUModelRunner._update_states` | 1192 | — |
+| `docs/frameworks/vllm/vllm-continuous-batching/index.md` | update-from-output | `vllm/v1/core/sched/scheduler.py` | `Scheduler.update_from_output` | 1653 | — |
+
+## Runtime Flow Evidence
+
+1. Entry — `engine-step`.
+2. Coordination and dispatch — `scheduler-schedule`, `request-state`.
+3. Core state transition (KV admission) — `kv-admission`.
+4. Materialization and backend handoff — `worker-batch`.
+5. Completion and cleanup — `update-from-output`.
+
 ## Reading Scope
 
 Static reading of the V1 online-generation loop: per-iteration scheduling,

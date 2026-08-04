@@ -8,6 +8,29 @@ generated: 2026-07-28
 
 # vLLM DeepSeek V4 Attention Implementation Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | attention-core | `vllm/models/deepseek_v4/attention.py` | `DeepseekV4Attention` | 71 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | nvidia-model | `vllm/models/deepseek_v4/nvidia/model.py` | `DeepseekV4ForCausalLM` | 82 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | compressor | `vllm/models/deepseek_v4/compressor.py` | `DeepseekCompressor` | 39 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | fused-compress-insert | `vllm/models/deepseek_v4/common/ops/fused_compress_quant_cache.py` | `compress_norm_rope_store_triton` | 32 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | fused-indexer-q | `vllm/models/deepseek_v4/common/ops/fused_indexer_q.py` | `_fused_indexer_q_rope_quant_kernel` | 15 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | flashmla-backend | `vllm/models/deepseek_v4/sparse_mla.py` | `DeepseekV4FlashMLABackend` | 35 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | flashinfer-dispatch | `vllm/models/deepseek_v4/nvidia/flashinfer_sparse.py` | `DeepseekV4FlashInferMLASparseBackend` | 36 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | indexer-backend | `vllm/v1/attention/backends/mla/indexer.py` | `DeepseekV4IndexerBackend` | 46 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | kv-cache-spec | `vllm/v1/kv_cache_interface.py` | `MLAAttentionSpec` | 33 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | sparse-swa | `vllm/v1/attention/backends/mla/sparse_swa.py` | `DeepseekV4SWACache` | 43 | — |
+| `docs/frameworks/deepseek/v4-attention-code-reading.md` | slot-mapping | `vllm/v1/attention/backends/mla/compressor_utils.py` | `get_compressed_slot_mapping` | 9 | — |
+
+## Runtime Flow Evidence
+
+1. Core attention pipeline — `attention-core`, `nvidia-model`.
+2. KV compression and insertion — `compressor`, `fused-compress-insert`, `fused-indexer-q`.
+3. Sparse MLA backends — `flashmla-backend`, `flashinfer-dispatch`, `indexer-backend`.
+4. Heterogeneous KV cache shapes — `kv-cache-spec`, `sparse-swa`, `slot-mapping`.
+
 ## Evidence Map
 
 ### Core Attention (`vllm/models/deepseek_v4/`)

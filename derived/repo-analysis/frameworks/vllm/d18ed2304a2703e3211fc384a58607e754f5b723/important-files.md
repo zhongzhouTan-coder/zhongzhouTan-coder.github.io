@@ -8,6 +8,29 @@ generated: 2026-07-28
 
 # vLLM Triton Reading Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/triton/triton-in-vllm.md` | triton-import | `vllm/triton_utils/importing.py` | `TritonPlaceholder` | 94 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | clone-elimination | `vllm/compilation/passes/ir/clone_elimination.py` | `clone_preserves_layout` | 19 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | decode-attention | `vllm/v1/attention/ops/triton_decode_attention.py` | `_fwd_kernel_stage1` | 54 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | attention-helpers | `vllm/v1/attention/ops/triton_attention_helpers.py` | `find_seq_idx` | 22 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | moe-dispatcher | `vllm/model_executor/layers/fused_moe/fused_moe.py` | `dispatch_fused_moe_kernel` | 42 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | moe-align | `vllm/model_executor/layers/fused_moe/moe_align_block_size.py` | `moe_align_block_size` | 11 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | awq-triton | `vllm/model_executor/layers/quantization/awq_triton.py` | `awq_dequantize_kernel` | 12 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | fp8-utils | `vllm/model_executor/layers/quantization/utils/fp8_utils.py` | `is_fp8` | 42 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | activation | `vllm/model_executor/layers/activation.py` | `swiglustep_and_mul_triton` | 27 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | sampling | `vllm/v1/sample/ops/topk_topp_triton.py` | `apply_top_k_top_p_triton` | 71 | — |
+| `docs/frameworks/triton/triton-in-vllm.md` | kv-offload | `vllm/v1/kv_offload/cpu/swap_blocks_triton.py` | `_swap_blocks_kernel` | 25 | — |
+
+## Runtime Flow Evidence
+
+1. Kernel availability and graph boundaries — `triton-import`, `clone-elimination`.
+2. Attention kernels — `decode-attention`, `attention-helpers`.
+3. MoE kernels — `moe-dispatcher`, `moe-align`.
+4. Quantization and fused element-wise ops — `awq-triton`, `fp8-utils`, `activation`, `sampling`, `kv-offload`.
+
 ## Evidence Map
 
 - `vllm/triton_utils/importing.py` detects usable Triton backends and supplies

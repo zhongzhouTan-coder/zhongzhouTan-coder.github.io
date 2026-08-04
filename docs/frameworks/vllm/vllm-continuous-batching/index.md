@@ -4,6 +4,7 @@ summary: "A code-backed explanation of how vLLM rebuilds a token-level batch eac
 layout: default
 confidence: medium
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/continuous-batching-runtime.md

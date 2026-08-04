@@ -8,6 +8,34 @@ generated: 2026-07-30
 
 # vLLM-Ascend Kimi K3-Style MoE Forward Notes
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | fused-moe-patch | `vllm_ascend/patch/platform/patch_fused_moe.py` | `_ascend_FusedMoE` | 45 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | moe-runner | `vllm_ascend/ops/fused_moe/fused_moe.py` | `AscendMoERunner` | 311 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | no-shared-forward | `vllm_ascend/ops/fused_moe/fused_moe.py` | `AscendMoERunner.no_shared_forward_impl` | 620 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | expert-selection | `vllm_ascend/ops/fused_moe/experts_selector.py` | `select_experts` | 29 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | eplb-adaptor | `vllm_ascend/eplb/adaptor/vllm_adaptor.py` | `VllmEplbAdaptor` | 61 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | prepare-mc2 | `vllm_ascend/ops/fused_moe/prepare_finalize.py` | `PrepareAndFinalizeWithMC2` | 233 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | stage-contracts | `vllm_ascend/ops/fused_moe/moe_stage_contracts.py` | `MoEPrepareOutput` | 32 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | runtime-args | `vllm_ascend/ops/fused_moe/moe_runtime_args.py` | `build_fused_experts_input` | 116 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | fused-experts | `vllm_ascend/ops/fused_moe/moe_comm_method.py` | `MoECommMethod.fused_experts` | 133 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | mlp-compute | `vllm_ascend/ops/fused_moe/moe_mlp.py` | `unified_apply_mlp` | 589 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | token-dispatch | `vllm_ascend/ops/fused_moe/token_dispatcher.py` | `MoETokenDispatcher` | 69 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | capture-patch | `vllm_ascend/patch/worker/patch_routed_experts_capture.py` | `capture` | 35 | — |
+| `docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md` | xlite-adapters | `vllm_ascend/xlite/xlite.py` | `QwenMoeXliteModel` | 454 | — |
+
+## Runtime Flow Evidence
+
+1. Patch and runner selection — `fused-moe-patch`, `moe-runner`.
+2. Expert selection — `expert-selection`.
+3. Prepare, dispatch, and contracts — `prepare-mc2`, `stage-contracts`, `runtime-args`, `token-dispatch`.
+4. Fused forward — `no-shared-forward`, `fused-experts`.
+5. MLP compute — `mlp-compute`.
+6. EPLB and capture — `eplb-adaptor`, `capture-patch`.
+7. Alternative runtime — `xlite-adapters`.
+
 ## Scope
 
 The inspected revision is a clean local checkout of

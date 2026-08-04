@@ -4,6 +4,7 @@ summary: "A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GP
 layout: default
 confidence: high
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/vllm-codebase--github-d18ed2304a27.md
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md

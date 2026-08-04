@@ -4,6 +4,7 @@ summary: "How CANNBot's seven Triton-domain skills and the triton-op-generator p
 layout: default
 confidence: high
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/cannbot-skills-codebase--gitcode-326a6b47210f.md
   - derived/repo-analysis/frameworks/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/important-files.md

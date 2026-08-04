@@ -4,6 +4,7 @@ summary: "A code-reading tour of how vllm-ascend extends upstream vLLM for Ascen
 layout: default
 confidence: high
 code_links: strict
+code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
