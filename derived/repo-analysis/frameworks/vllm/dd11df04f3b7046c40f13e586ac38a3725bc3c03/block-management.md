@@ -12,6 +12,32 @@ Scope: `vllm/v1/core/` (block pool, KV cache managers, coordinator) plus the
 worker-side block table in `vllm/v1/worker/block_table.py`. Static reading of a
 clean detached checkout at `dd11df04f3b7046c40f13e586ac38a3725bc3c03` (2026-08-03).
 
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm/vllm-block-management/index.md` | block-pool | `vllm/v1/core/block_pool.py` | `BlockPool` | 143 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | request-allocation | `vllm/v1/core/kv_cache_manager.py` | `KVCacheManager.allocate_slots` | 344 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | copy-on-write | `vllm/v1/core/single_type_kv_cache_manager.py` | `SingleTypeKVCacheManager._apply_cow` | 405 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | prefix-hit | `vllm/v1/core/single_type_kv_cache_manager.py` | `FullAttentionManager.find_longest_cache_hit` | 682 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | hybrid-hit-reconciliation | `vllm/v1/core/kv_cache_coordinator.py` | `HybridKVCacheCoordinator.find_longest_cache_hit` | 685 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | skipped-block-recycling | `vllm/v1/core/single_type_kv_cache_manager.py` | `SingleTypeKVCacheManager.remove_skipped_blocks` | 622 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | worker-block-table | `vllm/v1/worker/block_table.py` | `MultiGroupBlockTable` | 270 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | pool-sizing | `vllm/v1/core/kv_cache_utils.py` | `get_num_blocks` | 973 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | cache-registration | `vllm/v1/core/block_pool.py` | `BlockPool.cache_full_blocks` | 225 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | physical-allocation | `vllm/v1/core/block_pool.py` | `BlockPool.get_new_blocks` | 647 | — |
+| `docs/frameworks/vllm/vllm-block-management/index.md` | cache-eviction | `vllm/v1/core/block_pool.py` | `BlockPool._maybe_evict_cached_block` | 679 | — |
+
+## Runtime Flow Evidence
+
+1. Pool sizing and initialization — `pool-sizing`, `block-pool`.
+2. Request admission and allocation — `request-allocation`, `physical-allocation`.
+3. Prefix reuse and registration — `prefix-hit`, `cache-registration`.
+4. Hybrid-group reconciliation — `hybrid-hit-reconciliation`.
+5. Worker materialization — `worker-block-table`.
+6. Divergence, recycling, and pressure cleanup — `copy-on-write`,
+   `skipped-block-recycling`, `cache-eviction`.
+
 ## Layout
 
 The legacy `vllm/core/block/` package no longer exists. V1 block management now

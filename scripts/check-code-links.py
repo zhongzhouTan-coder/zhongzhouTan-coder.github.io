@@ -10,6 +10,7 @@ import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
+from typing import NamedTuple
 
 from repository_remote import parse_repository_remote
 
@@ -40,11 +41,145 @@ REPOSITORY_FILE_SUFFIXES = {
     ".yaml",
     ".yml",
 }
+EVIDENCE_TABLE_HEADER = (
+    "docs page",
+    "finding",
+    "file",
+    "symbol",
+    "start",
+    "end",
+)
+
+
+class CodeEvidence(NamedTuple):
+    source_path: Path
+    source_line: int
+    docs_path: PurePosixPath
+    finding: str
+    code_path: PurePosixPath
+    symbol: str
+    start_line: int
+    end_line: int | None
 
 
 def mask_non_newlines(value: str) -> str:
     """Hide Markdown content while preserving offsets and line numbers."""
     return re.sub(r"[^\r\n]", " ", value)
+
+
+def display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def parse_table_row(line: str) -> list[str] | None:
+    stripped = line.strip()
+    if not stripped.startswith("|") or not stripped.endswith("|"):
+        return None
+    return [cell.strip().strip("`") for cell in stripped[1:-1].split("|")]
+
+
+def parse_code_evidence(markdown_path: Path) -> tuple[list[CodeEvidence], list[str]]:
+    """Read machine-checkable code evidence tables from one derived note."""
+    lines = markdown_path.read_text(encoding="utf-8").splitlines()
+    declarations: list[CodeEvidence] = []
+    errors: list[str] = []
+    index = 0
+    while index < len(lines):
+        cells = parse_table_row(lines[index])
+        normalized = tuple(cell.lower() for cell in cells) if cells else ()
+        if normalized != EVIDENCE_TABLE_HEADER:
+            index += 1
+            continue
+
+        index += 2  # Skip the Markdown separator row.
+        while index < len(lines):
+            cells = parse_table_row(lines[index])
+            if cells is None:
+                break
+            source_line = index + 1
+            location = f"{display_path(markdown_path)}:{source_line}"
+            row_errors: list[str] = []
+            if len(cells) != len(EVIDENCE_TABLE_HEADER):
+                errors.append(
+                    f"{location}: code evidence row must have "
+                    f"{len(EVIDENCE_TABLE_HEADER)} columns"
+                )
+                index += 1
+                continue
+
+            docs_value, finding, code_value, symbol, start_value, end_value = cells
+            docs_path = PurePosixPath(docs_value)
+            code_path = PurePosixPath(code_value)
+            if (
+                docs_path.is_absolute()
+                or ".." in docs_path.parts
+                or not docs_path.parts
+                or docs_path.parts[0] != "docs"
+                or docs_path.suffix != ".md"
+            ):
+                row_errors.append(
+                    f"{location}: evidence docs page must be a repository-relative "
+                    "Markdown path beneath docs/"
+                )
+            if code_path.is_absolute() or ".." in code_path.parts or not code_path.parts:
+                row_errors.append(
+                    f"{location}: evidence file must be repository-relative"
+                )
+            if not finding:
+                row_errors.append(f"{location}: evidence finding cannot be empty")
+            if not symbol:
+                row_errors.append(f"{location}: evidence symbol cannot be empty")
+            if not start_value.isdigit() or int(start_value) < 1:
+                row_errors.append(
+                    f"{location}: evidence start must be a positive integer"
+                )
+            normalized_end = "" if end_value in {"", "-", "—"} else end_value
+            if normalized_end and (
+                not normalized_end.isdigit() or int(normalized_end) < 1
+            ):
+                row_errors.append(
+                    f"{location}: evidence end must be blank or a positive integer"
+                )
+            if (
+                start_value.isdigit()
+                and normalized_end.isdigit()
+                and int(normalized_end) < int(start_value)
+            ):
+                row_errors.append(f"{location}: evidence end cannot precede start")
+            if row_errors:
+                errors.extend(row_errors)
+                index += 1
+                continue
+
+            declarations.append(
+                CodeEvidence(
+                    source_path=markdown_path,
+                    source_line=source_line,
+                    docs_path=docs_path,
+                    finding=finding,
+                    code_path=code_path,
+                    symbol=symbol,
+                    start_line=int(start_value),
+                    end_line=int(normalized_end) if normalized_end else None,
+                )
+            )
+            index += 1
+        continue
+    return declarations, errors
+
+
+def find_code_evidence() -> tuple[list[CodeEvidence], list[str]]:
+    declarations: list[CodeEvidence] = []
+    errors: list[str] = []
+    analysis_root = ROOT / "derived" / "repo-analysis"
+    for markdown_path in sorted(analysis_root.rglob("*.md")):
+        found, parse_errors = parse_code_evidence(markdown_path)
+        declarations.extend(found)
+        errors.extend(parse_errors)
+    return declarations, errors
 
 
 class CodeLinkParser(HTMLParser):
@@ -133,6 +268,17 @@ def find_code_links() -> list[tuple[Path, dict[str, str]]]:
         parser.feed(content)
         links.extend((markdown_path, attributes) for attributes in parser.links)
     return links
+
+
+def find_strict_evidence_pages() -> list[Path]:
+    pages: list[Path] = []
+    for markdown_path in sorted((ROOT / "docs").rglob("*.md")):
+        if "_site" in markdown_path.parts:
+            continue
+        content = markdown_path.read_text(encoding="utf-8")
+        if re.search(r"^code_evidence:\s*strict\s*$", content, re.MULTILINE):
+            pages.append(markdown_path)
+    return pages
 
 
 def find_unlinked_repository_paths(markdown_path: Path) -> list[tuple[int, str]]:
@@ -316,6 +462,65 @@ def validate_local(
     return errors
 
 
+def validate_evidence_coverage(
+    declarations: list[CodeEvidence],
+    links: list[tuple[Path, dict[str, str]]],
+    root: Path = ROOT,
+) -> list[str]:
+    """Require every declared finding to appear as a matching docs code link."""
+    errors: list[str] = []
+    links_by_page: dict[Path, list[dict[str, str]]] = {}
+    for markdown_path, attributes in links:
+        links_by_page.setdefault(markdown_path.resolve(), []).append(attributes)
+
+    for evidence in declarations:
+        location = f"{display_path(evidence.source_path)}:{evidence.source_line}"
+        docs_path = root / evidence.docs_path
+        if not docs_path.is_file():
+            errors.append(
+                f"{location}: evidence docs page does not exist: {evidence.docs_path}"
+            )
+            continue
+
+        candidates = links_by_page.get(docs_path.resolve(), [])
+        matched = False
+        for attributes in candidates:
+            if attributes.get("data-code-path") != str(evidence.code_path):
+                continue
+            if attributes.get("data-code-line") != str(evidence.start_line):
+                continue
+            if evidence.end_line is not None and attributes.get(
+                "data-code-end-line"
+            ) != str(evidence.end_line):
+                continue
+            matched = True
+            break
+        if matched:
+            continue
+
+        line_range = f"L{evidence.start_line}"
+        if evidence.end_line is not None:
+            line_range += f"-L{evidence.end_line}"
+        errors.append(
+            f"{location}: {evidence.docs_path} is missing declared code evidence "
+            f"{evidence.finding!r} ({evidence.code_path}#{line_range}, "
+            f"symbol {evidence.symbol!r})"
+        )
+    return errors
+
+
+def validate_required_evidence_pages(
+    required_pages: list[Path], declarations: list[CodeEvidence]
+) -> list[str]:
+    declared_pages = {(ROOT / evidence.docs_path).resolve() for evidence in declarations}
+    return [
+        f"{display_path(page)}: code_evidence: strict requires at least one "
+        "Required Code Evidence row in a derived repository-analysis note"
+        for page in required_pages
+        if page.resolve() not in declared_pages
+    ]
+
+
 def main() -> int:
     args = parse_args()
     try:
@@ -326,9 +531,14 @@ def main() -> int:
         return 1
 
     links = find_code_links()
+    evidence, evidence_errors = find_code_evidence()
+    strict_evidence_pages = find_strict_evidence_pages()
     errors = validate_registry(registry, sources)
+    errors.extend(evidence_errors)
+    errors.extend(validate_required_evidence_pages(strict_evidence_pages, evidence))
     for markdown_path, attributes in links:
         errors.extend(validate_include(markdown_path, attributes, registry))
+    errors.extend(validate_evidence_coverage(evidence, links))
     if args.local:
         errors.extend(validate_local(links, registry))
     for markdown_path in sorted((ROOT / "docs").rglob("*.md")):
@@ -344,7 +554,11 @@ def main() -> int:
         for error in errors:
             print(f"code link error: {error}", file=sys.stderr)
         return 1
-    print(f"code links valid: {len(links)} link(s), {len(registry)} repository revision(s)")
+    print(
+        f"code links valid: {len(links)} link(s), "
+        f"{len(evidence)} evidence declaration(s), "
+        f"{len(registry)} repository revision(s)"
+    )
     return 0
 
 

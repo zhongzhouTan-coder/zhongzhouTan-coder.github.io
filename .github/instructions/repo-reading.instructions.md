@@ -225,6 +225,15 @@ Keep derived notes factual and file-referenced. Record the exact search or
 counting command behind every quantitative codebase claim. Reserve teaching,
 comparisons, and interpretation for the docs page.
 
+Before drafting a consuming docs page, copy the machine-checkable evidence map
+from [repository-evidence-template.md](repository-evidence-template.md) into
+`important-files.md` or the directly supporting purpose-specific note. Add one
+row for every important finding that the docs page will explain. Each row must
+name the consuming docs page, a stable finding ID, repository-relative file,
+symbol, start line, and optional end line. The code-link checker verifies that
+the consuming page contains the declared link, so the evidence map is the handoff
+between code reading and prose drafting rather than a retrospective inventory.
+
 ## Repository-Backed Docs
 
 First decide the page type:
@@ -288,13 +297,14 @@ cleanup pass after the analysis is written:
 4. Before completion, enable `code_links: strict` and run the repository code
    link checker through `./scripts/lint-docs.sh`.
 
-New repository-backed pages must use `code_links: strict` from their first
-draft. When materially updating an older repository-backed page, migrate its
-concrete file references and enable strict mode as part of the update. On
-strict pages, every concrete repository filename in inline code must use a
-validated `code-link` anchor. Rewrite bare extensions, generated output
-patterns, and hypothetical filenames as prose; they are not navigable
-repository evidence.
+New repository-backed pages must use both `code_links: strict` and
+`code_evidence: strict` from their first draft. When materially updating an
+older repository-backed page, migrate its concrete file references and enable
+both strict modes as part of the update. `code_evidence: strict` requires at
+least one Required Code Evidence row targeting the page; `code_links: strict`
+requires every concrete repository filename in inline code to use a validated
+`code-link` anchor. Rewrite bare extensions, generated output patterns, and
+hypothetical filenames as prose; they are not navigable repository evidence.
 
 ### Link Directly to Inspected Code
 
@@ -329,6 +339,12 @@ Use code links for:
 - the first meaningful occurrence of every important file or symbol;
 - each step in a runtime flow or recommended reading path;
 - exact implementation evidence behind a non-obvious architectural claim.
+
+For symbol-map tables, add a code link to the symbol cell or a dedicated
+`Code` column for every major implementation type or operation. For an
+end-to-end flow, every numbered step must contain at least one link declared in
+the derived evidence map. Do not rely on a later section to supply a link for a
+different runtime step.
 
 Treat repository-specific class, function, method, constant, command, and
 configuration names as link candidates when a reader would reasonably search
@@ -407,10 +423,14 @@ Apply the most conservative matching rule:
 - [ ] Manifest revision, raw metadata, and derived metadata agree.
 - [ ] `important-files.md` exists under the full-SHA revision directory.
 - [ ] Commands supporting quantitative claims are recorded in derived notes.
+- [ ] A Required Code Evidence table declares each important finding, file,
+      symbol, line range, and consuming docs page.
+- [ ] New or materially updated pages enable `code_evidence: strict`.
 - [ ] Every consuming page appears in `docs_paths`.
 - [ ] Every consuming page cites the raw record and a derived revision file.
 - [ ] Every consuming page states the full SHA near the top.
 - [ ] Important files, symbols, and runtime-flow steps use revision-aware code links.
+- [ ] Every declared evidence row is covered by a matching code link.
 - [ ] Confidence follows the most conservative applicable rule.
 - [ ] Navigation and log updates were made only when warranted.
 - [ ] Source normalization, integrity checks, and docs lint all pass.

@@ -140,6 +140,94 @@ Still report `unlinked.py` on its original line.
 
         self.assertEqual(findings, [(13, "unlinked.py")])
 
+    def test_parses_machine_checkable_evidence_table(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Analysis
+
+## Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/example.md` | allocation | `src/pool.py` | `Pool.allocate` | 20 | 35 |
+"""
+        )
+
+        evidence, errors = CHECK_CODE_LINKS.parse_code_evidence(markdown_path)
+
+        self.assertEqual(errors, [])
+        self.assertEqual(len(evidence), 1)
+        self.assertEqual(str(evidence[0].docs_path), "docs/example.md")
+        self.assertEqual(str(evidence[0].code_path), "src/pool.py")
+        self.assertEqual(evidence[0].start_line, 20)
+        self.assertEqual(evidence[0].end_line, 35)
+
+    def test_declared_evidence_requires_matching_link(self) -> None:
+        temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        temporary_root = Path(temporary_directory.name)
+        docs_path = temporary_root / "docs" / "example.md"
+        docs_path.parent.mkdir(parents=True)
+        docs_path.write_text("# Example\n", encoding="utf-8")
+        evidence = CHECK_CODE_LINKS.CodeEvidence(
+            source_path=temporary_root / "derived" / "analysis.md",
+            source_line=8,
+            docs_path=CHECK_CODE_LINKS.PurePosixPath("docs/example.md"),
+            finding="allocation",
+            code_path=CHECK_CODE_LINKS.PurePosixPath("src/pool.py"),
+            symbol="Pool.allocate",
+            start_line=20,
+            end_line=None,
+        )
+
+        errors = CHECK_CODE_LINKS.validate_evidence_coverage(
+            [evidence], [], root=temporary_root
+        )
+
+        self.assertEqual(len(errors), 1)
+        self.assertIn("missing declared code evidence 'allocation'", errors[0])
+
+    def test_declared_evidence_accepts_matching_link(self) -> None:
+        temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        temporary_root = Path(temporary_directory.name)
+        docs_path = temporary_root / "docs" / "example.md"
+        docs_path.parent.mkdir(parents=True)
+        docs_path.write_text("# Example\n", encoding="utf-8")
+        evidence = CHECK_CODE_LINKS.CodeEvidence(
+            source_path=temporary_root / "derived" / "analysis.md",
+            source_line=8,
+            docs_path=CHECK_CODE_LINKS.PurePosixPath("docs/example.md"),
+            finding="allocation",
+            code_path=CHECK_CODE_LINKS.PurePosixPath("src/pool.py"),
+            symbol="Pool.allocate",
+            start_line=20,
+            end_line=35,
+        )
+        links = [
+            (
+                docs_path,
+                {
+                    "data-code-path": "src/pool.py",
+                    "data-code-line": "20",
+                    "data-code-end-line": "35",
+                },
+            )
+        ]
+
+        errors = CHECK_CODE_LINKS.validate_evidence_coverage(
+            [evidence], links, root=temporary_root
+        )
+
+        self.assertEqual(errors, [])
+
+    def test_strict_evidence_page_requires_a_declaration(self) -> None:
+        errors = CHECK_CODE_LINKS.validate_required_evidence_pages(
+            [self.markdown_path], []
+        )
+
+        self.assertEqual(len(errors), 1)
+        self.assertIn("code_evidence: strict requires", errors[0])
+
 
 if __name__ == "__main__":
     unittest.main()

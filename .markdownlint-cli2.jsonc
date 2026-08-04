@@ -60,6 +60,7 @@
     "README.md",
     "AGENTS.md",
     ".github/instructions/repo-reading.instructions.md",
+    ".github/instructions/repository-evidence-template.md",
     ".github/instructions/source-organization.instructions.md",
     ".github/instructions/web-source.instructions.md",
     "raw/**/*codebase--*-*.md",
