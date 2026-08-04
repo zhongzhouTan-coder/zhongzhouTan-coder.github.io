@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph Input["1. Configuration and Distribution"]
+        CFG["JobConfig<br/>(agents, datasets, tasks, metrics,<br/>retry, concurrency, n_attempts)"]
+        DS["DatasetConfig<br/>(local / git repo / package / registry)"]
+        TC["TaskClient<br/>downloads git & package tasks into cache"]
+    end
+
+    subgraph Plan["2. Planning"]
+        JP["JobPlan.from_config<br/>resolves task configs, builds<br/>TrialConfig per task x agent x attempt,<br/>resolves metrics, caches tasks,<br/>writes JobLock"]
+    end
+
+    subgraph Orchestrate["3. Orchestration"]
+        JOB["Job.create / Job.run"]
+        TQ["TrialQueue.submit_batch<br/>job-level semaphore + per-agent<br/>pools, retry backoff"]
+        TRIAL1["SingleStepTrial"]
+        TRIAL2["MultiStepTrial"]
+    end
+
+    subgraph Execute["4. Execution primitives"]
+        AGENT["BaseAgent<br/>setup() + run()"]
+        ENV["BaseEnvironment<br/>start, exec, upload/download,<br/>network policy, healthcheck"]
+        VER["Verifier.verify<br/>runs tests/, parses reward"]
+    end
+
+    subgraph Evidence["5. Evidence and results"]
+        RES["TrialResult / JobResult<br/>result.json, logs, artifacts,<br/>metrics, pass@k"]
+    end
+
+    CFG --> DS
+    DS --> JP
+    TC --> JP
+    JP --> JOB
+    JOB --> TQ
+    TQ --> TRIAL1
+    TQ --> TRIAL2
+    TRIAL1 --> AGENT
+    TRIAL2 --> AGENT
+    AGENT --> ENV
+    ENV --> VER
+    TRIAL1 --> VER
+    TRIAL2 --> VER
+    VER --> RES
+    AGENT --> RES
+
+    style Input fill:#e8f4f8,stroke:#6c8ebf
+    style Plan fill:#dae8fc,stroke:#6c8ebf
+    style Orchestrate fill:#fff2cc,stroke:#d6b656
+    style Execute fill:#d5e8d4,stroke:#82b366
+    style Evidence fill:#f8cecc,stroke:#b85450

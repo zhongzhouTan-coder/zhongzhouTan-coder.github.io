@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-02
+updated: 2026-08-04
 ---
 
 # Frameworks
@@ -45,4 +45,4 @@ updated: 2026-08-02
 ## Other Frameworks
 
 - [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md) — DeepSeek speculative decoding framework that combines semi-autoregressive draft generation, calibrated confidence estimates, hardware-aware verification scheduling, and production DeepSeek-V4 deployment results.
-- [Harbor: Agent Evaluation Framework Design](harbor/index.md) — Why Harbor exists beyond Terminal-Bench, its task-centric design philosophy, `Job -> Trial -> Agent/Environment/Verifier` architecture, artifact and verifier isolation model, and the editable draw.io architecture asset.
+- [Harbor: Agent Evaluation Framework (Code Reading)](harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.

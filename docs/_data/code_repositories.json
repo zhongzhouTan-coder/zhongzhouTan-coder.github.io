@@ -58,5 +58,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm-ascend",
     "revision": "61221e9add8c717b304005bd9d48d6215d035be7"
+  },
+  "harbor-97e65926410b": {
+    "local_checkout": "external-repos/harbor",
+    "provider": "github",
+    "repository_url": "https://github.com/harbor-framework/harbor",
+    "revision": "97e65926410ba6b9cef15cd5d9bf9a0c700cef26"
   }
 }

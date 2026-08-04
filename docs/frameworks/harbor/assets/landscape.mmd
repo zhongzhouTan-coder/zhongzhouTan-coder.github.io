@@ -1,0 +1,12 @@
+flowchart LR
+    TB["Terminal-Bench<br/>(one benchmark)"] -->|"reused for custom evals, RL rollouts,<br/>SFT traces, CI-style testing"| HB["Harbor<br/>(agent evaluation framework)"]
+    TB -->|"inspired"| PIER["Pier<br/>(coding-agent harness)"]
+    HB -->|"shares task/trial model"| PIER
+    SWEB["SWE-bench family<br/>(static patches)"] -->|"containerized runtime"| TB
+    DSW["DeepSWE<br/>(long-horizon SE benchmark)"] -.->|"local-dataset execution"| PIER
+
+    style TB fill:#fce4ec,stroke:#c2185b
+    style HB fill:#dae8fc,stroke:#6c8ebf
+    style PIER fill:#d5e8d4,stroke:#82b366
+    style SWEB fill:#fff9e6,stroke:#d6b656
+    style DSW fill:#e8f4f8,stroke:#6c8ebf

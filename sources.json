@@ -279,28 +279,6 @@
       "status": "ingested"
     },
     {
-      "id": "github:harbor",
-      "title": "Harbor: Agent Evaluation Framework Design",
-      "slug": "harbor-framework",
-      "category": "frameworks",
-      "kind": "reference",
-      "raw_paths": [
-        "raw/frameworks/harbor/README.md",
-        "raw/frameworks/harbor/index.mdx",
-        "raw/frameworks/harbor/core-concepts.mdx",
-        "raw/frameworks/harbor/tasks-index.mdx",
-        "raw/frameworks/harbor/results-and-artifacts.mdx",
-        "raw/frameworks/harbor/harbor-registry.mdx",
-        "raw/frameworks/harbor/separate-verifier-sandboxes.mdx",
-        "raw/frameworks/harbor/agents-base.py",
-        "raw/frameworks/harbor/environments-base.py",
-        "raw/frameworks/harbor/job.py",
-        "raw/frameworks/harbor/trial.py"
-      ],
-      "docs_path": "docs/frameworks/harbor/index.md",
-      "status": "ingested"
-    },
-    {
       "id": "arxiv:2312.07104v2",
       "title": "SGLang: Structured Language Model Programs",
       "slug": "sglang-structured-language-model-programs",
@@ -1029,6 +1007,25 @@
       ],
       "derived_path": "derived/web-markdown/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.md",
       "docs_path": "docs/algorithms/kronecker-product.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:harbor-framework/harbor@97e65926410ba6b9cef15cd5d9bf9a0c700cef26",
+      "title": "Harbor Codebase",
+      "slug": "harbor-codebase",
+      "repo_slug": "harbor",
+      "revision": "97e65926410ba6b9cef15cd5d9bf9a0c700cef26",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/harbor-framework/harbor",
+      "raw_paths": [
+        "raw/frameworks/harbor-codebase--github-97e65926410b.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/harbor/97e65926410ba6b9cef15cd5d9bf9a0c700cef26/",
+      "docs_paths": [
+        "docs/frameworks/harbor/index.md"
+      ],
       "status": "ingested"
     }
   ]

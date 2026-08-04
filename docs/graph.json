@@ -306,7 +306,7 @@
     },
     {
       "id": "docs/frameworks/harbor/index.md",
-      "label": "Harbor: Agent Evaluation Framework Design",
+      "label": "Harbor: Agent Evaluation Framework (Code Reading)",
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/harbor/",
@@ -406,7 +406,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/minimax-gqa-w4a4-quantization-path/",
-      "degree": 16
+      "degree": 17
     },
     {
       "id": "docs/frameworks/vllm/vllm-block-management/index.md",
@@ -590,7 +590,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/kronecker-product/",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "docs/terms/kv-cache.md",
@@ -1728,6 +1728,10 @@
     },
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
+      "target": "docs/terms/kronecker-product.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
       "target": "docs/terms/mixture-of-experts.md"
     },
     {
@@ -2553,10 +2557,6 @@
     {
       "source": "docs/terms/kimi-delta-attention.md",
       "target": "docs/training/kimi/kimi-linear/index.md"
-    },
-    {
-      "source": "docs/terms/kronecker-product.md",
-      "target": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
     },
     {
       "source": "docs/terms/kronecker-product.md",
