@@ -33,6 +33,8 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border-top: 4px solid var(--kb-accent-strong);
   border-bottom: 1px solid var(--kb-line);
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .site-title,
@@ -752,15 +754,6 @@ body {
   text-transform: uppercase;
 }
 
-.kb-graph-hero__copy h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--kb-ink);
-  border-bottom: none;
-}
-
 .kb-graph-hero__lede {
   margin: 4px 0 0;
   color: var(--kb-muted);
@@ -888,6 +881,7 @@ body {
 .kb-graph-canvas {
   position: absolute;
   inset: var(--kb-graph-hero-height) var(--kb-graph-detail-width) 0 0;
+  overflow: auto;
   background:
     radial-gradient(ellipse at 25% 35%, rgba(15, 118, 110, 0.04) 0%, transparent 55%),
     radial-gradient(ellipse at 70% 55%, rgba(124, 58, 237, 0.04) 0%, transparent 55%),
@@ -900,10 +894,21 @@ body {
   cursor: grabbing;
 }
 
+.kb-graph-canvas canvas,
 .kb-graph-canvas svg {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.kb-graph-canvas canvas {
+  pointer-events: none;
+}
+
+.kb-graph-canvas svg {
+  z-index: 1;
 }
 
 .kb-graph-label {
@@ -914,10 +919,6 @@ body {
   stroke-width: 3px;
   stroke-linejoin: round;
   transition: opacity 140ms ease;
-}
-
-.kb-graph-edge {
-  transition: stroke 120ms ease, stroke-opacity 120ms ease, stroke-width 120ms ease;
 }
 
 .kb-graph-node circle {
@@ -1061,10 +1062,6 @@ body {
 
   .kb-graph-hero__copy {
     max-width: 100%;
-  }
-
-  .kb-graph-hero__copy h1 {
-    font-size: 1.2rem;
   }
 
   .kb-graph-hero__lede {

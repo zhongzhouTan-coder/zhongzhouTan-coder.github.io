@@ -7,7 +7,6 @@ title: Knowledge Base
   <header class="kb-graph-hero">
     <div class="kb-graph-hero__copy">
       <p class="kb-graph-eyebrow">AI systems research notebook</p>
-      <h1>Knowledge Base</h1>
       <p class="kb-graph-hero__lede">
         A curated map of papers, frameworks, benchmarks, algorithms, and hardware notes.
         <span class="kb-graph-hero__stats">
@@ -29,6 +28,7 @@ title: Knowledge Base
     </div>
   </header>
   <div class="kb-graph-canvas" id="graph-canvas">
+    <canvas id="graph-edges" aria-hidden="true"></canvas>
     <svg id="graph-svg" aria-label="Interactive knowledge graph"></svg>
   </div>
   <aside class="kb-graph-detail" id="graph-detail" aria-live="polite">
@@ -76,6 +76,8 @@ title: Knowledge Base
   const canvas = document.getElementById('graph-canvas');
   const hero = document.querySelector('.kb-graph-hero');
   const graphPage = document.querySelector('.kb-graph-page');
+  const edgeCanvas = document.getElementById('graph-edges');
+  const edgeContext = edgeCanvas.getContext('2d');
   const svg = d3.select('#graph-svg');
   const searchInput = document.getElementById('graph-search');
   const legendEl = document.getElementById('graph-legend');
@@ -83,14 +85,25 @@ title: Knowledge Base
   const detailTitle = document.getElementById('graph-detail-title');
   const detailMeta = document.getElementById('graph-detail-meta');
   const detailLink = document.getElementById('graph-detail-link');
+  const MAX_EDGE_CANVAS_PIXELS = 4000000;
 
   let width, height;
+  let edgePixelRatio = 1;
   let simulation;
-  let nodeElements, edgeElements, labelElements;
+  let nodeElements, labelElements;
   let viewport, zoomBehavior;
   let graphData = null;
+  let nodes = [];
+  let edges = [];
+  let adjacency = new Map();
+  let matchedNodeIds = new Set();
+  let highlightedNodeId = null;
+  let edgeDrawFrame = null;
+  let resizeTimer = null;
   let activeCategory = null;
   let currentZoom = 1;
+  let currentTransform = d3.zoomIdentity;
+  let revealLabels = false;
 
   function buildLegend() {
     legendEl.innerHTML = Object.entries(CATEGORY_LABELS)
@@ -118,11 +131,185 @@ title: Knowledge Base
 
   function resize() {
     graphPage.style.setProperty('--kb-graph-hero-height', hero.offsetHeight + 'px');
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    var nodeCount = graphData ? graphData.nodes.length : 0;
+    var graphScale = Math.max(1, Math.sqrt(Math.max(nodeCount, 1) / 60));
+    var minimumWidth = Math.round(1400 * graphScale);
+    var minimumHeight = Math.round(900 * graphScale);
+    var nextWidth = Math.max(canvas.clientWidth, isMobile ? canvas.clientWidth : minimumWidth);
+    var nextHeight = Math.max(canvas.clientHeight, isMobile ? canvas.clientHeight : minimumHeight);
+    var devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    var pixelBudgetRatio = Math.sqrt(MAX_EDGE_CANVAS_PIXELS / (nextWidth * nextHeight));
+    var nextPixelRatio = Math.max(1, Math.min(devicePixelRatio, pixelBudgetRatio));
+    var backingWidth = Math.round(nextWidth * nextPixelRatio);
+    var backingHeight = Math.round(nextHeight * nextPixelRatio);
+    var dimensionsChanged = width !== nextWidth || height !== nextHeight ||
+      edgeCanvas.width !== backingWidth || edgeCanvas.height !== backingHeight;
+
+    width = nextWidth;
+    height = nextHeight;
+    edgePixelRatio = nextPixelRatio;
+    if (!dimensionsChanged) return false;
+
+    edgeCanvas.width = backingWidth;
+    edgeCanvas.height = backingHeight;
+    edgeCanvas.style.width = width + 'px';
+    edgeCanvas.style.height = height + 'px';
     svg.attr('viewBox', '0 0 ' + width + ' ' + height)
        .attr('width', width)
-       .attr('height', height);
+       .attr('height', height)
+       .style('width', width + 'px')
+       .style('height', height + 'px');
+    if (nodes.length) {
+      nodes.forEach(constrainNodeToView);
+      if (nodeElements) {
+        nodeElements.attr('transform', function (node) {
+          return 'translate(' + node.x + ',' + node.y + ')';
+        });
+      }
+    }
+    scheduleEdgeDraw();
+    return true;
+  }
+
+  function endpointId(endpoint) {
+    return typeof endpoint === 'object' ? endpoint.id : endpoint;
+  }
+
+  function nodeRadius(node) {
+    return Math.max(4, Math.min(22, 4 + node.degree * 0.9));
+  }
+
+  function seedNodePositions() {
+    var goldenAngle = Math.PI * (3 - Math.sqrt(5));
+    var horizontalRadius = Math.max(0, width / 2 - 80);
+    var verticalRadius = Math.max(0, height / 2 - 80);
+    nodes.forEach(function (node, index) {
+      var spread = Math.sqrt((index + 0.5) / nodes.length);
+      var angle = index * goldenAngle;
+      node.x = width / 2 + Math.cos(angle) * horizontalRadius * spread;
+      node.y = height / 2 + Math.sin(angle) * verticalRadius * spread;
+    });
+  }
+
+  function constrainNodeToView(node) {
+    var padding = 48;
+    var radius = nodeRadius(node);
+    var minX = Math.min(width / 2, padding + radius);
+    var maxX = Math.max(width / 2, width - padding - radius);
+    var minY = Math.min(height / 2, padding + radius);
+    var maxY = Math.max(height / 2, height - padding - radius);
+
+    if (node.x < minX) {
+      node.x = minX;
+      node.vx = Math.max(0, node.vx || 0) * 0.2;
+    } else if (node.x > maxX) {
+      node.x = maxX;
+      node.vx = Math.min(0, node.vx || 0) * 0.2;
+    }
+    if (node.y < minY) {
+      node.y = minY;
+      node.vy = Math.max(0, node.vy || 0) * 0.2;
+    } else if (node.y > maxY) {
+      node.y = maxY;
+      node.vy = Math.min(0, node.vy || 0) * 0.2;
+    }
+  }
+
+  function createViewportForce() {
+    var forceNodes = [];
+
+    function force(alpha) {
+      var padding = 48;
+      var strength = 0.55 * alpha;
+
+      forceNodes.forEach(function (node) {
+        var radius = nodeRadius(node);
+        var minX = Math.min(width / 2, padding + radius);
+        var maxX = Math.max(width / 2, width - padding - radius);
+        var minY = Math.min(height / 2, padding + radius);
+        var maxY = Math.max(height / 2, height - padding - radius);
+        if (node.x < minX) node.vx += (minX - node.x) * strength;
+        if (node.x > maxX) node.vx -= (node.x - maxX) * strength;
+        if (node.y < minY) node.vy += (minY - node.y) * strength;
+        if (node.y > maxY) node.vy -= (node.y - maxY) * strength;
+      });
+    }
+
+    force.initialize = function (initialNodes) {
+      forceNodes = initialNodes;
+    };
+
+    return force;
+  }
+
+  function buildAdjacency() {
+    adjacency = new Map(nodes.map(function (node) { return [node.id, new Set()]; }));
+    edges.forEach(function (edge) {
+      var sourceId = endpointId(edge.source);
+      var targetId = endpointId(edge.target);
+      adjacency.get(sourceId).add(targetId);
+      adjacency.get(targetId).add(sourceId);
+    });
+  }
+
+  function scheduleEdgeDraw() {
+    if (edgeDrawFrame !== null) return;
+    edgeDrawFrame = window.requestAnimationFrame(function () {
+      edgeDrawFrame = null;
+      drawEdges();
+    });
+  }
+
+  function drawEdgePath(predicate, color, widthValue, opacity) {
+    edgeContext.beginPath();
+    var hasSegments = false;
+    edges.forEach(function (edge) {
+      if (!predicate(edge) || !Number.isFinite(edge.source.x) || !Number.isFinite(edge.target.x)) return;
+      edgeContext.moveTo(edge.source.x, edge.source.y);
+      edgeContext.lineTo(edge.target.x, edge.target.y);
+      hasSegments = true;
+    });
+    if (!hasSegments) return;
+    edgeContext.strokeStyle = color;
+    edgeContext.lineWidth = widthValue;
+    edgeContext.globalAlpha = opacity;
+    edgeContext.stroke();
+  }
+
+  function drawEdges() {
+    if (!width || !height) return;
+    edgeContext.setTransform(edgePixelRatio, 0, 0, edgePixelRatio, 0, 0);
+    edgeContext.clearRect(0, 0, width, height);
+    edgeContext.save();
+    edgeContext.translate(currentTransform.x, currentTransform.y);
+    edgeContext.scale(currentTransform.k, currentTransform.k);
+    edgeContext.lineCap = 'round';
+
+    if (highlightedNodeId) {
+      var highlightedNode = nodes.find(function (node) { return node.id === highlightedNodeId; });
+      var highlightColor = highlightedNode
+        ? CATEGORY_COLORS[highlightedNode.category]
+        : CATEGORY_COLORS.other;
+      drawEdgePath(function (edge) {
+        return endpointId(edge.source) !== highlightedNodeId && endpointId(edge.target) !== highlightedNodeId;
+      }, '#cbd5e1', 0.2, 0.08);
+      drawEdgePath(function (edge) {
+        return endpointId(edge.source) === highlightedNodeId || endpointId(edge.target) === highlightedNodeId;
+      }, highlightColor, 2, 0.85);
+    } else if (matchedNodeIds.size < nodes.length) {
+      drawEdgePath(function (edge) {
+        return !(matchedNodeIds.has(endpointId(edge.source)) && matchedNodeIds.has(endpointId(edge.target)));
+      }, '#cbd5e1', 0.2, 0.05);
+      drawEdgePath(function (edge) {
+        return matchedNodeIds.has(endpointId(edge.source)) && matchedNodeIds.has(endpointId(edge.target));
+      }, '#94a3b8', 0.5, 0.45);
+    } else {
+      drawEdgePath(function () { return true; }, '#cbd5e1', 0.5, 0.3);
+    }
+
+    edgeContext.restore();
+    edgeContext.globalAlpha = 1;
   }
 
   fetch('/graph/graph-data.json')
@@ -144,16 +331,27 @@ title: Knowledge Base
     resize();
     svg.selectAll('*').remove();
 
-    var nodes = graphData.nodes.map(function (n) { return Object.assign({}, n); });
-    var edges = graphData.edges.map(function (e) { return Object.assign({}, e); });
+    nodes = graphData.nodes.map(function (n) { return Object.assign({}, n); });
+    edges = graphData.edges.map(function (e) { return Object.assign({}, e); });
+    seedNodePositions();
+    buildAdjacency();
 
     zoomBehavior = d3.zoom()
       .scaleExtent([0.2, 5])
+      .filter(function (event) {
+        return event.type !== 'wheel' || event.ctrlKey;
+      })
       .on('zoom', function (event) {
         currentZoom = event.transform.k;
+        currentTransform = event.transform;
         viewport.attr('transform', event.transform);
         document.getElementById('graph-zoom-level').textContent = Math.round(event.transform.k * 100) + '%';
-        updateVisibility();
+        scheduleEdgeDraw();
+        var nextRevealLabels = currentZoom >= 1.6;
+        if (nextRevealLabels !== revealLabels) {
+          revealLabels = nextRevealLabels;
+          updateVisibility();
+        }
       });
     svg.call(zoomBehavior).on('dblclick.zoom', null);
 
@@ -165,18 +363,8 @@ title: Knowledge Base
     merge.append('feMergeNode').attr('in', 'blur');
     merge.append('feMergeNode').attr('in', 'SourceGraphic');
 
-    // Edges
+    // Nodes stay in SVG for keyboard access; the dense edge layer is drawn on Canvas.
     viewport = svg.append('g').attr('class', 'kb-graph-viewport');
-    var linkGroup = viewport.append('g').attr('class', 'edges');
-    edgeElements = linkGroup.selectAll('line')
-      .data(edges)
-      .join('line')
-      .attr('class', 'kb-graph-edge')
-      .attr('stroke', '#cbd5e1')
-      .attr('stroke-width', 0.5)
-      .attr('stroke-opacity', 0.2);
-
-    // Node groups
     var nodeGroup = viewport.append('g').attr('class', 'nodes');
     nodeElements = nodeGroup.selectAll('g')
       .data(nodes)
@@ -192,7 +380,7 @@ title: Knowledge Base
 
     // Circles — larger for full-viewport
     nodeElements.append('circle')
-      .attr('r', function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)); })
+      .attr('r', nodeRadius)
       .attr('fill', function (d) { return CATEGORY_COLORS[d.category] || CATEGORY_COLORS.other; })
       .attr('stroke', function (d) { return d.isIndex ? '#1e293b' : 'none'; })
       .attr('stroke-width', function (d) { return d.isIndex ? 2.5 : 0; })
@@ -201,13 +389,11 @@ title: Knowledge Base
       .attr('cursor', 'pointer');
 
     // Labels
-    labelElements = nodeGroup.selectAll('text')
-      .data(nodes)
-      .join('text')
+    labelElements = nodeElements.append('text')
       .text(function (d) { return d.label.length > 27 ? d.label.slice(0, 25) + '…' : d.label; })
       .attr('class', 'kb-graph-label')
       .attr('font-size', function (d) { return Math.max(8, Math.min(11.5, 8.5 + d.degree * 0.12)); })
-      .attr('dx', function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)) + 7; })
+      .attr('dx', function (d) { return nodeRadius(d) + 7; })
       .attr('dy', '0.35em')
       .attr('fill', '#334155')
       .attr('pointer-events', 'none')
@@ -218,39 +404,10 @@ title: Knowledge Base
     // Interactions
     nodeElements
       .on('mouseenter', function (event, d) {
-        showNodeDetails(d);
-
-        edgeElements
-          .attr('stroke-opacity', function (e) {
-            return e.source.id === d.id || e.target.id === d.id ? 0.85 : 0.04;
-          })
-          .attr('stroke-width', function (e) {
-            return e.source.id === d.id || e.target.id === d.id ? 2 : 0.2;
-          })
-          .attr('stroke', function (e) {
-            return e.source.id === d.id || e.target.id === d.id
-              ? CATEGORY_COLORS[d.category]
-              : '#cbd5e1';
-          });
-        nodeElements.select('circle')
-          .attr('opacity', function (n) {
-            if (n.id === d.id) return 1;
-            var connected = edges.some(function (e) {
-              return (e.source.id === d.id && e.target.id === n.id) ||
-                     (e.target.id === d.id && e.source.id === n.id);
-            });
-            return connected ? 0.85 : 0.08;
-          })
-          .attr('filter', function (n) {
-            return n.id === d.id ? 'url(#node-glow)' : null;
-          });
-        labelElements
-          .attr('opacity', function (n) {
-            return n.id === d.id ? 1 : 0;
-          });
+        highlightNode(d);
       })
       .on('mouseleave', function () {
-        updateVisibility();
+        clearHighlight();
       })
       .on('click', function (event, d) {
         if (event.defaultPrevented) return;
@@ -262,29 +419,30 @@ title: Knowledge Base
         window.location.href = d.url;
       })
       .on('focus', function (event, d) {
-        showNodeDetails(d);
-        labelElements
-          .filter(function (node) { return node.id === d.id; })
-          .attr('opacity', 1);
+        highlightNode(d);
       })
-      .on('blur', updateVisibility);
+      .on('blur', clearHighlight);
 
-    // Simulation — tuned for full-viewport
+    // Simulation — cooled after settling to save CPU
     simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(edges).id(function (d) { return d.id; }).distance(70).strength(0.25))
-      .force('charge', d3.forceManyBody().strength(-160))
+      .alphaDecay(0.03)
+      .alphaMin(0.001)
+      .velocityDecay(0.35)
+      .force('link', d3.forceLink(edges).id(function (d) { return d.id; }).distance(120).strength(0.12))
+      .force('charge', d3.forceManyBody().strength(-360))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius(function (d) { return Math.max(4, Math.min(22, 4 + d.degree * 0.9)) + 5; }))
+      .force('x', d3.forceX(width / 2).strength(0.025))
+      .force('y', d3.forceY(height / 2).strength(0.025))
+      .force('viewport', createViewportForce())
+      .force('collision', d3.forceCollide().radius(function (d) { return nodeRadius(d) + 14; }).iterations(2))
       .on('tick', function () {
-        edgeElements
-          .attr('x1', function (d) { return d.source.x; })
-          .attr('y1', function (d) { return d.source.y; })
-          .attr('x2', function (d) { return d.target.x; })
-          .attr('y2', function (d) { return d.target.y; });
+        nodes.forEach(constrainNodeToView);
         nodeElements.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-        labelElements
-          .attr('x', function (d) { return d.x; })
-          .attr('y', function (d) { return d.y; });
+        scheduleEdgeDraw();
+      })
+      .on('end', function () {
+        // Simulation has cooled — free all fixed positions so the graph rests
+        nodes.forEach(function (d) { d.fx = null; d.fy = null; });
       });
 
     // Search
@@ -299,9 +457,13 @@ title: Knowledge Base
     document.getElementById('graph-zoom-fit').addEventListener('click', fitGraph);
 
     window.addEventListener('resize', function () {
-      resize();
-      simulation.force('center', d3.forceCenter(width / 2, height / 2));
-      simulation.alpha(0.3).restart();
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        resizeTimer = null;
+        if (!resize()) return;
+        simulation.force('center', d3.forceCenter(width / 2, height / 2));
+        simulation.alpha(0.3).restart();
+      }, 120);
     });
   }
 
@@ -316,21 +478,37 @@ title: Knowledge Base
     function showsLabel(node) {
       if (!matches(node)) return false;
       if (query) return true;
-      return node.isIndex;
+      return node.isIndex || revealLabels;
     }
-    var filtering = Boolean(query || activeCategory);
+    matchedNodeIds = new Set(nodes.filter(matches).map(function (node) { return node.id; }));
     nodeElements.select('circle').attr('opacity', function (node) { return matches(node) ? 0.95 : 0.05; });
     nodeElements
       .attr('tabindex', function (node) { return matches(node) ? 0 : -1; })
       .attr('aria-hidden', function (node) { return matches(node) ? null : 'true'; });
     labelElements.attr('opacity', function (node) { return showsLabel(node) ? 1 : 0; });
-    edgeElements
-      .attr('stroke', '#cbd5e1')
-      .attr('stroke-width', filtering ? 0.2 : 0.5)
-      .attr('stroke-opacity', function (edge) {
-        if (!filtering) return 0.2;
-        return matches(edge.source) && matches(edge.target) ? 0.45 : 0.02;
+    scheduleEdgeDraw();
+  }
+
+  function highlightNode(node) {
+    var neighbors = adjacency.get(node.id) || new Set();
+    highlightedNodeId = node.id;
+    showNodeDetails(node);
+    nodeElements.select('circle')
+      .attr('opacity', function (candidate) {
+        if (candidate.id === node.id) return 1;
+        return neighbors.has(candidate.id) ? 0.85 : 0.08;
+      })
+      .attr('filter', function (candidate) {
+        return candidate.id === node.id ? 'url(#node-glow)' : null;
       });
+    labelElements.attr('opacity', function (candidate) { return candidate.id === node.id ? 1 : 0; });
+    scheduleEdgeDraw();
+  }
+
+  function clearHighlight() {
+    highlightedNodeId = null;
+    nodeElements.select('circle').attr('filter', null);
+    updateVisibility();
   }
 
   function showNodeDetails(node) {
