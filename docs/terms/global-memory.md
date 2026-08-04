@@ -15,7 +15,7 @@ aliases:
 appears_in:
   - docs/frameworks/triton-ascend/operator-mechanisms.md
   - docs/algorithms/flashattention/flashattention-3.md
-  - docs/hardware/quantization/flatquant.md
+  - docs/hardware/quantization/flatquant/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
 updated: 2026-07-31
 ---
@@ -45,7 +45,7 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — GM is the source and destination of every tile movement on the Ascend NPU.
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
-- [FlatQuant](../hardware/quantization/flatquant.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
+- [FlatQuant](../hardware/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — Emits LSE tensors directly to global memory for the KL-loss backward kernel.
 
 ## Related Terms

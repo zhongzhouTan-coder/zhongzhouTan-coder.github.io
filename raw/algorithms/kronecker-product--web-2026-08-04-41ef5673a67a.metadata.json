@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://mathworld.wolfram.com/KroneckerProduct.html",
+  "final_url": "https://mathworld.wolfram.com/KroneckerProduct.html",
+  "canonical_url": "https://mathworld.wolfram.com/KroneckerProduct.html",
+  "title": "Kronecker Product -- from Wolfram MathWorld",
+  "author": "",
+  "published_at": null,
+  "captured_at": "2026-08-04T12:28:35.676Z",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "renderer": "http",
+  "content_sha256": "41ef5673a67ab59fd862ac4e1685d4b022b4ef5a6f4ce93946f490e496dbb6d1",
+  "raw_html_bytes": 61544,
+  "extracted_markdown_characters": 1646,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {
+    "accept-ranges": "bytes",
+    "access-control-allow-origin": "*",
+    "access-control-request-private-network": "true",
+    "content-security-policy": "upgrade-insecure-requests",
+    "content-type": "text/html; charset=UTF-8",
+    "date": "Tue, 04 Aug 2026 12:28:36 GMT",
+    "server": "Generic Web Server",
+    "transfer-encoding": "chunked"
+  },
+  "limitations": []
+}

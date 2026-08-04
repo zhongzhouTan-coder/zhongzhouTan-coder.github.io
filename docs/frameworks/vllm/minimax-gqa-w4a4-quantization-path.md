@@ -20,7 +20,7 @@ updated: 2026-08-04
 - [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0` (main, clean)
 - [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `61221e9add8c717b304005bd9d48d6215d035be7` (main, clean)
 
-**Related pages:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md), [vLLM Code Learning Path](vllm-code-learning-path.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant: Fast Learnable Affine Quantization](../../hardware/quantization/flatquant.md), [Quantization](../../hardware/quantization/index.md)
+**Related pages:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md), [vLLM Code Learning Path](vllm-code-learning-path.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant: Fast Learnable Affine Quantization](../../hardware/quantization/flatquant/index.md), [Quantization](../../hardware/quantization/index.md)
 
 ## TL;DR
 
@@ -247,7 +247,7 @@ Two things make MiniMax M2 work on NPU without a plugin-local model file:
 
 **W4A4_MXFP4** — <a class="code-link" href="../../../external-repos/vllm-ascend-61221e9add8c/vllm_ascend/quantization/methods/w4a4_mxfp4.py#L42" data-code-repo="vllm-ascend-61221e9add8c" data-code-path="vllm_ascend/quantization/methods/w4a4_mxfp4.py" data-code-line="42" data-code-end-line="123"><code>AscendW4A4MXFP4DynamicLinearMethod</code></a> — microscaling FP4: weights packed FP4 (E2M1) as uint8 with per-group E8M0 scales (`group_size` from the quant description, default 32). `apply()` runs `npu_dynamic_mx_quant` to FP4 then `npu_quant_matmul` with E8M0 scales and per-token scales. A matching `W4A4_MXFP4` MoE scheme exists for the experts.
 
-**W4A4_FLATQUANT_DYNAMIC** — <a class="code-link" href="../../../external-repos/vllm-ascend-61221e9add8c/vllm_ascend/quantization/methods/w4a4_flatquant.py#L78" data-code-repo="vllm-ascend-61221e9add8c" data-code-path="vllm_ascend/quantization/methods/w4a4_flatquant.py" data-code-line="78" data-code-end-line="160"><code>AscendW4A4FlatQuantDynamicLinearMethod</code></a> — per-channel INT4 weights (packed to int32 during loading) plus FlatQuant Kronecker `left_trans`/`right_trans` matrices and a `clip_ratio` that smooth the activation distribution before 4-bit dynamic quantization. `apply()` uses `npu_kronecker_quant` then `npu_quant_matmul`.
+**W4A4_FLATQUANT_DYNAMIC** — <a class="code-link" href="../../../external-repos/vllm-ascend-61221e9add8c/vllm_ascend/quantization/methods/w4a4_flatquant.py#L78" data-code-repo="vllm-ascend-61221e9add8c" data-code-path="vllm_ascend/quantization/methods/w4a4_flatquant.py" data-code-line="78" data-code-end-line="160"><code>AscendW4A4FlatQuantDynamicLinearMethod</code></a> — per-channel INT4 weights (packed to int32 during loading) plus FlatQuant [Kronecker](../../terms/kronecker-product.md) `left_trans`/`right_trans` matrices and a `clip_ratio` that smooth the activation distribution before 4-bit dynamic quantization. `apply()` uses `npu_kronecker_quant` then `npu_quant_matmul`.
 
 **W4A4_DYNAMIC (LAOS)** — <a class="code-link" href="../../../external-repos/vllm-ascend-61221e9add8c/vllm_ascend/quantization/methods/w4a4_laos_dynamic.py#L28" data-code-repo="vllm-ascend-61221e9add8c" data-code-path="vllm_ascend/quantization/methods/w4a4_laos_dynamic.py" data-code-line="28" data-code-end-line="76"><code>AscendW4A4LaosDynamicLinearMethod</code></a> — per-channel INT4 weights with scale and offset, 4-bit dynamic activation quantization via `npu_dynamic_quant` (`quint4x2`), then `npu_quant_matmul` with a per-token scale.
 
@@ -334,6 +334,6 @@ matching kernel or operator can perform a true W4A4 GEMM.
 
 ## Go Deeper
 
-- **Related quantization pages:** [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant](../../hardware/quantization/flatquant.md), [Quantization hub](../../hardware/quantization/index.md)
+- **Related quantization pages:** [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant](../../hardware/quantization/flatquant/index.md), [Quantization hub](../../hardware/quantization/index.md)
 - **Serving framework context:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Code Learning Path](vllm-code-learning-path.md), [vLLM Ascend Kimi K3 MoE Forward](../vllm-ascend/kimi-k3-moe-forward.md)
 - **Reproduce:** Both checkouts are clean at the pinned commits. GPU evidence is under `vllm/model_executor/layers/quantization/` and in the MiniMax M2 model module; NPU evidence is under `vllm_ascend/quantization/` and `vllm_ascend/patch/platform/`.

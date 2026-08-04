@@ -21,6 +21,7 @@ appears_in:
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/spatial-gemm.md
   - docs/training/parallelism/megatron-lm/index.md
+  - docs/hardware/quantization/flatquant/index.md
 updated: 2026-08-04
 ---
 
@@ -58,6 +59,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The knowledge-base insight page for the same tutorial: output tiling, MemFold/MemReduce, triple buffering, and banking.
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Measures attention against optimized GEMM kernels that reach 80–90% of H100 peak, and overlaps GEMM with softmax.
 - [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — W4A4 inference runs FP4 GEMM kernels (FlashInfer MXFP4, CUTLASS NVFP4) with dynamic activation quantization.
+- [FlatQuant](../hardware/quantization/flatquant/index.md) — Quantizes activations to INT4 inside a fused affine-transform kernel, then multiplies by pre-transformed INT4 weights with a CUTLASS GEMM.
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
 - [Megatron-LM](../training/parallelism/megatron-lm/index.md) — Splits transformer GEMMs column- and row-wise across GPUs for tensor parallelism.

@@ -14,7 +14,7 @@ updated: 2026-07-15
 **Authors:** Armen Aghajanyan, Luke Zettlemoyer, Sonal Gupta  
 **arXiv:** 2012.13255v1 - 22 Dec 2020
 
-**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](../../../hardware/quantization/flatquant.md), [SGLang: Structured Language Model Programs](../../../frameworks/sglang/index.md)
+**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](../../../hardware/quantization/flatquant/index.md), [SGLang: Structured Language Model Programs](../../../frameworks/sglang/index.md)
 
 ## Summary
 

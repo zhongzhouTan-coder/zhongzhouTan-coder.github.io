@@ -63,6 +63,7 @@ updated: 2026-08-02
 - [The Transformer: Attention Is All You Need](../algorithms/foundations/transformer.md) — The foundational architecture: scaled dot-product attention, multi-head self-attention, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that launched modern LLMs.
 - [The Softmax Function: Properties, Motivation, and Interpretation](../algorithms/foundations/softmax.md) — Tutorial covering score-difference semantics, α parameter interpretation, three conceptual justifications (Gumbel noise, maximum entropy, exploration-exploitation), IO vs. IM model taxonomy, and complete mathematical properties.
 - [Recurrent Neural Networks: From RNN to LSTM](../algorithms/foundations/recurrent-neural-networks/index.md) — Sequence processing through shared recurrent weights and hidden state, the long-term dependency problem, LSTM gating, and the conceptual bridge to linear attention's RNN mode.
+- [Kronecker Product](../algorithms/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker factorization trick behind FlatQuant's learnable affine transforms.
 - [FlashAttention](../algorithms/flashattention/index.md) — Category hub for the FlashAttention algorithm and kernel family.
 - [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, landscape evolutionary tree, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, Big Picture FA1→FA2 comparison diagram, landscape of GPU utilization gap closure, and A100/H100 performance results.
@@ -107,7 +108,7 @@ updated: 2026-08-02
 
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
-- [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
+- [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical FP8/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, GEMM layout constraints, distributed training behavior, and deployment ecosystem.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
 
@@ -123,6 +124,7 @@ updated: 2026-08-02
 - [Scatter/Gather](../terms/scatter-gather.md) — Cross-node communication optimization that avoids redundant activation transfers over slow inter-node links.
 - [General Matrix Multiply (GEMM)](../terms/gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
 - [Inner Product](../terms/inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
+- [Kronecker Product](../terms/kronecker-product.md) — The block-structured matrix product A⊗B that builds a large matrix from two smaller ones by scaling copies of B by the entries of A.
 - [Matrix Tiling](../terms/matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Memory Banking](../terms/memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
 - [Outer Product](../terms/outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.

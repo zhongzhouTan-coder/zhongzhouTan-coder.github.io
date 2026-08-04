@@ -30,7 +30,7 @@
       "category": "algorithms",
       "isIndex": true,
       "url": "/algorithms/attention-variants/grouped-query-attention/",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "docs/algorithms/attention-variants/index.md",
@@ -86,7 +86,7 @@
       "category": "algorithms",
       "isIndex": false,
       "url": "/algorithms/flashattention/flashattention/",
-      "degree": 22
+      "degree": 21
     },
     {
       "id": "docs/algorithms/flashattention/index.md",
@@ -134,7 +134,15 @@
       "category": "algorithms",
       "isIndex": true,
       "url": "/algorithms/",
-      "degree": 22
+      "degree": 23
+    },
+    {
+      "id": "docs/algorithms/kronecker-product.md",
+      "label": "Kronecker Product",
+      "category": "algorithms",
+      "isIndex": false,
+      "url": "/algorithms/kronecker-product/",
+      "degree": 7
     },
     {
       "id": "docs/algorithms/linear-attention/index.md",
@@ -366,7 +374,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm-ascend/architecture/",
-      "degree": 15
+      "degree": 16
     },
     {
       "id": "docs/frameworks/vllm-ascend/index.md",
@@ -398,7 +406,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/minimax-gqa-w4a4-quantization-path/",
-      "degree": 11
+      "degree": 16
     },
     {
       "id": "docs/frameworks/vllm/vllm-block-management/index.md",
@@ -430,7 +438,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/vllm-framework/",
-      "degree": 29
+      "degree": 28
     },
     {
       "id": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
@@ -449,12 +457,12 @@
       "degree": 5
     },
     {
-      "id": "docs/hardware/quantization/flatquant.md",
+      "id": "docs/hardware/quantization/flatquant/index.md",
       "label": "FlatQuant: Fast Learnable Affine Quantization",
       "category": "hardware",
-      "isIndex": false,
+      "isIndex": true,
       "url": "/hardware/quantization/flatquant/",
-      "degree": 11
+      "degree": 19
     },
     {
       "id": "docs/hardware/quantization/index.md",
@@ -462,7 +470,7 @@
       "category": "hardware",
       "isIndex": true,
       "url": "/hardware/quantization/",
-      "degree": 5
+      "degree": 7
     },
     {
       "id": "docs/hardware/quantization/nvfp4.md",
@@ -486,7 +494,7 @@
       "category": "logs",
       "isIndex": true,
       "url": "/logs/",
-      "degree": 97
+      "degree": 99
     },
     {
       "id": "docs/terms/all-gather.md",
@@ -542,7 +550,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/gemm/",
-      "degree": 24
+      "degree": 27
     },
     {
       "id": "docs/terms/global-memory.md",
@@ -558,7 +566,7 @@
       "category": "terms",
       "isIndex": true,
       "url": "/terms/",
-      "degree": 24
+      "degree": 25
     },
     {
       "id": "docs/terms/inner-product.md",
@@ -566,7 +574,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/inner-product/",
-      "degree": 16
+      "degree": 17
     },
     {
       "id": "docs/terms/kimi-delta-attention.md",
@@ -577,12 +585,20 @@
       "degree": 13
     },
     {
+      "id": "docs/terms/kronecker-product.md",
+      "label": "Kronecker Product",
+      "category": "terms",
+      "isIndex": false,
+      "url": "/terms/kronecker-product/",
+      "degree": 12
+    },
+    {
       "id": "docs/terms/kv-cache.md",
       "label": "KV Cache",
       "category": "terms",
       "isIndex": false,
       "url": "/terms/kv-cache/",
-      "degree": 23
+      "degree": 25
     },
     {
       "id": "docs/terms/linear-attention.md",
@@ -598,7 +614,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/matrix-tiling/",
-      "degree": 22
+      "degree": 23
     },
     {
       "id": "docs/terms/memory-banking.md",
@@ -622,7 +638,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/mixture-of-experts/",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "docs/terms/monkey-patching.md",
@@ -638,7 +654,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/outer-product/",
-      "degree": 17
+      "degree": 19
     },
     {
       "id": "docs/terms/pagedattention.md",
@@ -1144,6 +1160,10 @@
     },
     {
       "source": "docs/algorithms/index.md",
+      "target": "docs/algorithms/kronecker-product.md"
+    },
+    {
+      "source": "docs/algorithms/index.md",
       "target": "docs/algorithms/linear-attention/index.md"
     },
     {
@@ -1153,6 +1173,22 @@
     {
       "source": "docs/algorithms/index.md",
       "target": "docs/algorithms/linear-attention/matrix-exponentiation.md"
+    },
+    {
+      "source": "docs/algorithms/kronecker-product.md",
+      "target": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+    },
+    {
+      "source": "docs/algorithms/kronecker-product.md",
+      "target": "docs/hardware/quantization/flatquant/index.md"
+    },
+    {
+      "source": "docs/algorithms/kronecker-product.md",
+      "target": "docs/hardware/quantization/index.md"
+    },
+    {
+      "source": "docs/algorithms/kronecker-product.md",
+      "target": "docs/terms/kronecker-product.md"
     },
     {
       "source": "docs/algorithms/linear-attention/index.md",
@@ -1656,6 +1692,10 @@
     },
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
+      "target": "docs/algorithms/attention-variants/grouped-query-attention/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
       "target": "docs/frameworks/vllm-ascend/architecture.md"
     },
     {
@@ -1672,7 +1712,7 @@
     },
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
-      "target": "docs/hardware/quantization/flatquant.md"
+      "target": "docs/hardware/quantization/flatquant/index.md"
     },
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
@@ -1685,6 +1725,10 @@
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
       "target": "docs/terms/gemm.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
+      "target": "docs/terms/mixture-of-experts.md"
     },
     {
       "source": "docs/frameworks/vllm/vllm-block-management/index.md",
@@ -1772,7 +1816,7 @@
     },
     {
       "source": "docs/hardware/index.md",
-      "target": "docs/hardware/quantization/flatquant.md"
+      "target": "docs/hardware/quantization/flatquant/index.md"
     },
     {
       "source": "docs/hardware/index.md",
@@ -1787,24 +1831,32 @@
       "target": "docs/hardware/spatial-gemm.md"
     },
     {
-      "source": "docs/hardware/quantization/flatquant.md",
-      "target": "docs/algorithms/flashattention/flashattention.md"
+      "source": "docs/hardware/quantization/flatquant/index.md",
+      "target": "docs/frameworks/vllm-ascend/architecture.md"
     },
     {
-      "source": "docs/hardware/quantization/flatquant.md",
-      "target": "docs/frameworks/vllm/vllm-framework.md"
+      "source": "docs/hardware/quantization/flatquant/index.md",
+      "target": "docs/hardware/quantization/index.md"
     },
     {
-      "source": "docs/hardware/quantization/flatquant.md",
+      "source": "docs/hardware/quantization/flatquant/index.md",
       "target": "docs/hardware/quantization/nvfp4.md"
     },
     {
-      "source": "docs/hardware/quantization/flatquant.md",
+      "source": "docs/hardware/quantization/flatquant/index.md",
+      "target": "docs/terms/gemm.md"
+    },
+    {
+      "source": "docs/hardware/quantization/flatquant/index.md",
       "target": "docs/terms/global-memory.md"
     },
     {
-      "source": "docs/hardware/quantization/index.md",
-      "target": "docs/hardware/quantization/flatquant.md"
+      "source": "docs/hardware/quantization/flatquant/index.md",
+      "target": "docs/terms/kronecker-product.md"
+    },
+    {
+      "source": "docs/hardware/quantization/flatquant/index.md",
+      "target": "docs/terms/kv-cache.md"
     },
     {
       "source": "docs/hardware/quantization/index.md",
@@ -1921,6 +1973,10 @@
     {
       "source": "docs/logs/index.md",
       "target": "docs/algorithms/index.md"
+    },
+    {
+      "source": "docs/logs/index.md",
+      "target": "docs/algorithms/kronecker-product.md"
     },
     {
       "source": "docs/logs/index.md",
@@ -2080,7 +2136,7 @@
     },
     {
       "source": "docs/logs/index.md",
-      "target": "docs/hardware/quantization/flatquant.md"
+      "target": "docs/hardware/quantization/flatquant/index.md"
     },
     {
       "source": "docs/logs/index.md",
@@ -2117,6 +2173,10 @@
     {
       "source": "docs/logs/index.md",
       "target": "docs/terms/kimi-delta-attention.md"
+    },
+    {
+      "source": "docs/logs/index.md",
+      "target": "docs/terms/kronecker-product.md"
     },
     {
       "source": "docs/logs/index.md",
@@ -2416,6 +2476,10 @@
     },
     {
       "source": "docs/terms/index.md",
+      "target": "docs/terms/kronecker-product.md"
+    },
+    {
+      "source": "docs/terms/index.md",
       "target": "docs/terms/kv-cache.md"
     },
     {
@@ -2489,6 +2553,26 @@
     {
       "source": "docs/terms/kimi-delta-attention.md",
       "target": "docs/training/kimi/kimi-linear/index.md"
+    },
+    {
+      "source": "docs/terms/kronecker-product.md",
+      "target": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+    },
+    {
+      "source": "docs/terms/kronecker-product.md",
+      "target": "docs/terms/gemm.md"
+    },
+    {
+      "source": "docs/terms/kronecker-product.md",
+      "target": "docs/terms/inner-product.md"
+    },
+    {
+      "source": "docs/terms/kronecker-product.md",
+      "target": "docs/terms/matrix-tiling.md"
+    },
+    {
+      "source": "docs/terms/kronecker-product.md",
+      "target": "docs/terms/outer-product.md"
     },
     {
       "source": "docs/terms/kv-cache.md",
@@ -2708,7 +2792,7 @@
     },
     {
       "source": "docs/training/fine-tuning/intrinsic-dimensionality-fine-tuning/index.md",
-      "target": "docs/hardware/quantization/flatquant.md"
+      "target": "docs/hardware/quantization/flatquant/index.md"
     },
     {
       "source": "docs/training/fine-tuning/socratic-swe/index.md",

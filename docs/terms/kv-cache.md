@@ -20,6 +20,7 @@ appears_in:
   - docs/training/kimi/kimi-k3/index.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
+  - docs/hardware/quantization/flatquant/index.md
 updated: 2026-08-03
 ---
 
@@ -51,6 +52,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Adds external KV-cache retention for million-token partial rollouts and aligns KDA state lifecycles with MLA cache blocks.
 - [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) — Shows how paged KV capacity gates per-iteration admission, completion, and preemption.
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Details how paged KV blocks, reference counts, and prefix caching implement the cache's paged storage.
+- [FlatQuant](../hardware/quantization/flatquant/index.md) — Applies per-head learnable affine transforms to keys and values before low-bit KV-cache quantization (down to 2 bits).
 
 ## Related Terms
 

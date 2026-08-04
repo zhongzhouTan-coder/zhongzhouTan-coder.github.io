@@ -45,7 +45,7 @@ Each term is a rank-1 matrix added into the accumulator. In the Spatial GEMM tut
 ## Common Confusions
 
 - **Outer product vs. inner product:** An outer product of two length-$K$ vectors is a $K \times K$ matrix; an inner product is a scalar. Both are GEMM building blocks, but they parallelize opposite directions of the loop nest.
-- **Outer product vs. Kronecker product:** The Kronecker product is a block-structured product of two full matrices; the outer product is the rank-1 special case of two vectors.
+- **Outer product vs. Kronecker product:** The [Kronecker product](kronecker-product.md) is a block-structured product of two full matrices; the outer product is the rank-1 special case of two vectors.
 
 ## Where It Appears
 
@@ -60,3 +60,4 @@ Each term is a rank-1 matrix added into the accumulator. In the Spatial GEMM tut
 - [General Matrix Multiply (GEMM)](gemm.md) — The kernel this accumulation strategy implements.
 - [Inner Product](inner-product.md) — The complementary element-wise accumulation strategy.
 - [Matrix Tiling](matrix-tiling.md) — Blocks the loop nest that outer products fill in.
+- [Kronecker Product](kronecker-product.md) — The block-structured product of two full matrices; the outer product is its rank-1 special case.

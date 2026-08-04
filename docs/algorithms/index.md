@@ -17,6 +17,10 @@ updated: 2026-07-30
 - [The Softmax Function: Properties, Motivation, and Interpretation](foundations/softmax.md) — Comprehensive tutorial on the softmax function: score-difference semantics, α parameter interpretation, three conceptual justifications (Gumbel noise, maximum entropy, exploration-exploitation), IO vs. IM model taxonomy, and complete mathematical properties with proofs.
 - [Recurrent Neural Networks: From RNN to LSTM](foundations/recurrent-neural-networks/index.md) — Beginner-oriented path from sequence order and shared recurrent weights to hidden-state memory, long-term dependency failures, LSTM gates, and linear attention's RNN execution mode.
 
+## Linear Algebra Foundations
+
+- [Kronecker Product](kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker factorization trick behind FlatQuant's learnable affine transforms.
+
 ## FlashAttention
 
 - [FlashAttention](flashattention/index.md) — Category hub for the FlashAttention algorithm and kernel family.

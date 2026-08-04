@@ -1,0 +1,21 @@
+flowchart TD
+    SQ["SmoothQuant<br/>per-channel scaling"]
+    OS["Outlier Suppression+<br/>shift + scale"]
+    OQ["OmniQuant<br/>learnable scale + shift"]
+    QR["QuaRot<br/>fixed Hadamard rotation"]
+    SP["SpinQuant<br/>learned orthogonal rotation"]
+    AQ["AffineQuant<br/>full-size learned affine"]
+    FQ["FLATQUANT<br/>fast learnable affine<br/>(Kronecker + fused kernel)"]
+    WQ["Weight-only line<br/>GPTQ / AWQ / QuIP"]
+    KVQ["KV-cache line<br/>KIVI / KVQuant / SKVQ"]
+
+    SQ --> OS
+    OS --> OQ
+    QR --> SP
+    SQ -. "steepens weights, fails W4A4" .-> FQ
+    OQ -. "still scale-only" .-> FQ
+    QR -. "fixed transform, no per-layer adapt" .-> FQ
+    SP -. "model-level loss, heavier calibration" .-> FQ
+    AQ -. "full matrices, o_proj only" .-> FQ
+    WQ -. "FlatQuant also leads at W4A16 / W3A16" .-> FQ
+    KVQ -. "FlatQuant improves 2-3 bit KV" .-> FQ

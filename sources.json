@@ -425,7 +425,8 @@
       "raw_paths": [
         "raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"
       ],
-      "docs_path": "docs/hardware/quantization/flatquant.md",
+      "derived_path": "derived/pdf-markdown/hardware/flatquant-fast-learnable-affine-quantization.md",
+      "docs_path": "docs/hardware/quantization/flatquant/index.md",
       "status": "ingested"
     },
     {
@@ -1009,6 +1010,25 @@
       ],
       "derived_path": "derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md",
       "docs_path": "docs/hardware/spatial-gemm.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:mathworld.wolfram.com/kronecker-product@2026-08-04-41ef5673a67a",
+      "title": "Kronecker Product -- from Wolfram MathWorld",
+      "slug": "kronecker-product",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://mathworld.wolfram.com/KroneckerProduct.html",
+      "final_url": "https://mathworld.wolfram.com/KroneckerProduct.html",
+      "captured_at": "2026-08-04T12:28:35.676Z",
+      "revision": "41ef5673a67ab59fd862ac4e1685d4b022b4ef5a6f4ce93946f490e496dbb6d1",
+      "raw_paths": [
+        "raw/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.html",
+        "raw/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.md",
+      "docs_path": "docs/algorithms/kronecker-product.md",
       "status": "ingested"
     }
   ]

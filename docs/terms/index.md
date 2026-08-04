@@ -33,6 +33,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [General Matrix Multiply (GEMM)](gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
 - [Inner Product](inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
 - [Kimi Delta Attention](kimi-delta-attention.md) — Extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
+- [Kronecker Product](kronecker-product.md) — The block-structured matrix product A⊗B that builds a large matrix from two smaller ones by scaling copies of B by the entries of A.
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
