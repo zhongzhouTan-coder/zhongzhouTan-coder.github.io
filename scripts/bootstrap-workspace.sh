@@ -50,9 +50,31 @@ require_command node
 require_command npm
 
 printf '%s\n' '==> Creating the workspace Python environment'
-if [[ ! -x "$python_env/bin/python" ]]; then
-  python3 -m venv "$python_env"
+# Some system Pythons (e.g. Debian/Ubuntu without the python3-venv package)
+# lack ensurepip and create virtual environments without pip. Prefer a python3
+# that can provision pip so the venv is usable immediately.
+python3_cmd='python3'
+if ! "$python3_cmd" -m ensurepip --version >/dev/null 2>&1; then
+  for candidate in /usr/bin/python3 /usr/local/bin/python3 python3.13 python3.12 python3.11 python3.10; do
+    if command -v "$candidate" >/dev/null 2>&1 && "$candidate" -m ensurepip --version >/dev/null 2>&1; then
+      python3_cmd="$candidate"
+      printf '%s\n' "Using $python3_cmd (has ensurepip) to create the virtual environment"
+      break
+    fi
+  done
 fi
+if [[ ! -x "$python_env/bin/python" ]]; then
+  "$python3_cmd" -m venv "$python_env"
+fi
+# Guard against pip-less virtual environments.
+"$python_env/bin/python" -m pip --version >/dev/null 2>&1 || {
+  printf '%s\n' '==> Bootstrapping pip into the workspace Python environment'
+  "$python_env/bin/python" -m ensurepip --upgrade >/dev/null 2>&1 || {
+    printf '%s\n' 'The workspace Python environment has no pip and ensurepip is unavailable.' >&2
+    printf '%s\n' 'Install the python3-venv package or use a Python that includes ensurepip.' >&2
+    exit 2
+  }
+}
 "$python_env/bin/python" -m pip install \
   --disable-pip-version-check \
   --requirement "$repo_root/requirements.txt"
