@@ -13,7 +13,7 @@
     "wiki:graph": "python3 scripts/wiki/graph.py",
     "lint:md": "markdownlint-cli2",
     "lint:docs": "./scripts/lint-docs.sh",
-    "lint": "npm run lint:md && npm run lint:docs"
+    "lint": "npm run lint:docs"
   },
   "repository": {
     "type": "git",

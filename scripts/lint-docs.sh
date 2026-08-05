@@ -196,8 +196,8 @@ if [[ ${#image_files[@]} -gt 0 ]]; then
 fi
 
 # --- markdownlint ---
-# Run markdownlint-cli2 if available. This is a best-effort check; the script
-# continues even if markdownlint is not installed.
+# Require markdownlint-cli2 so the aggregate check cannot report success after
+# silently skipping Markdown validation.
 markdownlint_cmd=""
 if command -v npx &>/dev/null; then
   markdownlint_cmd="npx --no-install markdownlint-cli2"
@@ -210,6 +210,8 @@ if [[ -n "$markdownlint_cmd" ]] && [[ -f "$repo_root/.markdownlint-cli2.jsonc" ]
   if ! $markdownlint_cmd; then
     has_issue=1
   fi
+elif [[ -f "$repo_root/.markdownlint-cli2.jsonc" ]]; then
+  report_issue 'markdownlint-cli2 is unavailable; run ./scripts/bootstrap-workspace.sh'
 fi
 
 if (( has_issue != 0 )); then

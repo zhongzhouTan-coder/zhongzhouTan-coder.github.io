@@ -5,6 +5,7 @@ repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 workspace_dir="$repo_root/.workspace"
 python_env="$workspace_dir/python"
 ruby_tools="$workspace_dir/ruby-tools"
+stamps_dir="$workspace_dir/stamps"
 
 require_command() {
   local command_name=$1
@@ -22,18 +23,29 @@ python3 -c 'import sys; raise SystemExit(sys.version_info < (3, 10))' || {
   printf '%s\n' 'Python 3.10 or newer is required.' >&2
   exit 2
 }
-ruby -rrubygems -e 'exit Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2") ? 0 : 1' || {
-  printf '%s\n' 'Ruby 3.2 or newer is required by the locked Bundler version.' >&2
+ruby_version=$(tr -d '[:space:]' < "$repo_root/.ruby-version")
+if [[ -z "$ruby_version" ]]; then
+  printf '%s\n' 'Could not read the Ruby version from .ruby-version.' >&2
+  exit 2
+fi
+ruby -e 'exit RUBY_VERSION == ARGV.fetch(0) ? 0 : 1' "$ruby_version" || {
+  printf '%s\n' "Ruby $ruby_version is required; found $(ruby --version)." >&2
   exit 2
 }
 
-mkdir -p "$workspace_dir"
+mkdir -p "$workspace_dir" "$stamps_dir"
+export GEM_SPEC_CACHE="$workspace_dir/gem-spec-cache"
+export BUNDLE_USER_HOME="$workspace_dir/bundler-home"
 
 # Install a workspace-local Node.js so that scripts (markdownlint, etc.) get a
 # Node 20+ runtime even in sandbox environments where ambient Node is too old.
 printf '%s\n' '==> Installing workspace Node.js'
 node_env="$workspace_dir/node"
-node_version='24.16.0'
+node_version=$(tr -d '[:space:]' < "$repo_root/.node-version")
+if [[ -z "$node_version" ]]; then
+  printf '%s\n' 'Could not read the Node.js version from .node-version.' >&2
+  exit 2
+fi
 if [[ ! -x "$node_env/bin/node" ]]; then
   require_command curl
   require_command tar
@@ -43,6 +55,14 @@ if [[ ! -x "$node_env/bin/node" ]]; then
   curl -fsSL "$node_url" | tar -xJ -C "$workspace_dir"
   mv "$workspace_dir/node-v${node_version}-${node_arch}" "$node_env"
   printf '%s\n' "Node.js v${node_version} installed at $node_env"
+fi
+installed_node_version=$("$node_env/bin/node" --version)
+if [[ "$installed_node_version" != "v$node_version" ]]; then
+  printf '%s\n' \
+    "Workspace Node.js is $installed_node_version; expected v$node_version." >&2
+  printf '%s\n' \
+    'Remove .workspace/node and rerun ./scripts/bootstrap-workspace.sh.' >&2
+  exit 2
 fi
 # Use workspace Node.js for npm ci
 export PATH="$node_env/bin:$PATH"
@@ -63,8 +83,10 @@ if ! "$python3_cmd" -m ensurepip --version >/dev/null 2>&1; then
     fi
   done
 fi
+python_env_created=0
 if [[ ! -x "$python_env/bin/python" ]]; then
   "$python3_cmd" -m venv "$python_env"
+  python_env_created=1
 fi
 # Guard against pip-less virtual environments.
 "$python_env/bin/python" -m pip --version >/dev/null 2>&1 || {
@@ -75,12 +97,41 @@ fi
     exit 2
   }
 }
-"$python_env/bin/python" -m pip install \
-  --disable-pip-version-check \
-  --requirement "$repo_root/requirements.txt"
+python_fingerprint=$(
+  {
+    sha256sum "$repo_root/requirements.txt"
+    "$python_env/bin/python" --version
+  } | sha256sum | awk '{print $1}'
+)
+python_stamp="$stamps_dir/python-dependencies.sha256"
+if [[ $python_env_created -eq 0 \
+  && -f "$python_stamp" \
+  && "$(<"$python_stamp")" == "$python_fingerprint" ]]; then
+  printf '%s\n' '==> Workspace Python dependencies are up to date'
+else
+  "$python_env/bin/python" -m pip install \
+    --disable-pip-version-check \
+    --requirement "$repo_root/requirements.txt"
+  printf '%s\n' "$python_fingerprint" > "$python_stamp"
+fi
 
 printf '%s\n' '==> Installing workspace Node.js dependencies'
-(cd "$repo_root" && npm ci)
+node_fingerprint=$(
+  sha256sum \
+    "$repo_root/.node-version" \
+    "$repo_root/package.json" \
+    "$repo_root/package-lock.json" \
+    | sha256sum | awk '{print $1}'
+)
+node_stamp="$stamps_dir/node-dependencies.sha256"
+if [[ -d "$repo_root/node_modules" \
+  && -f "$node_stamp" \
+  && "$(<"$node_stamp")" == "$node_fingerprint" ]]; then
+  printf '%s\n' '==> Workspace Node.js dependencies are up to date'
+else
+  (cd "$repo_root" && npm ci)
+  printf '%s\n' "$node_fingerprint" > "$node_stamp"
+fi
 
 printf '%s\n' '==> Installing the locked Bundler version in the workspace'
 bundler_version=$(awk '
@@ -90,11 +141,16 @@ if [[ -z "$bundler_version" ]]; then
   printf '%s\n' 'Could not read BUNDLED WITH from docs/Gemfile.lock.' >&2
   exit 2
 fi
-gem install bundler \
-  --version "$bundler_version" \
-  --install-dir "$ruby_tools" \
-  --bindir "$ruby_tools/bin" \
-  --no-document
+if [[ ! -x "$ruby_tools/bin/bundle" \
+  || "$("$ruby_tools/bin/bundle" --version)" != "$bundler_version" ]]; then
+  gem install bundler \
+    --version "$bundler_version" \
+    --install-dir "$ruby_tools" \
+    --bindir "$ruby_tools/bin" \
+    --no-document
+else
+  printf '%s\n' "==> Bundler $bundler_version is up to date"
+fi
 
 printf '%s\n' '==> Installing workspace Ruby dependencies'
 system_gem_path=$(ruby -e 'print Gem.path.join(":")')
@@ -104,8 +160,11 @@ export PATH="$ruby_tools/bin:$PATH"
 export BUNDLE_GEMFILE="$repo_root/docs/Gemfile"
 export BUNDLE_PATH="$workspace_dir/bundle"
 export BUNDLE_APP_CONFIG="$workspace_dir/bundle-config"
-export BUNDLE_USER_HOME="$workspace_dir/bundler-home"
-bundle install
+if bundle check >/dev/null 2>&1; then
+  printf '%s\n' '==> Workspace Ruby dependencies are up to date'
+else
+  bundle install
+fi
 
 printf '%s\n' '==> Workspace dependencies are ready'
 printf '%s\n' 'Run repository tools with: ./scripts/run-in-workspace.sh <command> [args...]'

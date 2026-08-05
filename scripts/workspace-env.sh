@@ -46,10 +46,13 @@ if [[ -d "$workspace_ruby_tools/bin" ]]; then
 fi
 
 export PATH
-export BUNDLE_GEMFILE="$workspace_repo_root/docs/Gemfile"
-export BUNDLE_PATH="$workspace_dir/bundle"
-export BUNDLE_APP_CONFIG="$workspace_dir/bundle-config"
-export BUNDLE_USER_HOME="$workspace_dir/bundler-home"
+export BUNDLE_GEMFILE="${BUNDLE_GEMFILE:-$workspace_repo_root/docs/Gemfile}"
+if [[ -d "$workspace_dir" ]]; then
+  export BUNDLE_PATH="$workspace_dir/bundle"
+  export BUNDLE_APP_CONFIG="$workspace_dir/bundle-config"
+  export BUNDLE_USER_HOME="$workspace_dir/bundler-home"
+  export GEM_SPEC_CACHE="$workspace_dir/gem-spec-cache"
+fi
 
 unset workspace_dir workspace_python workspace_node workspace_repo_root workspace_ruby_tools
 unset workspace_system_gem_path

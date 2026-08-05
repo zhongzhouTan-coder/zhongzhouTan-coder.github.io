@@ -81,7 +81,8 @@ def main() -> int:
         try:
             build_site(destination)
         except FileNotFoundError as error:
-            print(f"math formulation: skipping Jekyll build ({error})")
+            print(f"math formulation: unable to build Jekyll site: {error}")
+            return 1
         except subprocess.CalledProcessError as error:
             print(f"math formulation: unable to build Jekyll site: {error}")
             return 1
