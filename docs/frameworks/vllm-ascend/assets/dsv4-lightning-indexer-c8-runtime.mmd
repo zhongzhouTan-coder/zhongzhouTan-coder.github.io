@@ -1,0 +1,23 @@
+flowchart TD
+    subgraph OFFLINE["Model definition and KV spec (load time)"]
+        A["DeepseekV4Attention on a c4 layer<br/>(compress_ratio == 4)"] --> B["Indexer module: wq_b + weights_proj"]
+        A --> C["AscendDeepseekV4IndexerCache<br/>dtype = INT8 (non-A5) / FP8 e4m3fn (A5)<br/>scale_dim=1, scale FP16 / FP32"]
+        D["NPUModelRunner c8 dtype selection<br/>(c8_k_cache_dtype / c8_k_scale_cache_dtype)"] -.-> C
+    end
+    subgraph RUNTIME["Per-step execution (AscendDSABackend)"]
+        E["Indexer query q_li (per-token-head)"] --> F["indexer_quantize_query<br/>npu_dynamic_quant -> int8/fp8 + scale"]
+        G["Compressed indexer KV"] --> H["indexer_quant_scatter<br/>quant + scatter k_cache and scale_cache"]
+        F --> I["npu_vllm_quant_lightning_indexer<br/>dequant via per-token-head scales (mode 0)<br/>sparse_count = index_topk, cmp_ratio = 4"]
+        H --> I
+        I --> J["topk_indices (compress_topk_idxs)"]
+        J --> K["npu_sparse_attn_sharedkv<br/>cmp_sparse_indices for core attention"]
+    end
+    subgraph OPS["Custom Ascend operators (csrc/attention)"]
+        L["vllm_quant_lightning_indexer_metadata<br/>AICPU core-partition pre-op"]
+        M["lightning_indexer_vllm kernel<br/>cube matmul + vector top-k merge"]
+        L -.-> M
+    end
+    I -.-> M
+    L -.-> I
+    style C fill:#dae8fc,stroke:#6c8ebf
+    style I fill:#d5e8d4,stroke:#82b366

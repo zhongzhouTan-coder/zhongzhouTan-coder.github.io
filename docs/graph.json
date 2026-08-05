@@ -54,7 +54,7 @@
       "category": "algorithms",
       "isIndex": true,
       "url": "/algorithms/deepseek-v3.2/",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "docs/algorithms/flashattention/flashattention-2.md",
@@ -294,7 +294,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/deepseek/v4-attention-code-reading/",
-      "degree": 10
+      "degree": 12
     },
     {
       "id": "docs/frameworks/dspark/index.md",
@@ -318,7 +318,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/",
-      "degree": 21
+      "degree": 22
     },
     {
       "id": "docs/frameworks/sglang/index.md",
@@ -374,7 +374,15 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm-ascend/architecture/",
-      "degree": 16
+      "degree": 18
+    },
+    {
+      "id": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+      "label": "DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend",
+      "category": "frameworks",
+      "isIndex": false,
+      "url": "/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8/",
+      "degree": 13
     },
     {
       "id": "docs/frameworks/vllm-ascend/index.md",
@@ -382,7 +390,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/vllm-ascend/",
-      "degree": 9
+      "degree": 11
     },
     {
       "id": "docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md",
@@ -494,7 +502,7 @@
       "category": "logs",
       "isIndex": true,
       "url": "/logs/",
-      "degree": 99
+      "degree": 100
     },
     {
       "id": "docs/terms/all-gather.md",
@@ -566,7 +574,7 @@
       "category": "terms",
       "isIndex": true,
       "url": "/terms/",
-      "degree": 25
+      "degree": 26
     },
     {
       "id": "docs/terms/inner-product.md",
@@ -598,7 +606,15 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/kv-cache/",
-      "degree": 25
+      "degree": 26
+    },
+    {
+      "id": "docs/terms/lightning-indexer.md",
+      "label": "Lightning Indexer",
+      "category": "terms",
+      "isIndex": false,
+      "url": "/terms/lightning-indexer/",
+      "degree": 7
     },
     {
       "id": "docs/terms/linear-attention.md",
@@ -638,7 +654,7 @@
       "category": "terms",
       "isIndex": false,
       "url": "/terms/mixture-of-experts/",
-      "degree": 13
+      "degree": 14
     },
     {
       "id": "docs/terms/monkey-patching.md",
@@ -694,7 +710,7 @@
       "category": "training",
       "isIndex": true,
       "url": "/training/deepseek/deepseek-v4/",
-      "degree": 12
+      "degree": 16
     },
     {
       "id": "docs/training/deepseek/index.md",
@@ -726,7 +742,7 @@
       "category": "training",
       "isIndex": true,
       "url": "/training/efficient-attention/minimax-sparse-attention/",
-      "degree": 13
+      "degree": 15
     },
     {
       "id": "docs/training/efficient-attention/swat-sliding-window-attention/index.md",
@@ -1424,6 +1440,10 @@
     },
     {
       "source": "docs/frameworks/deepseek/v4-attention-code-reading.md",
+      "target": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
+    },
+    {
+      "source": "docs/frameworks/deepseek/v4-attention-code-reading.md",
       "target": "docs/frameworks/vllm/vllm-code-learning-path.md"
     },
     {
@@ -1481,6 +1501,10 @@
     {
       "source": "docs/frameworks/index.md",
       "target": "docs/frameworks/triton/triton-in-vllm.md"
+    },
+    {
+      "source": "docs/frameworks/index.md",
+      "target": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
     },
     {
       "source": "docs/frameworks/index.md",
@@ -1604,6 +1628,10 @@
     },
     {
       "source": "docs/frameworks/vllm-ascend/architecture.md",
+      "target": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/architecture.md",
       "target": "docs/frameworks/vllm-ascend/index.md"
     },
     {
@@ -1633,6 +1661,22 @@
     {
       "source": "docs/frameworks/vllm-ascend/architecture.md",
       "target": "docs/terms/sequence-parallelism.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+      "target": "docs/algorithms/deepseek-v3.2/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+      "target": "docs/frameworks/vllm-ascend/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+      "target": "docs/training/deepseek/deepseek-v4/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+      "target": "docs/training/efficient-attention/minimax-sparse-attention/index.md"
     },
     {
       "source": "docs/frameworks/vllm-ascend/index.md",
@@ -2100,6 +2144,10 @@
     },
     {
       "source": "docs/logs/index.md",
+      "target": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
+    },
+    {
+      "source": "docs/logs/index.md",
       "target": "docs/frameworks/vllm-ascend/index.md"
     },
     {
@@ -2488,6 +2536,10 @@
     },
     {
       "source": "docs/terms/index.md",
+      "target": "docs/terms/lightning-indexer.md"
+    },
+    {
+      "source": "docs/terms/index.md",
       "target": "docs/terms/linear-attention.md"
     },
     {
@@ -2589,6 +2641,26 @@
     {
       "source": "docs/terms/kv-cache.md",
       "target": "docs/training/kimi/kimi-linear/index.md"
+    },
+    {
+      "source": "docs/terms/lightning-indexer.md",
+      "target": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
+    },
+    {
+      "source": "docs/terms/lightning-indexer.md",
+      "target": "docs/terms/kv-cache.md"
+    },
+    {
+      "source": "docs/terms/lightning-indexer.md",
+      "target": "docs/terms/mixture-of-experts.md"
+    },
+    {
+      "source": "docs/terms/lightning-indexer.md",
+      "target": "docs/training/deepseek/deepseek-v4/index.md"
+    },
+    {
+      "source": "docs/terms/lightning-indexer.md",
+      "target": "docs/training/efficient-attention/minimax-sparse-attention/index.md"
     },
     {
       "source": "docs/terms/linear-attention.md",

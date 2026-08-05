@@ -15,7 +15,7 @@ updated: 2026-08-03
 **Authors:** DeepSeek-AI
 **arXiv:** Technical report, July 2026
 
-**Related pages:** [DeepSeek-V2 MLA](../../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../algorithms/flashattention/flashattention.md), [Megatron-LM](../../parallelism/megatron-lm)
+**Related pages:** [DeepSeek-V2 MLA](../../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../algorithms/flashattention/flashattention.md), [Megatron-LM](../../parallelism/megatron-lm), [vLLM-Ascend Lightning Indexer C8 Quantization](../../../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md)
 
 ## TL;DR
 
@@ -93,7 +93,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 
 **What it does:** CSA compresses every $m$ tokens into one KV entry, then applies DeepSeek Sparse Attention (DSA) to select only the top-k compressed entries for core attention.
 
-**Why it matters:** Naive compression loses fine-grained relevance between a query and specific tokens. CSA adds a learned Lightning Indexer that scores each compressed block against the query, selecting only the most relevant blocks — preserving accuracy while reducing the effective KV length by 4×, then further by the top-k ratio.
+**Why it matters:** Naive compression loses fine-grained relevance between a query and specific tokens. CSA adds a learned [Lightning Indexer](../../../terms/lightning-indexer.md) that scores each compressed block against the query, selecting only the most relevant blocks — preserving accuracy while reducing the effective KV length by 4×, then further by the top-k ratio.
 
 **How it works:**
 

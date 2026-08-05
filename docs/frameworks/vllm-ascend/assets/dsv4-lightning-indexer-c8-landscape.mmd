@@ -1,0 +1,10 @@
+flowchart TD
+    A["Dense softmax attention over all KV"] --> B["Sparse attention<br/>DSA (V3.2) / SFA (V3.2-style)"]
+    B --> C["Lightning Indexer top-k block selection<br/>(DeepSeek-V4 CSA, MiniMax MSA index branch)"]
+    C --> D["FP16/BF16 indexer key cache<br/>(upstream vLLM GPU path)"]
+    C --> E["C8 indexer cache (vllm-ascend)<br/>INT8 + FP16 scale (non-A5)<br/>FP8 e4m3fn + FP32 scale (A5)"]
+    E --> F["npu_lightning_indexer_quant<br/>(SFA DeepSeek-V3.2 path)"]
+    E --> G["npu_vllm_quant_lightning_indexer<br/>(DSA DeepSeek-V4 path)"]
+    G --> H["+ vllm_quant_lightning_indexer_metadata<br/>AICPU core partition (DSV4)"]
+    style E fill:#dae8fc,stroke:#6c8ebf
+    style G fill:#d5e8d4,stroke:#82b366

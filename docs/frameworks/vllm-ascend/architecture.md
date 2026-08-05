@@ -8,14 +8,14 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-03
+updated: 2026-08-05
 ---
 
 # vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM
 
 **Repository:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `32a59d4e349c12c32cdbc1916436c16e39939afc` (main, clean, inspected 2026-08-03)
 
-**Related pages:** [vLLM Ascend Hub](./index.md), [vLLM-Ascend Kimi K3 MoE Forward](./kimi-k3-moe-forward.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
+**Related pages:** [vLLM Ascend Hub](./index.md), [vLLM-Ascend Kimi K3 MoE Forward](./kimi-k3-moe-forward.md), [DeepSeek-V4 Lightning Indexer C8 Quantization](./deepseek-v4-lightning-indexer-c8.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
 
 ## TL;DR
 
@@ -120,7 +120,7 @@ ModelRegistry.register_model("MiniMaxM3SparseForCausalLM", AscendMiniMaxM3Sparse
 
 These overrides swap in Ascend-custom components:
 
-- **Attention backends**: `AscendMLABackend` (MLA for DeepSeek V2/V3), `AscendDSABackend` (DeepSeek Sparse Attention for V4 sparse), `AscendSparseFlashAttention` (SFA for V4 dense queries)
+- **Attention backends**: `AscendMLABackend` (MLA for DeepSeek V2/V3), `AscendSFABackend` (Sparse Flash Attention for DeepSeek-V3.2-style sparse MLA), `AscendDSABackend` (DeepSeek Sparse Attention for DeepSeek-V4 compressed attention)
 - **Linear layers**: Fractal-format Ascend linear ops instead of `torch.nn.Linear`
 - **RoPE**: `AscendDeepseekScalingRotaryEmbedding` with complex-exponential kernels for V4
 - **MoE**: `AscendMoERunner` replaces upstream `FusedMoE` (see [Kimi K3 MoE Forward Insight](./kimi-k3-moe-forward.md))
@@ -153,14 +153,26 @@ Every hardware-touching code path is replaced with an Ascend-native equivalent:
 
 #### Attention Backends
 
-vLLM's attention is replaced by four custom backends, all registered as `AttentionBackendEnum.CUSTOM` under the `"ASCEND"` name:
+vLLM's attention is replaced by custom backends, all registered as `AttentionBackendEnum.CUSTOM` under the `"ASCEND"` name. Which backend a model gets is decided by `NPUPlatform.get_attn_backend_cls` (<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/platform.py#L796" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/platform.py" data-code-line="796" data-code-end-line="822"><code>get_attn_backend_cls</code></a>) from three model-level flags — `use_mla`, `use_sparse`, `use_compress`:
+
+| `(mla, sparse, compress)` | Backend | Model |
+|---|---|---|
+| `(False, False, _)` | `AscendAttentionBackend` | General GQA/MQA (Llama, Qwen) |
+| `(True, False, False)` | `AscendMLABackend` | DeepSeek V2/V3 MLA |
+| `(True, True, False)` | `AscendSFABackend` | DeepSeek-V3.2-style sparse MLA |
+| `(True, False, True)` | `AscendDSABackend` | DeepSeek-V4 compressed attention |
+
+`use_sparse` is true only when the model config has `index_topk` and **no** `compress_ratios` (<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/utils.py#L111" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/utils.py" data-code-line="111" data-code-end-line="119"><code>model_uses_sfa_sparse</code></a>, mirrored in <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/model_runner_v1.py#L351" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/model_runner_v1.py" data-code-line="351" data-code-end-line="356"><code>NPUModelRunner</code></a>); `use_compress` is true when `compress_ratios` is present (DeepSeek-V4).
 
 | Backend | Use Case | Key Kernel |
 |---|---|---|
 | `AscendAttentionBackend` | General GQA/MQA (Llama, Qwen) | `torch_npu.npu_fused_infer_attention_score` (FIA) |
 | `AscendMLABackend` | [MLA](../../terms/kv-cache.md) (DeepSeek V2/V3) | MLAPO (MLA Prefill Operator) |
-| `AscendDSABackend` | DeepSeek Sparse Attention (V4 sparse tokens) | Custom DSA kernel |
-| `AscendSparseFlashAttention` | SFA (V4 dense tokens) | Custom SFA kernel |
+| `AscendSFABackend` | Sparse Flash Attention — DeepSeek-V3.2-style sparse MLA (`index_topk`, no compression) | Custom SFA kernel (`npu_lightning_indexer*`) |
+| `AscendDSABackend` | DeepSeek Sparse Attention — DeepSeek-V4 (`compress_ratios`) | Custom DSA kernel (`npu_sparse_attn_sharedkv`, quantized lightning indexer) |
+| `AscendFABackend` | FA3 path, when `FLASH_ATTN` is selected and FA3 validation passes | FIA/FA3 |
+
+The two sparse backends — <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/sfa_v1.py#L112" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/sfa_v1.py" data-code-line="112" data-code-end-line="113"><code>AscendSFABackend</code></a> and <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/dsa_v1.py#L191" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="191" data-code-end-line="192"><code>AscendDSABackend</code></a> — share the Lightning Indexer but differ in what it selects and which operator generation runs it: SFA (DeepSeek-V3.2-style) selects top-k **tokens** over the uncompressed KV cache via `npu_lightning_indexer_quant`; DSA (DeepSeek-V4) selects top-k **compressed blocks** via `npu_vllm_quant_lightning_indexer` + its AICPU metadata pre-op, with an always-8-bit ("C8") indexer cache. See [DeepSeek-V4 Lightning Indexer C8 Quantization](./deepseek-v4-lightning-indexer-c8.md).
 
 Each backend also has a **context-parallel variant** (`AscendAttentionDCP`, `AscendDSACP`, `AscendSFADCP`) activated when decode context parallelism (`enable_dcp()`) is on.
 

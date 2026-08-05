@@ -20,7 +20,7 @@ updated: 2026-07-28
 - [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `d18ed2304a2703e3211fc384a58607e754f5b723` (main, clean)
 - [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `8645122088f5cad1701205310573c5ee05c809f5` (main, clean)
 
-**Related pages:** [DeepSeek-V4 Paper](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V2 MLA](../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
+**Related pages:** [DeepSeek-V4 Paper](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V2 MLA](../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM-Ascend Lightning Indexer C8 Quantization](../vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
 
 ## TL;DR
 
