@@ -268,7 +268,19 @@ def main() -> int:
         default=None,
         help="Write graph JSON to this file (default: stdout). Only used with --dump-graph.",
     )
+    parser.add_argument(
+        "--split-output-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Write compact nodes.json and edges.json files to this directory. "
+            "Only used with --dump-graph."
+        ),
+    )
     args = parser.parse_args()
+
+    if args.output and args.split_output_dir:
+        parser.error("--output and --split-output-dir cannot be used together")
 
     if args.dump_graph:
         try:
@@ -276,15 +288,32 @@ def main() -> int:
         except ValueError as error:
             print(f"kb graph: {error}", file=sys.stderr)
             return 2
-        json_text = json.dumps(graph_data, indent=2, ensure_ascii=False)
-        if args.output:
+        if args.split_output_dir:
+            args.split_output_dir.mkdir(parents=True, exist_ok=True)
+            for key in ("nodes", "edges"):
+                output_path = args.split_output_dir / f"{key}.json"
+                output_path.write_text(
+                    json.dumps(
+                        graph_data[key], ensure_ascii=False, separators=(",", ":")
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+            print(
+                "Graph data written to "
+                f"{args.split_output_dir / 'nodes.json'} and "
+                f"{args.split_output_dir / 'edges.json'} "
+                f"({len(graph_data['nodes'])} nodes, {len(graph_data['edges'])} edges)"
+            )
+        elif args.output:
+            json_text = json.dumps(graph_data, indent=2, ensure_ascii=False)
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json_text, encoding="utf-8")
             print(
                 f"Graph data written to {args.output} ({len(graph_data['nodes'])} nodes, {len(graph_data['edges'])} edges)"
             )
         else:
-            print(json_text)
+            print(json.dumps(graph_data, indent=2, ensure_ascii=False))
         return 0
 
     try:

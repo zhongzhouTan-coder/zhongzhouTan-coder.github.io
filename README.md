@@ -73,6 +73,7 @@ npm run wiki:search -- "pipeline bubble" --category training --json
 ```bash
 npm run wiki:graph -- --top 10
 npm run wiki:graph -- --json
+npm run wiki:graph-data
 ```
 
 **Run integrity checks:**

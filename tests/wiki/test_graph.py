@@ -80,6 +80,54 @@ class KnowledgeBaseGraphTests(unittest.TestCase):
             sorted(payload["edges"], key=lambda edge: (edge["source"], edge["target"])),
         )
 
+    def test_dump_graph_can_write_compact_split_files(self) -> None:
+        output_directory = self.root / "graph-output"
+        result = subprocess.run(
+            [
+                "python3",
+                str(GRAPH_SCRIPT),
+                "--root",
+                str(self.root),
+                "--dump-graph",
+                "--split-output-dir",
+                str(output_directory),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        nodes_text = (output_directory / "nodes.json").read_text(encoding="utf-8")
+        edges_text = (output_directory / "edges.json").read_text(encoding="utf-8")
+        nodes = json.loads(nodes_text)
+        edges = json.loads(edges_text)
+        self.assertEqual(len(nodes), 5)
+        self.assertEqual(len(edges), 4)
+        self.assertNotIn("\n  ", nodes_text)
+        self.assertNotIn("\n  ", edges_text)
+
+    def test_split_output_rejects_single_output_path(self) -> None:
+        result = subprocess.run(
+            [
+                "python3",
+                str(GRAPH_SCRIPT),
+                "--root",
+                str(self.root),
+                "--dump-graph",
+                "--output",
+                str(self.root / "graph.json"),
+                "--split-output-dir",
+                str(self.root / "graph-output"),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("cannot be used together", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -312,12 +312,20 @@ title: Knowledge Base
     edgeContext.globalAlpha = 1;
   }
 
-  fetch('/graph/graph-data.json')
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      graphData = data;
-      document.getElementById('graph-node-count').textContent = data.nodes.length;
-      document.getElementById('graph-edge-count').textContent = data.edges.length;
+  Promise.all([
+    fetch('/graph/nodes.json'),
+    fetch('/graph/edges.json'),
+  ])
+    .then(function (responses) {
+      if (!responses.every(function (response) { return response.ok; })) {
+        throw new Error('graph data unavailable');
+      }
+      return Promise.all(responses.map(function (response) { return response.json(); }));
+    })
+    .then(function (parts) {
+      graphData = { nodes: parts[0], edges: parts[1] };
+      document.getElementById('graph-node-count').textContent = graphData.nodes.length;
+      document.getElementById('graph-edge-count').textContent = graphData.edges.length;
       buildLegend();
       resize();
       render();
