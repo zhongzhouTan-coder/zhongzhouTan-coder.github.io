@@ -24,6 +24,7 @@ updated: 2026-08-04
 - [vLLM Ascend](vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 Lightning Indexer runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, FP8 e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](vllm-ascend/deepseek-v4-inference.md) — End-to-end DeepSeek-V4 serving on Ascend NPUs: the model override with mHC hyper-connections, hybrid c4/c128 compressor layers, the AscendDSA prefill/decode flow, the five-type heterogeneous KV cache, the sparse-attention custom operator, and the MTP draft model.
 
 ## Triton
 

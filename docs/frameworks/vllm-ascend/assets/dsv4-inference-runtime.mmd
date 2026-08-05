@@ -1,0 +1,38 @@
+flowchart TD
+    subgraph MODEL["AscendDeepseekV4ForCausalLM (deepseek_v4.py)"]
+        A["VocabParallelEmbedding<br/>embed_tokens"] --> B["DeepseekV4Model.forward"]
+        B --> C["hc_head: mHC merge (npu_hc_pre/post per layer)"]
+        C --> D["Decoder layers (interleaved c4 / c128 / swa)"]
+        D --> E["RMSNorm + lm_head + LogitsProcessor"]
+    end
+
+    subgraph LAYER["DeepseekV2DecoderLayer (per layer)"]
+        F["hc_pre (npu_hc_pre_v2)"] --> G["input_layernorm"]
+        G --> H["DeepseekV4Attention.forward"]
+        H --> I["hc_post (npu_hc_post)"]
+        I --> J["post_attention_layernorm"]
+        J --> K["DeepseekV4MoE.forward (FusedMoE)"]
+        K --> L["hc_post"]
+    end
+
+    H --> ATTN["AscendDeepseekSparseAttention<br/>(ops/dsa.py) -> torch.ops.vllm.dsa_forward"]
+    ATTN --> IMPL["AscendDSAImpl.forward (dsa_v1.py)"]
+    IMPL --> PREFILL["_forward_prefill"]
+    IMPL --> DECODE["_forward_decode"]
+    PREFILL --> MLA["_mla_prolog_multistream: wq_a/wkv/wq_b CV split<br/>q + kv + rope + SWA scatter"]
+    DECODE --> MLA
+    MLA --> COMP["torch.ops._C_ascend.compressor<br/>inline compress + state update"]
+    COMP --> INDEXER["indexer_select_qli / npu_vllm_quant_lightning_indexer<br/>(c4 layers only)"]
+    INDEXER --> SPARSE["npu_sparse_attn_sharedkv<br/>SWA ori_kv + cmp_kv + topk indices"]
+    SPARSE --> OPROJ["_forward_o_proj: inv-RoPE + wo_a + wo_b"]
+
+    subgraph KV["Heterogeneous KV cache (per layer group)"]
+        SWA_C["AscendDeepseekV4SWACache<br/>sliding-window tokens"]
+        STATE_C["AscendCompressorStateCache<br/>fp32 partial compression states"]
+        MLA_C["AscendMLAAttentionSpec main cache<br/>compressed KV entries"]
+        IDX_C["AscendDeepseekV4IndexerCache<br/>8-bit indexer keys + scales"]
+    end
+    MLA --> SWA_C
+    COMP --> STATE_C
+    MLA --> MLA_C
+    INDEXER --> IDX_C

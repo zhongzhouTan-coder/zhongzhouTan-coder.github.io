@@ -64,6 +64,42 @@ generated: 2026-08-03
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | li-kernel | `csrc/attention/lightning_indexer_vllm/op_kernel/lightning_indexer_vllm.cpp` | `lightning_indexer_vllm` | 38 | 57 |
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | li-metadata-kernel | `csrc/attention/vllm_quant_lightning_indexer_metadata/op_kernel_aicpu/vllm_quant_lightning_indexer_metadata_aicpu.cpp` | `VllmQuantLightningIndexerMetadataCpuKernel::CalcSplitInfo` | 300 | 320 |
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | dense-c8-kv | `vllm_ascend/quantization/methods/kv_c8.py` | `AscendC8KVCacheAttentionMethod` | 108 | 160 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-model-register | `vllm_ascend/models/__init__.py` | `register_model` | 4 | 18 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-model-class | `vllm_ascend/models/deepseek_v4.py` | `AscendDeepseekV4ForCausalLM` | 1217 | 1290 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-model-forward | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV4Model.forward` | 1103 | 1160 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-hc-head | `vllm_ascend/models/deepseek_v4.py` | `hc_head` | 1094 | 1101 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-hc-pre | `vllm_ascend/models/deepseek_v4.py` | `hc_pre` | 972 | 982 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-layer-forward | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV2DecoderLayer.forward` | 984 | 1005 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-hc-post | `vllm_ascend/models/deepseek_v4.py` | `hc_post` | 978 | 982 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-hc-post-reg | `csrc/torch_binding.cpp` | `npu_hc_post` registration | 2500 | 2507 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-hc-pre-reg | `csrc/torch_binding.cpp` | `npu_hc_pre_v2` registration | 2519 | 2525 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-attn-init | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV4Attention.__init__` | 711 | 904 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-layer-index | `vllm_ascend/utils.py` | `extract_dsv4_layer_index`/`get_dsv4_compress_ratio` | 80 | 109 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-rope | `vllm_ascend/ops/rope_dsv4.py` | `ComplexExpRotaryEmbedding` | 164 | 190 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-dsa-modules | `vllm_ascend/ops/dsa.py` | `DSAModules` | 41 | 59 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-moe-init | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV4MoE.__init__` | 354 | 460 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-moe-forward | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV4MoE.forward` | 462 | 529 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-dsa-attn | `vllm_ascend/ops/dsa.py` | `AscendDeepseekSparseAttention` | 61 | 176 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-dsa-forward | `vllm_ascend/ops/dsa.py` | `forward` (dsa_forward wrapper) | 157 | 177 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-dsa-op | `vllm_ascend/ops/dsa.py` | `dsa_forward` | 178 | 212 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-dsa-backend | `vllm_ascend/attention/dsa_v1.py` | `AscendDSABackend` | 191 | 233 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-meta-build | `vllm_ascend/attention/dsa_v1.py` | `AscendDSAMetadataBuilder.build` | 621 | 720 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-cos-sin | `vllm_ascend/ops/rope_dsv4.py` | `get_cos_and_sin_dsa` | 83 | 139 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-impl-forward | `vllm_ascend/attention/dsa_v1.py` | `AscendDSAImpl.forward` | 1761 | 1835 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-prefill | `vllm_ascend/attention/dsa_v1.py` | `_forward_prefill` | 1933 | 2244 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-unpack-cache | `vllm_ascend/device/device_op.py` | `unpack_dsa_forward_kv_cache` | 807 | 841 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-mla-prolog | `vllm_ascend/attention/dsa_v1.py` | `_mla_prolog_multistream` | 1836 | 1932 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-sparse-op | `csrc/torch_binding.cpp` | `npu_sparse_attn_sharedkv` registration | 2418 | 2444 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-decode | `vllm_ascend/attention/dsa_v1.py` | `_forward_decode` | 2245 | 2558 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-o-proj | `vllm_ascend/attention/dsa_v1.py` | `_forward_o_proj` | 1652 | 1760 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-swa-cache | `vllm_ascend/models/deepseek_v4.py` | `AscendDeepseekV4SWACache` | 179 | 212 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-state-cache | `vllm_ascend/models/deepseek_v4.py` | `AscendCompressorStateCache` | 110 | 142 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-mla-spec | `vllm_ascend/core/kv_cache_interface.py` | `AscendMLAAttentionSpec` | 19 | 88 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-indexer-cache | `vllm_ascend/models/deepseek_v4.py` | `AscendDeepseekV4IndexerCache` | 143 | 177 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-block-sizes | `vllm_ascend/models/layer/attention/layer.py` | `get_dsv4_block_sizes` | 28 | 50 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-kv-coord | `vllm_ascend/patch/platform/patch_kv_cache_coordinator.py` | `AscendHybridKVCacheCoordinator` | 68 | 80 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-mtp | `vllm_ascend/models/deepseek_v4_mtp.py` | `DeepSeekV4MTP` | 201 | 250 |
+| `docs/frameworks/vllm-ascend/deepseek-v4-inference.md` | dsv4-mtp-layer | `vllm_ascend/models/deepseek_v4_mtp.py` | `DeepSeekMultiTokenPredictorLayer` | 56 | 138 |
 
 ## Runtime Flow Evidence
 
@@ -74,6 +110,7 @@ generated: 2026-08-03
 5. Graph capture and compilation — `compile-backend`, `acl-graph-wrapper`.
 6. Custom kernel ops — `mla-op`, `dsa-op`, `linear-op`, `rotary-op`, `rope-v4-op`, `rmsnorm-op`, `activation-op`, `vocab-embedding-op`, `fa3-backend`.
 7. DeepSeek-V4 Lightning Indexer C8 runtime flow — `v4-indexer-cache`, `v4-indexer-module`, `v4-indexer-layers` → `c8-dtype`, `sfa-c8-setup` → `quantize-query`, `quant-scatter`, `a5-quant-path`, `indexer-weights-fp16`, `indexer-key-scale` → `qli-metadata-prefill`, `qli-prefill`, `qli-decode`, `qli-postdecode` → `op-registration`, `li-kernel`, `li-metadata-kernel`. The SFA (V3.2) branch additionally routes through `sfa-select-postprocess` and the per-layer gate `c8-config-flags`, `c8-layer-filter`, `c8-is-layer`; the dense-attention C8 KV cache scheme `dense-c8-kv` is a separate feature kept out of scope.
+8. DeepSeek-V4 inference stack — `dsv4-model-register` → `dsv4-model-class`, `dsv4-model-forward`, `dsv4-hc-head` → per layer `dsv4-hc-pre`, `dsv4-layer-forward`, `dsv4-attn-init`, `dsv4-moe-init` → `dsv4-dsa-attn`, `dsv4-dsa-forward`, `dsv4-dsa-op` → `dsv4-dsa-backend`, `dsv4-meta-build`, `dsv4-impl-forward` → `dsv4-prefill` / `dsv4-decode` → `dsv4-mla-prolog`, `dsv4-unpack-cache`, `dsv4-sparse-op` → `dsv4-o-proj`. KV structure and MTP are covered by `dsv4-swa-cache`, `dsv4-state-cache`, `dsv4-mla-spec`, `dsv4-indexer-cache`, `dsv4-block-sizes`, `dsv4-kv-coord`, `dsv4-mtp`, `dsv4-mtp-layer`; mHC registrations are `dsv4-hc-pre-reg`, `dsv4-hc-post-reg`.
 
 ## Reading Scope
 
@@ -87,7 +124,12 @@ for both A5 and non-A5 device types, the quantized top-k custom operators
 (`lightning_indexer_vllm`, `vllm_quant_lightning_indexer_metadata`), the
 per-layer C8 gate driven by quant description, and the DSV4 DSA prefill/decode
 call sites. SFA (DeepSeek-V3.2) indexer C8 and dense-model C8 KV cache
-(`kv_c8.py`) are mapped for contrast but are not the focus.
+(`kv_c8.py`) are mapped for contrast but are not the focus. A third scoped pass
+covers the full DeepSeek-V4 inference stack: model registry override, mHC
+hyper-connections (`npu_hc_pre_v2`/`npu_hc_post`), the DSA attention backend
+(prefill/decode flow and multi-stream MLA prologue), heterogeneous KV cache
+groups (SWA, compressor state, compressed MLA, indexer keys/scales), block
+sizes, the sparse-attention custom op, and the MTP draft model.
 
 ## Entry Files
 

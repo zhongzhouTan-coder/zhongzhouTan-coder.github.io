@@ -15,7 +15,7 @@ updated: 2026-08-05
 
 **Repository:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `32a59d4e349c12c32cdbc1916436c16e39939afc` (main, clean, inspected 2026-08-05)
 
-**Related pages:** [vLLM Ascend Hub](./index.md), [vLLM-Ascend Architecture](./architecture.md), [DeepSeek-V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [DeepSeek-V4: Million-Token Context](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md)
+**Related pages:** [vLLM Ascend Hub](./index.md), [vLLM-Ascend Architecture](./architecture.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](./deepseek-v4-inference.md), [DeepSeek-V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [DeepSeek-V4: Million-Token Context](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md)
 
 ## TL;DR
 

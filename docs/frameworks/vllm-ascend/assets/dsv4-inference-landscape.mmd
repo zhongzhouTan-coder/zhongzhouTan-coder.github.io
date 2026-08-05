@@ -1,0 +1,11 @@
+flowchart TD
+    A["DeepSeek-V2 MLA (low-rank KV latent)<br/>vllm/vllm-ascend AscendMLABackend"] --> B["DeepSeek-V3 MLA serving"]
+    B --> C["DeepSeek-V3.2 DSA sparse attention (lightning indexer over tokens)<br/>AscendSFABackend + npu_lightning_indexer*"]
+    C --> D["DeepSeek-V4 hybrid CSA/HCA (compression + sparsity)<br/>AscendDSABackend + npu_sparse_attn_sharedkv"]
+    A --> E["FlashAttention-family IO-aware kernels (GPU)"]
+    E --> F["Cross-platform vLLM deepseek_v4 (FlashMLA/FlashInfer/Triton)"]
+    F --> D
+    B --> G["MiniMax MSA index branch"]
+    G --> C
+    C --> H["SFA C8 indexer cache (vllm-ascend, V3.2-style)"]
+    D --> I["DSA Lightning Indexer C8 (vllm-ascend, V4) + AICPU metadata pre-op"]

@@ -14,6 +14,7 @@ appears_in:
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
 updated: 2026-08-05
 ---
 

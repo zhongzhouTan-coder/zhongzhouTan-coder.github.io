@@ -391,7 +391,8 @@
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/",
       "docs_paths": [
         "docs/frameworks/vllm-ascend/architecture.md",
-        "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md"
+        "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+        "docs/frameworks/vllm-ascend/deepseek-v4-inference.md"
       ],
       "status": "ingested"
     },

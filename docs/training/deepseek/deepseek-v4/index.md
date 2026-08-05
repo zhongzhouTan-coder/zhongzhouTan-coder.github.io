@@ -15,7 +15,7 @@ updated: 2026-08-03
 **Authors:** DeepSeek-AI
 **arXiv:** Technical report, July 2026
 
-**Related pages:** [DeepSeek-V2 MLA](../../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../algorithms/flashattention/flashattention.md), [Megatron-LM](../../parallelism/megatron-lm), [vLLM-Ascend Lightning Indexer C8 Quantization](../../../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md)
+**Related pages:** [DeepSeek-V2 MLA](../../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../algorithms/flashattention/flashattention.md), [Megatron-LM](../../parallelism/megatron-lm), [vLLM-Ascend Lightning Indexer C8 Quantization](../../../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../../../frameworks/vllm-ascend/deepseek-v4-inference.md)
 
 ## TL;DR
 
