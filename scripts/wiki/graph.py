@@ -12,8 +12,13 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+from common.paths import find_repository_root  # noqa: E402
+
+
+DEFAULT_ROOT = find_repository_root(__file__)
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(\s*(?:<([^>]+)>|([^\s)]+))")
 REMOTE_SCHEMES = {"http", "https", "mailto", "tel", "data"}
 FRONT_MATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)

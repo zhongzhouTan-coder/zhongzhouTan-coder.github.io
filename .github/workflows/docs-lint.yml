@@ -57,8 +57,8 @@ jobs:
         run: |
           chmod +x scripts/lint-docs.sh
           npm test
-          python3 scripts/kb-normalize-source-name.py
-          python3 scripts/kb-check-integrity.py
+          python3 scripts/checks/source_names.py
+          python3 scripts/checks/repository_integrity.py
           ./scripts/lint-docs.sh
 
   docs-lint-report:

@@ -2,7 +2,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "check-math-rendering.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+SCRIPT_PATH = REPOSITORY_ROOT / "scripts" / "checks" / "math_rendering.py"
 SPEC = spec_from_file_location("check_math_rendering", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 MODULE = module_from_spec(SPEC)

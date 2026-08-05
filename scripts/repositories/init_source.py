@@ -12,10 +12,14 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from repository_remote import parse_repository_remote
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
+
+from common.paths import find_repository_root  # noqa: E402
+from common.repository_remote import parse_repository_remote  # noqa: E402
 
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = find_repository_root(__file__)
 
 
 def fail(message: str) -> None:

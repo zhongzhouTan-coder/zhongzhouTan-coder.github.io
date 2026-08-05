@@ -9,8 +9,13 @@ import sys
 import tempfile
 from pathlib import Path
 
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+from common.paths import find_repository_root  # noqa: E402
+
+
+REPO_ROOT = find_repository_root(__file__)
 DOCS_ROOT = REPO_ROOT / "docs"
 INLINE_MATH_RE = re.compile(r"(?<!\$)\$([^$\n]+?)\$(?!\$)")
 RENDERED_MATH_RE = re.compile(r"(?:\$[^$\n]*\$|\\\([^\n]*?\\\))")

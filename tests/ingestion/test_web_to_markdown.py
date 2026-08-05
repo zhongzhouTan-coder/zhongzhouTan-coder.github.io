@@ -7,10 +7,10 @@ import unittest
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-INGEST_SCRIPT = REPOSITORY_ROOT / "scripts/web-source-to-markdown.mjs"
-INTEGRITY_SCRIPT = REPOSITORY_ROOT / "scripts/kb-check-integrity.py"
-NORMALIZE_SCRIPT = REPOSITORY_ROOT / "scripts/kb-normalize-source-name.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+INGEST_SCRIPT = REPOSITORY_ROOT / "scripts/ingestion/web_to_markdown.mjs"
+INTEGRITY_SCRIPT = REPOSITORY_ROOT / "scripts/checks/repository_integrity.py"
+NORMALIZE_SCRIPT = REPOSITORY_ROOT / "scripts/checks/source_names.py"
 CAPTURED_AT = "2026-07-28T12:34:56.000Z"
 ARTICLE_HTML = """<!doctype html>
 <html>

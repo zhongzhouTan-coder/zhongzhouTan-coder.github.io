@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/scripts/codex-stop-docs-lint-hook.sh\"",
+            "command": "bash \"$(git rev-parse --show-toplevel)/scripts/hooks/codex-stop-docs-lint-hook.sh\"",
             "timeout": 20,
             "statusMessage": "Linting docs"
           }

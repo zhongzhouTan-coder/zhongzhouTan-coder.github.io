@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-import sys
 import unittest
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+ROOT = Path(__file__).resolve().parents[2]
 
-from repository_remote import parse_repository_remote  # noqa: E402
+from scripts.common.repository_remote import parse_repository_remote
 
 
 class RepositoryRemoteTests(unittest.TestCase):

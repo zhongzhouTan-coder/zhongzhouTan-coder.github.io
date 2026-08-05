@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-SCAFFOLD_SCRIPT = REPOSITORY_ROOT / "scripts/kb-init-repo-source.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+SCAFFOLD_SCRIPT = REPOSITORY_ROOT / "scripts/repositories/init_source.py"
 
 
 class RepositorySourceScaffoldTests(unittest.TestCase):

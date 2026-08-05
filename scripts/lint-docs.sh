@@ -218,22 +218,22 @@ if (( has_issue != 0 )); then
 fi
 
 printf '\n%s\n' '--- source names ---'
-if ! "$python_command" scripts/kb-normalize-source-name.py; then
+if ! "$python_command" scripts/checks/source_names.py; then
   exit 1
 fi
 
 printf '\n%s\n' '--- kb integrity ---'
-if ! "$python_command" scripts/kb-check-integrity.py; then
+if ! "$python_command" scripts/checks/repository_integrity.py; then
   exit 1
 fi
 
 printf '\n%s\n' '--- math formulations ---'
-if ! "$python_command" scripts/check-math-rendering.py; then
+if ! "$python_command" scripts/checks/math_rendering.py; then
   exit 1
 fi
 
 printf '\n%s\n' '--- repository code links ---'
-if ! "$python_command" scripts/check-code-links.py; then
+if ! "$python_command" scripts/checks/code_links.py; then
   exit 1
 fi
 

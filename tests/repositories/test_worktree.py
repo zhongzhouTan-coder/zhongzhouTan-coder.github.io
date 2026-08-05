@@ -8,8 +8,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-WORKTREE_SCRIPT = REPOSITORY_ROOT / "scripts/kb-repo-worktree.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+WORKTREE_SCRIPT = REPOSITORY_ROOT / "scripts/repositories/worktree.py"
 
 
 class RepositoryWorktreeTests(unittest.TestCase):

@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-GRAPH_SCRIPT = REPOSITORY_ROOT / "scripts/kb-graph.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+GRAPH_SCRIPT = REPOSITORY_ROOT / "scripts/wiki/graph.py"
 
 
 class KnowledgeBaseGraphTests(unittest.TestCase):

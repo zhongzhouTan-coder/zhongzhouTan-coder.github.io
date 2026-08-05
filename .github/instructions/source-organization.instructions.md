@@ -117,8 +117,8 @@ together and the manifest `category` is updated.
 Run these checks after source or docs changes:
 
 ```bash
-python3 scripts/kb-normalize-source-name.py
-python3 scripts/kb-check-integrity.py
+python3 scripts/checks/source_names.py
+python3 scripts/checks/repository_integrity.py
 ./scripts/lint-docs.sh
 ```
 

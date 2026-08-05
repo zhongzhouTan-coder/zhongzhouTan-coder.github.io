@@ -23,10 +23,10 @@ case "${1:-}" in
   --status)
     shift
     exec "$repo_root/scripts/run-in-workspace.sh" \
-      python scripts/kb-repo-worktree.py status "$@"
+      python scripts/repositories/worktree.py status "$@"
     ;;
   *)
     exec "$repo_root/scripts/run-in-workspace.sh" \
-      python scripts/kb-repo-worktree.py materialize-all "$@"
+      python scripts/repositories/worktree.py materialize-all "$@"
     ;;
 esac

@@ -1,16 +1,14 @@
 from __future__ import annotations
 
 import importlib.util
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location(
-    "check_code_links", ROOT / "scripts" / "check-code-links.py"
+    "check_code_links", ROOT / "scripts" / "checks" / "code_links.py"
 )
 assert SPEC is not None and SPEC.loader is not None
 CHECK_CODE_LINKS = importlib.util.module_from_spec(SPEC)

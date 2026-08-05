@@ -1,6 +1,6 @@
 ---
 name: mineru-doc-ingest
-description: Use when ingesting new PDFs or other document sources into this repository's markdown knowledge base with scripts/mineru-agent-to-markdown.py, especially when converting raw/ files to derived/pdf-markdown/, synthesizing docs pages, updating docs/logs/index.md and docs/logs/log.md, or handling MinerU conversion failures.
+description: Use when ingesting new PDFs or other document sources into this repository's markdown knowledge base with scripts/ingestion/mineru_to_markdown.py, especially when converting raw/ files to derived/pdf-markdown/, synthesizing docs pages, updating docs/logs/index.md and docs/logs/log.md, or handling MinerU conversion failures.
 ---
 
 # MinerU Doc Ingest
@@ -25,7 +25,7 @@ Read these instruction files before writing docs or logs:
 3. If the source is a PDF or document that needs extraction and no complete generated Markdown exists, convert it with:
 
 ```bash
-scripts/mineru-agent-to-markdown.py --mode precise raw/<source-file>.pdf --output-dir derived/pdf-markdown/<topic-category>
+scripts/ingestion/mineru_to_markdown.py --mode precise raw/<source-file>.pdf --output-dir derived/pdf-markdown/<topic-category>
 ```
 
 Choose `<topic-category>` from the source topic or likely target docs topic, such as `ai`, `algorithms`, `benchmarks`, `hardware`, or `frameworks`. Do not write generated Markdown directly at the top level of `derived/pdf-markdown/`.

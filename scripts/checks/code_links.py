@@ -12,10 +12,14 @@ from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple
 
-from repository_remote import parse_repository_remote
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
+
+from common.paths import find_repository_root  # noqa: E402
+from common.repository_remote import parse_repository_remote  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = find_repository_root(__file__)
 REGISTRY_PATH = ROOT / "docs" / "_data" / "code_repositories.json"
 FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})")
 CODE_LINK_ELEMENT_RE = re.compile(

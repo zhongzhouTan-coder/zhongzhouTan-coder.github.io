@@ -67,8 +67,8 @@ Run the docs lint check at any time:
 For source naming and manifest checks:
 
 ```bash
-python3 scripts/kb-normalize-source-name.py
-python3 scripts/kb-check-integrity.py
+python3 scripts/checks/source_names.py
+python3 scripts/checks/repository_integrity.py
 ```
 
 Or invoke the `lint-docs-cleanup` Codex skill to have the agent fix safe issues and report deletion candidates.

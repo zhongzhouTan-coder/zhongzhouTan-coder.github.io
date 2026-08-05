@@ -6,11 +6,17 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+from common.paths import find_repository_root  # noqa: E402
+
+
+DEFAULT_ROOT = find_repository_root(__file__)
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 

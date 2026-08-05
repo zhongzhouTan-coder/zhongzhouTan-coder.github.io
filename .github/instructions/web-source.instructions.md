@@ -1,6 +1,6 @@
 ---
-description: "Use when capturing an HTML page as an immutable local source and extracting it to Markdown with scripts/web-source-to-markdown.mjs."
-applyTo: "raw/**/*.html, raw/**/*.metadata.json, derived/web-markdown/**/*, scripts/web-source-to-markdown.mjs, sources.json"
+description: "Use when capturing an HTML page as an immutable local source and extracting it to Markdown with scripts/ingestion/web_to_markdown.mjs."
+applyTo: "raw/**/*.html, raw/**/*.metadata.json, derived/web-markdown/**/*, scripts/ingestion/web_to_markdown.mjs, sources.json"
 ---
 
 # Web Source Ingestion Rules
@@ -107,7 +107,7 @@ When the resulting docs page is ready:
 Run:
 
 ```bash
-python3 scripts/kb-normalize-source-name.py
-python3 scripts/kb-check-integrity.py
+python3 scripts/checks/source_names.py
+python3 scripts/checks/repository_integrity.py
 ./scripts/lint-docs.sh
 ```

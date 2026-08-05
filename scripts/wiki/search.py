@@ -12,8 +12,13 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+from common.paths import find_repository_root  # noqa: E402
+
+
+DEFAULT_ROOT = find_repository_root(__file__)
 LATIN_TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9_'-]*", re.IGNORECASE)
 CJK_RUN_RE = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+")
 STOPWORDS = {

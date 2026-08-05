@@ -42,7 +42,7 @@ function fail(message) {
 
 function usage() {
   return `Usage:
-  node scripts/web-source-to-markdown.mjs \\
+  node scripts/ingestion/web_to_markdown.mjs \\
     --url URL --category CATEGORY --slug SLUG [options]
 
 Required:

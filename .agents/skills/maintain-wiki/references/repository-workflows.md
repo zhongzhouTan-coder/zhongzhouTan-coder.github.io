@@ -75,7 +75,7 @@ Require the canonical evidence to live under `raw/`. If the requested source is 
 
 1. Read `docs/logs/index.md` before searching broadly.
 2. Select and read the smallest useful set of topic, hub, term, comparison, and source-backed pages.
-3. Follow relevant internal links. When the index and followed links do not surface enough evidence, run `python3 scripts/kb-search.py "<query>" --json`; use `--category <name>` to narrow a broad result set. Fall back to `rg` for exact strings or structural searches.
+3. Follow relevant internal links. When the index and followed links do not surface enough evidence, run `python3 scripts/wiki/search.py "<query>" --json`; use `--category <name>` to narrow a broad result set. Fall back to `rg` for exact strings or structural searches.
 4. Distinguish what the wiki supports, what sources disagree about, and what the wiki does not yet know.
 5. Answer directly with links to the supporting docs pages and precise source paths when useful.
 6. File the answer back only when it meets the durable-value threshold in `SKILL.md`. Repository instructions already authorize saving valuable reusable answers; do not add an unnecessary confirmation pause for a routine, in-scope docs update.
@@ -96,7 +96,7 @@ Review meaning and retrieval structure beyond what mechanical lint can prove:
 - manifest-to-docs provenance drift;
 - synthesized visuals that replaced available original figures without justification.
 
-Run `python3 scripts/kb-graph.py --json` when hubs, sinks, or disconnected topic clusters would help target the review. Treat graph findings as prioritization signals, not automatic defects: a leaf reference page may legitimately have no outbound link, while an orphaned content page usually needs navigation.
+Run `python3 scripts/wiki/graph.py --json` when hubs, sinks, or disconnected topic clusters would help target the review. Treat graph findings as prioritization signals, not automatic defects: a leaf reference page may legitimately have no outbound link, while an orphaned content page usually needs navigation.
 
 When the user asks for a review or audit, report findings without broad edits. When the user asks to improve or fix the wiki, apply safe, evidence-backed repairs and list uncertain items separately.
 
@@ -107,8 +107,8 @@ Apply `.agents/skills/lint-docs-cleanup/SKILL.md`.
 Run the repository checks appropriate to the touched scope:
 
 ```bash
-python3 scripts/kb-normalize-source-name.py
-python3 scripts/kb-check-integrity.py
+python3 scripts/checks/source_names.py
+python3 scripts/checks/repository_integrity.py
 ./scripts/lint-docs.sh
 ```
 

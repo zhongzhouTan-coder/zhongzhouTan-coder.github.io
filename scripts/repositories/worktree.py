@@ -12,10 +12,14 @@ from datetime import date, timedelta
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from repository_remote import parse_repository_remote
+SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(SCRIPTS_ROOT))
+
+from common.paths import find_repository_root  # noqa: E402
+from common.repository_remote import parse_repository_remote  # noqa: E402
 
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = find_repository_root(__file__)
 DEFAULT_MIN_REVISION_INTERVAL_DAYS = 14
 REVISION_RE = re.compile(r"[0-9a-f]{40}")
 
@@ -602,7 +606,7 @@ def command_sync(args: argparse.Namespace, root: Path, entry: dict[str, str]) ->
     print("decision: new revision")
     print(f"checkout: {target.relative_to(root)}")
     print(f"worktree: {'created' if created else 'reused'}")
-    print("next: run scripts/kb-init-repo-source.py for this checkout")
+    print("next: run scripts/repositories/init_source.py for this checkout")
 
 
 def command_materialize(

@@ -18,7 +18,7 @@ instruction files.
   Never rewrite old raw or derived evidence to point at another revision.
 - Keep third-party worktrees beneath ignored `external-repos/` and treat them as
   read-only. Do not edit, format, switch, pull, or vendor their files.
-- Use `scripts/kb-repo-worktree.py` for refresh and materialization; do not
+- Use `scripts/repositories/worktree.py` for refresh and materialization; do not
   manage evidence worktrees with ad hoc destructive Git commands.
 - Keep factual, file-referenced evidence under `derived/repo-analysis/`; reserve
   teaching, comparison, and interpretation for `docs/`.
@@ -31,7 +31,7 @@ For an existing repository, start from the newest relevant registry entry and
 compare only the requested scope:
 
 ```bash
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
+./scripts/run-in-workspace.sh python scripts/repositories/worktree.py sync \
   <repo-slug>-<pinned-short-sha> \
   --path path/to/subsystem \
   --sparse path/to/subsystem
@@ -72,7 +72,7 @@ required, record the dirty state, and use low confidence on consuming pages.
 Use the scaffolder rather than hand-writing repository metadata:
 
 ```bash
-./scripts/run-in-workspace.sh python scripts/kb-init-repo-source.py \
+./scripts/run-in-workspace.sh python scripts/repositories/init_source.py \
   external-repos/<repo> \
   --category <category> \
   --docs-path docs/<category>/<page>.md \

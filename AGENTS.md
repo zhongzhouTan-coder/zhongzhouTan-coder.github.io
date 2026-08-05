@@ -46,13 +46,13 @@ This repository is a markdown knowledge base.
 ## Workflow Triggers
 
 - When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
-- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/mineru-agent-to-markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/mineru-agent-to-markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
-- When a new web page source is added: capture it with `scripts/web-source-to-markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
+- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
+- When a new web page source is added: capture it with `scripts/ingestion/web_to_markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical
   `reuse` / `new revision` / `new repository` workflow in
   `.github/instructions/repo-reading.instructions.md`. For an existing
   repository, refresh the shared cache and compare the latest upstream commit
-  against the pinned revision with `scripts/kb-repo-worktree.py sync`, scoped
+  against the pinned revision with `scripts/repositories/worktree.py sync`, scoped
   to the subsystem being inspected. Reuse the recorded revision when that
   scope is unchanged. When relevant implementation changed, honor the sync
   command's revision interval: defer the refresh while the latest evidence

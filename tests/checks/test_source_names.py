@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-NORMALIZE_SCRIPT = REPOSITORY_ROOT / "scripts/kb-normalize-source-name.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+NORMALIZE_SCRIPT = REPOSITORY_ROOT / "scripts/checks/source_names.py"
 
 
 class NormalizeSourceNameTests(unittest.TestCase):

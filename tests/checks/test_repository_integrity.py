@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-INTEGRITY_SCRIPT = REPOSITORY_ROOT / "scripts/kb-check-integrity.py"
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+INTEGRITY_SCRIPT = REPOSITORY_ROOT / "scripts/checks/repository_integrity.py"
 COMMIT = "0123456789abcdef0123456789abcdef01234567"
 SOURCE_ID = f"github:owner/repo@{COMMIT}"
 RAW_PATH = "raw/frameworks/repo-codebase--github-0123456789ab.md"

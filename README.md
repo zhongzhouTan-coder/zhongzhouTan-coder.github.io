@@ -78,8 +78,8 @@ npm run wiki:graph -- --json
 **Run integrity checks:**
 
 ```bash
-python3 scripts/kb-check-integrity.py --json
-python3 scripts/kb-normalize-source-name.py --json
+python3 scripts/checks/repository_integrity.py --json
+python3 scripts/checks/source_names.py --json
 ```
 
 **Serve locally:**
@@ -98,15 +98,15 @@ pinned to the inspected commit.
 ```bash
 # Fetch latest upstream and compare only the subsystem being studied. Relevant
 # changes are deferred until the current evidence revision is 14 days old.
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py sync \
+./scripts/run-in-workspace.sh python scripts/repositories/worktree.py sync \
   vllm-a0c092ee72c0 \
   --path vllm/v1/core \
   --sparse vllm/v1/core
 
 # Retire or restore an inactive pinned worktree without losing its evidence.
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py retire \
+./scripts/run-in-workspace.sh python scripts/repositories/worktree.py retire \
   vllm-a0c092ee72c0
-./scripts/run-in-workspace.sh python scripts/kb-repo-worktree.py materialize \
+./scripts/run-in-workspace.sh python scripts/repositories/worktree.py materialize \
   vllm-a0c092ee72c0
 ```
 
