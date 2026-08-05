@@ -318,7 +318,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/",
-      "degree": 22
+      "degree": 23
     },
     {
       "id": "docs/frameworks/sglang/index.md",
@@ -366,7 +366,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/triton/triton-in-vllm/",
-      "degree": 9
+      "degree": 10
     },
     {
       "id": "docs/frameworks/vllm-ascend/architecture.md",
@@ -374,7 +374,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm-ascend/architecture/",
-      "degree": 18
+      "degree": 20
     },
     {
       "id": "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
@@ -390,7 +390,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/vllm-ascend/",
-      "degree": 11
+      "degree": 12
     },
     {
       "id": "docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md",
@@ -406,7 +406,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/vllm/",
-      "degree": 10
+      "degree": 11
     },
     {
       "id": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
@@ -422,7 +422,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/vllm/vllm-block-management/",
-      "degree": 14
+      "degree": 15
     },
     {
       "id": "docs/frameworks/vllm/vllm-code-learning-path.md",
@@ -430,7 +430,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/vllm-code-learning-path/",
-      "degree": 12
+      "degree": 13
     },
     {
       "id": "docs/frameworks/vllm/vllm-continuous-batching/index.md",
@@ -438,7 +438,7 @@
       "category": "frameworks",
       "isIndex": true,
       "url": "/frameworks/vllm/vllm-continuous-batching/",
-      "degree": 13
+      "degree": 14
     },
     {
       "id": "docs/frameworks/vllm/vllm-framework.md",
@@ -446,7 +446,7 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/vllm-framework/",
-      "degree": 28
+      "degree": 29
     },
     {
       "id": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
@@ -454,7 +454,15 @@
       "category": "frameworks",
       "isIndex": false,
       "url": "/frameworks/vllm/vllm-kimi-k3-code-reading/",
-      "degree": 10
+      "degree": 11
+    },
+    {
+      "id": "docs/frameworks/vllm/vllm-overview.md",
+      "label": "vLLM Architecture and Code Organization Overview",
+      "category": "frameworks",
+      "isIndex": false,
+      "url": "/frameworks/vllm/vllm-overview/",
+      "degree": 12
     },
     {
       "id": "docs/hardware/index.md",
@@ -502,7 +510,7 @@
       "category": "logs",
       "isIndex": true,
       "url": "/logs/",
-      "degree": 100
+      "degree": 101
     },
     {
       "id": "docs/terms/all-gather.md",
@@ -1535,6 +1543,10 @@
       "target": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md"
     },
     {
+      "source": "docs/frameworks/index.md",
+      "target": "docs/frameworks/vllm/vllm-overview.md"
+    },
+    {
       "source": "docs/frameworks/sglang/index.md",
       "target": "docs/frameworks/vllm/vllm-code-learning-path.md"
     },
@@ -1644,6 +1656,10 @@
     },
     {
       "source": "docs/frameworks/vllm-ascend/architecture.md",
+      "target": "docs/frameworks/vllm/vllm-overview.md"
+    },
+    {
+      "source": "docs/frameworks/vllm-ascend/architecture.md",
       "target": "docs/terms/continuous-batching.md"
     },
     {
@@ -1733,6 +1749,10 @@
     {
       "source": "docs/frameworks/vllm/index.md",
       "target": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/index.md",
+      "target": "docs/frameworks/vllm/vllm-overview.md"
     },
     {
       "source": "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md",
@@ -1861,6 +1881,34 @@
     {
       "source": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
       "target": "docs/training/kimi/kimi-k3/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/triton/triton-in-vllm.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm-ascend/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm/vllm-block-management/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm/vllm-code-learning-path.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm/vllm-continuous-batching/index.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm/vllm-framework.md"
+    },
+    {
+      "source": "docs/frameworks/vllm/vllm-overview.md",
+      "target": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md"
     },
     {
       "source": "docs/hardware/index.md",
@@ -2181,6 +2229,10 @@
     {
       "source": "docs/logs/index.md",
       "target": "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md"
+    },
+    {
+      "source": "docs/logs/index.md",
+      "target": "docs/frameworks/vllm/vllm-overview.md"
     },
     {
       "source": "docs/logs/index.md",

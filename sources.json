@@ -686,7 +686,8 @@
       "derived_path": "derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/",
       "docs_paths": [
         "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
-        "docs/frameworks/vllm/vllm-continuous-batching/index.md"
+        "docs/frameworks/vllm/vllm-continuous-batching/index.md",
+        "docs/frameworks/vllm/vllm-overview.md"
       ],
       "status": "ingested"
     },

@@ -1,6 +1,6 @@
 ---
 title: "vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM"
-summary: "A code-reading tour of how vllm-ascend extends upstream vLLM for Ascend NPU execution through plugin registration, platform abstraction, monkey-patches, custom attention/communication backends, ACL graph capture, and model registry overrides — without forking vLLM."
+summary: "A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution through plugin registration, platform abstraction, monkey-patches, custom attention/communication backends, ACL graph capture, and model registry overrides — without forking vLLM."
 layout: default
 confidence: high
 code_links: strict
@@ -15,58 +15,73 @@ updated: 2026-08-05
 
 **Repository:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `32a59d4e349c12c32cdbc1916436c16e39939afc` (main, clean, inspected 2026-08-03)
 
-**Related pages:** [vLLM Ascend Hub](./index.md), [vLLM-Ascend Kimi K3 MoE Forward](./kimi-k3-moe-forward.md), [DeepSeek-V4 Lightning Indexer C8 Quantization](./deepseek-v4-lightning-indexer-c8.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
+**Related pages:** [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md), [vLLM Ascend Hub](./index.md), [vLLM-Ascend Kimi K3 MoE Forward](./kimi-k3-moe-forward.md), [DeepSeek-V4 Lightning Indexer C8 Quantization](./deepseek-v4-lightning-indexer-c8.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
 
 ## TL;DR
 
-**What:** vllm-ascend is a plugin-based port of vLLM to Huawei Ascend NPU hardware. It reuses all of vLLM's scheduling, memory management, and serving infrastructure, replacing only the hardware execution substrate with Ascend-native equivalents.
+**What:** vllm-ascend is a plugin-based port of vLLM to Huawei Ascend NPU hardware. Against vLLM's six-layer stack, it **keeps layers 1-4 (entry points, frontend engine, EngineCore, executor) untouched and replaces the hardware half of layers 5-6** (worker/model runner and the model + kernel substrate).
 
-**How:** Five integration mechanisms work together: Python entry-point plugin registration, the `NPUPlatform` abstraction for compile/runtime defaults, `ModelRegistry` overrides for Ascend-specific model classes, extensive [monkey-patches](../../terms/monkey-patching.md) for CUDA-coupled internals, and custom backends for attention (FIA/MLAPO), communication (HCCL), and graph capture (ACL graphs).
+**How:** Five integration mechanisms work together: Python entry-point plugin registration, the `NPUPlatform` abstraction for compile/runtime defaults, `ModelRegistry` overrides for Ascend-specific model classes, extensive [monkey-patches](../../terms/monkey-patching.md) for CUDA-coupled internals, and custom backends for attention (FIA/MLA/SFA/DSA/FA3), communication (HCCL), and graph capture (ACL graphs).
 
 **The number:** ~18,000 lines of Ascend-specific Python code plus C++/AscendC kernels, integrated without a single line changed in upstream vLLM.
+
+## How vllm-ascend Maps Onto vLLM's Six-Layer Stack
+
+The [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md) frames vLLM as a six-layer stack split across three processes: layers 1-4 are pure orchestration (entry points, frontend engine, EngineCore, executor), layers 5-6 are the hardware (worker/model runner, then model substrate and native kernels). vllm-ascend's design fits in one sentence: **it reuses vLLM's layers 1-4 unchanged and replaces the hardware half of layers 5-6.**
+
+| Layer (from the vLLM overview) | What upstream vLLM provides | What vllm-ascend does |
+|---|---|---|
+| 1 · Entry points (API process) | OpenAI / Anthropic / pooling / MCP servers, CLI, offline `LLM` | **Reuses as-is.** The OpenAI-compatible server runs unmodified. |
+| 2 · Frontend engine (API process) | `AsyncLLM`, input/output processors, detokenizer | **Reuses as-is.** Request admission and streaming are hardware-agnostic. |
+| 3 · EngineCore (engine process) | `step()` loop, `Scheduler`, `KVCacheManager` + `BlockPool` | **Reuses the loop and scheduler**; patches only the KV-cache layer (2M-aligned contiguous KV, per-group cache managers) via `patch/kv_cache_*`. |
+| 4 · Executor (process topology) | UniProc / Multiproc / Ray | **Reuses**; small patches for NPU device ids and the multiproc executor. |
+| 5 · Worker + Model Runner (device process) | `GPUWorker`, `GPUModelRunner`, `InputBatch`, `Sampler` | **Replaced.** <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/worker.py#L89" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/worker.py" data-code-line="89"><code>NPUWorker</code></a> (plus `NPUWorker310` / `XliteWorker` variants), <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/model_runner_v1.py#L269" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/model_runner_v1.py" data-code-line="269"><code>NPUModelRunner</code></a> with ACL-graph capture, Ascend attention backends, custom sampler. |
+| 6 · Model substrate + kernels | model registry, `layers/`, attention backends, `platforms/`, compilation, distributed | **Replaced at the hardware boundary.** <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/platform.py#L127" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/platform.py" data-code-line="127"><code>NPUPlatform</code></a>, `ModelRegistry` overrides, Ascend model/layer ops, FIA/MLA/SFA/DSA/FA3 attention backends, `AscendCompiler` + ACL graphs, HCCL communicators. |
+
+The three-process rule from the overview still holds: layers 1-2 never touch an NPU, layer 3 is the engine brain, and layer 5 is where scheduled tokens become NPU tensors. vllm-ascend changes *what* layer 5 executes and *which* substrate layer 6 provides — never *when* layers 1-4 act. Everything below describes how those two layers get replaced and glued in.
 
 ## The Big Picture
 
 [Mermaid source](./assets/vllm-ascend-architecture.mmd)
 
 ```mermaid
-flowchart TD
-    subgraph PLUGIN["Plugin Layer (entry_points)"]
-        A["vllm.platform_plugins<br/>→ NPUPlatform"]
-        B["vllm.general_plugins<br/>→ models, KV connectors, loaders"]
+flowchart TB
+    subgraph REUSE["Layers 1-4 · Upstream vLLM, reused as-is"]
+        A["Layer 1 · Entry points: OpenAI API server, CLI, offline LLM"]
+        B["Layer 2 · Frontend engine: AsyncLLM, input/output processors"]
+        C["Layer 3 · EngineCore: step() loop, Scheduler, KVCacheManager"]
+        D["Layer 4 · Executor: UniProc / Multiproc / Ray"]
     end
-    subgraph PLATFORM["Platform (platform.py)"]
-        C["NPUPlatform(Platform)<br/>enum=OOT, device=npu"]
-        D["compile_backend → AscendCompiler"]
-        E["simple_compile_backend=eager"]
+
+    subgraph REPLACE["Layer 5 · Worker + Model Runner (device process)"]
+        E["NPUWorker / NPUWorker310 / XliteWorker"]
+        F["NPUModelRunner: ACL graphs, Ascend attention backends, custom sampler"]
     end
-    subgraph EXEC["Execution Layer"]
-        F["NPUWorker(WorkerBase)<br/>CaMemAllocator + sleep/wakeup"]
-        G["NPUModelRunner(GPUModelRunner)<br/>ACL graphs + Ascend backends"]
+
+    subgraph SUBSTRATE["Layer 6 · Model substrate + kernels (replaced at the hardware boundary)"]
+        G["NPUPlatform + AscendConfig"]
+        H["ModelRegistry overrides + Ascend model/layer ops"]
+        I["Attention: FIA / MLA / SFA / DSA / FA3"]
+        J["Compilation: AscendCompiler + ACLGraphWrapper"]
+        K["Distributed: HCCL communicators + parallel groups"]
     end
-    subgraph BACKEND["Custom Backends"]
-        H["Attention: FIA / MLAPO / SFA / DSA<br/>+ context-parallel variants"]
-        I["Communication: HCCL<br/>PyHcclCommunicator"]
-        J["Ops: linear, RoPE, MoE, norm, activation<br/>torch.ops._C_ascend.*"]
+
+    subgraph PATCH["Monkey-patches bridge vLLM internals to the Ascend layers"]
+        L["patch/platform + patch/worker"]
     end
-    subgraph PATCH["Monkey-Patches (patch/)"]
-        K["platform/: FusedMoE, KV cache, distributed init"]
-        L["worker/: cudagraph, speculative, FP8, model-specific"]
-    end
-    subgraph UPSTREAM["Upstream vLLM (reused as-is)"]
-        M["Scheduler + Block Manager"]
-        N["Prefix Caching + Preemption"]
-        O["OpenAI API Server"]
-    end
-    UPSTREAM --> PLUGIN
-    PLUGIN --> PLATFORM
-    PLATFORM --> EXEC
-    EXEC --> BACKEND
-    PATCH -.-> EXEC
-    PATCH -.-> PLATFORM
+
+    A --> B --> C --> D --> E --> F
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+    F --> K
+    PATCH -.-> C
+    PATCH -.-> D
+    PATCH -.-> F
 ```
 
-*① vLLM discovers vllm-ascend through Python entry points at startup. ② NPUPlatform sets compile/runtime defaults (eager mode, AscendCompiler, Ascend-specific config). ③ NPUWorker and NPUModelRunner replace the CUDA execution path with Ascend-native equivalents. ④ Custom backends handle attention (FIA/MLAPO), communication (HCCL), and all compute ops. ⑤ Monkey-patches adapt CUDA-coupled vLLM internals at runtime. ⑥ The scheduler, block manager, prefix caching, preemption, and API server run unmodified from upstream.*
+*① vLLM discovers vllm-ascend through Python entry points at startup. ② Layers 1-4 — the OpenAI server, frontend engine, the `step()` scheduling loop, and the executor — run unchanged from upstream. ③ Layer 5 is replaced: `NPUWorker` (or its 310P / xlite variants) and `NPUModelRunner` execute scheduled batches with ACL-graph capture and Ascend attention backends. ④ Layer 6 substrate is replaced at the hardware boundary: `NPUPlatform`, Ascend model/layer ops, FIA/MLA/SFA/DSA/FA3 attention, `AscendCompiler`, and HCCL communication. ⑤ Monkey-patches glue CUDA-coupled vLLM internals to the Ascend layers at startup.*
 
 ## Five Integration Mechanisms
 
@@ -84,7 +99,7 @@ vllm.general_plugins   → register_model_loader()      → NetLoader, RForkLoad
 vllm.general_plugins   → register_service_profiling() → profiling config
 ```
 
-When vLLM starts, it calls `register()` which returns `"vllm_ascend.platform.NPUPlatform"`. The platform is classified as `PlatformEnum.OOT` ("out-of-tree"), telling vLLM this is a third-party platform rather than a built-in CUDA/AMD/XPU target. All five registration functions call `_ensure_global_patch()` first, which applies the monkey-patch layer before any worker or model is initialized.
+When vLLM starts, it calls <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/__init__.py#L38" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/__init__.py" data-code-line="38"><code>vllm_ascend/__init__.py</code></a> (`register()`), which returns `"vllm_ascend.platform.NPUPlatform"`. The platform is classified as `PlatformEnum.OOT` ("out-of-tree"), telling vLLM this is a third-party platform rather than a built-in CUDA/AMD/XPU target. All five registration functions call `_ensure_global_patch()` first, which applies the monkey-patch layer before any worker or model is initialized.
 
 ### 2. NPUPlatform — The Default Switchboard
 
@@ -98,9 +113,11 @@ When vLLM starts, it calls `register()` which returns `"vllm_ascend.platform.NPU
 | `get_pass_manager_cls()` | Inductor PassManager | `GraphFusionPassManager` |
 | Graph capture | CUDA graphs | `torch_npu.npu.warp_graph` (ACL graphs) |
 | Memory allocator | PyTorch CUDA allocator | `CaMemAllocator` (pluggable, sleep-capable) |
-| `is_sleep_mode_available()` | `False` | `True` |
+| `is_sleep_mode_available()` | `False` | `True`, backed by the <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/device_allocator/camem.py#L113" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/device_allocator/camem.py" data-code-line="113"><code>CaMemAllocator</code></a> |
 | `num_compute_units()` | SM count | NPU Cube Core count |
 | Quantization choices | CUDA-native | Adds `"ascend"` to CLI choices |
+| Static graph wrapper | CUDA graph wrapper | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/compilation/acl_graph.py#L60" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/compilation/acl_graph.py" data-code-line="60"><code>ACLGraphWrapper</code></a> via `get_static_graph_wrapper_cls()` |
+| Opaque attention op | `opaque_attention_op()=False` | `True` — attention runs through Ascend's fused op |
 
 Key design decisions:
 
@@ -176,6 +193,8 @@ The two sparse backends — <a class="code-link" href="../../../external-repos/v
 
 Each backend also has a **context-parallel variant** (`AscendAttentionDCP`, `AscendDSACP`, `AscendSFADCP`) activated when decode context parallelism (`enable_dcp()`) is on.
 
+The `AscendFABackend` FA3 path is only taken when the user explicitly selects `FLASH_ATTN` and `flash_attn_npu_v3` passes the <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/fa3_v1.py#L12" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/fa3_v1.py" data-code-line="12"><code>AscendFABackend</code></a> validation (`_validate_fa3_backend`); it is the training-inference-consistency path. On 310P devices the whole selection collapses to a single dense `AscendAttentionBackend310` — MLA/SFA/DSA are not yet supported there.
+
 The attention computation uses Ascend's **FIA** (Fused Infer Attention) API instead of FlashAttention CUDA kernels. FIA fuses the QK computation, softmax, and PV multiplication into a single NPU operator, analogous to FlashAttention's fusion strategy but implemented through CANN rather than CUDA.
 
 #### Communication: HCCL Replaces NCCL
@@ -216,6 +235,20 @@ An extensive set of custom Ascend ops replace standard PyTorch ops:
 | `ops/triton/` | Triton-ascend kernels (rmsnorm+rope, FLA, GDN gating) |
 
 All custom ops are registered as `torch.ops._C_ascend.*`. Dummy fusion ops (`rms_norm`, `fused_add_rms_norm`, `static_scaled_fp8_quant`, etc.) are registered at init to prevent torch compile errors on paths that reference these ops but don't execute them on Ascend.
+
+### Worker Variants and the Memory Allocator
+
+Layer 5's worker is not a single class. `NPUPlatform.check_and_update_config` picks which one to use based on the device:
+
+| Worker | Extends | When |
+|---|---|---|
+| <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/worker.py#L89" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/worker.py" data-code-line="89"><code>NPUWorker</code></a> | `WorkerBase` | Default Ascend worker (910B/A2/A3/A5) |
+| <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/_310p/worker_310p.py#L32" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/_310p/worker_310p.py" data-code-line="32"><code>NPUWorker310</code></a> | `NPUWorker` | 310P devices, with 310P-specific attention/sampling/quantization |
+| <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/xlite/xlite_worker.py#L22" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/xlite/xlite_worker.py" data-code-line="22"><code>XliteWorker</code></a> | `NPUWorker` | openEuler GVirt xlite (virtualized NPU) |
+
+All workers initialize the pluggable <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/device_allocator/camem.py#L113" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/device_allocator/camem.py" data-code-line="113"><code>CaMemAllocator</code></a> — the allocator that makes sleep mode possible. `NPUPlatform.is_cumem_allocator_available()` reports it as available so vLLM's sleep-mode gating accepts the NPU path.
+
+The worker keeps the upstream split between **worker and model runner** ([vLLM overview §6.5](../vllm/vllm-overview.md)): the worker is the process-level shell, the model runner is the step-level executor. <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/worker.py#L590" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/worker.py" data-code-line="590"><code>NPUWorker.execute_model</code></a> handles pipeline-parallel send/receive and then delegates to <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/worker/model_runner_v1.py#L1707" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/worker/model_runner_v1.py" data-code-line="1707"><code>NPUModelRunner.execute_model</code></a>; everything else the worker does — device init, sleep/wakeup, weight transfer, health checks — wraps the same once-per-process concerns that upstream workers own.
 
 ## Execution Flow: End-to-End
 
@@ -274,7 +307,7 @@ This is why vllm-ascend stays at ~18K lines of Ascend-specific code: it only rep
 
 ## Sleep Mode and Memory Management
 
-vllm-ascend implements **sleep mode** via the `CaMemAllocator` — a pluggable NPU memory allocator that can offload/free NPU memory while preserving critical tensors:
+vllm-ascend implements **sleep mode** via the <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/device_allocator/camem.py#L113" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/device_allocator/camem.py" data-code-line="113"><code>CaMemAllocator</code></a> — a pluggable NPU memory allocator that can offload/free NPU memory while preserving critical tensors:
 
 - `NPUWorker.sleep()`: Frees non-essential NPU memory via `CaMemAllocator`, allowing other processes to use the NPU while the vLLM server is idle
 - `NPUWorker.wake_up()`: Restores device tensors from preserved allocations
@@ -282,8 +315,24 @@ vllm-ascend implements **sleep mode** via the `CaMemAllocator` — a pluggable N
 
 This is useful in multi-tenant NPU clusters where NPU memory is scarce and vLLM servers may be idle for extended periods. The `CaMemAllocator` is analogous to CUDA's memory pool but with explicit sleep/wakeup support at the allocator level.
 
+## Where It Breaks
+
+| Failure mode | When it happens | Impact |
+|---|---|---|
+| Monkey-patch drift | Upstream vLLM renames or moves an internal symbol a patch touches | Import/runtime errors on upgrade; the patch list must be re-validated per vLLM version |
+| 310P gaps | MLA/SFA/DSA models on 310P | Selection collapses to the single dense `AscendAttentionBackend310`; sparse/MLA models unsupported |
+| FA3 without the package | `--attention-backend FLASH_ATTN` while `flash_attn_npu_v3` is missing | Hard error from `_validate_fa3_backend`; install the package or drop the flag |
+| xlite only when enabled | xlite graph config off, or speculation enabled in xlite full mode | Falls back to the standard `NPUWorker` path |
+| `ASCEND_LAUNCH_BLOCKING=1` with ACL graphs | Debug env var set while graph capture is on | ValueError at startup; unset the variable for graph runs |
+| Sleep mode without cumem | Allocator not configured on the path | Sleep/wakeup unavailable; the server stays resident |
+
+## One Thing to Remember
+
+vllm-ascend is **vLLM's layers 5-6 made Ascend-native**. Everything you already know about vLLM — the `step()` loop, the scheduler, KV blocks, prefix caching, the OpenAI server — runs unchanged; only the worker/model runner and the model + kernel substrate are replaced, injected through five plugin mechanisms so upstream vLLM is never forked. When you debug an Ascend problem, first decide which side owns it: layers 1-4 belong to vLLM, layers 5-6 belong to vllm-ascend.
+
 ## Related Pages
 
+- [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md) — the six-layer vLLM stack this page maps onto
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](./kimi-k3-moe-forward.md) — Deep dive into the routed-MoE path
 - [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md) — Cross-platform attention implementation map
 - [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md) — How Triton kernels are adapted for Ascend

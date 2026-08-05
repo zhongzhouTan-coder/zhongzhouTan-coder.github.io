@@ -1,34 +1,34 @@
-flowchart TD
-    subgraph PLUGIN["Plugin Layer (entry_points)"]
-        A["vllm.platform_plugins<br/>→ NPUPlatform"]
-        B["vllm.general_plugins<br/>→ models, KV connectors, loaders"]
+flowchart TB
+    subgraph REUSE["Layers 1-4 · Upstream vLLM, reused as-is"]
+        A["Layer 1 · Entry points: OpenAI API server, CLI, offline LLM"]
+        B["Layer 2 · Frontend engine: AsyncLLM, input/output processors"]
+        C["Layer 3 · EngineCore: step() loop, Scheduler, KVCacheManager"]
+        D["Layer 4 · Executor: UniProc / Multiproc / Ray"]
     end
-    subgraph PLATFORM["Platform (platform.py)"]
-        C["NPUPlatform(Platform)<br/>enum=OOT, device=npu"]
-        D["compile_backend → AscendCompiler"]
-        E["simple_compile_backend=eager"]
+
+    subgraph REPLACE["Layer 5 · Worker + Model Runner (device process)"]
+        E["NPUWorker / NPUWorker310 / XliteWorker"]
+        F["NPUModelRunner: ACL graphs, Ascend attention backends, custom sampler"]
     end
-    subgraph EXEC["Execution Layer"]
-        F["NPUWorker(WorkerBase)<br/>CaMemAllocator + sleep/wakeup"]
-        G["NPUModelRunner(GPUModelRunner)<br/>ACL graphs + Ascend backends"]
+
+    subgraph SUBSTRATE["Layer 6 · Model substrate + kernels (replaced at the hardware boundary)"]
+        G["NPUPlatform + AscendConfig"]
+        H["ModelRegistry overrides + Ascend model/layer ops"]
+        I["Attention: FIA / MLA / SFA / DSA / FA3"]
+        J["Compilation: AscendCompiler + ACLGraphWrapper"]
+        K["Distributed: HCCL communicators + parallel groups"]
     end
-    subgraph BACKEND["Custom Backends"]
-        H["Attention: FIA / MLAPO / SFA / DSA<br/>+ context-parallel variants"]
-        I["Communication: HCCL<br/>PyHcclCommunicator"]
-        J["Ops: linear, RoPE, MoE, norm, activation<br/>torch.ops._C_ascend.*"]
+
+    subgraph PATCH["Monkey-patches bridge vLLM internals to the Ascend layers"]
+        L["patch/platform + patch/worker"]
     end
-    subgraph PATCH["Monkey-Patches (patch/)"]
-        K["platform/: FusedMoE, KV cache, distributed init"]
-        L["worker/: cudagraph, speculative, FP8, model-specific"]
-    end
-    subgraph UPSTREAM["Upstream vLLM (reused as-is)"]
-        M["Scheduler + Block Manager"]
-        N["Prefix Caching + Preemption"]
-        O["OpenAI API Server"]
-    end
-    UPSTREAM --> PLUGIN
-    PLUGIN --> PLATFORM
-    PLATFORM --> EXEC
-    EXEC --> BACKEND
-    PATCH -.-> EXEC
-    PATCH -.-> PLATFORM
+
+    A --> B --> C --> D --> E --> F
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+    F --> K
+    PATCH -.-> C
+    PATCH -.-> D
+    PATCH -.-> F

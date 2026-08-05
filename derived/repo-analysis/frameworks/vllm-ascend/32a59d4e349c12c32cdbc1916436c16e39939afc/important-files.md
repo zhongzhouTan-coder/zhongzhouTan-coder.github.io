@@ -31,6 +31,16 @@ generated: 2026-08-03
 | `docs/frameworks/vllm-ascend/architecture.md` | use-sparse-flag | `vllm_ascend/worker/model_runner_v1.py` | `NPUModelRunner.__init__` | 351 | 356 |
 | `docs/frameworks/vllm-ascend/architecture.md` | sfa-backend | `vllm_ascend/attention/sfa_v1.py` | `AscendSFABackend` | 112 | 113 |
 | `docs/frameworks/vllm-ascend/architecture.md` | dsa-backend | `vllm_ascend/attention/dsa_v1.py` | `AscendDSABackend` | 191 | 192 |
+| `docs/frameworks/vllm-ascend/architecture.md` | plugin-register | `vllm_ascend/__init__.py` | `register` | 38 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | npu-worker | `vllm_ascend/worker/worker.py` | `NPUWorker` | 89 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | npu-model-runner | `vllm_ascend/worker/model_runner_v1.py` | `NPUModelRunner` | 269 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | npu-worker-execute | `vllm_ascend/worker/worker.py` | `NPUWorker.execute_model` | 590 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | npu-runner-execute | `vllm_ascend/worker/model_runner_v1.py` | `NPUModelRunner.execute_model` | 1707 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | fa3-backend | `vllm_ascend/attention/fa3_v1.py` | `AscendFABackend` | 12 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | cumem-allocator | `vllm_ascend/device_allocator/camem.py` | `CaMemAllocator` | 113 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | acl-graph-wrapper | `vllm_ascend/compilation/acl_graph.py` | `ACLGraphWrapper` | 60 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | npu-worker-310 | `vllm_ascend/_310p/worker_310p.py` | `NPUWorker310` | 32 | — |
+| `docs/frameworks/vllm-ascend/architecture.md` | xlite-worker | `vllm_ascend/xlite/xlite_worker.py` | `XliteWorker` | 22 | — |
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | v4-indexer-cache | `vllm_ascend/models/deepseek_v4.py` | `AscendDeepseekV4IndexerCache` | 143 | 166 |
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | v4-indexer-module | `vllm_ascend/models/deepseek_v4.py` | `Indexer` | 531 | 605 |
 | `docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md` | v4-indexer-layers | `vllm_ascend/models/deepseek_v4.py` | `DeepseekV4Attention.__init__` (indexer creation) | 820 | 855 |
@@ -57,12 +67,13 @@ generated: 2026-08-03
 
 ## Runtime Flow Evidence
 
-1. Discovery and registration — `plugin-entry`.
+1. Discovery and registration — `plugin-entry`, `plugin-register`.
 2. Platform switchboard — `platform-switchboard`.
 3. Model and patch integration — `fused-moe-patch`, `distributed-adaptation`, `parallel-groups`.
-4. Graph capture and compilation — `compile-backend`.
-5. Custom kernel ops — `mla-op`, `dsa-op`, `linear-op`, `rotary-op`, `rope-v4-op`, `rmsnorm-op`, `activation-op`, `vocab-embedding-op`.
-6. DeepSeek-V4 Lightning Indexer C8 runtime flow — `v4-indexer-cache`, `v4-indexer-module`, `v4-indexer-layers` → `c8-dtype`, `sfa-c8-setup` → `quantize-query`, `quant-scatter`, `a5-quant-path`, `indexer-weights-fp16`, `indexer-key-scale` → `qli-metadata-prefill`, `qli-prefill`, `qli-decode`, `qli-postdecode` → `op-registration`, `li-kernel`, `li-metadata-kernel`. The SFA (V3.2) branch additionally routes through `sfa-select-postprocess` and the per-layer gate `c8-config-flags`, `c8-layer-filter`, `c8-is-layer`; the dense-attention C8 KV cache scheme `dense-c8-kv` is a separate feature kept out of scope.
+4. Worker and model runner — `npu-worker`, `npu-model-runner`, `npu-worker-310`, `xlite-worker`, `cumem-allocator`.
+5. Graph capture and compilation — `compile-backend`, `acl-graph-wrapper`.
+6. Custom kernel ops — `mla-op`, `dsa-op`, `linear-op`, `rotary-op`, `rope-v4-op`, `rmsnorm-op`, `activation-op`, `vocab-embedding-op`, `fa3-backend`.
+7. DeepSeek-V4 Lightning Indexer C8 runtime flow — `v4-indexer-cache`, `v4-indexer-module`, `v4-indexer-layers` → `c8-dtype`, `sfa-c8-setup` → `quantize-query`, `quant-scatter`, `a5-quant-path`, `indexer-weights-fp16`, `indexer-key-scale` → `qli-metadata-prefill`, `qli-prefill`, `qli-decode`, `qli-postdecode` → `op-registration`, `li-kernel`, `li-metadata-kernel`. The SFA (V3.2) branch additionally routes through `sfa-select-postprocess` and the per-layer gate `c8-config-flags`, `c8-layer-filter`, `c8-is-layer`; the dense-attention C8 KV cache scheme `dense-c8-kv` is a separate feature kept out of scope.
 
 ## Reading Scope
 
