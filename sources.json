@@ -397,6 +397,25 @@
       "status": "ingested"
     },
     {
+      "id": "github:vllm-project/vllm-ascend@9a52ca5fc36c1852241822863c50717bee5dc761",
+      "title": "vLLM Ascend Codebase (Qwen3.5/Qwen3.6 inference path)",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "9a52ca5fc36c1852241822863c50717bee5dc761",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-9a52ca5fc36c.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/9a52ca5fc36c1852241822863c50717bee5dc761/",
+      "docs_paths": [
+        "docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md"
+      ],
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2410.09426v4",
       "title": "FlatQuant: Fast Learnable Affine Quantization",
       "slug": "flatquant-fast-learnable-affine-quantization",

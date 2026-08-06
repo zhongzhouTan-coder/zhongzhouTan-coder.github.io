@@ -1,0 +1,32 @@
+flowchart TB
+    subgraph IDENTITY["1 · Model identity and loading (model-type reuse)"]
+        A["Qwen3.6 HF config.json: model_type qwen3_5 / qwen3_5_moe"]
+        B["vLLM ModelRegistry resolves upstream qwen3_5.py class: no vllm-ascend model override"]
+    end
+
+    subgraph WIRING["2 · Ascend wiring at load time"]
+        C["--quantization ascend → AscendModelSlimConfig (qwen3_5 / qwen3_5_moe packed modules, W8A8)"]
+        D["--speculative-config qwen3_5_mtp → model_type rewritten to qwen3_5_mtp"]
+        E["patch_qwen3_5.py monkey-patches: decoder layer, Qwen3Next attention, GDN, MTP"]
+    end
+
+    subgraph STEP["3 · Per-step model forward (NPUModelRunner.execute_model)"]
+        F["Hybrid decoder layer: layer_type = linear_attention or full_attention"]
+        G["GDN layers → AscendGatedDeltaNetAttention → qwen_gdn_attention_core + Triton FLA chunked rule"]
+        H["Full-attention layers → AscendAttentionBackend → FIA op (npu_fused_infer_attention_score)"]
+        I["(Qwen3.6-35B-A3B) MoE experts → Ascend routed experts + expert parallel"]
+    end
+
+    subgraph GRAPH["4 · ACL graph capture (decode)"]
+        J["full_graph_fia / full_graph_fia_v2 · FULL_DECODE_ONLY or FULL_AND_PIECEWISE mode"]
+    end
+
+    A --> B
+    B --> C --> E
+    B --> D --> E
+    E --> F
+    F --> G
+    F --> H
+    F --> I
+    G --> J
+    H --> J
