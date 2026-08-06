@@ -5,7 +5,9 @@ published on GitHub Pages. The goal: test whether an agent-driven workflow can
 replace manual note-taking and do long-term knowledge precipitation
 automatically.
 
-**[Browse the wiki →](docs/logs/index.md)**
+**[Visit the website →](https://zhongzhoutan-coder.github.io/)**
+
+**[Browse the wiki source →](docs/logs/index.md)**
 
 ## What's inside
 
