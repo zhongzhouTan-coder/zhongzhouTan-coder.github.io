@@ -15,11 +15,11 @@ aliases:
   - kernelized attention
 appears_in:
   - docs/algorithms/linear-attention/index.md
-  - docs/algorithms/linear-attention-without-softmax.md
+  - docs/algorithms/linear-attention/linear-attention-without-softmax.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/kimi/kimi-k3/index.md
-updated: 2026-07-30
+updated: 2026-08-06
 ---
 
 # Linear Attention
@@ -73,6 +73,7 @@ Linear attention usually changes or approximates the softmax kernel, and its fix
 ## Where It Appears
 
 - [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Establishes kernel factorization, associative reordering, and the causal recurrent formulation.
+- [Linear Attention Without Softmax](../algorithms/linear-attention/linear-attention-without-softmax.md) — Surveys kernel-map and related non-softmax formulations.
 - [Gated Delta Networks](../training/efficient-attention/gated-delta-networks/index.md) — Adds adaptive global decay and key-targeted delta updates to a matrix-valued recurrent state.
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Extends the family with channel-wise forgetting, delta-rule updates, and periodic full-attention layers.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales Kimi-family linear attention to a 2.8T MoE with lower-bounded decay for BF16 Tensor Core kernels.

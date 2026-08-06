@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
   - derived/pdf-markdown/training/kimi-linear-expressive-efficient-attention.md
-updated: 2026-07-29
+updated: 2026-08-06
 ---
 
 # Kimi Linear: An Expressive, Efficient Attention Architecture
@@ -23,7 +23,7 @@ updated: 2026-07-29
 
 **How:** [KDA](../../../terms/kimi-delta-attention.md) extends Gated DeltaNet's scalar forget gate to per-channel diagonal gating, constrained to a hardware-efficient DPLR variant that runs at ~2× the speed of general DPLR; the hybrid design delegates positional encoding entirely to KDA layers via NoPE on MLA layers.
 
-**The number:** 51.0 on MMLU-Pro (vs. 47.2 for MLA), 84.3 on RULER (128k, vs. 81.3 for MLA), 6.3× faster decoding at 1M context — all from a 48B MoE model with 3B active parameters trained on 1.4T tokens.
+**The number:** 51.0 on MMLU-Pro (vs. 47.2 for MLA), 84.3 on RULER (128k, vs. 81.3 for MLA), 6.3× faster decoding at 1M context — all from a 48B [MoE](../../../terms/mixture-of-experts.md) model with 3B active parameters trained on 1.4T tokens.
 
 ![TPOT vs. Decoding Length](assets/tpot-vs-length.jpg)
 

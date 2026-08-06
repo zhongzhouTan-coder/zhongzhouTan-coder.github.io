@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-05
+updated: 2026-08-06
 ---
 
 # DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend
@@ -19,7 +19,7 @@ updated: 2026-08-05
 
 ## TL;DR
 
-**What:** In vllm-ascend, the DeepSeek-V4 Lightning Indexer's key cache and query are always stored in 8-bit — **INT8 + FP16 per-token-head scales on non-A5 devices, FP8 e4m3fn + FP32 scales on A5** — so the indexer's sparse top-k selection never reads a full-precision KV cache.
+**What:** In vllm-ascend, the DeepSeek-V4 [Lightning Indexer's](../../terms/lightning-indexer.md) key cache and query are always stored in 8-bit — **INT8 + FP16 per-token-head scales on non-A5 devices, FP8 e4m3fn + FP32 scales on A5** — so the indexer's sparse top-k selection never reads a full-precision KV cache.
 
 **How:** The model declares an 8-bit indexer cache, the DSA backend quantizes the indexer query and compressed KV at runtime, and a pair of custom Ascend operators (`npu_vllm_quant_lightning_indexer` + an AICPU metadata pre-op) dequantize inside the kernel, score blocks, and return top-k indices.
 

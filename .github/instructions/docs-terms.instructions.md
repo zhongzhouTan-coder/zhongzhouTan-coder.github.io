@@ -38,7 +38,7 @@ updated: 2026-07-27
 - `tooltip`: strongly recommended. Two or three plain-language sentences for term hover previews on related paper pages. Define the term, explain why it matters, and optionally mention the most common confusion. If omitted, hover previews should fall back to `summary`.
 - `category`: required. One of `training`, `algorithms`, `hardware`, `frameworks`, `benchmarks`, or `general`. This groups terms in the index.
 - `aliases`: optional. Alternative names or spellings for the term. Helps with search and auto-linking.
-- `appears_in`: optional but strongly recommended. List of docs pages that use this term, as relative paths. Agents should keep this up to date when ingesting new papers.
+- `appears_in`: optional but strongly recommended. This is the canonical list of docs pages that use this term, as repository-relative paths. Every listed page must contain an ordinary Markdown link to this term page, and every docs page that links the term must be listed here.
 - All other front matter fields follow [`docs-front-matter.instructions.md`](docs-front-matter.instructions.md).
 
 ## Body Structure
@@ -164,6 +164,26 @@ The interleaved schedule keeps [microbatches](../../terms/microbatch.md) in flig
 ```
 
 Use ordinary Markdown link text when the surrounding sentence needs pluralization, lowercase text, or an acronym. The rendered site enhances links to `docs/terms/{slug}.md` with hover previews by reading `docs/terms.json`, which is generated from term page front matter. Do not duplicate tooltip text inside paper pages; keep reusable descriptions on the term page.
+
+## Term Link Validation
+
+Run the glossary consistency check after adding or changing terms or their
+consumer pages:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/checks/term_links.py
+```
+
+The checker treats each term page as the single source of truth; do not maintain
+a separate hand-written term registry. It validates the glossary index,
+`appears_in`, the local links under "Where It Appears", and links from consuming
+docs pages in both directions. Plain-text occurrences of a canonical title or
+explicit alias that have no term link are warnings by default. Use
+`--strict-mentions` to make those findings fail while cleaning or reviewing a
+focused scope. Front matter, headings, code, image captions, term pages, and log
+pages are excluded from mention discovery. Glossary-to-glossary navigation is
+also excluded from `appears_in` validation; keep those links under "Related
+Terms" instead.
 
 ## Slug Convention
 

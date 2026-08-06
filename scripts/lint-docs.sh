@@ -239,4 +239,9 @@ if ! "$python_command" scripts/checks/code_links.py; then
   exit 1
 fi
 
+printf '\n%s\n' '--- term links ---'
+if ! "$python_command" scripts/checks/term_links.py; then
+  exit 1
+fi
+
 exit 0

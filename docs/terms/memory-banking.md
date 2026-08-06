@@ -15,7 +15,7 @@ aliases:
   - bank assignment
 appears_in:
   - docs/hardware/spatial-gemm.md
-updated: 2026-08-04
+updated: 2026-08-06
 ---
 
 # Memory Banking
@@ -46,8 +46,6 @@ The compiler inspects all accesses to a memory and searches for a bank assignmen
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — The "Multi-dimensional Banking" section banks GEMM `tileB` under different parallelization factors and shows flat vs. hierarchical schemes.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The tutorial's banking demonstration is synthesized there.
-- [General Matrix Multiply (GEMM)](gemm.md) — The kernel whose tiled operands live in banked SRAM.
-- [Matrix Tiling](matrix-tiling.md) — Produces the tiles that banking must serve in parallel.
 
 ## Related Terms
 

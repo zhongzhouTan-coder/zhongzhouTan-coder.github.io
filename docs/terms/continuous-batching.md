@@ -15,7 +15,9 @@ aliases:
 appears_in:
   - docs/frameworks/vllm/vllm-framework.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
-updated: 2026-08-02
+  - docs/frameworks/vllm/vllm-block-management/index.md
+  - docs/frameworks/vllm-ascend/architecture.md
+updated: 2026-08-06
 ---
 
 # Continuous Batching
@@ -68,6 +70,8 @@ is sparse or request lengths are uniform.
 - [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) —
   Traces the current V1 scheduler, KV allocation, worker-batch update, finish,
   and preemption paths.
+- [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Connects iteration-level scheduling to paged KV-block allocation.
+- [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how the Ascend backend reuses vLLM's continuous-batching scheduler.
 
 ## Related Terms
 

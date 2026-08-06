@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/minimax-sparse-attention--paper.pdf
   - derived/pdf-markdown/training/minimax-sparse-attention.md
-updated: 2026-08-03
+updated: 2026-08-06
 ---
 
 # MiniMax Sparse Attention (MSA)
@@ -21,7 +21,7 @@ updated: 2026-08-03
 
 ## TL;DR
 
-**What:** MSA is a blockwise sparse attention mechanism that replaces dense GQA attention with a two-branch architecture: a lightweight Index Branch selects which KV blocks to attend to, and the Main Branch performs exact softmax attention over only those blocks.
+**What:** MSA is a blockwise sparse attention mechanism that replaces dense GQA attention with a two-branch architecture: a lightweight [Index Branch](../../../terms/lightning-indexer.md) selects which KV blocks to attend to, and the Main Branch performs exact softmax attention over only those blocks.
 
 **How:** Per GQA group, an Index Branch scores KV blocks via dot-product max-pooling and selects the top-$k$ blocks ($k=16$, $B_k=128$), always retaining the local block; a KL-divergence loss aligns the Index Branch with the Main Branch's attention distribution.
 

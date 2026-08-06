@@ -16,8 +16,7 @@ appears_in:
   - docs/algorithms/linear-attention/index.md
   - docs/algorithms/linear-attention/linear-attention-without-softmax.md
   - docs/hardware/spatial-gemm.md
-  - docs/terms/delta-rule.md
-updated: 2026-08-04
+updated: 2026-08-06
 ---
 
 # Outer Product
@@ -53,7 +52,6 @@ Each term is a rank-1 matrix added into the accumulator. In the Spatial GEMM tut
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The tutorial's main demonstration is outer-product accumulation.
 - [Linear Attention](../algorithms/linear-attention/index.md) — The KV state is a prefix sum of key–value outer products.
 - [Linear Attention Without Softmax](../algorithms/linear-attention/linear-attention-without-softmax.md) — The parallel training mode materializes all token outer products before a cumulative sum.
-- [Delta Rule](delta-rule.md) — The associative memory is updated by adding key–value outer products.
 
 ## Related Terms
 

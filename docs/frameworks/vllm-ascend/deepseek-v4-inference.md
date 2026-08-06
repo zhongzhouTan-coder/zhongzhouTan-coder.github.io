@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-05
+updated: 2026-08-06
 ---
 
 # DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend
@@ -21,7 +21,7 @@ updated: 2026-08-05
 
 **What:** vllm-ascend replaces upstream vLLM's DeepSeek-V4 model and attention backend with Ascend-specific implementations — `AscendDeepseekV4ForCausalLM` plus the `AscendDSA` (DeepSeek Sparse Attention) backend — so a hybrid c4/c128 compressed-attention model with mHC hyper-connections and MTP runs entirely through NPU custom operators.
 
-**How:** A model override wires the MLA-style query/KV prologue, per-layer compressor, and Lightning Indexer into `npu_sparse_attn_sharedkv`; the DSA backend splits prefill and decode, scatters five KV cache types (SWA, compressor state, compressed MLA, indexer keys, indexer scales), and runs the mHC and MTP machinery through `npu_hc_pre_v2`/`npu_hc_post` custom ops.
+**How:** A model override wires the MLA-style query/KV prologue, per-layer compressor, and [Lightning Indexer](../../terms/lightning-indexer.md) into `npu_sparse_attn_sharedkv`; the DSA backend splits prefill and decode, scatters five KV cache types (SWA, compressor state, compressed MLA, indexer keys, indexer scales), and runs the mHC and MTP machinery through `npu_hc_pre_v2`/`npu_hc_post` custom ops.
 
 **The number:** One serving stack replaces three upstream layers at once — model class, attention backend, and KV cache specs — and its heterogeneous cache holds five KV types whose per-type page sizes and dtypes are chosen per device family (910B/A2/A3 vs A5).
 

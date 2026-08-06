@@ -19,7 +19,8 @@ aliases:
 appears_in:
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-03
+  - docs/hardware/quantization/nvfp4.md
+updated: 2026-08-06
 ---
 
 # All-Gather
@@ -68,6 +69,7 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — The scatter/gather optimization uses split + all-gather at pipeline boundaries, yielding up to 11% throughput improvement.
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids the split/all-gather cost entirely because activations are already chunked along the sequence dimension.
+- [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-gather to assemble quantized tensor shards in distributed training.
 
 ## Related Terms
 

@@ -13,7 +13,9 @@ aliases:
 appears_in:
   - docs/training/parallelism/sequence-parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-07-27
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/hardware/quantization/nvfp4.md
+updated: 2026-08-06
 ---
 
 # Sequence Parallelism
@@ -39,6 +41,8 @@ Memory per device scales as $O(L/N)$ instead of $O(L)$, and with sparse attentio
 
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Li et al. (NUS, 2021) introduce the concept with Ring Self-Attention, achieving 13.7× larger batch size and 3.0× longer sequences than tensor parallelism on 64 GPUs.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Megatron-LM later adopted sequence parallelism as part of its TP-SP combination within transformer layers, splitting along the sequence dimension inside tensor-parallel regions to reduce activation memory.
+- [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Identifies sequence-parallel communication at Ascend model-runner boundaries.
+- [NVFP4](../hardware/quantization/nvfp4.md) — Uses sequence-parallel collectives in distributed low-precision training.
 
 ## Related Terms
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
   - derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md
-updated: 2026-07-27
+updated: 2026-08-06
 ---
 
 # Sequence Parallelism: Long Sequence Training from System Perspective
@@ -20,7 +20,7 @@ updated: 2026-07-27
 
 ## TL;DR
 
-**What:** Sequence parallelism splits the input sequence along the length dimension across GPUs so no single device holds the entire sequence — each GPU stores only its chunk and computes attention via ring-style P2P communication.
+**What:** [Sequence parallelism](../../../terms/sequence-parallelism.md) splits the input sequence along the length dimension across GPUs so no single device holds the entire sequence — each GPU stores only its chunk and computes attention via ring-style P2P communication.
 
 **How:** Ring Self-Attention (RSA) circulates key and value embeddings around a ring of GPUs in two passes: first for $QK^T$ scores, second for the weighted $AV$ output. Each GPU accumulates partial results without ever needing the full $L \times L$ attention matrix locally.
 

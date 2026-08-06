@@ -17,7 +17,8 @@ appears_in:
   - docs/algorithms/flashattention/flashattention-3.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
-updated: 2026-07-31
+  - docs/hardware/spatial-gemm.md
+updated: 2026-08-06
 ---
 
 # Global Memory
@@ -47,6 +48,7 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — Emits LSE tensors directly to global memory for the KL-loss backward kernel.
+- [Spatial GEMM](../hardware/spatial-gemm.md) — Tiles matrices from off-chip DRAM into banked on-chip SRAM before computing.
 
 ## Related Terms
 

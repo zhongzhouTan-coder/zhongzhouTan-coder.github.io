@@ -10,7 +10,7 @@ Implementation commands are grouped by domain.
 | `run-in-workspace.sh` | Run a command with workspace-managed runtimes. |
 | `lint-docs.sh` | Run the complete documentation validation suite. |
 | `serve-local.sh` | Serve the Jekyll site locally. |
-| `checks/` | Validate source names, integrity, math, and code links. |
+| `checks/` | Validate source names, integrity, math, code links, and term links. |
 | `wiki/` | Search and analyze the Markdown knowledge graph. |
 | `ingestion/` | Convert PDF and web sources to Markdown. |
 | `repositories/` | Initialize and manage pinned repository evidence. |

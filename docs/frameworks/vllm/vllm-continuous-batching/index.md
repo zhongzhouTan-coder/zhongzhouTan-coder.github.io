@@ -17,7 +17,7 @@ sources:
   - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html
   - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json
   - derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md
-updated: 2026-08-02
+updated: 2026-08-06
 ---
 
 # vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow
@@ -112,7 +112,7 @@ a prompt chunk, and speculative decoding can contribute several tokens. A
 request does not need to finish before the composition of the next GPU batch
 changes.
 
-This makes continuous batching an orchestration policy. PagedAttention is the
+This makes continuous batching an orchestration policy. [PagedAttention](../../../terms/pagedattention.md) is the
 memory mechanism that makes the policy effective under variable sequence
 lengths. They solve different halves of the same serving problem.
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
   - derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md
-updated: 2026-08-03
+updated: 2026-08-06
 ---
 
 # Gated Delta Networks: Improving Mamba2 with Delta Rule
@@ -15,7 +15,7 @@ updated: 2026-08-03
 **Authors:** Songlin Yang, Jan Kautz, Ali Hatamizadeh  
 **arXiv:** [2412.06464](https://arxiv.org/abs/2412.06464) (December 2024)
 
-**Related pages:** [Kimi Linear](../../kimi/kimi-linear/index.md), [Transformers Are RNNs: Linear Attention](../../../algorithms/linear-attention/index.md), [SWAT](../swat-sliding-window-attention/index.md)
+**Related pages:** [Kimi Linear](../../kimi/kimi-linear/index.md), [Transformers Are RNNs: Linear Attention](../../../algorithms/linear-attention/index.md), [Linear Attention term](../../../terms/linear-attention.md), [SWAT](../swat-sliding-window-attention/index.md)
 
 ## TL;DR
 

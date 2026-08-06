@@ -20,7 +20,8 @@ appears_in:
   - docs/training/parallelism/sequence-parallelism/index.md
   - docs/training/foundation-models/llama.md
   - docs/frameworks/vllm/vllm-framework.md
-updated: 2026-08-03
+  - docs/hardware/quantization/nvfp4.md
+updated: 2026-08-06
 ---
 
 # All-Reduce
@@ -73,6 +74,7 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids all-reduces in MLP blocks entirely because each chunk's linear layers operate independently.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
 - [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — LLaMA overlaps all-reduce communication with computation to hide gradient-synchronization latency.
+- [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-reduce for distributed amax and scale statistics.
 
 ## Related Terms
 

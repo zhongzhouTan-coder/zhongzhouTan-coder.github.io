@@ -14,8 +14,7 @@ aliases:
   - all-to-all collective
   - all_to_all
 appears_in:
-  - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-03
+updated: 2026-08-06
 ---
 
 # All-to-All
@@ -50,7 +49,7 @@ In NCCL, all-to-all is implemented as a collective primitive alongside the other
 
 ## Where It Appears
 
-- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — All-to-all is used to switch between data-parallel and model-parallel tensor layouts when transitioning between pipeline stages or attention heads.
+*No local consumer page is registered yet.*
 
 ## Related Terms
 

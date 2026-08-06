@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
   - derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md
-updated: 2026-08-03
+updated: 2026-08-06
 ---
 
 # vLLM: PagedAttention Serving Framework
@@ -20,7 +20,7 @@ updated: 2026-08-03
 ## TL;DR
 
 **What:** vLLM is a high-throughput LLM serving framework that reframes KV-cache memory management as a virtual-memory problem.
-**How:** PagedAttention stores KV cache in non-contiguous fixed-size blocks, with logical-to-physical block mapping, on-demand allocation, and copy-on-write sharing — analogous to OS paging.
+**How:** [PagedAttention](../../terms/pagedattention.md) stores KV cache in non-contiguous fixed-size blocks, with logical-to-physical [block-table](../../terms/block-table.md) mapping, on-demand allocation, and copy-on-write sharing — analogous to OS paging.
 **The number:** 2-4× throughput improvement over FasterTransformer and Orca, with gains largest for long sequences, large models, and shared-prefix workloads.
 
 ## The Core Idea

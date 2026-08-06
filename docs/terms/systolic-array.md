@@ -13,7 +13,7 @@ aliases:
   - systolic dataflow
 appears_in:
   - docs/hardware/spatial-gemm.md
-updated: 2026-08-04
+updated: 2026-08-06
 ---
 
 # Systolic Array
@@ -44,8 +44,6 @@ In the classic weight-stationary variant, weights are loaded once into each proc
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Names systolic arrays as one of the GEMM decomposition techniques; later Spatial tutorials implement them from shift registers.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Lists systolic arrays among the GEMM decomposition options.
-- [General Matrix Multiply (GEMM)](gemm.md) — The kernel a systolic array accelerates.
-- [Matrix Tiling](matrix-tiling.md) — Tiling feeds the array at its full width; the two strategies compose.
 
 ## Related Terms
 

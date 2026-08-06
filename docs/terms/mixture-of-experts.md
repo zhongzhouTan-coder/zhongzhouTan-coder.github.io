@@ -18,7 +18,11 @@ appears_in:
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/kimi/kimi-k3/index.md
-updated: 2026-07-29
+  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
+updated: 2026-08-06
 ---
 
 # Mixture of Experts
@@ -48,6 +52,10 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 - [DeepSeek-V4](../training/deepseek/deepseek-v4/index.md) — Uses a 1.6T/284B-active MoE model with hybrid compressed attention.
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Evaluates KDA/MLA hybrid attention on a 48B MoE with 3B active parameters.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales to 2.8T total parameters, 104B active, and 896 routed experts per layer.
+- [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — Traces quantized sparse-expert execution on GPU and Ascend NPU.
+- [vLLM Kimi K3 Code Reading](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Maps Kimi K3's routed experts into the vLLM runtime.
+- [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows where Ascend-specific MoE kernels replace upstream execution.
+- [vLLM-Ascend Kimi K3 MoE Forward](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Follows the full routed-expert forward path on Ascend.
 
 ## Related Terms
 

@@ -13,7 +13,8 @@ aliases:
 appears_in:
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/kimi/kimi-k3/index.md
-updated: 2026-07-29
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+updated: 2026-08-06
 ---
 
 # Kimi Delta Attention
@@ -47,6 +48,7 @@ KDA is still a compressed recurrent memory, so it can blur exact token identitie
 
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Introduces KDA as the central 3:1 hybrid attention operator.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales KDA to a 2.8T MoE and modifies decay numerics for large-scale training kernels.
+- [vLLM Kimi K3 Code Reading](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Traces the deployed KDA path in vLLM.
 
 ## Related Terms
 

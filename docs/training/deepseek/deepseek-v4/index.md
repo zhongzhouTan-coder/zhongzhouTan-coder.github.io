@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/deepseek-v4--paper.pdf
   - derived/pdf-markdown/training/deepseek-v4.md
-updated: 2026-08-03
+updated: 2026-08-06
 ---
 
 # DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention
@@ -21,7 +21,7 @@ updated: 2026-08-03
 
 **What:** DeepSeek-V4 is a family of Mixture-of-Experts LLMs — Pro (1.6T/49B activated) and Flash (284B/13B activated) — that natively support million-token contexts through a novel hybrid attention architecture.
 
-**How:** Compressed Sparse Attention (CSA) compresses KV cache by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained hyper-connections, yields dramatic efficiency gains.
+**How:** Compressed Sparse Attention (CSA) compresses KV cache by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained [hyper-connections](../../../terms/hyper-connections.md), yields dramatic efficiency gains.
 
 **The number:** At 1M-token context, DeepSeek-V4-Pro uses only 27% of DeepSeek-V3.2's single-token inference FLOPs and 10% of its KV cache size. DeepSeek-V4-Flash uses 10% FLOPs and 7% KV cache.
 
@@ -166,7 +166,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 1. **Expand:** Residual state is widened from $\mathbb{R}^d$ to $\mathbb{R}^{n_{\text{hc}} \times d}$.
 2. **Dynamic parameterization:** Input mapping $A_l$, residual mapping $B_l$, and output mapping $C_l$ are generated from both learnable static biases and input-dependent dynamic components.
 3. **Constrain:** $B_l$ is projected onto the Birkhoff polytope (doubly stochastic matrices) via 20 Sinkhorn-Knopp iterations. $A_l$ and $C_l$ are constrained to $[0, 2]$ via Sigmoid.
-4. **Update:** $X_{l+1} = B_l X_l + C_l \mathcal{F}_l(A_l X_l)$ where $\mathcal{F}_l$ is the layer operation (MoE or attention).
+4. **Update:** $X_{l+1} = B_l X_l + C_l \mathcal{F}_l(A_l X_l)$ where $\mathcal{F}_l$ is the layer operation ([MoE](../../../terms/mixture-of-experts.md) or attention).
 
 **The intuition:** Standard residuals are like a single pipe carrying signal between layers. If the pipe's diameter can change unpredictably (unconstrained $B_l$), signal can explode or vanish. mHC uses 4 parallel pipes (the expanded stream) whose flow rates are constrained to sum to exactly 1 (doubly stochastic), guaranteeing stable propagation through arbitrarily deep stacks.
 

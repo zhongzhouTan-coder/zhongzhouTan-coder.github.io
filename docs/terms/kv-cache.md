@@ -21,7 +21,8 @@ appears_in:
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
   - docs/hardware/quantization/flatquant/index.md
-updated: 2026-08-03
+  - docs/frameworks/vllm-ascend/architecture.md
+updated: 2026-08-06
 ---
 
 # KV Cache
@@ -53,6 +54,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) — Shows how paged KV capacity gates per-iteration admission, completion, and preemption.
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Details how paged KV blocks, reference counts, and prefix caching implement the cache's paged storage.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Applies per-head learnable affine transforms to keys and values before low-bit KV-cache quantization (down to 2 bits).
+- [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how Ascend attention backends allocate and consume vLLM-compatible KV caches.
 
 ## Related Terms
 

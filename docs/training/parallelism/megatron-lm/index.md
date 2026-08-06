@@ -8,7 +8,7 @@ sources:
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
   - derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md
   - derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md
-updated: 2026-07-27
+updated: 2026-08-06
 ---
 
 # Megatron-LM: GPU-Cluster Training Parallelism
@@ -29,7 +29,7 @@ updated: 2026-07-27
 
 **What:** Megatron-LM introduces intra-layer tensor model parallelism using `f`/`g` conjugate operators that split Transformer attention and MLP blocks across GPUs with only two [all-reduces](../../../terms/all-reduce.md) per layer, later extended into PTD-P for trillion-parameter training.
 
-**How:** Paper 1 splits [GEMMs](../../../terms/gemm.md) column-wise and row-wise so nonlinearities (GeLU, softmax) stay local, needing only `f` (forward identity, backward all-reduce) and `g` (forward all-reduce, backward identity). Paper 2 composes tensor, pipeline, and data parallelism with interleaved 1F1B and scatter/gather communication.
+**How:** Paper 1 splits [GEMMs](../../../terms/gemm.md) column-wise and row-wise so nonlinearities (GeLU, softmax) stay local, needing only `f` (forward identity, backward all-reduce) and `g` (forward all-reduce, backward identity). Paper 2 composes tensor, pipeline, and data parallelism with interleaved 1F1B and [scatter/gather](../../../terms/scatter-gather.md) communication.
 
 **The number:** Paper 1 achieves **15.1 PFLOP/s** (8.3B parameters, 512 V100 GPUs, 76% scaling efficiency). Paper 2 achieves **502 PFLOP/s** (1.008T parameters, 3072 A100 GPUs, 52% of peak).
 
@@ -94,7 +94,7 @@ The paper describes a parallel configuration as `(p, t, d)`: `p` is pipeline-mod
 | $d$ | data size | replicas | Number of model-parallel replicas training on different data shards. |
 | $n$ | total GPUs | cluster | Must satisfy $p \cdot t \cdot d = n$. |
 | $B$ | global batch size | samples per optimizer step | Full training batch across all data-parallel replicas. |
-| $b$ | microbatch size | samples per pipeline slot | Unit injected into the pipeline. |
+| $b$ | [microbatch](../../../terms/microbatch.md) size | samples per pipeline slot | Unit injected into the pipeline. |
 | $m$ | microbatches per pipeline | per pipeline per batch | $m = B / (b \cdot d)$; larger $m$ amortizes pipeline bubbles. |
 | $v$ | virtual pipeline chunks | chunks per device | Number of layer chunks assigned to each physical pipeline device in the interleaved schedule. |
 
@@ -375,6 +375,6 @@ Do not read Paper 2 as proving that PTD-P is always better than ZeRO-style shard
 ## Go Deeper
 
 - **Read:** [Paper 1: arXiv:1909.08053](https://arxiv.org/abs/1909.08053) · [Paper 2: arXiv:2104.04473](https://arxiv.org/abs/2104.04473)
-- **Build on:** Megatron-Core, DeepSpeed 3D parallelism, ZeRO combined with model parallelism, [sequence parallelism](../sequence-parallelism/index.md), later large-model training stacks
+- **Build on:** Megatron-Core, DeepSpeed 3D parallelism, ZeRO combined with model parallelism, [sequence parallelism](../../../terms/sequence-parallelism.md), later large-model training stacks
 - **Understand the context:** [GPT-3](../../foundation-models/gpt-3.md) for the 175B model target · [LLaMA](../../foundation-models/llama.md) for later efficient model-family training · [The Transformer](../../../algorithms/foundations/transformer.md) for the layer structure being split · [GPipe](../gpipe/index.md) for the pipeline parallelism that PTD-P builds on
 - **Reproduce:** Code is at `https://github.com/nvidia/megatron-lm`; full trillion-scale reproduction requires a large multi-node GPU cluster with high-bandwidth local and inter-node networking.

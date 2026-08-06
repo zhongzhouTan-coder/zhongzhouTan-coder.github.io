@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf
   - derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md
-updated: 2026-07-24
+updated: 2026-08-06
 ---
 
 # FlashAttention-3: Hopper Asynchrony and FP8 Attention
@@ -25,7 +25,7 @@ updated: 2026-07-24
 
 ## The Core Idea
 
-FlashAttention-2 reaches only about 35% utilization on H100, while optimized [GEMM](../../terms/gemm.md) kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement (TMA), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
+FlashAttention-2 reaches only about 35% utilization on H100, while optimized [GEMM](../../terms/gemm.md) kernels reach 80-90%. FA3 closes this gap by making attention look more like a fully asynchronous, overlapped GPU pipeline — where data movement from [global memory (HBM)](../../terms/global-memory.md), matrix multiplication (WGMMA), and softmax execute concurrently rather than sequentially.
 
 ## The Big Picture
 

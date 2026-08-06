@@ -18,8 +18,7 @@ appears_in:
   - docs/frameworks/triton/index.md
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/hardware/spatial-gemm.md
-  - docs/terms/global-memory.md
-updated: 2026-08-04
+updated: 2026-08-06
 ---
 
 # Matrix Tiling
@@ -59,7 +58,6 @@ The Spatial tutorial expresses this with `Foreach(M by bm, N by bn)` over output
 - [FlashAttention](../algorithms/flashattention/flashattention.md) — IO-aware tiling is the core trick that makes exact attention memory-bandwidth-optimal.
 - [Triton](../frameworks/triton/index.md) — Elevates tiles to first-class language citizens; hierarchical tiling is the compiler's core optimization.
 - [CANNBot Skills Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — Tiling is one of the 25 optimization points and a required pre-analysis step before profiling.
-- [Global Memory](global-memory.md) — Tiling, double buffering, and L1/L2 reuse exist mainly to cut global-memory traffic.
 
 ## Related Terms
 

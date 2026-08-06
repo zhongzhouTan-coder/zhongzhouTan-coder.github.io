@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf
   - derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md
-updated: 2026-07-26
+updated: 2026-08-06
 ---
 
 # DeepSeek-V2 Multi-Head Latent Attention
@@ -62,7 +62,7 @@ flowchart LR
 
 Imagine serving a 128K-context chat model where many users are generating tokens at once. The compute for the current token is only part of the problem; the server must also keep and reread the prefix K/V cache for every active sequence.
 
-With full multi-head attention, that cache grows with layers, sequence length, head count, and per-head dimension. With MQA or GQA, the server stores fewer K/V heads, but the model gives up some key/value diversity. DeepSeek-V2's pressure is sharper because it is a 236B-parameter MoE model designed to activate only 21B parameters per token. Sparse FFNs reduce compute, so **attention cache traffic becomes an even clearer serving bottleneck**.
+With full multi-head attention, that cache grows with layers, sequence length, head count, and per-head dimension. With MQA or GQA, the server stores fewer K/V heads, but the model gives up some key/value diversity. DeepSeek-V2's pressure is sharper because it is a 236B-parameter [MoE](../../terms/mixture-of-experts.md) model designed to activate only 21B parameters per token. Sparse FFNs reduce compute, so **attention cache traffic becomes an even clearer serving bottleneck**.
 
 MLA tries to avoid the old tradeoff: do not store one K/V pair per head, but also do not force all heads to share a single raw K/V head. Store a learned latent memory, then let heads decode it differently.
 
