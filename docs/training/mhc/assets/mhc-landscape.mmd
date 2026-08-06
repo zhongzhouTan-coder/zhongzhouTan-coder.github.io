@@ -1,0 +1,18 @@
+flowchart TD
+    RESNET[ResNet<br/>identity-mapping residual]
+    DENSE[DenseNet] --> MACRO[Macro-design:<br/>dense / multi-path connectivity]
+    FRACTAL[FractalNet] --> MACRO
+    DLA[Deep Layer Aggregation] --> MACRO
+    RESIDUAL[ResiDual] --> MACRO
+    MACRO --> WIDEN[Widened residual stream]
+    HIGHWAY[Highway Transformer] --> WIDEN
+    DENSEFORMER[DenseFormer] --> WIDEN
+    LAUREL[LAurel] --> WIDEN
+    RMT[Residual Matrix Transformer] --> WIDEN
+    MUDD[MUDDFormer] --> WIDEN
+    HC[Hyper-Connections HC<br/>Zhu et al. 2024] --> WIDEN
+    RESNET --> HC
+    WIDEN --> PROBLEM[Unconstrained mixing<br/>breaks identity mapping]
+    HC --> PROBLEM
+    PROBLEM --> MHC[Manifold-Constrained HC<br/>mHC — this paper<br/>Sinkhorn-Knopp to Birkhoff polytope]
+    MHC --> DSV4[DeepSeek-V4<br/>mHC deployed at 1.6T / 284B scale]

@@ -30,6 +30,10 @@ updated: 2026-07-29
 - [DeepSeek](deepseek/index.md) — Category hub for DeepSeek model training papers.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](deepseek/deepseek-v4/index.md) — 1.6T/284B MoE models with CSA+HCA hybrid attention, mHC, and Muon optimizer; achieves 27% FLOPs and 10% KV cache of V3.2 at 1M-token contexts.
 
+## Residual and Hyper-Connections
+
+- [mHC: Manifold-Constrained Hyper-Connections](mhc/index.md) — Widens the residual stream into n parallel streams and constrains the mixing matrix to be doubly stochastic via Sinkhorn-Knopp, restoring the identity-mapping property; 27B MoE final loss 0.021 lower than baseline at 6.7% overhead.
+
 ## Kimi
 
 - [Kimi](kimi/index.md) — Category hub for the Kimi model family.

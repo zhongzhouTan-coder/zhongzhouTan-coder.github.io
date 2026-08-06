@@ -633,6 +633,19 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2512.24880",
+      "title": "mHC: Manifold-Constrained Hyper-Connections",
+      "slug": "mhc-manifold-constrained-hyper-connections",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/mhc-manifold-constrained-hyper-connections.md",
+      "docs_path": "docs/training/mhc/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "paper:kimi-linear",
       "title": "Kimi Linear: An Expressive, Efficient Attention Architecture",
       "slug": "kimi-linear-expressive-efficient-attention",

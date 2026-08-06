@@ -7,6 +7,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from html import unescape
 from pathlib import Path
 
 SCRIPTS_ROOT = Path(__file__).resolve().parents[1]
@@ -25,12 +26,24 @@ def source_issues(text: str) -> list[tuple[int, str]]:
     """Return KaTeX-incompatible or preview-breaking inline-math constructs."""
     issues: list[tuple[int, str]] = []
     in_fence = False
+    display_math_start: int | None = None
     for line_number, line in enumerate(text.splitlines(), 1):
         if line.lstrip().startswith("```"):
             in_fence = not in_fence
             continue
         if in_fence:
             continue
+        if line.strip() == "$$":
+            display_math_start = line_number if display_math_start is None else None
+            continue
+        if display_math_start is not None and "$$" in line:
+            issues.append(
+                (
+                    line_number,
+                    "redundant/nested $$ delimiter inside display math block "
+                    f"opened on line {display_math_start}",
+                )
+            )
         for match in INLINE_MATH_RE.finditer(line):
             formula = match.group(1)
             if r"\sb" in formula:
@@ -39,22 +52,51 @@ def source_issues(text: str) -> list[tuple[int, str]]:
                 issues.append(
                     (line_number, r"escaped underscore \_ renders literally in VS Code")
                 )
+    if display_math_start is not None:
+        issues.append(
+            (display_math_start, "unclosed display math block opened with $$")
+        )
+    return issues
+
+
+def rendered_issue_details(text: str) -> list[tuple[int, str]]:
+    """Return generated HTML lines and math fragments corrupted by Markdown."""
+    issues: list[tuple[int, str]] = []
+    for line_number, line in enumerate(text.splitlines(), 1):
+        for match in RENDERED_MATH_RE.finditer(line):
+            fragment = match.group(0)
+            if "<em>" in fragment or "</em>" in fragment:
+                issues.append((line_number, fragment))
+                break
+            if "<strong>" in fragment or "</strong>" in fragment:
+                issues.append((line_number, fragment))
+                break
     return issues
 
 
 def rendered_issues(text: str) -> list[int]:
     """Return generated HTML lines where Markdown formatting corrupted math."""
-    issues: list[int] = []
-    for line_number, line in enumerate(text.splitlines(), 1):
-        for match in RENDERED_MATH_RE.finditer(line):
-            fragment = match.group(0)
-            if "<em>" in fragment or "</em>" in fragment:
-                issues.append(line_number)
-                break
-            if "<strong>" in fragment or "</strong>" in fragment:
-                issues.append(line_number)
-                break
-    return issues
+    return [line_number for line_number, _ in rendered_issue_details(text)]
+
+
+def source_location_for_fragment(
+    fragment: str, markdown_sources: dict[Path, str]
+) -> tuple[Path, int] | None:
+    """Locate a rendered, emphasis-corrupted math fragment in Markdown sources."""
+    source_fragment = unescape(
+        fragment.replace("<em>", "_")
+        .replace("</em>", "_")
+        .replace("<strong>", "**")
+        .replace("</strong>", "**")
+    )
+    matches: list[tuple[Path, int]] = []
+    for markdown_path, source_text in markdown_sources.items():
+        for line_number, line in enumerate(source_text.splitlines(), 1):
+            if source_fragment in line:
+                matches.append((markdown_path, line_number))
+    if len(matches) == 1:
+        return matches[0]
+    return None
 
 
 def build_site(destination: Path) -> None:
@@ -68,10 +110,13 @@ def build_site(destination: Path) -> None:
 
 def main() -> int:
     found_issue = False
-    for markdown_path in sorted(DOCS_ROOT.rglob("*.md")):
-        if "_site" in markdown_path.parts:
-            continue
-        for line_number, message in source_issues(markdown_path.read_text()):
+    markdown_sources = {
+        markdown_path: markdown_path.read_text()
+        for markdown_path in sorted(DOCS_ROOT.rglob("*.md"))
+        if "_site" not in markdown_path.parts
+    }
+    for markdown_path, source_text in markdown_sources.items():
+        for line_number, message in source_issues(source_text):
             relative_path = markdown_path.relative_to(REPO_ROOT)
             print(f"math formulation: {relative_path}:{line_number}: {message}")
             found_issue = True
@@ -88,11 +133,22 @@ def main() -> int:
             return 1
 
         for html_path in sorted(destination.rglob("*.html")):
-            for line_number in rendered_issues(html_path.read_text()):
-                relative_path = html_path.relative_to(destination)
+            for line_number, fragment in rendered_issue_details(html_path.read_text()):
+                generated_path = html_path.relative_to(destination)
+                source_location = source_location_for_fragment(
+                    fragment, markdown_sources
+                )
+                if source_location is None:
+                    location = f"generated/{generated_path}:{line_number}"
+                else:
+                    markdown_path, source_line = source_location
+                    source_path = markdown_path.relative_to(REPO_ROOT)
+                    location = (
+                        f"{source_path}:{source_line} "
+                        f"(generated/{generated_path}:{line_number})"
+                    )
                 print(
-                    "math formulation: "
-                    f"generated/{relative_path}:{line_number}: "
+                    f"math formulation: {location}: "
                     "Markdown emphasis markup appeared inside a math delimiter"
                 )
                 found_issue = True

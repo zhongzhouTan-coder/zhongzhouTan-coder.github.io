@@ -282,5 +282,5 @@ DeepSeek-V4 **crushes the long-context efficiency barrier through interleaved co
 - [DeepSeek-V3.2 (DSA) Technical Report](https://arxiv.org/abs/2506.06494)
 - [MiniMax Sparse Attention](../../efficient-attention/minimax-sparse-attention/index.md) — A different sparse attention approach with an index branch and block-sparse KV selection
 - [Muon Optimizer (Jordan et al., 2024)](https://github.com/KellerJordan/Muon)
-- [Manifold-Constrained Hyper-Connections (Xie et al., 2026)](https://arxiv.org/abs/2606.04201)
+- [mHC: Manifold-Constrained Hyper-Connections (Xie et al., 2026)](../../mhc/index.md) — the mHC paper (arXiv 2512.24880) behind DeepSeek-V4's residual mechanism
 - [TileLang DSL (Wang et al., 2026)](https://arxiv.org/abs/2601.06823)

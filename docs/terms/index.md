@@ -21,6 +21,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 - [Microbatch](microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work injected into a pipeline schedule.
 - [Mixture of Experts](mixture-of-experts.md) — Routes each token through a small subset of many expert feed-forward networks to increase total capacity without activating every parameter.
+- [Hyper-Connections](hyper-connections.md) — Widens the residual stream into n parallel streams mixed by learnable mappings; mHC constrains that mixing to a doubly stochastic manifold to keep it trainable at scale.
 - [Scatter/Gather](scatter-gather.md) — A pipeline-boundary optimization that sends different activation shards across slow links, then reconstructs the full tensor on the destination side with fast local collectives.
 - [All-Gather](all-gather.md) — A many-to-many collective that gathers per-rank shards into one full tensor and delivers that complete result to every rank.
 - [All-to-All](all-to-all.md) — A many-to-many collective that scatters each rank's data to all ranks while gathering from all ranks, effectively performing a distributed matrix transpose.

@@ -34,6 +34,31 @@ $\mathbf{h}\sb{ignored}$
             ],
         )
 
+    def test_source_issues_reject_nested_display_math_delimiters(self) -> None:
+        text = r"""Before
+$$
+$$x_t = 1$$
+$$
+After
+"""
+
+        self.assertEqual(
+            MODULE.source_issues(text),
+            [
+                (
+                    3,
+                    "redundant/nested $$ delimiter inside display math block "
+                    "opened on line 2",
+                )
+            ],
+        )
+
+    def test_source_issues_reject_unclosed_display_math_block(self) -> None:
+        self.assertEqual(
+            MODULE.source_issues("Before\n$$\nx_t = 1\n"),
+            [(2, "unclosed display math block opened with $$")],
+        )
+
     def test_rendered_issues_detect_markdown_inside_math(self) -> None:
         html = "\n".join(
             [
@@ -44,6 +69,62 @@ $\mathbf{h}\sb{ignored}$
         )
 
         self.assertEqual(MODULE.rendered_issues(html), [2])
+
+    def test_corrupted_rendered_math_maps_back_to_source_line(self) -> None:
+        markdown_path = Path("docs/example.md")
+        sources = {
+            markdown_path: (
+                "Before\n"
+                r"Bad: $\mathbf{q}_{t,j}^I$, $w_{t,j}^I$"
+                "\nAfter\n"
+            )
+        }
+        fragment = r"$\mathbf{q}<em>{t,j}^I$"
+
+        self.assertEqual(
+            MODULE.source_location_for_fragment(fragment, sources),
+            (markdown_path, 2),
+        )
+
+    def test_ambiguous_rendered_math_keeps_generated_location(self) -> None:
+        fragment = r"$x<em>t$"
+        sources = {
+            Path("docs/one.md"): r"$x_t$",
+            Path("docs/two.md"): r"$x_t$",
+        }
+
+        self.assertIsNone(
+            MODULE.source_location_for_fragment(fragment, sources)
+        )
+
+    def test_main_reports_source_and_generated_locations(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            repository_root = Path(temp_dir)
+            docs_root = repository_root / "docs"
+            markdown_path = docs_root / "example" / "index.md"
+            markdown_path.parent.mkdir(parents=True)
+            markdown_path.write_text(r"Bad: $x_t$, $y_t$" + "\n")
+
+            def fake_build(destination: Path) -> None:
+                html_path = destination / "example" / "index.html"
+                html_path.parent.mkdir(parents=True)
+                html_path.write_text(r"<p>Bad: $x<em>t$, $y</em>t$</p>" + "\n")
+
+            output = StringIO()
+            with (
+                patch.object(MODULE, "REPO_ROOT", repository_root),
+                patch.object(MODULE, "DOCS_ROOT", docs_root),
+                patch.object(MODULE, "build_site", side_effect=fake_build),
+                redirect_stdout(output),
+            ):
+                self.assertEqual(MODULE.main(), 1)
+
+            self.assertIn(
+                "math formulation: docs/example/index.md:1 "
+                "(generated/example/index.html:1): "
+                "Markdown emphasis markup appeared inside a math delimiter",
+                output.getvalue(),
+            )
 
     def test_main_fails_when_jekyll_is_unavailable(self) -> None:
         with TemporaryDirectory() as temp_dir:
