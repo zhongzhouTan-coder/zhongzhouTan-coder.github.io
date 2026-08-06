@@ -36,6 +36,7 @@ updated: 2026-08-04
 ## Inference Systems and Frameworks
 
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Chunked prefills and decode-maximal batching improve decode utilization and reduce pipeline bubbles.
 - [vLLM](../frameworks/vllm/index.md) — Category hub for vLLM serving framework pages.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.

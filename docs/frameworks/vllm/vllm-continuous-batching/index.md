@@ -216,7 +216,7 @@ waiting for every old row to finish.
 - the KV-cache manager cannot allocate the required slots;
 - structured-output or remote-KV dependencies are not ready.
 
-With chunked prefill enabled, a long prompt can take only the remaining token
+With [chunked prefill](../../../terms/chunked-prefill.md) enabled, a long prompt can take only the remaining token
 budget. It becomes a running prefill chunk and continues later rather than
 blocking all shorter work behind one full prompt.
 

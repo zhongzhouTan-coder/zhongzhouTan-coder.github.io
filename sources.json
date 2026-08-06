@@ -1075,6 +1075,19 @@
         "docs/frameworks/harbor/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2308.16369v1",
+      "title": "SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills",
+      "slug": "sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1--arxiv-2308.16369v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1.md",
+      "docs_path": "docs/frameworks/sarathi/index.md",
+      "status": "ingested"
     }
   ]
 }

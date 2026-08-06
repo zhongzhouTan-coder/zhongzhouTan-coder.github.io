@@ -1,0 +1,10 @@
+flowchart LR
+    STATIC["Request-level batching"] --> ORCA["Orca: iteration-level scheduling"]
+    ORCA --> MIXED["Prefill/decode mixed batches"]
+    MIXED --> SARATHI["Sarathi: chunked prefills + decode-maximal batching"]
+    PP["Pipeline parallelism"] --> BUBBLE["Pipeline bubble problem"]
+    MICRO["Microbatching"] --> BUBBLE
+    BUBBLE --> SARATHI
+    PAGED["Paged KV memory"] --> SERVING["Modern serving engines"]
+    SARATHI --> SERVING
+    ATTENTION["Efficient attention kernels"] --> SERVING

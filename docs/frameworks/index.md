@@ -48,5 +48,6 @@ updated: 2026-08-04
 
 ## Other Frameworks
 
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](sarathi/index.md) — Chunked-prefill and decode-maximal batching that reuses prefill weight loads for decode tokens and reduces pipeline bubbles.
 - [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md) — DeepSeek speculative decoding framework that combines semi-autoregressive draft generation, calibrated confidence estimates, hardware-aware verification scheduling, and production DeepSeek-V4 deployment results.
 - [Harbor: Agent Evaluation Framework (Code Reading)](harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.

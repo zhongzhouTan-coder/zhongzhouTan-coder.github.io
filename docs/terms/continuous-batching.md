@@ -17,6 +17,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
   - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/sarathi/index.md
 updated: 2026-08-06
 ---
 
@@ -72,6 +73,7 @@ is sparse or request lengths are uniform.
   and preemption paths.
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Connects iteration-level scheduling to paged KV-block allocation.
 - [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how the Ascend backend reuses vLLM's continuous-batching scheduler.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Shapes continuous work into chunked prefill and decode-maximal batches.
 
 ## Related Terms
 
