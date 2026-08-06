@@ -36,7 +36,7 @@ updated: 2026-07-28
 
 Before Triton, writing a fast GPU kernel for a novel DNN operation meant choosing between two bad options:
 
-1. **Vendor library lock-in.** cuBLAS and cuDNN are fast but only cover a fixed set of operations (matmul, standard convolutions). If your research introduces a new primitive — say, a *shifted convolution* or a custom sparsity pattern — you are on your own.
+1. **Vendor library lock-in.** cuBLAS and cuDNN are fast but only cover a fixed set of operations ([matmul](../../terms/gemm.md), standard convolutions). If your research introduces a new primitive — say, a *shifted convolution* or a custom sparsity pattern — you are on your own.
 
 2. **DSLs that are too slow.** Polyhedral compilers (Tensor Comprehensions) and loop synthesizers (Halide, TVM) could express arbitrary operations but produced kernels 2–3× slower than hand-tuned vendor libraries. You could write a CUDA micro-kernel by hand, but that takes expert-level effort and ties you to a specific GPU architecture.
 

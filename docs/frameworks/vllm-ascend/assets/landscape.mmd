@@ -1,0 +1,9 @@
+flowchart LR
+    STATIC["Static batching"] --> ITER["Iteration-level continuous batching"]
+    ITER --> V1["vLLM V1 token-budget scheduler"]
+    PAGING["Paged KV memory"] --> V1
+    V1 --> MIXED["Decode + chunked prefill in one step"]
+    MIXED --> ASCEND["vLLM-Ascend NPU metadata and FIA/GDN backends"]
+    GQA["Grouped-Query Attention"] --> FIA["FIA full attention"]
+    FIA --> ASCEND
+    REC["Gated DeltaNet recurrence"] --> ASCEND

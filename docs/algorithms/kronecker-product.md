@@ -40,7 +40,7 @@ The matrix direct product gives the matrix of the linear transformation induced 
 
 ## Why It Matters for LLM Quantization
 
-FlatQuant ([insight page](../hardware/quantization/flatquant/index.md)) needs a per-layer invertible transform `P ∈ ℝ^{n×n}` that flattens weights and activations before 4-bit quantization. A full `P` doubles matmul cost, memory traffic, and storage. Instead, FlatQuant constrains `P = P1 ⊗ P2` with `P1 ∈ ℝ^{n1×n1}`, `P2 ∈ ℝ^{n2×n2}`, `n = n1·n2`, and uses the vectorization identity
+FlatQuant ([insight page](../hardware/quantization/flatquant/index.md)) needs a per-layer invertible transform `P ∈ ℝ^{n×n}` that flattens weights and activations before 4-bit quantization. A full `P` doubles [matmul](../terms/gemm.md) cost, memory traffic, and storage. Instead, FlatQuant constrains `P = P1 ⊗ P2` with `P1 ∈ ℝ^{n1×n1}`, `P2 ∈ ℝ^{n2×n2}`, `n = n1·n2`, and uses the vectorization identity
 
 $$\operatorname{vec}(V)\,(P_1 \otimes P_2) = \operatorname{vec}(P_1^{\top} V P_2)$$
 

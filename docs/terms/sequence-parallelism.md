@@ -11,10 +11,18 @@ aliases:
   - SP
   - seq-parallel
 appears_in:
-  - docs/training/parallelism/sequence-parallelism/index.md
-  - docs/training/parallelism/megatron-lm/index.md
+  - docs/algorithms/flashattention/flashattention-2.md
+  - docs/algorithms/linear-attention/index.md
   - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
   - docs/hardware/quantization/nvfp4.md
+  - docs/training/foundation-models/llama.md
+  - docs/training/index.md
+  - docs/training/parallelism/index.md
+  - docs/training/parallelism/megatron-lm/index.md
+  - docs/training/parallelism/sequence-parallelism/index.md
 updated: 2026-08-06
 ---
 
@@ -43,6 +51,14 @@ Memory per device scales as $O(L/N)$ instead of $O(L)$, and with sparse attentio
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Megatron-LM later adopted sequence parallelism as part of its TP-SP combination within transformer layers, splitting along the sequence dimension inside tensor-parallel regions to reduce activation memory.
 - [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Identifies sequence-parallel communication at Ascend model-runner boundaries.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Uses sequence-parallel collectives in distributed low-precision training.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [Transformers Are RNNs: Linear Attention](../algorithms/linear-attention/index.md) — Linear attention replaces softmax similarity with a feature-map kernel, reassociates matrix products, and turns causal attention.
+- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — Introduces the original LLaMA model family, showing that smaller decoder-only Transformers trained longer on public data can.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [Training Parallelism](../training/parallelism/index.md) — Data, tensor, pipeline, and sequence parallelism techniques for large-model training.
 
 ## Related Terms
 

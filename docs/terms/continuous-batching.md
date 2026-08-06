@@ -13,11 +13,15 @@ aliases:
   - iteration-level scheduling
   - in-flight batching
 appears_in:
-  - docs/frameworks/vllm/vllm-framework.md
-  - docs/frameworks/vllm/vllm-continuous-batching/index.md
-  - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/index.md
   - docs/frameworks/sarathi/index.md
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
+  - docs/frameworks/vllm/index.md
+  - docs/frameworks/vllm/vllm-block-management/index.md
+  - docs/frameworks/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-overview.md
 updated: 2026-08-06
 ---
 
@@ -74,6 +78,10 @@ is sparse or request lengths are uniform.
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Connects iteration-level scheduling to paged KV-block allocation.
 - [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how the Ascend backend reuses vLLM's continuous-batching scheduler.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Shapes continuous work into chunked prefill and decode-maximal batches.
+- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Shows how the upstream continuous-batching plan becomes Ascend FIA/GDN execution metadata.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
 
 ## Related Terms
 

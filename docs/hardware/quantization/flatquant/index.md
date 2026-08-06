@@ -286,7 +286,7 @@ LLaMA-3-8B across context lengths (Tables 21–22):
 - **Extreme low-bit** (LLaMA-3-8B W3A3KV3): FlatQuant 10.82 PPL vs QuaRot's 686.54; the paper still recommends 4-bit as the practical balance.
 - **Mixed precision:** upgrading the top-5 layers and all down projections to W8A8 pushes QA from 71.23 to 72.18 — FlatQuant composes with layer-wise heterogeneous bit-widths.
 - **"Train one, get more":** transforms learned for W4A4KV4 transfer directly to weight-only or KV-only settings with no re-calibration.
-- **MoE at scale:** DeepSeek-V3-Base W4A4 keeps C-Eval 89.59 / MMLU 86.32 vs FP8 baselines; DeepSeek-R1 W4A4 scores AIME 73.3.
+- **[MoE](../../../terms/mixture-of-experts.md) at scale:** DeepSeek-V3-Base W4A4 keeps C-Eval 89.59 / MMLU 86.32 vs FP8 baselines; DeepSeek-R1 W4A4 scores AIME 73.3.
 
 ### The mechanism behind the numbers
 

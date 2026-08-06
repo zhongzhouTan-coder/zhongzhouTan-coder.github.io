@@ -12,7 +12,7 @@ updated: 2026-07-15
 
 ## Kernels and Dataflow
 
-- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](spatial-gemm.md) — Blocked outer-product [GEMM](../terms/gemm.md) in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional [SRAM banking](../terms/memory-banking.md).
 
 ## Quantization
 

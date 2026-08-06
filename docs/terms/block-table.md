@@ -10,9 +10,16 @@ sources:
 aliases:
   - block tables
 appears_in:
-  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/index.md
+  - docs/frameworks/triton/triton-in-vllm.md
+  - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
+  - docs/frameworks/vllm/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
-updated: 2026-08-03
+  - docs/frameworks/vllm/vllm-code-learning-path.md
+  - docs/frameworks/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-overview.md
+updated: 2026-08-06
 ---
 
 # Block Table
@@ -40,6 +47,13 @@ The table itself costs a small constant indirection per block per step. If block
 
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Introduces block tables as the vLLM analogue of an OS page table.
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — How the V1 codebase builds, shares, prefixes-caches, and materializes block tables on the worker.
+- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Shows block tables crossing the scheduler-to-FIA handoff for mixed decode and prompt chunks.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — A code-backed explanation of how vLLM rebuilds a token-level batch each engine iteration, mixes prefill and decode work.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
 
 ## Related Terms
 

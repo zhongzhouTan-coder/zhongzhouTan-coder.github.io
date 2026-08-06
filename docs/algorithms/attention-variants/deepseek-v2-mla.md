@@ -23,7 +23,7 @@ updated: 2026-08-06
 
 **How:** MLA jointly compresses K and V into a shared latent state, absorbs the K/V up-projections into query and output projections during inference, and adds a small decoupled RoPE key so position information does not break that absorption trick.
 
-**The number:** In DeepSeek-V2, MLA uses KV cache equivalent to about **2.25 GQA groups**, and the full system reports **93.3% lower KV cache** and **5.76x maximum generation throughput** versus DeepSeek 67B.
+**The number:** In DeepSeek-V2, MLA uses [KV cache](../../terms/kv-cache.md) equivalent to about **2.25 GQA groups**, and the full system reports **93.3% lower KV cache** and **5.76x maximum generation throughput** versus DeepSeek 67B.
 
 ## The Big Picture
 
@@ -96,7 +96,7 @@ The key reason is that **the latent is sufficient for future attention, while fu
 
 The second reason is algebraic: during inference, $W^{UK}$ can be absorbed into the query-side projection, and $W^{UV}$ can be absorbed into the output projection. That means the attention computation can use the cached latent directly without first expanding every historical token back into full K and V. The latent is not just a compressed archive; it is the runtime representation the optimized attention path is designed around.
 
-RoPE is the complication. Because RoPE is position-dependent, applying it to the compressed content key would put a token-position-specific rotation between $W^Q$ and $W^{UK}$, blocking the absorption trick. DeepSeek-V2 therefore stores one extra small decoupled RoPE key $k_t^R$ alongside $c_t^{KV}$. The final cached state is $(c_t^{KV}, k_t^R)$, with size $(d_c+d_h^R)l$ rather than MHA's $2n_hd_hl$.
+RoPE is the complication. Because RoPE is position-dependent, applying it to the compressed content key would put a token-position-specific rotation between $W^Q$ and $W^{UK}$, preventing the absorption trick. DeepSeek-V2 therefore stores one extra small decoupled RoPE key $k_t^R$ alongside $c_t^{KV}$. The final cached state is $(c_t^{KV}, k_t^R)$, with size $(d_c+d_h^R)l$ rather than MHA's $2n_hd_hl$.
 
 ## Symbol Map
 

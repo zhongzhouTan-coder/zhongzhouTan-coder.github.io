@@ -17,9 +17,13 @@ aliases:
   - all-gather collective
   - split/all-gather
 appears_in:
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
+  - docs/frameworks/vllm/vllm-overview.md
+  - docs/hardware/quantization/nvfp4.md
+  - docs/training/kimi/kimi-k3/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-  - docs/hardware/quantization/nvfp4.md
 updated: 2026-08-06
 ---
 
@@ -70,6 +74,10 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — The scatter/gather optimization uses split + all-gather at pipeline boundaries, yielding up to 11% throughput improvement.
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids the split/all-gather cost entirely because activations are already chunked along the sequence dimension.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-gather to assemble quantized tensor shards in distributed training.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
 
 ## Related Terms
 

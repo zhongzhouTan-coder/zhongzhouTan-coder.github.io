@@ -28,7 +28,7 @@ The code path is:
 2. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L941" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="941"><code>KimiLinearModel</code></a> runs decoder layers with hybrid KDA/MLA attention.
 3. <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L689" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="689"><code>KimiDecoderLayer</code></a> chooses <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/kda.py#L284" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/kda.py" data-code-line="284"><code>KimiK3DeltaAttention</code></a> for KDA layers and <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/mla.py#L102" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/mla.py" data-code-line="102"><code>MultiHeadLatentAttention</code></a> for NoPE MLA layers.
 4. MoE layers use <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/nvidia/model.py#L381" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/nvidia/model.py" data-code-line="381"><code>KimiMoE</code></a>, which implements latent routed experts, optional shared experts, optional DeepGEMM MegaMoE, and generic `FusedMoE + LatentMoERunner`.
-5. K3-specific serving pieces include XTML rendering/parsing, multimodal preprocessing, attention-residual kernels, fused MLA cache-insert kernels, optional low-latency GEMM, MTP draft model, and optional SM100 latent-MoE tail fusion.
+5. K3-specific serving pieces include XTML rendering/parsing, multimodal preprocessing, attention-residual kernels, fused MLA cache-insert kernels, optional low-latency [GEMM](../../terms/gemm.md), MTP draft model, and optional SM100 latent-MoE tail fusion.
 
 The important engineering shift is that Kimi K3 is implemented as a hardware-isolated model package under <a class="code-link" href="../../../external-repos/vllm/vllm/models/kimi_k3/__init__.py#L10" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/models/kimi_k3/__init__.py" data-code-line="10"><code>vllm/models/kimi_k3/</code></a>, while still reusing vLLM's generic model registry, multimodal registry, attention backend interface, `FusedMoE`, speculative decoding, and parser infrastructure.
 
@@ -203,7 +203,7 @@ Its constructor owns:
 - optional output gate `g_proj`;
 - output projection `o_proj`;
 - attention backend and implementation;
-- MLA KV cache spec;
+- MLA [KV cache](../../terms/kv-cache.md) spec;
 - prefill backend;
 - static forward-context registration.
 
@@ -314,7 +314,7 @@ Its fused path is enabled when:
 - TP size is greater than 1;
 - shared experts exist;
 - routed output is not already reduced;
-- sequence parallelism is off.
+- [sequence parallelism](../../terms/sequence-parallelism.md) is off.
 
 The core idea:
 

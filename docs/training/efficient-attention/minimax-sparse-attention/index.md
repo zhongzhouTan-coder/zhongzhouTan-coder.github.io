@@ -25,7 +25,7 @@ updated: 2026-08-06
 
 **How:** Per GQA group, an Index Branch scores KV blocks via dot-product max-pooling and selects the top-$k$ blocks ($k=16$, $B_k=128$), always retaining the local block; a KL-divergence loss aligns the Index Branch with the Main Branch's attention distribution.
 
-**The number:** At 1M context on a 109B MoE model, MSA achieves 28.4× per-token attention FLOPs reduction versus GQA, translating to 14.2× prefill and 7.6× decode wall-clock speedup on H800 while matching GQA on downstream benchmarks.
+**The number:** At 1M context on a 109B [MoE](../../../terms/mixture-of-experts.md) model, MSA achieves 28.4× per-token attention FLOPs reduction versus GQA, translating to 14.2× prefill and 7.6× decode wall-clock speedup on H800 while matching GQA on downstream benchmarks.
 
 ## The Big Picture
 

@@ -176,7 +176,7 @@ $$
 
 **Why it matters:** A useful recurrence is not practical for pretraining if every token forces a serial GPU kernel.
 
-**How it works:** The transition $\alpha_t(\mathbf I-\beta_t\mathbf k_t\mathbf k_t^T)$ is a decayed identity-minus-rank-one matrix. The paper extends DeltaNet's WY/UT representation with cumulative decay factors, computing transformed keys and values inside each chunk. Chunks pass only their boundary state forward; work within a chunk becomes matmul-heavy and tensor-core friendly.
+**How it works:** The transition $\alpha_t(\mathbf I-\beta_t\mathbf k_t\mathbf k_t^T)$ is a decayed identity-minus-rank-one matrix. The paper extends DeltaNet's WY/UT representation with cumulative decay factors, computing transformed keys and values inside each chunk. Chunks pass only their boundary state forward; work within a chunk becomes [matmul](../../../terms/gemm.md)-heavy and tensor-core friendly.
 
 **The intuition:** Preserve sequential meaning at chunk boundaries while batching the algebra inside each chunk.
 
@@ -242,7 +242,7 @@ The table compares pretraining architectures under the paper's controlled recipe
 | Failure mode | When it happens | Impact |
 |---|---|---|
 | Fixed-state collisions | Relevant associations exceed the matrix state's effective capacity | Exact retrieval degrades even with better forgetting. |
-| Global gate is too coarse | Some dimensions should be forgotten while others retained | Scalar $\alpha_t$ erases useful and useless content together; later KDA targets this limitation. |
+| Global gate is too coarse | Some dimensions should be forgotten while others retained | Scalar $\alpha_t$ erases useful and useless content together; later [KDA](../../../terms/kimi-delta-attention.md) targets this limitation. |
 | Delta correction aliases keys | Different items map to similar key directions | Updating one association can disturb another. |
 | Recurrence loses local detail | A task needs exact nearby comparison, copying, or positional shifts | Pure Gated DeltaNet can underperform a hybrid with SWA. |
 | Throughput trails simpler transitions | Hardware or sequence length favors Mamba2's more restricted state transition | Expressiveness costs roughly 2–3K tokens/s in the reported H100 comparison. |

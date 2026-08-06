@@ -56,7 +56,7 @@ flowchart LR
 
 ## Why This Exists
 
-Imagine serving a 70B chat model with a 4096-token context window on 8 A100 80 GB GPUs. Every generated token needs to attend over the prior tokens, so the server keeps a **KV cache** for the sequence instead of recomputing keys and values from scratch. As context length and batch size grow, that cache becomes a first-order memory bottleneck.
+Imagine serving a 70B chat model with a 4096-token context window on 8 A100 80 GB GPUs. Every generated token needs to attend over the prior tokens, so the server keeps a **[KV cache](../../../terms/kv-cache.md)** for the sequence instead of recomputing keys and values from scratch. As context length and batch size grow, that cache becomes a first-order memory bottleneck.
 
 Full MHA stores K/V per head. MQA stores one shared K/V head. GQA asks a more production-shaped question: can the model keep enough independent K/V groups for quality and tensor-parallel deployment, while still shrinking the cache enough to support large-batch, long-context inference?
 
@@ -204,4 +204,5 @@ GQA is **MQA made deployable for large models that still need some K/V diversity
 - **Read:** `raw/algorithms/grouped-query-attention-llama-2--paper.pdf` for the Llama 2 appendix section that motivates GQA in the 34B and 70B models.
 - **Build on:** [Multi-Query Attention](../multi-query-attention.md) for the ancestor mechanism that collapses K/V to a single write head.
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../../../frameworks/vllm/vllm-framework.md) for a complementary serving-system view of KV-cache pressure.
+- **Dig into the mechanism:** [PagedAttention](../../../terms/pagedattention.md) for the paged KV-cache layout that powers the vLLM serving framework.
 - **Reproduce:** The source references the original GQA paper by Ainslie et al. (2023), but that standalone paper is not present in `raw/` at the time of this page.

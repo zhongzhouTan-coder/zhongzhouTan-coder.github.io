@@ -21,7 +21,7 @@ updated: 2026-08-03
 
 **What:** DeepSeek-V3.2 is a sparse-attention MoE model that matches GPT-5 on reasoning benchmarks while introducing thinking-in-tool-use for agentic scenarios; its high-compute variant DeepSeek-V3.2-Speciale achieves gold-medal performance at IMO, IOI, ICPC World Finals, and CMO 2025.
 
-**How:** Three innovations: (1) DeepSeek Sparse Attention (DSA), a learnable lightning indexer that selects top-k KV entries per query, reducing attention from $O(L^2)$ to $O(Lk)$; (2) a scaled GRPO recipe with unbiased KL estimation, off-policy sequence masking, and Keep Routing/Keep Sampling Mask for stable MoE RL; (3) a cold-start + synthesized agentic task pipeline (1,827 environments, 85K prompts) that teaches reasoning during tool calls.
+**How:** Three innovations: (1) DeepSeek Sparse Attention (DSA), a learnable [lightning indexer](../../terms/lightning-indexer.md) that selects top-k KV entries per query, reducing attention from $O(L^2)$ to $O(Lk)$; (2) a scaled GRPO recipe with unbiased KL estimation, off-policy sequence masking, and Keep Routing/Keep Sampling Mask for stable [MoE](../../terms/mixture-of-experts.md) RL; (3) a cold-start + synthesized agentic task pipeline (1,827 environments, 85K prompts) that teaches reasoning during tool calls.
 
 **The number:** DeepSeek-V3.2 achieves **25.1% on HLE** (text-only), **93.1% on AIME 2025**, **73.1% on SWE-bench Verified**, and **67.6% on BrowseComp** (with context management), all at substantially lower token cost than Kimi-K2 Thinking.
 

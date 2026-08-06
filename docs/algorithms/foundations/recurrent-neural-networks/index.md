@@ -170,7 +170,7 @@ This matches the general RNN template:
 \operatorname{output}(t)=G(\operatorname{state}(t),x_t).
 \]
 
-That is why linear attention is said to have an **RNN mode** during autoregressive decoding. It carries fixed-size state forward rather than retaining and rereading an ever-growing KV cache. It is not a vanilla RNN: it retains Transformer-style query, key, and value projections, uses a matrix-valued associative state, and can exploit parallel prefix computations during training.
+That is why [linear attention](../../../terms/linear-attention.md) is said to have an **RNN mode** during autoregressive decoding. It carries fixed-size state forward rather than retaining and rereading an ever-growing [KV cache](../../../terms/kv-cache.md). It is not a vanilla RNN: it retains Transformer-style query, key, and value projections, uses a matrix-valued associative state, and can exploit parallel prefix computations during training.
 
 ## Common Confusions
 

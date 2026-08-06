@@ -22,7 +22,7 @@ vllm-ascend `8645122088f5cad1701205310573c5ee05c809f5`.
 
 ## TL;DR
 
-**What:** vLLM and vllm-ascend use Triton to write ~200+ high-performance GPU/NPU kernels covering attention, MoE, quantization, activations, normalization, RoPE, Mamba SSM, sampling, and speculative decoding — without hand-writing CUDA or AscendC for every operation.
+**What:** vLLM and vllm-ascend use Triton to write ~200+ high-performance GPU/NPU kernels covering attention, [MoE](../../terms/mixture-of-experts.md), quantization, activations, normalization, RoPE, Mamba SSM, sampling, and speculative decoding — without hand-writing CUDA or AscendC for every operation.
 
 **How:** vLLM wraps Triton through a centralized `triton_utils` import layer, registers kernels as `torch.ops.vllm.*` custom ops, and uses patterns like `tl.constexpr` for compile-time dispatch, pre-generated JSON launch configurations, grid-stride loops, and inline PTX for hardware-specific instructions. vllm-ascend adapts the same patterns for Ascend NPU via the `triton.language.extra.cann` extension; some element-wise kernels use a 1D grid sized to the NPU's vector-core count.
 
@@ -60,8 +60,8 @@ vLLM's job is to serve LLMs fast. That means every microsecond in the critical p
 
 | Operation | Why it's not a standard BLAS call |
 |---|---|
-| Flash-decoding with KV cache paging | KV cache is stored in non-contiguous blocks; standard attention needs contiguous memory |
-| Fused MoE with top-k gating + quantization | Requires fusing routing, dequant, matmul, and activation in one kernel launch |
+| Flash-decoding with [KV cache](../../terms/kv-cache.md) paging | KV cache is stored in non-contiguous blocks; standard attention needs contiguous memory |
+| Fused MoE with top-k gating + quantization | Requires fusing routing, dequant, [matmul](../../terms/gemm.md), and activation in one kernel launch |
 | AWQ 4-bit dequant + matmul | Unpack 4-bit groups with interleaved bit-reversal, then scales/zeros per group |
 | Fused QK RMSNorm + partial RoPE + gate copy | Collapses split → norm → rotary → gate chunk into one launch |
 | Per-token-group FP8 quantization | Dynamic quantization at granularity finer than per-tensor |
@@ -157,7 +157,7 @@ def get_ssm_configs(headdim, dstate, cache_dtype):
 
 ### 1. Attention Kernels — The Heart of Custom Attention
 
-vLLM cannot use stock FlashAttention because its PagedAttention KV cache stores keys and values in non-contiguous blocks. The attention kernels must follow block tables to locate physical KV blocks.
+vLLM cannot use stock FlashAttention because its [PagedAttention](../../terms/pagedattention.md) KV cache stores keys and values in non-contiguous blocks. The attention kernels must follow [block tables](../../terms/block-table.md) to locate physical KV blocks.
 
 | Kernel | Phase | Key Feature |
 |---|---|---|
@@ -379,7 +379,7 @@ On Ascend, the CANN extension provides hardware-optimized implementations of the
 | Category | Key Files | What They Do |
 |---|---|---|
 | **Fused QKV + Norm + RoPE** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/linearnorm/split_qkv_rmsnorm_rope.py" data-code-line="26"><code>linearnorm/split_qkv_rmsnorm_rope.py</code></a> (SIMD + SIMT variants, TP-aware variant, M-RoPE variant) | The most important fused kernel — collapses QKV projection split + RMSNorm + weight/bias + rotary embedding into one launch |
-| **Flash Linear Attention** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/fla/chunk_o.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/fla/chunk_o.py" data-code-line="26"><code>fla/chunk_o.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/chunk_delta_h.py#L36" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/chunk_delta_h.py" data-code-line="36"><code>chunk_delta_h.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/cumsum.py#L22" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/cumsum.py" data-code-line="22"><code>cumsum.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/solve_tril.py#L28" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/solve_tril.py" data-code-line="28"><code>solve_tril.py</code></a>, etc. (~14 files) | Chunked linear attention with gated delta rule, full forward pass with state updates |
+| **[Flash Linear Attention](../../terms/linear-attention.md)** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/fla/chunk_o.py#L26" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/fla/chunk_o.py" data-code-line="26"><code>fla/chunk_o.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/chunk_delta_h.py#L36" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/chunk_delta_h.py" data-code-line="36"><code>chunk_delta_h.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/cumsum.py#L22" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/cumsum.py" data-code-line="22"><code>cumsum.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/solve_tril.py#L28" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/solve_tril.py" data-code-line="28"><code>solve_tril.py</code></a>, etc. (~14 files) | Chunked linear attention with gated [delta rule](../../terms/delta-rule.md), full forward pass with state updates |
 | **Kernelized Dynamic Attention** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/kda.py#L36" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/kda.py" data-code-line="36"><code>kda/kda.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/kda/fused_recurrent_kda.py#L24" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/kda/fused_recurrent_kda.py" data-code-line="24"><code>fused_recurrent_kda.py</code></a>, etc. (~7 files) | Recurrent kernelized attention with L2 norm and triangular solve |
 | **Activation** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/activation/swiglu_quant.py#L8" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/activation/swiglu_quant.py" data-code-line="8"><code>activation/swiglu_quant.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/activation/swiglustep.py#L45" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/activation/swiglustep.py" data-code-line="45"><code>swiglustep.py</code></a> | SwiGLU + int8 quantization, SwigluStepAndMul with clamping |
 | **Normalization** | <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/rms_norm.py#L6" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/rms_norm.py" data-code-line="6"><code>rms_norm.py</code></a>, <a class="code-link" href="../../../external-repos/vllm-ascend-8645122088f5/vllm_ascend/ops/triton/layernorm_gated.py#L16" data-code-repo="vllm-ascend-8645122088f5" data-code-path="vllm_ascend/ops/triton/layernorm_gated.py" data-code-line="16"><code>layernorm_gated.py</code></a> | RMSNorm and gated LayerNorm |
@@ -395,10 +395,10 @@ vllm-ascend does not use Triton for everything. Performance-critical paths use *
 
 | Operation | Language | Why |
 |---|---|---|
-| Attention (sparse flash, lightning indexer, KV-quant flash) | AscendC (`csrc/attention/`, 28 subdirectories) | Maximum performance on the critical attention path |
+| Attention (sparse flash, [lightning indexer](../../terms/lightning-indexer.md), KV-quant flash) | AscendC (`csrc/attention/`, 28 subdirectories) | Maximum performance on the critical attention path |
 | MoE (grouped matmul, swiglu group quant, causal conv1d) | AscendC (`csrc/moe/`, 15 subdirectories) | MoE operations are compute-dense and benefit from hand-tuned AscendC |
 | Fused QKV+Norm+RoPE | Triton (`linearnorm/`) | Complex fusion logic is easier to express in Triton |
-| Flash Linear Attention / KDA | Triton (`fla/`, `kda/`) | Algorithmic complexity; Triton's tile abstractions simplify development |
+| Flash Linear Attention / [KDA](../../terms/kimi-delta-attention.md) | Triton (`fla/`, `kda/`) | Algorithmic complexity; Triton's tile abstractions simplify development |
 | Activation, normalization, penalties, sampling | Triton | Element-wise ops where Triton matches AscendC performance |
 
 ```mermaid

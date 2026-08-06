@@ -14,6 +14,7 @@ aliases:
   - SRAM banking
   - bank assignment
 appears_in:
+  - docs/hardware/index.md
   - docs/hardware/spatial-gemm.md
 updated: 2026-08-06
 ---
@@ -46,6 +47,7 @@ The compiler inspects all accesses to a memory and searches for a bank assignmen
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — The "Multi-dimensional Banking" section banks GEMM `tileB` under different parallelization factors and shows flat vs. hierarchical schemes.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The tutorial's banking demonstration is synthesized there.
+- [Hardware and Numerics](../hardware/index.md) — Hardware and numerics pages covering accelerator features, precision formats, and related implementation details.
 
 ## Related Terms
 

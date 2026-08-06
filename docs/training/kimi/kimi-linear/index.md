@@ -129,7 +129,7 @@ Read right-to-left: (1) decay the old state with per-dimension $\alpha_t$; (2) a
 
 **What it does:** Constrains the general DPLR transition matrix $(D - a_t b_t^\top)$ by binding both low-rank vectors to the key: $a_t = \beta_t k_t$, $b_t = k_t \odot \alpha_t$.
 
-**Why it matters:** General DPLR requires secondary chunking in full precision to avoid numerical instability from division by cumulative decay $\Gamma$, which prevents half-precision matmul and adds significant overhead. KDA's constraint eliminates the need for secondary chunking on two of four terms and removes three extra matrix multiplications — making the kernel ~2× faster.
+**Why it matters:** General DPLR requires secondary chunking in full precision to avoid numerical instability from division by cumulative decay $\Gamma$, which prevents half-precision [matmul](../../../terms/gemm.md) and adds significant overhead. KDA's constraint eliminates the need for secondary chunking on two of four terms and removes three extra matrix multiplications — making the kernel ~2× faster.
 
 **How it works:** The general DPLR chunkwise algorithm computes four attention-like matrices — $A_{ab}$, $A_{ak}$, $A_{qb}$, $A_{qk}$ — each requiring reciprocal $\Gamma$ terms. By setting $a = b = k$, KDA collapses this to just two matrices ($A_{qk}$ and $A_{kk}$), and the remaining reciprocal terms are handled by the UT transform (forward substitution on a triangular system), which is numerically stable in half precision.
 

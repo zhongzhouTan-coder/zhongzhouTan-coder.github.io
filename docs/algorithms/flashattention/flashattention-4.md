@@ -20,7 +20,7 @@ updated: 2026-07-24
 ## TL;DR
 
 **What:** FlashAttention-4 redesigns exact attention for NVIDIA Blackwell GPUs, where tensor cores have doubled but softmax and shared-memory throughput have not.
-**How:** It uses TMEM-based pipelining to overlap matmul and softmax, software-emulated exponentials to bypass the MUFU bottleneck, 2-CTA cooperative MMA for backward, and load-balanced tile scheduling for causal attention.
+**How:** It uses TMEM-based pipelining to overlap [matmul](../../terms/gemm.md) and softmax, software-emulated exponentials to bypass the MUFU bottleneck, 2-CTA cooperative MMA for backward, and load-balanced tile scheduling for causal attention.
 **The number:** Up to 2.4× faster forward than FA3 on B200, with backward speedups from reduced shared-memory traffic and fewer dQ atomics.
 
 ## The Core Idea
@@ -99,7 +99,7 @@ dQ = alpha dS K
 dK = alpha dS^T Q
 ```
 
-FA4's algorithmic work is not a new approximate attention formula. It is exact attention with a different blocking, pipelining, and hardware-resource allocation strategy.
+FA4's algorithmic work is not a new approximate attention formula. It is exact attention with a different [blocking](../../terms/matrix-tiling.md), pipelining, and hardware-resource allocation strategy.
 
 ## Forward Pass
 
@@ -264,7 +264,7 @@ The source contains one hardware-name inconsistency. The main paper repeatedly d
 
 FA4 sits after FlashAttention-1/2/3:
 
-- **FlashAttention:** avoids materializing the full attention matrix in HBM by tiled exact attention.
+- **FlashAttention:** avoids materializing the full attention matrix in [HBM](../../terms/global-memory.md) by tiled exact attention.
 - **FlashAttention-2:** improves parallelism and work partitioning.
 - **FlashAttention-3:** targets Hopper with asynchronous execution and warp specialization.
 - **FlashAttention-4:** targets Blackwell asymmetry by reducing non-matmul bottlenecks and exploiting TMEM, asynchronous MMA, larger tiles, and 2-CTA mode.
@@ -289,6 +289,7 @@ FA4's core contribution is recognizing that **Blackwell's asymmetric hardware sc
 - **Read:** [FlashAttention-4 paper (arXiv:2603.05451)](https://arxiv.org/abs/2603.05451)
 - **Build on:** [FlashAttention](flashattention.md), [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md)
 - **Understand the context:** [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways

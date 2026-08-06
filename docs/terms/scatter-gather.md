@@ -14,6 +14,7 @@ aliases:
   - scatter-gather
   - scatter gather
 appears_in:
+  - docs/training/index.md
   - docs/training/parallelism/megatron-lm/index.md
 updated: 2026-08-03
 ---
@@ -46,6 +47,7 @@ Megatron-LM reports up to **11% throughput improvement** for communication-inten
 
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Introduced as part of the PTD-P training system; Section 5.7 shows the 11% throughput gain on GPT-3 175B.
 - The technique is accelerator-agnostic and applies to any distributed training system where intra-node bandwidth (NVLink) vastly exceeds inter-node bandwidth (InfiniBand).
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 
 ## Related Terms
 

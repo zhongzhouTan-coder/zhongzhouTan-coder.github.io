@@ -15,7 +15,11 @@ aliases:
 appears_in:
   - docs/algorithms/foundations/transformer.md
   - docs/algorithms/linear-attention/index.md
+  - docs/algorithms/linear-attention/linear-attention-without-softmax.md
+  - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/hardware/spatial-gemm.md
+  - docs/training/efficient-attention/swat-sliding-window-attention/index.md
+  - docs/training/fine-tuning/socratic-swe/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
 updated: 2026-08-04
 ---
@@ -55,6 +59,10 @@ The reduction over $k$ is the "inner" dimension — the one shared by both matri
 - [Transformer Foundations](../algorithms/foundations/transformer.md) — Scaled dot-product attention: compatibility between query and key, with $\sqrt{d_k}$ scaling.
 - [Linear Attention](../algorithms/linear-attention/index.md) — Query–key similarity is an ordinary dot product in feature space.
 - [Sequence Parallelism](../training/parallelism/sequence-parallelism/index.md) — Each GPU computes dot products between its query chunk and every other rank's keys.
+- [线性Attention的探索：Attention必须有个Softmax吗？](../algorithms/linear-attention/linear-attention-without-softmax.md) — Su Jianlin's influential blog survey on why softmax is the bottleneck of standard attention, how removing it enables O(n) linear.
+- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
+- [SWAT: Sliding Window Attention Training](../training/efficient-attention/swat-sliding-window-attention/index.md) — Trains transformers from scratch with sigmoid-based sliding window attention, replacing softmax to eliminate attention sink and.
+- [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/fine-tuning/socratic-swe/index.md) — Closed-loop self-evolution framework that distills SWE agent solving traces into structured skills, uses them to guide targeted.
 
 ## Related Terms
 

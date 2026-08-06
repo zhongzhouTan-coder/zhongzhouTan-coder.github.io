@@ -17,7 +17,7 @@ updated: 2026-07-15
 ## TL;DR
 
 **What:** SGLang is a framework for programming and executing structured LLM programs — workflows with multiple generation calls, control flow, parallel branches, and structured outputs.
-**How:** A Python-embedded frontend language exposes prompt state, generation, and parallelism primitives; a backend runtime exploits repeated calls through RadixAttention KV cache reuse, compressed FSM constrained decoding, and API-call speculation.
+**How:** A Python-embedded frontend language exposes prompt state, generation, and parallelism primitives; a backend runtime exploits repeated calls through RadixAttention [KV cache](../../terms/kv-cache.md) reuse, compressed FSM constrained decoding, and API-call speculation.
 **The number:** Up to 5× higher throughput than state-of-the-art serving systems on multi-call LLM workloads like tree-of-thought and self-consistency.
 
 ## The Core Idea
@@ -44,7 +44,7 @@ SGLang is a domain-specific language embedded in Python. It does not replace Pyt
 | `extend` / `+=` | Append strings or structured inputs to the prompt state |
 | `gen` | Generate model output and store it under a variable name |
 | `select` | Select the highest-probability option from a candidate list |
-| `state["name"]` | Fetch a stored generation result, blocking if needed |
+| `state["name"]` | Fetch a stored generation result, waiting if needed |
 | `fork` | Create parallel prompt-state branches |
 | `join` | Rejoin prompt branches |
 | `image` | Add image input |
@@ -57,7 +57,7 @@ The paper's running example is a multi-dimensional essay judge over an image. It
 
 SGLang supports two execution styles:
 
-- **Interpreter mode:** prompt state is treated as an asynchronous stream. `extend`, `gen`, and `select` submit work without blocking; fetching generated variables synchronizes only when the value is needed. Each prompt stream is managed by a background executor, enabling intra-program parallelism.
+- **Interpreter mode:** prompt state is treated as an asynchronous stream. `extend`, `gen`, and `select` submit work without waiting; fetching generated variables synchronizes only when the value is needed. Each prompt stream is managed by a background executor, enabling intra-program parallelism.
 - **Compiler mode:** SGLang programs can be traced into computational graphs for additional graph-level optimizations. The paper evaluates interpreter mode by default and discusses compiler optimizations in the appendix.
 
 The frontend supports open-weight models through SGLang Runtime (SRT) and API-only models such as OpenAI and Anthropic endpoints.
@@ -163,6 +163,7 @@ SGLang's key insight is that **LLM applications are structured programs, not iso
 
 - **Read:** [SGLang paper (arXiv:2312.07104)](https://arxiv.org/abs/2312.07104)
 - **Build on:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [DSpark: Confidence-Scheduled Speculative Decoding](../dspark/index.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Understand the context:** [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
 - **Reproduce:** [Official implementation at github.com/sgl-project/sglang](https://github.com/sgl-project/sglang)
 

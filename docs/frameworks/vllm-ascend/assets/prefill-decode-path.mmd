@@ -1,0 +1,11 @@
+flowchart LR
+    A["Request state: computed cursor and target tokens"] --> B["EngineCore.step"]
+    B --> C["Scheduler.schedule\n token budget + KV slots"]
+    C --> D["SchedulerOutput\n tokens per request"]
+    D --> E["NPUModelRunner\n persistent batch + inputs"]
+    E --> F["Ascend metadata\n decode/prefill split"]
+    F --> G["Qwen3.5 full attention\n GQA -> FIA"]
+    F --> H["Qwen3.5 linear attention\n GDN recurrent state"]
+    G --> I["Paged KV cache + sampled output"]
+    H --> I
+    I --> B

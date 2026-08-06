@@ -228,7 +228,7 @@ Here is the end-to-end flow for incremental decoding with MQA:
 2. **Query projection (per-head):** $q = \text{einsum}("bd, hdk \to bhk", x, P_q)$ — produces $h$ different queries.
 3. **Key projection (shared):** $\Delta K = \text{einsum}("bd, dk \to bk", x, P_k)$ — single new key.
 4. **Value projection (shared):** $\Delta V = \text{einsum}("bd, dv \to bv", x, P_v)$ — single new value.
-5. **KV cache append:** Append $\Delta K$ and $\Delta V$ to `prev_K` and `prev_V` — both shape $[b, m, k/v]$, not $[b, h, m, k/v]$.
+5. **[KV cache](../../terms/kv-cache.md) append:** Append $\Delta K$ and $\Delta V$ to `prev_K` and `prev_V` — both shape $[b, m, k/v]$, not $[b, h, m, k/v]$.
 6. **Attention scores:** $\text{logits} = \text{einsum}("bhk, bmk \to bhm", q, \text{prevK})$ — K broadcasts across $h$.
 7. **Softmax:** `weights = softmax(logits)`.
 8. **Weighted sum:** $o = \text{einsum}("bhm, bmv \to bhv", \text{weights}, \text{prevV})$ — V broadcasts across $h$.
@@ -264,3 +264,4 @@ The critical difference from MHA is in steps 5-8: `prev_K` and `prev_V` are $h$ 
 - [Grouped-Query Attention (GQA)](https://arxiv.org/abs/2305.13245) — generalizes MQA to $g$ KV groups, used in Llama 2/3.
 - [FlashAttention](../flashattention/flashattention.md) — a complementary approach that optimizes attention *computation* via IO-aware tiling, while MQA optimizes attention *memory footprint* via parameter sharing.
 - The [vLLM PagedAttention framework](../../frameworks/vllm/vllm-framework.md) — another inference-focused KV-cache optimization that composes with MQA/GQA.
+- [PagedAttention](../../terms/pagedattention.md) — the paged KV-cache layout behind vLLM, complementary to MQA's shared-head memory reduction.

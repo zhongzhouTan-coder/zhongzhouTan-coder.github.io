@@ -25,7 +25,7 @@ updated: 2026-07-24
 
 ## The Core Idea
 
-FlashAttention already avoids the $N \times N$ HBM bottleneck, but on A100 it only reaches 25-40% of peak FLOPs/s. The remaining gap comes from non-matmul work (softmax, reductions, masking) which is much slower than tensor-core matmul. FA2 reorganizes parallelism and work partitioning to close this gap without changing the attention algorithm itself.
+FlashAttention already avoids the $N \times N$ [HBM](../../terms/global-memory.md) bottleneck, but on A100 it only reaches 25-40% of peak FLOPs/s. The remaining gap comes from non-matmul work (softmax, reductions, masking) which is much slower than tensor-core matmul. FA2 reorganizes parallelism and work partitioning to close this gap without changing the attention algorithm itself.
 
 ## The Big Picture
 
@@ -90,7 +90,7 @@ FlashAttention avoids materializing the full attention matrix in HBM, but attent
 - masking;
 - dropout and elementwise gradient work.
 
-On A100, FP16/BF16 tensor-core matmul peak is far higher than FP32 non-matmul throughput. The paper gives 312 TFLOPs/s for FP16/BF16 matmul versus 19.5 TFLOPs/s for FP32 scalar work, so a non-matmul FLOP can be much more expensive than a tensor-core FLOP. FA2 therefore optimizes the parts around the matmuls instead of treating FLOPs uniformly.
+On A100, FP16/BF16 tensor-core [matmul](../../terms/gemm.md) peak is far higher than FP32 non-matmul throughput. The paper gives 312 TFLOPs/s for FP16/BF16 matmul versus 19.5 TFLOPs/s for FP32 scalar work, so a non-matmul FLOP can be much more expensive than a tensor-core FLOP. FA2 therefore optimizes the parts around the matmuls instead of treating FLOPs uniformly.
 
 ## Algorithm Changes
 
@@ -265,7 +265,7 @@ Compared with [vLLM](../../frameworks/vllm/vllm-framework.md), FA2 is a kernel-l
 | Failure mode | When it happens | Impact |
 |---|---|---|
 | Architecture lock-in | Implementation tied to NVIDIA A100/H100 CUDA; AMD or other GPUs | Requires separate porting effort |
-| Small batch sizes with short sequences | When $N$ is short and batch size is already large | Sequence parallelism adds no benefit; overhead dominates |
+| Small batch sizes with short sequences | When $N$ is short and batch size is already large | [Sequence parallelism](../../terms/sequence-parallelism.md) adds no benefit; overhead dominates |
 | Compiler dependency | Manual tuning of block sizes per head dimension | Fragile across models; autotuning not yet available |
 | Non-matmul bottleneck persists | FP32 softmax still limits throughput on newer architectures | Future GPUs (H100, B200) shift bottleneck; motivates FA3 and FA4 |
 
@@ -280,6 +280,7 @@ FlashAttention-2's speedup comes **not from a better algorithm but from better G
 - **Read:** [FlashAttention-2 paper (arXiv:2307.08691)](https://arxiv.org/abs/2307.08691)
 - **Build on:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways

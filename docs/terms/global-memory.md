@@ -13,11 +13,16 @@ aliases:
   - HBM
   - device memory
 appears_in:
-  - docs/frameworks/triton-ascend/operator-mechanisms.md
+  - docs/algorithms/flashattention/flashattention-2.md
   - docs/algorithms/flashattention/flashattention-3.md
+  - docs/algorithms/flashattention/flashattention-4.md
+  - docs/algorithms/flashattention/flashattention.md
+  - docs/frameworks/triton-ascend/operator-mechanisms.md
   - docs/hardware/quantization/flatquant/index.md
-  - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/hardware/spatial-gemm.md
+  - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/efficient-attention/minimax-sparse-attention/index.md
+  - docs/training/kimi/kimi-k3/index.md
 updated: 2026-08-06
 ---
 
@@ -49,6 +54,11 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — Emits LSE tensors directly to global memory for the KL-loss backward kernel.
 - [Spatial GEMM](../hardware/spatial-gemm.md) — Tiles matrices from off-chip DRAM into banked on-chip SRAM before computing.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
+- [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) — Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
+- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
 
 ## Related Terms
 

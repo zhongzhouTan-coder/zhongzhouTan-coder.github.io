@@ -185,7 +185,7 @@ AISBench additionally exposes prefill token throughput and a per-request output-
 | TPOT denominator | Common definitions use either output tokens or output tokens minus one | Verify formulas against raw samples |
 | Benchmark duration | First-send-to-last-finish differs from stable-window duration | Compare total and steady-state throughput separately |
 | Arrival process | Closed-loop throughput is not comparable to open-loop offered load | Match scheduler semantics, rate, and concurrency cap |
-| Warmup and connection reuse | JIT, KV cache, DNS/TLS, and pools change latency | Align warmup count and HTTP session behavior |
+| Warmup and connection reuse | JIT, [KV cache](../../terms/kv-cache.md), DNS/TLS, and pools change latency | Align warmup count and HTTP session behavior |
 | Client saturation | Generator CPU/event-loop limits can masquerade as server limits | Record achieved RPS, client CPU, lag, and in-flight count |
 
 **Rule:** A head-to-head result is valid only after comparing raw event timestamps and token counts for a one-request case, then validating the load generator’s achieved schedule before increasing concurrency.

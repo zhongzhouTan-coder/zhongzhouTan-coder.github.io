@@ -167,7 +167,7 @@ Because one slot holds the prefill chunk and its KV state, at most $B-1$ decodes
 
 1. Estimate the workload's prefill/decode mix and profile prefill throughput on the target model and GPU.
 2. Choose a chunk size $C$ that keeps prefill matrix operations efficient while matching the expected $P:D$ ratio.
-3. Split each long prompt into causal chunks; retain the KV cache between chunks.
+3. Split each long prompt into causal chunks; retain the [KV cache](../../terms/kv-cache.md) between chunks.
 4. Construct each hybrid batch with one prefill chunk and up to $B-1$ decode requests.
 5. Fuse the linear operations so prefill and decode tokens reuse the same model-weight loads; keep their attention computations semantically separate.
 6. Feed similarly shaped hybrid batches through pipeline stages, reducing runtime variance and bubbles.
@@ -215,5 +215,6 @@ The 1.91x GPT-3 result is simulation-backed, not a direct 64-GPU deployment meas
 
 - **Read:** [SARATHI paper](https://arxiv.org/abs/2308.16369)
 - **Build on:** [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md), [vLLM: PagedAttention](../vllm/vllm-framework.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind vLLM.
 - **Understand the context:** [SGLang](../sglang/index.md), [Continuous Batching](../../terms/continuous-batching.md), [Microbatch](../../terms/microbatch.md)
 - **Reproduce:** The paper reports a nanoGPT implementation; no local source checkout is recorded in this knowledge base.

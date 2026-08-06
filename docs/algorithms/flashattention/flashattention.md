@@ -19,7 +19,7 @@ updated: 2026-07-24
 
 ## TL;DR
 
-**What:** FlashAttention is an exact attention algorithm that avoids materializing the $N \times N$ attention matrix in GPU HBM.
+**What:** FlashAttention is an exact attention algorithm that avoids materializing the $N \times N$ attention matrix in GPU [HBM](../../terms/global-memory.md).
 **How:** It tiles Q, K, V into SRAM-sized blocks, uses online softmax to compute exact attention block-by-block, and recomputes intermediates during backward instead of storing them.
 **The number:** Up to 3× faster than standard attention, with up to 20× less memory — training speed records for BERT-large and GPT-2.
 
@@ -226,6 +226,7 @@ FlashAttention achieves its speedup **by reducing HBM traffic, not by approximat
 - **Read:** [FlashAttention paper (arXiv:2205.14135)](https://arxiv.org/abs/2205.14135)
 - **Build on:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
 
 ## Key Takeaways

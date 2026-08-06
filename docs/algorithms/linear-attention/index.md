@@ -152,7 +152,7 @@ S_i=S_{i-1}+\phi(K_i)V_i^T,\qquad
 Z_i=Z_{i-1}+\phi(K_i).
 $$
 
-**Why it matters:** Autoregressive decoding cannot parallelize across future tokens, so constant work and constant state per step are more important than full-sequence parallelism.
+**Why it matters:** Autoregressive decoding cannot parallelize across future tokens, so constant work and constant state per step are more important than full-[sequence parallelism](../../terms/sequence-parallelism.md).
 
 **How it works:** After updating $S_i$ and $Z_i$, the layer outputs
 

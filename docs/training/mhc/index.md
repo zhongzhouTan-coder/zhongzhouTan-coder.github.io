@@ -21,7 +21,7 @@ updated: 2026-08-06
 
 **What:** mHC keeps the performance gains of Hyper-Connections (HC) while restoring the identity-mapping property that unconstrained HC destroys, by constraining the residual mixing matrix to be doubly stochastic.
 **How:** The Sinkhorn-Knopp algorithm entropically projects each residual mapping onto the [Birkhoff polytope](../../terms/hyper-connections.md) of doubly stochastic matrices; because such matrices are non-expansive and closed under multiplication, composite signal gain stays bounded — and fused kernels, selective recomputation, and DualPipe overlap keep the added cost at 6.7%.
-**The number:** On a 27B MoE, mHC reaches a final loss 0.021 lower than the residual baseline and cuts HC's composite signal gain from ~3000 down to ≤1.6.
+**The number:** On a 27B [MoE](../../terms/mixture-of-experts.md), mHC reaches a final loss 0.021 lower than the residual baseline and cuts HC's composite signal gain from ~3000 down to ≤1.6.
 
 ## The Big Picture
 
@@ -199,7 +199,7 @@ with $t_{\max} = 20$ row/column normalization iterations ($\mathcal{T}_r$ = norm
 
 **Why it matters:** the widened stream raises per-token I/O by roughly $n\times$ (Table 2 of the paper: HC's total I/O goes from $2C$ read / $C$ write for residuals to $(5n+1)C$ read / $(3n+1)C$ write) — enough to kill training throughput without fused kernels.
 
-**How it works:** three groups of fused kernels (implemented mostly in TileLang): ① fused scans computing $\tilde{\mathcal{H}}^{\text{pre}}, \tilde{\mathcal{H}}^{\text{post}}, \tilde{\mathcal{H}}^{\text{res}}$ plus the RMSNorm-scale in one pass over $\vec{\mathbf{x}}_l$, ② a single lightweight kernel for the small coefficient operations, ③ one kernel for the Sinkhorn-Knopp iteration with a custom recomputing backward. Fusing post/res with residual merging cuts the merge kernel's reads from $(3n+1)C$ to $(n+1)C$ and writes from $3nC$ to $nC$. RMSNorm is reordered to divide by the norm *after* the matmul, preserving math while cutting latency on the $nC$-wide state.
+**How it works:** three groups of fused kernels (implemented mostly in TileLang): ① fused scans computing $\tilde{\mathcal{H}}^{\text{pre}}, \tilde{\mathcal{H}}^{\text{post}}, \tilde{\mathcal{H}}^{\text{res}}$ plus the RMSNorm-scale in one pass over $\vec{\mathbf{x}}_l$, ② a single lightweight kernel for the small coefficient operations, ③ one kernel for the Sinkhorn-Knopp iteration with a custom recomputing backward. Fusing post/res with residual merging cuts the merge kernel's reads from $(3n+1)C$ to $(n+1)C$ and writes from $3nC$ to $nC$. RMSNorm is reordered to divide by the norm *after* the [matmul](../../terms/gemm.md), preserving math while cutting latency on the $nC$-wide state.
 
 **The intuition:** read the wide stream from memory once, do everything with it on-chip, write it back once.
 
@@ -229,7 +229,7 @@ which conveniently aligns with the layers-per-pipeline-stage.
 
 ### Overlapping communication in DualPipe
 
-**What it does:** mHC extends the DualPipe schedule so the extra cross-stage communication and stage-boundary recomputation overlap with compute instead of blocking it.
+**What it does:** mHC extends the DualPipe schedule so the extra cross-stage communication and stage-boundary recomputation overlap with compute instead of delaying it.
 
 **Why it matters:** pipeline parallelism already moves activations between stages; an $n$-fold wider stream means $n$-fold more communication, and stage-boundary recomputation adds compute — both would enlarge pipeline bubbles.
 

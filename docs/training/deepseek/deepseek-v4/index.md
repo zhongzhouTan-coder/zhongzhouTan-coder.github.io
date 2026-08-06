@@ -21,7 +21,7 @@ updated: 2026-08-06
 
 **What:** DeepSeek-V4 is a family of Mixture-of-Experts LLMs — Pro (1.6T/49B activated) and Flash (284B/13B activated) — that natively support million-token contexts through a novel hybrid attention architecture.
 
-**How:** Compressed Sparse Attention (CSA) compresses KV cache by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained [hyper-connections](../../../terms/hyper-connections.md), yields dramatic efficiency gains.
+**How:** Compressed Sparse Attention (CSA) compresses [KV cache](../../../terms/kv-cache.md) by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained [hyper-connections](../../../terms/hyper-connections.md), yields dramatic efficiency gains.
 
 **The number:** At 1M-token context, DeepSeek-V4-Pro uses only 27% of DeepSeek-V3.2's single-token inference FLOPs and 10% of its KV cache size. DeepSeek-V4-Flash uses 10% FLOPs and 7% KV cache.
 
@@ -42,7 +42,7 @@ Consider a standard LLM processing a 1-million-token context. With BF16 GQA8 (he
 Three problems compound:
 
 1. **Quadratic attention FLOPs** dominate at long contexts, making token generation painfully slow.
-2. **KV cache memory** grows linearly with sequence length, exhausting GPU HBM.
+2. **KV cache memory** grows linearly with sequence length, exhausting GPU [HBM](../../../terms/global-memory.md).
 3. **Training stability** degrades with deeper, wider models, causing loss spikes that simple rollbacks can't permanently fix.
 
 DeepSeek-V4 tackles all three jointly: compressed attention crushes FLOPs and KV cache, mHC stabilizes deep signal propagation, and Muon accelerates convergence.
@@ -205,7 +205,7 @@ CSA uses two KV series ($C^a$, $C^b$) with overlapping windows for compression; 
 
 **What it does:** A heterogeneous KV cache design separates classical attention cache (CSA/HCA compressed entries) from state cache (SWA + uncompressed tail tokens), with on-disk storage for shared-prefix reuse.
 
-**Why it matters:** Hybrid attention produces multiple KV entry types with different sizes, update rules, and eviction policies. PagedAttention can't handle this diversity natively.
+**Why it matters:** Hybrid attention produces multiple KV entry types with different sizes, update rules, and eviction policies. [PagedAttention](../../../terms/pagedattention.md) can't handle this diversity natively.
 
 **How it works:** See the KV cache layout diagram.
 

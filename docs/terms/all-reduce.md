@@ -16,11 +16,14 @@ aliases:
   - all_reduce
   - all-reduce collective
 appears_in:
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-overview.md
+  - docs/hardware/quantization/nvfp4.md
+  - docs/training/foundation-models/llama.md
+  - docs/training/parallelism/gpipe/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-  - docs/training/foundation-models/llama.md
-  - docs/frameworks/vllm/vllm-framework.md
-  - docs/hardware/quantization/nvfp4.md
 updated: 2026-08-06
 ---
 
@@ -75,6 +78,9 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
 - [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — LLaMA overlaps all-reduce communication with computation to hide gradient-synchronization latency.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-reduce for distributed amax and scale statistics.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md) — GPipe introduces synchronous micro-batch pipeline parallelism with re-materialization, achieving near-linear speedup when.
 
 ## Related Terms
 

@@ -39,7 +39,7 @@ Before GPipe, your options were:
 
 - **Data parallelism:** Each GPU holds a full model copy. Requires the model to fit on a single device. Useless for giant models.
 - **Naive model parallelism:** Split layers across GPUs. GPU 0 computes layer 0→1, sends activations to GPU 1, then sits idle while GPU 1 computes layer 2→3. At any moment, only one GPU works. 75% idle on 4 GPUs.
-- **Mesh-TensorFlow (SPMD):** Split individual matrix multiplications across devices. Works but floods the interconnect with AllReduce traffic. Requires high-speed links. Architecture-specific.
+- **Mesh-TensorFlow (SPMD):** Split individual matrix multiplications across devices. Works but floods the interconnect with [AllReduce](../../../terms/all-reduce.md) traffic. Requires high-speed links. Architecture-specific.
 - **PipeDream:** Pipelines forward and backward passes asynchronously. Higher utilization, but weight staleness means you need multiple parameter versions, eating memory and risking optimization issues.
 
 GPipe solves this with **synchronous** pipeline parallelism: you get the utilization of pipelining without the correctness risks of async.

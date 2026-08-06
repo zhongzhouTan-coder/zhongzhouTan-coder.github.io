@@ -63,7 +63,7 @@ flowchart TB
 
 Consider a transformer processing a 4096-token sequence with standard attention. The $QK^\top$ step produces a $4096 \times 4096$ attention matrix — 16 million entries. For a 32K context, that's over a billion entries. For a 1M context, one trillion. The softmax is what forces this intermediate matrix: it operates element-wise over $QK^\top$, so there's no way to compute it without first materializing the full $n \times n$ product.
 
-Su's key observation is that softmax is *the only thing* preventing us from exploiting matrix associativity. If we replace $e^{q_i^\top k_j}$ with any decomposable similarity $\phi(q_i)^\top \varphi(k_j)$, we can compute $\phi(Q)(\varphi(K)^\top V)$ instead — the inner product $\varphi(K)^\top V$ is only $d \times d$, independent of sequence length.
+Su's key observation is that softmax is *the only thing* preventing us from exploiting matrix associativity. If we replace $e^{q_i^\top k_j}$ with any decomposable similarity $\phi(q_i)^\top \varphi(k_j)$, we can compute $\phi(Q)(\varphi(K)^\top V)$ instead — the [inner product](../../terms/inner-product.md) $\varphi(K)^\top V$ is only $d \times d$, independent of sequence length.
 
 ## The Landscape
 
@@ -153,7 +153,7 @@ $$Attention_i = \frac{\phi(q_i)^\top \sum_{j=1}^i \varphi(k_j) v_j^\top}{\phi(q_
 
 This enables two implementation modes:
 
-1. **RNN mode (inference):** Maintain running states $S_i = S_{i-1} + \varphi(k_i)v_i^\top$ and $z_i = z_{i-1} + \varphi(k_i)$. Each new token costs $\mathcal{O}(d^2)$. Space is constant — no growing KV cache.
+1. **RNN mode (inference):** Maintain running states $S_i = S_{i-1} + \varphi(k_i)v_i^\top$ and $z_i = z_{i-1} + \varphi(k_i)$. Each new token costs $\mathcal{O}(d^2)$. Space is constant — no growing [KV cache](../../terms/kv-cache.md).
 
 2. **Parallel mode (training):** Compute all $\varphi(k_j)v_j^\top$ [outer products](../../terms/outer-product.md) simultaneously ($n \times d \times d$ tensor), then perform a cumulative sum over the sequence dimension. Fast but memory-intensive ($\mathcal{O}(n d^2)$).
 

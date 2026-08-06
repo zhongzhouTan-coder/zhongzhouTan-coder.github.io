@@ -103,7 +103,7 @@ Key file:
 What it does:
 
 - owns the executor and scheduler;
-- initializes KV cache capacity;
+- initializes [KV cache](../../terms/kv-cache.md) capacity;
 - runs the step loop;
 - calls `schedule -> execute_model -> update_from_output`.
 
@@ -119,7 +119,7 @@ What it does:
 
 - tracks `waiting` and `running` requests;
 - decides how many tokens each request gets this step;
-- handles chunked prefill, decode, preemption, prefix reuse, and structured-output dependencies;
+- handles [chunked prefill](../../terms/chunked-prefill.md), decode, preemption, prefix reuse, and structured-output dependencies;
 - builds `SchedulerOutput` for workers;
 - consumes model outputs and updates request state.
 
@@ -375,7 +375,7 @@ What you learn:
 Build:
 
 - fixed-size blocks;
-- per-request block tables;
+- per-request [block tables](../../terms/block-table.md);
 - block allocation and free.
 
 Achievement:
@@ -384,7 +384,7 @@ Achievement:
 
 What you learn:
 
-- how PagedAttention-style memory management changes admission and batching.
+- how [PagedAttention](../../terms/pagedattention.md)-style memory management changes admission and batching.
 
 ### Stage 6. Prefix cache reuse
 

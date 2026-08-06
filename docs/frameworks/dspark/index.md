@@ -174,7 +174,7 @@ The draft model shares the target embedding layer and language-model head, also 
 
 | Production component | DSpark adaptation |
 |---|---|
-| Drafter | Three MoE backbone layers, maximum block size `gamma = 5`, Markov head |
+| Drafter | Three [MoE](../../terms/mixture-of-experts.md) backbone layers, maximum block size `gamma = 5`, Markov head |
 | Scheduler | Uses confidence information from two steps earlier to choose the upcoming capacity limit |
 | Current-token ranking | Ranks candidate tokens by current cumulative confidence |
 | Kernels | Flatten variable-length verified prefixes and use marker tensors inside sparse attention |
@@ -251,4 +251,5 @@ DSpark's memorable frame is **speculative decoding as batch-capacity allocation*
 - **Read:** `raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf`
 - **Build on:** Eagle3, DFlash, and MTP-1 as the main comparison points discussed by the paper.
 - **Understand the context:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md) and [SGLang: Structured Language Model Programs](../sglang/index.md)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** Code is not listed in this repository at the time of writing.

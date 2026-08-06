@@ -10,4 +10,4 @@ updated: 2026-08-03
 
 # DeepSeek
 
-- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](deepseek-v4/index.md) — 1.6T/284B MoE models with CSA+HCA hybrid attention, mHC, and Muon optimizer; 27% FLOPs and 10% KV cache of V3.2 at 1M-token contexts.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](deepseek-v4/index.md) — 1.6T/284B [MoE](../../terms/mixture-of-experts.md) models with CSA+HCA hybrid attention, [mHC](../../terms/hyper-connections.md), and Muon optimizer; 27% FLOPs and 10% [KV cache](../../terms/kv-cache.md) of V3.2 at 1M-token contexts.

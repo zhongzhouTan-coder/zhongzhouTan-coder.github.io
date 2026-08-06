@@ -278,7 +278,7 @@ On a GB300 NVL72 rack-scale system (40 TB total memory), this enables larger mod
 
 ### Energy efficiency
 
-NVIDIA reports up to 50× better energy efficiency (Joules per token) for Blackwell Ultra versus Hopper H100 on GPT-MoE-1.8T, driven by FP4 precision and architectural improvements.
+NVIDIA reports up to 50× better energy efficiency (Joules per token) for Blackwell Ultra versus Hopper H100 on GPT-[MoE](../../terms/mixture-of-experts.md)-1.8T, driven by FP4 precision and architectural improvements.
 
 ### The mechanism behind the numbers
 

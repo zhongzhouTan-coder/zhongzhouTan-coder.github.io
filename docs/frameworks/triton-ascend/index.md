@@ -25,7 +25,7 @@ updated: 2026-07-28
 
 **How:** It registers as a third-party Triton backend, intercepts the standard compilation pipeline with Ascend-specific MLIR passes (TTIR → HIVM → LLVM → Linalg), then invokes Huawei's Bisheng compiler to produce NPU binary, loaded and launched via the ACL (Ascend Compute Language) runtime.
 
-**The number:** The backend supports ~85% of Triton's Python APIs with contiguous memory access patterns, covering matmul, flash-attention, convolution, and element-wise kernels.
+**The number:** The backend supports ~85% of Triton's Python APIs with contiguous memory access patterns, covering [matmul](../../terms/gemm.md), flash-attention, convolution, and element-wise kernels.
 
 ## The Big Picture
 

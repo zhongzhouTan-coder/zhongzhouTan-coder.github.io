@@ -63,7 +63,7 @@ The root cause is twofold:
 1. **Attention sink:** Softmax normalization creates a variance cascade — the first token's embedding has dramatically higher variance, pulling most attention mass toward it. Without the first token in the window, the model's attention distribution collapses.
 2. **Exponential sparsification:** `[1.5, 5.0, 2.4, 0.5, 1.3]` softmaxes to `[0.03, 0.88, 0.07, 0.01, 0.02]` — 88% mass on one token. In SWA, discarded tokens carry no residual influence because softmax already zeroed them out.
 
-Existing solutions (Mamba, linear attention, SSMs) fix efficiency but abandon the Transformer architecture. SWAT asks: can we keep the Transformer and train it to work with sliding windows from day one?
+Existing solutions (Mamba, [linear attention](../../../terms/linear-attention.md), SSMs) fix efficiency but abandon the Transformer architecture. SWAT asks: can we keep the Transformer and train it to work with sliding windows from day one?
 
 ## The Landscape
 
@@ -175,7 +175,7 @@ Negative slopes favor small $(m-n)$ (recent tokens); positive slopes favor large
 
 **Why it matters:** Sigmoid removes the implicit positional signal that softmax's variance propagation provided. Without explicit positions, sigmoid attention training becomes unstable — the loss oscillates in later training stages. RoPE restores the position signal through an orthogonal mechanism.
 
-**How it works:** Standard RoPE is applied to queries and keys before the dot product: $(R_{\Theta,m}^d q_m)^T (R_{\Theta,n}^d k_n)$. The rotation encodes relative position $(m-n)$ directly in the inner product, independent of the attention activation function.
+**How it works:** Standard RoPE is applied to queries and keys before the dot product: $(R_{\Theta,m}^d q_m)^T (R_{\Theta,n}^d k_n)$. The rotation encodes relative position $(m-n)$ directly in the [inner product](../../../terms/inner-product.md), independent of the attention activation function.
 
 **The intuition:** Softmax provided position through *which tokens dominate*; RoPE provides position through *how tokens relate*. Sigmoid replaces the former, RoPE supplies the latter.
 
@@ -251,4 +251,4 @@ The SWA training ablation (Table 2) demonstrates the fundamental advantage: Slid
 - **Longformer (original SWA):** Beltagy et al., "Longformer: The Long-Document Transformer" (arXiv:2004.05150) — introduced sliding window attention for Transformers
 - **ALiBi:** Press et al., "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (arXiv:2108.12409) — the original ALiBi position embedding method
 - **RoPE:** Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding" (arXiv:2104.09864) — Rotary Position Embedding
-- **Related docs:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md) — another sparse attention approach co-designed with GQA; [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md) — sparse attention with lightning indexer
+- **Related docs:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md) — another sparse attention approach co-designed with GQA; [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md) — sparse attention with [lightning indexer](../../../terms/lightning-indexer.md)

@@ -14,11 +14,24 @@ aliases:
   - linear transformer
   - kernelized attention
 appears_in:
+  - docs/algorithms/foundations/index.md
+  - docs/algorithms/foundations/recurrent-neural-networks/index.md
+  - docs/algorithms/foundations/transformer.md
+  - docs/algorithms/index.md
   - docs/algorithms/linear-attention/index.md
   - docs/algorithms/linear-attention/linear-attention-without-softmax.md
+  - docs/frameworks/index.md
+  - docs/frameworks/triton/triton-in-vllm.md
+  - docs/frameworks/vllm-ascend/index.md
+  - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
+  - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
+  - docs/frameworks/vllm/vllm-overview.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
-  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/efficient-attention/swat-sliding-window-attention/index.md
+  - docs/training/index.md
+  - docs/training/kimi/index.md
   - docs/training/kimi/kimi-k3/index.md
+  - docs/training/kimi/kimi-linear/index.md
 updated: 2026-08-06
 ---
 
@@ -77,6 +90,19 @@ Linear attention usually changes or approximates the softmax kernel, and its fix
 - [Gated Delta Networks](../training/efficient-attention/gated-delta-networks/index.md) — Adds adaptive global decay and key-targeted delta updates to a matrix-valued recurrent state.
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Extends the family with channel-wise forgetting, delta-rule updates, and periodic full-attention layers.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales Kimi-family linear attention to a 2.8T MoE with lower-bounded decay for BF16 Tensor Core kernels.
+- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Contrasts Qwen3.5's GDN recurrent layers with its full-attention GQA/FIA layers under one scheduler plan.
+- [Attention Foundations](../algorithms/foundations/index.md) — Foundational sequence-modeling concepts behind attention-based LLMs: the Transformer, softmax, and RNN-to-LSTM background.
+- [Recurrent Neural Networks: From RNN to LSTM](../algorithms/foundations/recurrent-neural-networks/index.md) — A beginner-oriented explanation of recurrent hidden state, shared weights across sequence steps, long-term dependency failures.
+- [The Transformer: Attention Is All You Need](../algorithms/foundations/transformer.md) — The foundational paper that introduced the Transformer architecture, dispensing with recurrence and convolutions entirely in.
+- [Algorithms](../algorithms/index.md) — Algorithm pages covering inference algorithms, attention kernels, and scheduling methods.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM Ascend](../frameworks/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
+- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md) — A code-reading tour of the shared qwen3_5-family inference path: Qwen3.5-27B / Qwen3.6-27B (dense hybrid Mamba-Transformer.
+- [SWAT: Sliding Window Attention Training](../training/efficient-attention/swat-sliding-window-attention/index.md) — Trains transformers from scratch with sigmoid-based sliding window attention, replacing softmax to eliminate attention sink and.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [Kimi](../training/kimi/index.md) — Kimi model family: the Kimi Linear attention architecture and the Kimi K3 frontier model.
 
 ## Related Terms
 

@@ -615,7 +615,7 @@ The Transformer's advantage comes from two sources: (1) **parallelizability** �
 
 | Failure mode | When it happens | Impact |
 |---|---|---|
-| Quadratic complexity ($O(n^2)$ memory/time) | Long sequences ($n > 1000$) | Memory explodes for long documents, genomes, high-res images; motivates later sparse/linear attention work (FlashAttention, Performer, etc.) |
+| Quadratic complexity ($O(n^2)$ memory/time) | Long sequences ($n > 1000$) | Memory explodes for long documents, genomes, high-res images; motivates later sparse/[linear attention](../../terms/linear-attention.md) work (FlashAttention, Performer, etc.) |
 | No built-in positional structure | Tasks requiring precise relative positioning beyond what sinusoids capture | Sinusoidal encoding captures relative position but may struggle with hierarchical or recursive structure; learned positional encodings or relative position biases (Shaw 2018, T5) later improved this |
 | Autoregressive decoding is still sequential | Generation at inference time | Training is parallel, but generation still produces one token at a time — each step depends on all previous steps; motivates speculative decoding, non-autoregressive models |
 | Post-layer-norm training instability | Deep models or large learning rates | The original "Add then Norm" order can cause training instability in very deep networks; GPT-2 and later switched to pre-norm (Norm then Add) |
@@ -631,4 +631,5 @@ The Transformer's advantage comes from two sources: (1) **parallelizability** �
 - **Read:** [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) · The Annotated Transformer (Harvard NLP)
 - **Build on:** BERT (Devlin et al. 2019), GPT series (Radford et al.), T5 (Raffel et al. 2020), Vision Transformer (Dosovitskiy et al. 2021)
 - **Understand the context:** [Collaborative Multi-Head Attention](../attention-variants/collaborative-attention.md) (head redundancy) · [FlashAttention](../flashattention/flashattention.md) (IO-aware attention) · [Softmax](softmax.md) (the attention nonlinearity) · [vLLM Framework](../../frameworks/vllm/vllm-framework.md) (Transformer serving with PagedAttention)
+- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind vLLM's Transformer serving.
 - **Reproduce:** Original code at `tensorflow/tensor2tensor` (GitHub)

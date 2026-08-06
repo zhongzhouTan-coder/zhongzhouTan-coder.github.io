@@ -26,7 +26,7 @@ The forward path is:
 
 1. upstream model code calls `FusedMoE`;
 2. <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/patch/platform/patch_fused_moe.py#L45" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/patch/platform/patch_fused_moe.py" data-code-line="45"><code>patch/platform/patch_fused_moe.py</code></a> replaces the factory with <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/ops/fused_moe/fused_moe.py#L311" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/ops/fused_moe/fused_moe.py" data-code-line="311"><code>AscendMoERunner</code></a>;
-3. <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/ops/fused_moe/fused_moe.py#L620" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/ops/fused_moe/fused_moe.py" data-code-line="620"><code>AscendMoERunner.no_shared_forward_impl()</code></a> prepares the tensor layout for AllGather, All2All, or MC2;
+3. <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/ops/fused_moe/fused_moe.py#L620" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/ops/fused_moe/fused_moe.py" data-code-line="620"><code>AscendMoERunner.no_shared_forward_impl()</code></a> prepares the tensor layout for [AllGather](../../terms/all-gather.md), All2All, or MC2;
 4. <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/ops/fused_moe/experts_selector.py#L29" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/ops/fused_moe/experts_selector.py" data-code-line="29"><code>select_experts()</code></a> chooses top-k experts with fused Ascend top-k, the hash/sqrtsoftplus path, or native fallback;
 5. typed MoE stage payloads carry weights, routing maps, quantization metadata, and combine metadata across stages;
 6. token dispatch sends tokens to local physical experts;
@@ -34,7 +34,7 @@ The forward path is:
 8. token combine and finalize restore the expected token layout;
 9. routed-expert capture and dynamic EPLB observe and rebalance the same routing stream.
 
-Compared with the older `8645122088f5...` page, the new code-reading emphasis is the typed MoE stage-contract refactor, routed-expert capture under DP/SP layouts, and the more explicit MC2/Fused-MC2 plus EPLB interaction. Remote `main` was verified at `e3bb5f570f0b7d7fef9df3190a450052bee090cc`; the commits after the initial local `32a59d4e349c...` checkout did not touch the inspected MoE/EPLB/routed-capture files.
+Compared with the older `8645122088f5...` page, the new code-reading emphasis is the typed MoE stage-contract refactor, routed-expert capture under DP/[SP](../../terms/sequence-parallelism.md) layouts, and the more explicit MC2/Fused-MC2 plus EPLB interaction. Remote `main` was verified at `e3bb5f570f0b7d7fef9df3190a450052bee090cc`; the commits after the initial local `32a59d4e349c...` checkout did not touch the inspected MoE/EPLB/routed-capture files.
 
 [Mermaid source](../assets/vllm-ascend-kimi-k3-moe-forward.mmd)
 
@@ -62,7 +62,7 @@ flowchart TD
 
 Kimi K3 is a large routed MoE model. In upstream vLLM, K3 has a concrete model implementation; in this vllm-ascend plugin revision, the local repository supplies the hardware substrate that upstream model code lands on.
 
-The plugin has Kimi-adjacent pieces, including <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/patch/worker/patch_kimi_k25.py#L44" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/patch/worker/patch_kimi_k25.py" data-code-line="44"><code>patch/worker/patch_kimi_k25.py</code></a> and KDA Triton kernels under `ops/triton/kda/`, but the MoE path itself is generic. The page is about how Kimi K3-style routed experts run once upstream model construction reaches `FusedMoE`.
+The plugin has Kimi-adjacent pieces, including <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/patch/worker/patch_kimi_k25.py#L44" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/patch/worker/patch_kimi_k25.py" data-code-line="44"><code>patch/worker/patch_kimi_k25.py</code></a> and [KDA](../../terms/kimi-delta-attention.md) Triton kernels under `ops/triton/kda/`, but the MoE path itself is generic. The page is about how Kimi K3-style routed experts run once upstream model construction reaches `FusedMoE`.
 
 The optional `xlite` runtime is also not the K3 answer in this revision. <a class="code-link" href="../../../external-repos/vllm-ascend-e3bb5f570/vllm_ascend/xlite/xlite.py#L454" data-code-repo="vllm-ascend-e3bb5f570f0b" data-code-path="vllm_ascend/xlite/xlite.py" data-code-line="454"><code>xlite/xlite.py</code></a> registers graph adapters for Qwen MoE, GLM MoE, and MiniMax M2. It does not register a Kimi K3 adapter, so the reliable K3 path remains the patched `FusedMoE` runner.
 
@@ -150,7 +150,7 @@ The dispatch, MLP, and combine path now receives structured sub-payloads for wei
 | Mode | Dispatch | Combine | When It Matters |
 |---|---|---|---|
 | AllGather | `DeviceOperator.npu_moe_init_routing()` sorts tokens and returns expert token counts. | `DeviceOperator.npu_moe_token_unpermute()` restores token order and applies probabilities. | Default broad compatibility and single-EP cases. |
-| All2All | `torch_npu.npu_moe_token_permute()`, async EP all-to-all, local expert post-sort. | Expert-output unpermute, async all-to-all back, final token unpermute. | EP deployments where All2All beats AllGather. |
+| All2All | `torch_npu.npu_moe_token_permute()`, async EP [all-to-all](../../terms/all-to-all.md), local expert post-sort. | Expert-output unpermute, async all-to-all back, final token unpermute. | EP deployments where All2All beats AllGather. |
 | MC2 | `torch_npu.npu_moe_distribute_dispatch(_v2)` with HCCL groups, EP rank/world, quant mode, hierarchy communication, and optional `mc2_mask`. | `torch_npu.npu_moe_distribute_combine(_v2)`. | Ascend communication-compute optimized routed MoE. |
 | Fused MC2 | CANN MegaMoe when available, otherwise `_C_ascend.dispatch_ffn_combine()` for `enable_fused_mc2 == 1`. | Fused op returns already combined output. | Quantized or fused routes where dispatch, FFN, and combine can collapse. |
 

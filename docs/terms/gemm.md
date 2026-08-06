@@ -15,13 +15,32 @@ aliases:
   - matrix multiply
   - matmul
 appears_in:
+  - docs/algorithms/flashattention/flashattention-2.md
   - docs/algorithms/flashattention/flashattention-3.md
-  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/algorithms/flashattention/flashattention-4.md
+  - docs/algorithms/flashattention/index.md
+  - docs/algorithms/index.md
+  - docs/algorithms/kronecker-product.md
+  - docs/frameworks/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
+  - docs/frameworks/triton-ascend/index.md
   - docs/frameworks/triton-ascend/operator-mechanisms.md
+  - docs/frameworks/triton/index.md
+  - docs/frameworks/triton/triton-in-vllm.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
+  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+  - docs/hardware/index.md
+  - docs/hardware/quantization/flatquant/index.md
+  - docs/hardware/quantization/index.md
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/spatial-gemm.md
+  - docs/training/efficient-attention/gated-delta-networks/index.md
+  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/mhc/index.md
+  - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-  - docs/hardware/quantization/flatquant/index.md
 updated: 2026-08-04
 ---
 
@@ -63,6 +82,25 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
 - [Megatron-LM](../training/parallelism/megatron-lm/index.md) — Splits transformer GEMMs column- and row-wise across GPUs for tensor parallelism.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
+- [FlashAttention](../algorithms/flashattention/index.md) — The FlashAttention algorithm and kernel family across GPU generations: IO-aware exact attention, parallelism, Hopper asynchrony.
+- [Algorithms](../algorithms/index.md) — Algorithm pages covering inference algorithms, attention kernels, and scheduling methods.
+- [Kronecker Product](../algorithms/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/triton/index.md) — The original Triton language and compiler for expressing tiled neural network computations as portable, high-performance GPU.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
+- [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/triton-ascend/index.md) — A beginner-friendly tour of triton-ascend: how it bridges the Triton GPU kernel language to Huawei Ascend NPU hardware through a.
+- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How vllm-ascend quantizes the DeepSeek-V4 Lightning Indexer to 8 bits (C8): INT8 keys with FP16 scales on 910B/A2/A3, FP8 e4m3fn.
+- [Hardware and Numerics](../hardware/index.md) — Hardware and numerics pages covering accelerator features, precision formats, and related implementation details.
+- [Quantization](../hardware/quantization/index.md) — Post-training quantization methods and low-precision numeric formats for LLM inference.
+- [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Gated DeltaNet combines global state decay with key-targeted delta updates to improve fixed-state sequence memory while.
+- [Kimi Linear: Expressive Efficient Attention Architecture](../training/kimi/kimi-linear/index.md) — Kimi Linear is a hybrid linear attention architecture that for the first time outperforms full attention across short-context.
+- [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — DeepSeek's mHC projects Hyper-Connections' residual mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp.
+- [Training Parallelism](../training/parallelism/index.md) — Data, tensor, pipeline, and sequence parallelism techniques for large-model training.
 
 ## Related Terms
 

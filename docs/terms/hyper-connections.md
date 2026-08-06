@@ -13,8 +13,15 @@ aliases:
   - mhc
   - manifold-constrained-hyper-connections
 appears_in:
-  - docs/training/mhc/index.md
+  - docs/frameworks/deepseek/index.md
+  - docs/frameworks/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/index.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/vllm-ascend/index.md
   - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/index.md
+  - docs/training/index.md
+  - docs/training/mhc/index.md
 updated: 2026-08-06
 ---
 
@@ -52,6 +59,13 @@ Each mapping is a sum of a dynamic (input-dependent) term and a static bias term
 
 - [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — The paper that introduces mHC and analyzes HC's instability.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — Deploys mHC as the residual mechanism in a 1.6T/284B MoE.
+- [DeepSeek](../frameworks/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [vLLM Ascend](../frameworks/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
+- [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 
 ## Related Terms
 

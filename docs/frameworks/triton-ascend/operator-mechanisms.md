@@ -394,7 +394,7 @@ A useful progression is:
 4. QK + scale + mask;
 5. QK + online softmax;
 6. QK + softmax + PV;
-7. add long-sequence loops and a fragmented KV cache.
+7. add long-sequence loops and a fragmented [KV cache](../../terms/kv-cache.md).
 
 ### 6.3 The Cube-Vector Boundary in Attention
 

@@ -13,9 +13,10 @@ aliases:
   - matrix direct product
   - tensor product of matrices
 appears_in:
+  - docs/algorithms/index.md
   - docs/algorithms/kronecker-product.md
-  - docs/hardware/quantization/flatquant/index.md
   - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/hardware/quantization/flatquant/index.md
 updated: 2026-08-06
 ---
 
@@ -55,6 +56,7 @@ which lets a full matrix transformation on `X` be re-expressed as a Kronecker pr
 - [Kronecker Product reference](../algorithms/kronecker-product.md) — Hosts the MathWorld source and the full definition, identities, and FlatQuant tie-in.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Factorizes each layer's learned affine transform `P` as `P1 ⊗ P2` so it runs online as two small matrix multiplications (the Kronecker factorization deep dive).
 - [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — The Ascend NPU stores FlatQuant's Kronecker factors as `left_trans`/`right_trans` and applies them via the `npu_kronecker_quant` activation quantizer.
+- [Algorithms](../algorithms/index.md) — Algorithm pages covering inference algorithms, attention kernels, and scheduling methods.
 
 ## Related Terms
 

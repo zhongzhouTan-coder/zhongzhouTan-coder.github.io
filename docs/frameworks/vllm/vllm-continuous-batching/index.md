@@ -121,7 +121,7 @@ lengths. They solve different halves of the same serving problem.
 | Scheduling | Which requests advance now? | Per-step running/waiting traversal |
 | Compute budgeting | How much work fits this iteration? | `max_num_scheduled_tokens` |
 | Concurrency | How many live sequences fit? | `max_num_seqs` |
-| State memory | Where does each request's growing history live? | Paged KV blocks and block tables |
+| State memory | Where does each request's growing history live? | Paged KV blocks and [block tables](../../../terms/block-table.md) |
 | Execution | How is changing work presented efficiently? | Worker-side persistent batch |
 | Lifecycle | What happens at stop or memory pressure? | Block free or preempt/requeue |
 
@@ -218,7 +218,7 @@ waiting for every old row to finish.
 
 With [chunked prefill](../../../terms/chunked-prefill.md) enabled, a long prompt can take only the remaining token
 budget. It becomes a running prefill chunk and continues later rather than
-blocking all shorter work behind one full prompt.
+delaying all shorter work behind one full prompt.
 
 **The intuition:** Admission is opportunistic but bounded; “continuous” does
 not mean “unlimited.”

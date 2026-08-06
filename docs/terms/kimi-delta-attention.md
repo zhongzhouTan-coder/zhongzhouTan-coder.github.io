@@ -11,9 +11,16 @@ sources:
 aliases:
   - KDA
 appears_in:
-  - docs/training/kimi/kimi-linear/index.md
-  - docs/training/kimi/kimi-k3/index.md
+  - docs/frameworks/index.md
+  - docs/frameworks/triton/triton-in-vllm.md
+  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
+  - docs/frameworks/vllm/index.md
   - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+  - docs/training/efficient-attention/gated-delta-networks/index.md
+  - docs/training/index.md
+  - docs/training/kimi/index.md
+  - docs/training/kimi/kimi-k3/index.md
+  - docs/training/kimi/kimi-linear/index.md
 updated: 2026-08-06
 ---
 
@@ -49,6 +56,13 @@ KDA is still a compressed recurrent memory, so it can blur exact token identitie
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Introduces KDA as the central 3:1 hybrid attention operator.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales KDA to a 2.8T MoE and modifies decay numerics for large-scale training kernels.
 - [vLLM Kimi K3 Code Reading](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Traces the deployed KDA path in vLLM.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Gated DeltaNet combines global state decay with key-targeted delta updates to improve fixed-state sequence memory while.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [Kimi](../training/kimi/index.md) — Kimi model family: the Kimi Linear attention architecture and the Kimi K3 frontier model.
 
 ## Related Terms
 

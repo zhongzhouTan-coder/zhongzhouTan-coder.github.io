@@ -21,7 +21,7 @@ updated: 2026-07-25
 
 **What:** LLaMA is a family of **7B, 13B, 33B, and 65B decoder-only foundation models** trained to maximize performance under practical inference budgets rather than simply maximize parameter count.
 
-**How:** Meta trains standard Transformer language models on **1.0T-1.4T tokens from public datasets only**, using GPT-3/PaLM-era architecture improvements, Chinchilla-inspired data scaling, and training-system optimizations from xFormers and model/sequence parallelism.
+**How:** Meta trains standard Transformer language models on **1.0T-1.4T tokens from public datasets only**, using GPT-3/PaLM-era architecture improvements, Chinchilla-inspired data scaling, and training-system optimizations from xFormers and model/[sequence parallelism](../../terms/sequence-parallelism.md).
 
 **The number:** **LLaMA-13B outperforms GPT-3 175B on most reported benchmarks despite being more than 10x smaller**, while LLaMA-65B is competitive with Chinchilla-70B and PaLM-540B.
 

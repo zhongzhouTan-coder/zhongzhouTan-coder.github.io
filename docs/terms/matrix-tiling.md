@@ -14,9 +14,10 @@ aliases:
   - tile-based computation
   - register blocking
 appears_in:
+  - docs/algorithms/flashattention/flashattention-4.md
   - docs/algorithms/flashattention/flashattention.md
-  - docs/frameworks/triton/index.md
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
+  - docs/frameworks/triton/index.md
   - docs/hardware/spatial-gemm.md
 updated: 2026-08-06
 ---
@@ -58,6 +59,7 @@ The Spatial tutorial expresses this with `Foreach(M by bm, N by bn)` over output
 - [FlashAttention](../algorithms/flashattention/flashattention.md) — IO-aware tiling is the core trick that makes exact attention memory-bandwidth-optimal.
 - [Triton](../frameworks/triton/index.md) — Elevates tiles to first-class language citizens; hierarchical tiling is the compiler's core optimization.
 - [CANNBot Skills Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — Tiling is one of the 25 optimization points and a required pre-analysis step before profiling.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
 
 ## Related Terms
 

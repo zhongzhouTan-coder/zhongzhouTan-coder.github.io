@@ -179,7 +179,7 @@ Input X (same on all GPUs, replicated)
 | **KV cache memory** | Evenly split | Evenly split — **this is the key win** |
 | Communication | 2 all-reduces/layer | 2 all-reduces/layer (tensors are small) |
 
-During decode, each GPU appends $K_i, V_i$ to its **local KV cache shard**. The column-parallel split divides KV cache memory by $t$ — the dominant memory consumer in long-context serving — at the cost of all-reducing two small $[1, d]$ vectors per layer per token.
+During decode, each GPU appends $K_i, V_i$ to its **local [KV cache](../../../terms/kv-cache.md) shard**. The column-parallel split divides KV cache memory by $t$ — the dominant memory consumer in long-context serving — at the cost of all-reducing two small $[1, d]$ vectors per layer per token.
 
 **The intuition:** **The QKV weight is head-interleaved at layout time, not split at runtime.** A one-time reordering at initialization ensures that any contiguous column partition gives each GPU complete, independent attention heads.
 

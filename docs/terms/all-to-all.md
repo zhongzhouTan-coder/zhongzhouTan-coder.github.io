@@ -14,6 +14,9 @@ aliases:
   - all-to-all collective
   - all_to_all
 appears_in:
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
 updated: 2026-08-06
 ---
 
@@ -49,7 +52,9 @@ In NCCL, all-to-all is implemented as a collective primitive alongside the other
 
 ## Where It Appears
 
-*No local consumer page is registered yet.*
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
 
 ## Related Terms
 

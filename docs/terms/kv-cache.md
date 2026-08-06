@@ -15,13 +15,39 @@ aliases:
   - key-value cache
   - key/value cache
 appears_in:
+  - docs/algorithms/attention-variants/deepseek-v2-mla.md
+  - docs/algorithms/attention-variants/grouped-query-attention/index.md
+  - docs/algorithms/attention-variants/multi-query-attention.md
+  - docs/algorithms/foundations/recurrent-neural-networks/index.md
   - docs/algorithms/linear-attention/index.md
-  - docs/training/kimi/kimi-linear/index.md
-  - docs/training/kimi/kimi-k3/index.md
-  - docs/frameworks/vllm/vllm-continuous-batching/index.md
-  - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/hardware/quantization/flatquant/index.md
+  - docs/algorithms/linear-attention/linear-attention-without-softmax.md
+  - docs/benchmarks/serving-perf/aisbench-vs-evalscope-perf.md
+  - docs/frameworks/deepseek/index.md
+  - docs/frameworks/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/index.md
+  - docs/frameworks/sarathi/index.md
+  - docs/frameworks/sglang/index.md
+  - docs/frameworks/triton-ascend/operator-mechanisms.md
+  - docs/frameworks/triton/triton-in-vllm.md
   - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
+  - docs/frameworks/vllm-ascend/index.md
+  - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
+  - docs/frameworks/vllm/index.md
+  - docs/frameworks/vllm/vllm-block-management/index.md
+  - docs/frameworks/vllm/vllm-code-learning-path.md
+  - docs/frameworks/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+  - docs/frameworks/vllm/vllm-overview.md
+  - docs/hardware/quantization/flatquant/index.md
+  - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/index.md
+  - docs/training/index.md
+  - docs/training/kimi/kimi-k3/index.md
+  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/parallelism/megatron-lm/index.md
 updated: 2026-08-06
 ---
 
@@ -55,6 +81,32 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Details how paged KV blocks, reference counts, and prefix caching implement the cache's paged storage.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Applies per-head learnable affine transforms to keys and values before low-bit KV-cache quantization (down to 2 bits).
 - [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how Ascend attention backends allocate and consume vLLM-compatible KV caches.
+- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention-variants/deepseek-v2-mla.md) — Explains DeepSeek-V2's Multi-head Latent Attention: low-rank joint key/value compression, decoupled RoPE, MoE-scale inference.
+- [Grouped-Query Attention in Llama 2](../algorithms/attention-variants/grouped-query-attention/index.md) — Explains why Llama 2 uses grouped-query attention for its 34B and 70B models: it cuts KV-cache pressure like multi-query.
+- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention-variants/multi-query-attention.md) — Replaces per-head key/value projections with a single shared K/V pair across all attention heads, eliminating the heads.
+- [Recurrent Neural Networks: From RNN to LSTM](../algorithms/foundations/recurrent-neural-networks/index.md) — A beginner-oriented explanation of recurrent hidden state, shared weights across sequence steps, long-term dependency failures.
+- [线性Attention的探索：Attention必须有个Softmax吗？](../algorithms/linear-attention/linear-attention-without-softmax.md) — Su Jianlin's influential blog survey on why softmax is the bottleneck of standard attention, how removing it enables O(n) linear.
+- [AISBench Benchmark vs. EvalScope Perf](../benchmarks/serving-perf/aisbench-vs-evalscope-perf.md) — Competitive analysis of AISBench Benchmark and EvalScope Perf across load generation, workloads, metrics, extensibility.
+- [DeepSeek](../frameworks/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
+- [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [Triton Ascend Operator Mechanisms: Vector, Cube, and CV Fusion](../frameworks/triton-ascend/operator-mechanisms.md) — A practical learning path for Triton Ascend Vector, Cube, and CV fusion operators, grounded in AI Core compute units, on-chip.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — vLLM framework design, PagedAttention memory management, scheduling, decoding support, and serving performance results.
+- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How vllm-ascend quantizes the DeepSeek-V4 Lightning Indexer to 8 bits (C8): INT8 keys with FP16 scales on 910B/A2/A3, FP8 e4m3fn.
+- [vLLM Ascend](../frameworks/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
+- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md) — A code-reading tour of the shared qwen3_5-family inference path: Qwen3.5-27B / Qwen3.6-27B (dense hybrid Mamba-Transformer.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
+- [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P.
 
 ## Related Terms
 

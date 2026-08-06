@@ -11,8 +11,13 @@ sources:
 aliases:
   - chunked-prefills
 appears_in:
+  - docs/frameworks/index.md
   - docs/frameworks/sarathi/index.md
+  - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
+  - docs/frameworks/vllm/index.md
+  - docs/frameworks/vllm/vllm-code-learning-path.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/vllm/vllm-overview.md
 updated: 2026-08-06
 ---
 
@@ -40,3 +45,8 @@ The chunk size is a tradeoff: smaller chunks provide more opportunities to inter
 
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) - combines chunked prefills with decode-maximal batching and pipeline scheduling.
 - [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) - implements prompt chunks under a token-budget scheduler in a modern serving engine.
+- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) - follows the prompt-chunk cursor from vLLM scheduling into Ascend mixed FIA execution.
+- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.

@@ -10,6 +10,6 @@ updated: 2026-08-03
 
 # Efficient Attention Training
 
-- [MiniMax Sparse Attention (MSA)](minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss.
+- [MiniMax Sparse Attention (MSA)](minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight [Index Branch](../../terms/lightning-indexer.md) selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss.
 - [SWAT: Sliding Window Attention Training](swat-sliding-window-attention/index.md) — Sigmoid-based sliding window attention training: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability.
-- [Gated Delta Networks: Improving Mamba2 with Delta Rule](gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction, decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.
+- [Gated Delta Networks: Improving Mamba2 with Delta Rule](gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction ([Delta Rule](../../terms/delta-rule.md)); decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.

@@ -170,7 +170,7 @@ $$R_G(\tau, v, r) = V_{\text{alid}}(\tau, v, r) \cdot \cos(g_\tau, G_v)$$
 
 The validation factor zeros out invalid tasks, and the cosine term measures directional alignment.
 
-**Why cosine (not inner product):** A first-order Taylor expansion shows the validation improvement from one gradient step on a candidate task is $\Delta J_{\text{val}} \approx \eta \|g_\tau\| \|G_v\| \cos(g_\tau, G_v)$. Cosine normalizes out $\|g_\tau\|$, which can be confounded by task length and patch complexity — a long task with a large gradient magnitude isn't necessarily more useful than a short one.
+**Why cosine (not [inner product](../../../terms/inner-product.md)):** A first-order Taylor expansion shows the validation improvement from one gradient step on a candidate task is $\Delta J_{\text{val}} \approx \eta \|g_\tau\| \|G_v\| \cos(g_\tau, G_v)$. Cosine normalizes out $\|g_\tau\|$, which can be confounded by task length and patch complexity — a long task with a large gradient magnitude isn't necessarily more useful than a short one.
 
 **The intuition:** Imagine you have a set of trusted benchmark tasks you care about. Before adding a generated task to training, ask: "If I train the Solver on this task, will the parameter update also push performance up on my trusted tasks?" The cosine similarity answers this by measuring whether the gradient directions point the same way.
 

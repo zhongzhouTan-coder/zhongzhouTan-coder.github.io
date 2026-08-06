@@ -154,13 +154,13 @@ Kimi K3 notation mixes architecture, MoE routing, RL, and distributed-training s
 
 **What it does:** Adds KDA Context Parallelism, MoonEP balanced expert-parallel training, memory/offload policies, and persistent rollout infrastructure.
 
-**Why it matters:** K3's architecture would be mostly theoretical without systems work: KDA is recurrent across context shards, MoE routing creates imbalanced expert loads, 2.8T parameters exceed device memory, and 1M-token rollouts create severe cache pressure.
+**Why it matters:** K3's architecture would be mostly theoretical without systems work: KDA is recurrent across context shards, MoE routing creates imbalanced expert loads, 2.8T parameters exceed [device memory](../../../terms/global-memory.md), and 1M-token rollouts create severe cache pressure.
 
 **How it works:**
 
 | Infrastructure piece | Core mechanism | Why it matters |
 |---|---|---|
-| KDA Context Parallelism | All-gather fixed-size recurrent fragments and reconstruct states with prefix-scan composition. | Makes KDA train over sequence shards with linear compute scaling. |
+| KDA Context Parallelism | [All-gather](../../../terms/all-gather.md) fixed-size recurrent fragments and reconstruct states with prefix-scan composition. | Makes KDA train over sequence shards with linear compute scaling. |
 | MoonEP | Online redundant-expert planning with at most $E/R$ redundant experts per rank. | Gives perfectly balanced expert-parallel token loads and static shapes. |
 | Unified activation manager | Tensor-level recompute, quantize, offload, and remote-offload policies. | Keeps activation memory bounded without entangling model code. |
 | External KV cache pool | Write back evicted idle prefixes to CPU DRAM and prefetch them before reuse. | Preserves long rollout prefixes without requiring all cache blocks on GPU. |

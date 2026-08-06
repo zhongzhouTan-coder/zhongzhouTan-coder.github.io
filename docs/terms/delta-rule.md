@@ -13,9 +13,12 @@ aliases:
   - delta update rule
   - Widrow-Hoff rule
 appears_in:
+  - docs/frameworks/triton/triton-in-vllm.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
-  - docs/training/kimi/kimi-linear/index.md
+  - docs/training/efficient-attention/index.md
+  - docs/training/index.md
   - docs/training/kimi/kimi-k3/index.md
+  - docs/training/kimi/kimi-linear/index.md
 updated: 2026-07-29
 ---
 
@@ -51,6 +54,9 @@ The update is only as selective as the learned keys: overlapping key directions 
 - [Gated Delta Networks](../training/efficient-attention/gated-delta-networks/index.md) — Combines the delta rule with data-dependent scalar decay and a chunkwise parallel training algorithm.
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Extends Gated DeltaNet to channel-wise decay under a hardware-efficient DPLR constraint.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Uses KDA's delta-rule update inside the 3:1 KDA/MLA hybrid attention stack.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [Efficient Attention Training](../training/efficient-attention/index.md) — Training approaches built around efficient attention mechanisms: sparse, sliding-window, and delta-rule recurrent attention.
+- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 
 ## Related Terms
 

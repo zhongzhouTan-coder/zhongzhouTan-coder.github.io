@@ -19,7 +19,7 @@ updated: 2026-08-06
 
 ## TL;DR
 
-**What:** In vllm-ascend, the DeepSeek-V4 [Lightning Indexer's](../../terms/lightning-indexer.md) key cache and query are always stored in 8-bit — **INT8 + FP16 per-token-head scales on non-A5 devices, FP8 e4m3fn + FP32 scales on A5** — so the indexer's sparse top-k selection never reads a full-precision KV cache.
+**What:** In vllm-ascend, the DeepSeek-V4 [Lightning Indexer's](../../terms/lightning-indexer.md) key cache and query are always stored in 8-bit — **INT8 + FP16 per-token-head scales on non-A5 devices, FP8 e4m3fn + FP32 scales on A5** — so the indexer's sparse top-k selection never reads a full-precision [KV cache](../../terms/kv-cache.md).
 
 **How:** The model declares an 8-bit indexer cache, the DSA backend quantizes the indexer query and compressed KV at runtime, and a pair of custom Ascend operators (`npu_vllm_quant_lightning_indexer` + an AICPU metadata pre-op) dequantize inside the kernel, score blocks, and return top-k indices.
 
@@ -57,7 +57,7 @@ flowchart TD
 
 ## Why This Exists
 
-DeepSeek-V4's CSA layers compress KV by 4× and then ask the Lightning Indexer to pick the top-k most relevant compressed blocks for core attention. At a 1M-token context, the indexer alone would otherwise read millions of compressed keys every step. If the indexer keys and queries stayed in BF16, the indexer's matmul bandwidth and the indexer cache's memory footprint would scale with context length — exactly the cost the model was designed to eliminate.
+DeepSeek-V4's CSA layers compress KV by 4× and then ask the Lightning Indexer to pick the top-k most relevant compressed blocks for core attention. At a 1M-token context, the indexer alone would otherwise read millions of compressed keys every step. If the indexer keys and queries stayed in BF16, the indexer's [matmul](../../terms/gemm.md) bandwidth and the indexer cache's memory footprint would scale with context length — exactly the cost the model was designed to eliminate.
 
 Quantizing the indexer to 8 bits cuts the indexer cache to ¼ of its BF16 size and lets the scoring matmul run on 8-bit data, at the price of a small accuracy loss in the relevance scores. The design keeps a **per-token-head scale** so that within a token the quantization is coarse but the ranking signal survives: the indexer only needs the *ordering* of block scores, not their exact values.
 
