@@ -1,0 +1,8 @@
+flowchart LR
+    GEN[RTL code generation] --> ITER[Generate-compile-simulate repair]
+    ITER --> REPO[Repository-scale self-evolution]
+    SAT[SATLUTION<br/>SAT repository] --> REPO
+    ABC[ABCEvo<br/>EDA software] --> REPO
+    ALPHA[AlphaEvolve<br/>algorithmic kernels] --> REPO
+    REPO --> HORIZON[HORIZON<br/>hardware artifacts and verification files]
+    SWE[SWE-bench<br/>hidden final tests] -.-> HORIZON
