@@ -19,6 +19,8 @@ from common.paths import find_repository_root  # noqa: E402
 REPO_ROOT = find_repository_root(__file__)
 DOCS_ROOT = REPO_ROOT / "docs"
 INLINE_MATH_RE = re.compile(r"(?<!\$)\$([^$\n]+?)\$(?!\$)")
+INLINE_CODE_RE = re.compile(r"(?P<delimiter>`+)(?P<content>.*?)(?P=delimiter)")
+INLINE_CODE_MATH_RE = re.compile(r"(?<!\$)\$(?![\s$])[^$\n]*?(?<!\s)\$(?!\$)")
 RENDERED_MATH_RE = re.compile(r"(?:\$[^$\n]*\$|\\\([^\n]*?\\\))")
 
 
@@ -44,6 +46,14 @@ def source_issues(text: str) -> list[tuple[int, str]]:
                     f"opened on line {display_math_start}",
                 )
             )
+        for code_match in INLINE_CODE_RE.finditer(line):
+            if INLINE_CODE_MATH_RE.search(code_match.group("content")):
+                issues.append(
+                    (
+                        line_number,
+                        "inline $...$ math is inside a code span and will not render",
+                    )
+                )
         for match in INLINE_MATH_RE.finditer(line):
             formula = match.group(1)
             if r"\sb" in formula:

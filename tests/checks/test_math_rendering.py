@@ -59,6 +59,33 @@ After
             [(2, "unclosed display math block opened with $$")],
         )
 
+    def test_source_issues_reject_inline_math_inside_code_spans(self) -> None:
+        text = "\n".join(
+            [
+                r"Good: $p_T(d_i)$",
+                r"Bad: `$p_T(d_i)$` and ``$p_D(d_i)$``",
+                r"Ordinary code: `price = $5`",
+                r"Literal separators: `[context] $ [question] $ [answer]`",
+                "```text",
+                r"`$ignored$`",
+                "```",
+            ]
+        )
+
+        self.assertEqual(
+            MODULE.source_issues(text),
+            [
+                (
+                    2,
+                    "inline $...$ math is inside a code span and will not render",
+                ),
+                (
+                    2,
+                    "inline $...$ math is inside a code span and will not render",
+                ),
+            ],
+        )
+
     def test_rendered_issues_detect_markdown_inside_math(self) -> None:
         html = "\n".join(
             [

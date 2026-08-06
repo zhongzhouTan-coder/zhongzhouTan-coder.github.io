@@ -1,0 +1,10 @@
+flowchart TD
+    A["Autoregressive target decoding"] --> B["Speculative decoding"]
+    B --> C["Independent small draft model"]
+    B --> D["Architectural draft heads"]
+    D --> E["Qwen3.5 MTP"]
+    D --> F["EAGLE-style hidden-state drafting"]
+    E --> G["Target-logit verification"]
+    C --> G
+    F --> G
+    G --> H["Exact target distribution preserved by rejection sampling"]

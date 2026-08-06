@@ -93,3 +93,14 @@ End-to-end path for a Qwen3.6 request (Qwen3.6-27B multimodal or Qwen3.6-35B-A3B
 - `git ls-tree -r --name-only 9a52ca5fc36c… | grep -i 'qwen3\.6'` — Qwen3.6 artifacts are docs, the FIA e2e test, and weekly configs only.
 - `git diff --stat 32a59d4e349c… 9a52ca5fc36c… -- vllm_ascend/ | grep -i qwen` — Qwen3.6-relevant code deltas are `patch_qwen3_5.py` (+51) and `modelslim_config.py` (+2); both are vLLM-version/compat refactors, not new Qwen3.6 logic.
 - `--speculative-config '{"method": "qwen3_5_mtp", "num_speculative_tokens": 3}'` and `--enable-expert-parallel` appear verbatim in `Qwen3.6-35B-A3B-w4a8-A3.yaml`.
+
+## Qwen3.5 MTP and target verification extension
+
+Consuming page: `docs/frameworks/vllm-ascend/qwen3.5-mtp.md`
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | spec-rewrite | `vllm_ascend/patch/platform/patch_speculative_config.py` | Qwen3.5 -> `qwen3_5_mtp` architecture rewrite | 106 | 114 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | mtp-forward | `vllm_ascend/patch/worker/patch_qwen3_5.py` | `qwen3_5_mtp_forward` | 165 | 212 |
+
+Runtime flow evidence: vllm-ascend supplies the Ascend-compatible Qwen3.5 MTP forward, while the upstream vLLM sampler performs target-logit verification and accepted-token state bookkeeping.

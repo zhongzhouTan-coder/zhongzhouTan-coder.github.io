@@ -19,6 +19,20 @@ generated: 2026-07-29
 - `vllm/models/kimi_k3/nvidia/mtp.py` — Kimi K3 MTP draft model
 - `vllm/parser/kimi_k3.py` — Kimi K3 XTML parser composition
 
+## Qwen3.5 MTP and target verification extension
+
+Consuming page: `docs/frameworks/vllm-ascend/qwen3.5-mtp.md`
+
+| Docs page | Finding | File | Symbol | Start | End |
+|---|---|---|---|---:|---:|
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | mtp-model | `vllm/model_executor/models/qwen3_5_mtp.py` | `Qwen3_5MultiTokenPredictor` | 64 | 189 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | mtp-head | `vllm/model_executor/models/qwen3_5_mtp.py` | `Qwen3_5MTP.compute_logits` | 212 | 299 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | spec-metadata | `vllm/v1/spec_decode/metadata.py` | `SpecDecodeMetadata` | 8 | 31 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | sampler-entry | `vllm/v1/worker/gpu_model_runner.py` | `GPUModelRunner._sample` | 3692 | 3719 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | rejection-forward | `vllm/v1/sample/rejection_sampler.py` | `RejectionSampler.forward` | 38 | 181 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | greedy-verify | `vllm/v1/sample/rejection_sampler.py` | `rejection_greedy_sample_kernel` | 715 | 769 |
+| `docs/frameworks/vllm-ascend/qwen3.5-mtp.md` | random-verify | `vllm/v1/sample/rejection_sampler.py` | `rejection_random_sample_kernel` | 774 | 845 |
+
 ## Reproduction Commands
 
 Record exact read-only search or counting commands here when the docs make

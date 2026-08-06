@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-06
+updated: 2026-08-07
 ---
 
 # Frameworks
@@ -21,6 +21,7 @@ updated: 2026-08-06
 
 ## vLLM Ascend
 
+- [Qwen3.5 MTP: Drafting and Target-Model Verification](vllm-ascend/qwen3.5-mtp.md) — Beginner-oriented MTP trace: Qwen3.5 proposes tokens from target hidden states, while vLLM verifies them from target logits with greedy equality or probability-ratio rejection sampling.
 - [vLLM Ascend](vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 [Lightning Indexer](../terms/lightning-indexer.md) runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, FP8 e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.

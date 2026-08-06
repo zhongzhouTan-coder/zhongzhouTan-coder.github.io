@@ -1,0 +1,16 @@
+flowchart LR
+    A["Accepted prefix"] --> B["Target hidden state"]
+    B --> C["Qwen3.5 MTP drafter"]
+    C --> D["Draft tokens d1, d2, d3"]
+    D --> E["Target forward over proposed positions"]
+    E --> F["Target logits pT at each position"]
+    D --> G["Draft probabilities pD"]
+    F --> H{"Acceptance rule"}
+    G --> H
+    H -->|"accept prefix"| I["Commit accepted drafts"]
+    H -->|"first rejection"| J["Use target recovery token"]
+    F --> K["Target bonus distribution"]
+    K --> L["Append bonus token if all drafts pass"]
+    I --> M["Next iteration"]
+    J --> M
+    L --> M

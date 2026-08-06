@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-06
+updated: 2026-08-07
 ---
 
 # Wiki Index
@@ -35,6 +35,7 @@ updated: 2026-08-06
 
 ## Inference Systems and Frameworks
 
+- [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Chunked prefills and decode-maximal batching improve decode utilization and reduce pipeline bubbles.
 - [vLLM](../frameworks/vllm/index.md) — Category hub for vLLM serving framework pages.

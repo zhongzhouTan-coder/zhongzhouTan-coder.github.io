@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-06
+updated: 2026-08-07
 ---
 
 # Wiki Log
@@ -266,3 +266,7 @@ updated: 2026-08-06
 - Added bidirectional glossary validation: term pages remain the canonical registry, `appears_in` and "Where It Appears" must agree with consumer-page Markdown links, term aliases and glossary-index coverage are checked, and unlinked plain-text term mentions are reported with an optional strict mode through `scripts/checks/term_links.py` and the aggregate docs lint. Repaired the existing strict relationship errors and retained 160 legacy mention candidates as non-blocking cleanup warnings.
 - Added [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md), backed by pinned vLLM `a0c092ee72c0` and vLLM-Ascend `9a52ca5fc36c` evidence. Explains the token-budget scheduler, chunked-prefill cursor, paged KV admission, Ascend attention-state classification, mixed FIA GQA layouts, and the parallel GDN recurrent path; added two evidence notes and editable runtime/landscape Mermaid sources.
 - Cleaned up all 168 legacy unlinked-term-mention warnings reported by `scripts/checks/term_links.py` across ~60 docs pages: added term links at the first meaningful in-content occurrence (KV Cache, PagedAttention, GEMM, MoE, Linear Attention, Lightning Indexer, All-Gather/All-Reduce/All-to-All, Sequence Parallelism, Microbatch, Scatter/Gather, Hyper-Connections, Kimi Delta Attention, Delta Rule, Inner Product, Block Table, Chunked Prefill, Continuous Batching, Global Memory, Matrix Tiling, Memory Banking, Kronecker Product), rewrote false-positive homograph matches (e.g., the verb "blocking" matching the Matrix Tiling alias) to preserve meaning, and registered every affected page in the matching term's `appears_in` front matter and "Where It Appears" section so the bidirectional glossary contract holds. Re-ran the aggregate docs lint (`./scripts/lint-docs.sh`) with zero issues.
+
+## 2026-08-07
+
+- Added [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md), backed by pinned vllm-ascend `9a52ca5fc36c1852241822863c50717bee5dc761` and vLLM `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b` evidence. The page traces Qwen3.5 MTP proposal construction, target-logit row alignment, greedy equality verification, stochastic probability-ratio rejection sampling, bonus-token handling, and accepted-token state reconciliation. Added two editable Mermaid diagrams, manifest docs paths, navigation links, and repository evidence-map entries.

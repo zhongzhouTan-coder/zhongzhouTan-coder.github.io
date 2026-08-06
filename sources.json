@@ -425,7 +425,8 @@
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/9a52ca5fc36c1852241822863c50717bee5dc761/",
       "docs_paths": [
         "docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md",
-        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md"
+        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
+        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md"
       ],
       "status": "ingested"
     },
@@ -735,7 +736,8 @@
         "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
         "docs/frameworks/vllm/vllm-continuous-batching/index.md",
         "docs/frameworks/vllm/vllm-overview.md",
-        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md"
+        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
+        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md"
       ],
       "status": "ingested"
     },
