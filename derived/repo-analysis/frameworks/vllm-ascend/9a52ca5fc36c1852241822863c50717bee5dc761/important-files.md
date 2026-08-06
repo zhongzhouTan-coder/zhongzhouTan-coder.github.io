@@ -56,6 +56,21 @@ updates land only on this upstream tip.
 | `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | runner-capture | `vllm_ascend/worker/model_runner_v1.py` | `NPUModelRunner.capture_model` | 4845 | — |
 | `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | e2e-fia | `tests/e2e/pull_request/two_card/test_qwen3_6_27b_fia.py` | `test_qwen3_6_27b_multimodel_fia_eager` | 28 | 64 |
 | `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | weekly-config | `tests/e2e/weekly/single_node/configs/Qwen3.6-35B-A3B-w4a8-A3.yaml` | test case `Qwen3.6-35B-A3B-in16k-out1k-0-128-32` | 6 | 65 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-activate | `vllm_ascend/quantization/modelslim_config.py` | `enable_c8_quant` / `c8_quant_layers` from `kv_cache_type == "C8"` | 1001 | 1012 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-method | `vllm_ascend/quantization/modelslim_config.py` | `get_quant_method` C8 branch → `AscendC8KVCacheAttentionMethod` | 711 | 715 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-scales | `vllm_ascend/quantization/methods/kv_c8.py` | `AscendC8KVCacheAttentionMethod.create_weights` (int8 dtype, impl class surgery, per-channel scale/offset) | 119 | 146 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-impl | `vllm_ascend/attention/attention_v1.py` | `AscendC8AttentionBackendImpl` | 1671 | 2115 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-forward | `vllm_ascend/attention/attention_v1.py` | `AscendC8AttentionBackendImpl.forward` (quantize → reshape_and_cache → per-state dispatch) | 1680 | 1769 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-scales-prep | `vllm_ascend/attention/attention_v1.py` | `_prepare_c8_scales` (TP sharding, NZ-BNSD antiquant tensors) | 1776 | 1809 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-quantize | `vllm_ascend/attention/attention_v1.py` | `_quantize_kv_to_int8` | 1859 | 1880 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-decode | `vllm_ascend/attention/attention_v1.py` | `_forward_c8_decode` (FIA V1 BNSD paged INT8 + per-channel antiquant) | 1882 | 1918 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-chunked | `vllm_ascend/attention/attention_v1.py` | `_forward_c8_chunked_prefill` (decode BNSD, prefill TND float / gather+dequant) | 1920 | 2019 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-prefill | `vllm_ascend/attention/attention_v1.py` | `_forward_c8_fused_infer_attention` (PrefillNoCache float / PrefillCacheHit gather+dequant) | 2021 | 2078 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | c8-reshape | `vllm_ascend/attention/attention_v1.py` | `_reshape_and_cache` (NZ 5D write via `npu_scatter_pa_kv_cache`) | 2080 | 2115 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | fp8-runner | `vllm_ascend/worker/model_runner_v1.py` | `c8_k_cache_dtype` = float8_e4m3fn on A5 vs int8 (sparse C8 paths only) | 382 | 386 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | fp8-sfa | `vllm_ascend/attention/sfa_v1.py` | `c8_k_cache_dtype` = float8_e4m3fn on A5 (SFA backend) | 618 | 619 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | fp8-dsv4 | `vllm_ascend/models/deepseek_v4.py` | A5 FP8 indexer KV dtype (`float8_e4m3fn` vs int8) | 569 | 569 |
+| `docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md` | fp8-layer | `vllm_ascend/models/layer/attention/layer.py` | DeepSeek-V4 MLA `get_kv_cache_spec` forces float8_e4m3fn on A5 | 180 | 181 |
 
 ## Runtime Flow Evidence
 
@@ -67,8 +82,9 @@ End-to-end path for a Qwen3.6 request (Qwen3.6-27B multimodal or Qwen3.6-35B-A3B
 4. Model construction and patch application — the patched hybrid decoder layer (`AscendQwen3_5DecoderLayer.forward`) routes GDN layers to Ascend GDN attention and full-attention layers to the Ascend attention layer; `AscendQwen3NextAttention.forward` handles the fused qkv+rmsnorm+mrope path. Evidence: `decoder-patch`, `attn-patch`, `gdn-patch`.
 5. GDN linear-attention compute — `AscendGatedDeltaNetAttention.forward` runs input projections, the `torch.ops.vllm.qwen_gdn_attention_core` custom op, and output projection; `_forward_core` drives the Triton FLA chunked rule; `AscendGDNAttentionBackend` + `AscendGDNAttentionMetadataBuilder` provide the vLLM V1 attention-backend interface. Evidence: `gdn-forward`, `gdn-core`, `gdn-backend`, `gdn-metadata`.
 6. Full-attention compute — `AscendAttentionBackend` (selected by `NPUPlatform.get_attn_backend_cls`) executes the FIA op (`npu_fused_infer_attention_score`) via `forward_fused_infer_attention`; during ACL-graph capture it uses `full_graph_fia`/`full_graph_fia_v2`. Evidence: `fia-backend`, `fia-forward`, `fia-op`, `fia-graph`, `backend-select`.
-7. Step execution — `NPUModelRunner.execute_model` runs the model forward and sampling; `load_model` builds the runner and model; `capture_model` captures ACL graphs (e.g. `FULL_DECODE_ONLY` for the 35B-A3B weekly configs, `FULL_AND_PIECEWISE` for the 27B FIA graph test). Evidence: `runner-exec`, `runner-load`, `runner-capture`.
-8. Validation — multimodal FIA e2e tests (`e2e-fia`) and weekly perf/accuracy configs (`weekly-config`) exercise the path.
+7. KV-cache quantization (C8, optional) — when the checkpoint's quant description has `kv_cache_type == "C8"`, `AscendModelSlimConfig` marks the GQA attention layers (`c8-activate`, `c8-method`) and `AscendC8KVCacheAttentionMethod.create_weights` sets the INT8 cache dtype, creates per-channel k/v scale/offset parameters, and upgrades each attention layer's impl to `AscendC8AttentionBackendImpl` (`c8-scales`). At runtime that impl quantizes KV to INT8 (`c8-quantize`), writes NZ-5D paged cache (`c8-reshape`), and computes per state: decode via FIA V1 BNSD with native paged INT8 + per-channel antiquant (`c8-decode`), chunked prefill decode/prefill split (`c8-chunked`), and prefill states (`c8-prefill`); ACL-graph capture reuses `full_graph_fia` with C8 antiquant extra args (`fia-graph`). Evidence: `c8-impl`, `c8-forward`, `c8-scales-prep`.
+8. Step execution — `NPUModelRunner.execute_model` runs the model forward and sampling; `load_model` builds the runner and model; `capture_model` captures ACL graphs (e.g. `FULL_DECODE_ONLY` for the 35B-A3B weekly configs, `FULL_AND_PIECEWISE` for the 27B FIA graph test). Evidence: `runner-exec`, `runner-load`, `runner-capture`.
+9. Validation — multimodal FIA e2e tests (`e2e-fia`) and weekly perf/accuracy configs (`weekly-config`) exercise the path.
 
 ## Reproduction Commands
 
