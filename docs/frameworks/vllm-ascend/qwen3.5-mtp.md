@@ -246,7 +246,7 @@ The `num_speculative_tokens: 3` setting is a maximum lookahead, not a guarantee 
 
 ## Go Deeper
 
-- **Read:** [vLLM speculative rejection sampler](../../../external-repos/vllm/vllm/v1/sample/rejection_sampler.py) in the pinned checkout; [Qwen3.5 MTP implementation](../../../external-repos/vllm/vllm/model_executor/models/qwen3_5_mtp.py); [Ascend Qwen3.5 MTP patch](../../../external-repos/vllm-ascend-9a52ca5fc36c/vllm_ascend/patch/worker/patch_qwen3_5.py).
+- **Read:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/sample/rejection_sampler.py#L774" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/sample/rejection_sampler.py" data-code-line="774" data-code-end-line="845"><code>vLLM speculative rejection sampler</code></a>; <a class="code-link" href="../../../external-repos/vllm/vllm/model_executor/models/qwen3_5_mtp.py#L64" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/model_executor/models/qwen3_5_mtp.py" data-code-line="64" data-code-end-line="189"><code>Qwen3.5 MTP implementation</code></a>; <a class="code-link" href="../../../external-repos/vllm-ascend-9a52ca5fc36c/vllm_ascend/patch/worker/patch_qwen3_5.py#L165" data-code-repo="vllm-ascend-9a52ca5fc36c" data-code-path="vllm_ascend/patch/worker/patch_qwen3_5.py" data-code-line="165" data-code-end-line="212"><code>Ascend Qwen3.5 MTP patch</code></a>.
 - **Understand the target model:** [Qwen3.5 / Qwen3.6 Inference Path](./qwen3.5-qwen3.6-inference.md).
 - **Understand the runtime shell:** [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md).
 - **Reproduce:** The page is based on static reading of clean pinned checkouts; no Ascend NPU execution was available in this environment.
