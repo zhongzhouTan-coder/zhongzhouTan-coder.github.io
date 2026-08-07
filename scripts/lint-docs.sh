@@ -108,6 +108,13 @@ for file_path in "${markdown_files[@]}"; do
     target=${raw_target%%#*}
     [[ -z "$target" ]] && continue
 
+    # Repository checkout links are validated structurally by code_links.py.
+    # Do not make the generic link pass depend on an ignored checkout being
+    # materialized in the current agent workspace.
+    if [[ "$target" == *external-repos/* ]]; then
+      continue
+    fi
+
     if [[ "$target" == /* ]]; then
       resolved_target=$(realpath -m "$repo_root/$target")
     else

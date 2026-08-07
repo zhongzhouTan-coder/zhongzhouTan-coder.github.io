@@ -28,6 +28,13 @@ CODE_LINK_ELEMENT_RE = re.compile(
     re.DOTALL | re.IGNORECASE,
 )
 INLINE_CODE_RE = re.compile(r"`([^`\n]+)`")
+MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]\n]*\]\(([^)\n]+)\)")
+MARKDOWN_REFERENCE_RE = re.compile(
+    r"^[ \t]{0,3}\[[^\]\n]+\]:[ \t]*(\S+)", re.MULTILINE
+)
+HTML_HREF_RE = re.compile(
+    r"href=[\"']([^\"']*external-repos/[^\"']*)[\"']", re.IGNORECASE
+)
 REPOSITORY_FILE_SUFFIXES = {
     ".c",
     ".cc",
@@ -190,6 +197,7 @@ class CodeLinkParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.links: list[dict[str, str]] = []
+        self.anchor_stack: list[tuple[bool, int]] = []
 
     def handle_starttag(
         self, tag: str, attributes: list[tuple[str, str | None]]
@@ -197,8 +205,17 @@ class CodeLinkParser(HTMLParser):
         if tag != "a":
             return
         values = {key: value or "" for key, value in attributes}
-        if "code-link" in values.get("class", "").split():
+        is_code_link = "code-link" in values.get("class", "").split()
+        self.anchor_stack.append((is_code_link, self.getpos()[0]))
+        if is_code_link:
             self.links.append(values)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a" and self.anchor_stack:
+            self.anchor_stack.pop()
+
+    def unclosed_code_link_lines(self) -> list[int]:
+        return [line for is_code_link, line in self.anchor_stack if is_code_link]
 
 
 def parse_args() -> argparse.Namespace:
@@ -262,16 +279,31 @@ def remove_fenced_blocks(content: str) -> str:
     return "".join(output)
 
 
-def find_code_links() -> list[tuple[Path, dict[str, str]]]:
+def parse_code_links(
+    markdown_path: Path,
+) -> tuple[list[tuple[Path, dict[str, str]]], list[str]]:
+    content = remove_fenced_blocks(markdown_path.read_text(encoding="utf-8"))
+    parser = CodeLinkParser()
+    parser.feed(content)
+    parser.close()
+    links = [(markdown_path, attributes) for attributes in parser.links]
+    errors = [
+        f"{display_path(markdown_path)}:{line}: code-link anchor is missing </a>"
+        for line in parser.unclosed_code_link_lines()
+    ]
+    return links, errors
+
+
+def find_code_links() -> tuple[list[tuple[Path, dict[str, str]]], list[str]]:
     links: list[tuple[Path, dict[str, str]]] = []
+    errors: list[str] = []
     for markdown_path in sorted((ROOT / "docs").rglob("*.md")):
         if "_site" in markdown_path.parts:
             continue
-        content = remove_fenced_blocks(markdown_path.read_text(encoding="utf-8"))
-        parser = CodeLinkParser()
-        parser.feed(content)
-        links.extend((markdown_path, attributes) for attributes in parser.links)
-    return links
+        found_links, parse_errors = parse_code_links(markdown_path)
+        links.extend(found_links)
+        errors.extend(parse_errors)
+    return links, errors
 
 
 def find_strict_evidence_pages() -> list[Path]:
@@ -304,6 +336,28 @@ def find_unlinked_repository_paths(markdown_path: Path) -> list[tuple[int, str]]
         line = content.count("\n", 0, match.start()) + 1
         findings.append((line, value))
     return findings
+
+
+def find_direct_checkout_links(markdown_path: Path) -> list[tuple[int, str]]:
+    """Find Markdown links that bypass revision-aware code-link anchors."""
+    content = remove_fenced_blocks(markdown_path.read_text(encoding="utf-8"))
+    findings: list[tuple[int, str]] = []
+    for pattern in (MARKDOWN_LINK_RE, MARKDOWN_REFERENCE_RE):
+        for match in pattern.finditer(content):
+            target = match.group(1).strip()
+            if "external-repos/" not in target:
+                continue
+            line = content.count("\n", 0, match.start()) + 1
+            findings.append((line, target))
+
+    without_code_links = CODE_LINK_ELEMENT_RE.sub(
+        lambda match: mask_non_newlines(match.group(0)), content
+    )
+    for match in HTML_HREF_RE.finditer(without_code_links):
+        target = match.group(1).strip()
+        line = without_code_links.count("\n", 0, match.start()) + 1
+        findings.append((line, target))
+    return sorted(findings)
 
 
 def validate_registry(
@@ -534,10 +588,11 @@ def main() -> int:
         print(f"code link validation failed: {exc}", file=sys.stderr)
         return 1
 
-    links = find_code_links()
+    links, link_parse_errors = find_code_links()
     evidence, evidence_errors = find_code_evidence()
     strict_evidence_pages = find_strict_evidence_pages()
     errors = validate_registry(registry, sources)
+    errors.extend(link_parse_errors)
     errors.extend(evidence_errors)
     errors.extend(validate_required_evidence_pages(strict_evidence_pages, evidence))
     for markdown_path, attributes in links:
@@ -548,6 +603,11 @@ def main() -> int:
     for markdown_path in sorted((ROOT / "docs").rglob("*.md")):
         if "_site" in markdown_path.parts:
             continue
+        for line, target in find_direct_checkout_links(markdown_path):
+            errors.append(
+                f"{markdown_path.relative_to(ROOT)}:{line}: direct Markdown link "
+                f"to checkout {target!r} must use a revision-aware code-link anchor"
+            )
         for line, value in find_unlinked_repository_paths(markdown_path):
             errors.append(
                 f"{markdown_path.relative_to(ROOT)}:{line}: repository path "

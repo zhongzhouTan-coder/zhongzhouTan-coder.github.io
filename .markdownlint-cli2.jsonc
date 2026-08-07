@@ -67,8 +67,12 @@
     "derived/repo-analysis/**/*.md"
   ],
 
-  // Ignore Jekyll build output.
+  // Ignore generated output and third-party checkouts. Keep external-repos/
+  // excluded even when a caller supplies a broad CLI glob: those Markdown
+  // files belong to upstream projects and must not become this wiki's lint
+  // responsibility.
   "ignores": [
-    "docs/_site/**"
+    "docs/_site/**",
+    "external-repos/**"
   ]
 }

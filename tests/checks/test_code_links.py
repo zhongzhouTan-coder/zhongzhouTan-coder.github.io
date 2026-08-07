@@ -81,6 +81,37 @@ class CheckCodeLinksTest(unittest.TestCase):
             errors,
         )
 
+    def test_unclosed_code_link_is_reported_at_opening_line(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Example
+
+<a class="code-link" href="../external-repos/example/worker.py#L1"
+data-code-repo="example" data-code-path="worker.py"
+data-code-line="1"><code>worker.py</code> continues as linked text.
+"""
+        )
+
+        links, errors = CHECK_CODE_LINKS.parse_code_links(markdown_path)
+
+        self.assertEqual(len(links), 1)
+        self.assertEqual(len(errors), 1)
+        self.assertIn(":3: code-link anchor is missing </a>", errors[0])
+
+    def test_closed_code_link_has_no_parse_error(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Example
+
+<a class="code-link" href="../external-repos/example/worker.py#L1"
+data-code-repo="example" data-code-path="worker.py"
+data-code-line="1"><code>worker.py</code></a> continues as plain text.
+"""
+        )
+
+        links, errors = CHECK_CODE_LINKS.parse_code_links(markdown_path)
+
+        self.assertEqual(len(links), 1)
+        self.assertEqual(errors, [])
+
     def test_checkout_cannot_represent_two_revisions(self) -> None:
         registry = {
             **self.registry,
@@ -137,6 +168,48 @@ Still report `unlinked.py` on its original line.
         findings = CHECK_CODE_LINKS.find_unlinked_repository_paths(markdown_path)
 
         self.assertEqual(findings, [(13, "unlinked.py")])
+
+    def test_direct_markdown_checkout_link_is_reported(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Analysis
+
+[worker source](../external-repos/example/worker.py#L1)
+"""
+        )
+
+        findings = CHECK_CODE_LINKS.find_direct_checkout_links(markdown_path)
+
+        self.assertEqual(
+            findings, [(3, "../external-repos/example/worker.py#L1")]
+        )
+
+    def test_checkout_link_in_code_fence_is_ignored(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Example
+
+```markdown
+[example](../external-repos/example/worker.py#L1)
+```
+"""
+        )
+
+        findings = CHECK_CODE_LINKS.find_direct_checkout_links(markdown_path)
+
+        self.assertEqual(findings, [])
+
+    def test_checkout_href_without_code_link_metadata_is_reported(self) -> None:
+        markdown_path = self.write_strict_page(
+            """# Example
+
+<a href="../external-repos/example/worker.py#L1">worker</a>
+"""
+        )
+
+        findings = CHECK_CODE_LINKS.find_direct_checkout_links(markdown_path)
+
+        self.assertEqual(
+            findings, [(3, "../external-repos/example/worker.py#L1")]
+        )
 
     def test_parses_machine_checkable_evidence_table(self) -> None:
         markdown_path = self.write_strict_page(

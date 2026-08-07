@@ -21,13 +21,17 @@ This repository is a markdown knowledge base.
   can be large.
 - If a workspace dependency is missing or stale, rerun the bootstrap script. Do
   not install packages into the agent's global environment as a workaround.
+- Run documentation lint through `./scripts/lint-docs.sh` (or run
+  `npx markdownlint-cli2` with no extra file glob). Do not pass repository-wide
+  globs such as `**/*.md`: `external-repos/` contains third-party Markdown that
+  is read-only evidence, not part of this knowledge base's lint scope.
 
 ## Source Locations
 
 - `raw/` stores original source files. Never modify them.
 - `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats. These files are derived from `raw/` sources and may be regenerated.
 - `derived/web-markdown/` stores generated Markdown extracted from immutable HTML snapshots under `raw/`. These files may be regenerated from the matching snapshot.
-- `external-repos/` stores local third-party repository checkouts used for code reading. This directory is ignored by git. Agents may inspect files there but must not edit them.
+- `external-repos/` stores local third-party repository checkouts used for code reading. This directory is ignored by git. Agents may inspect files there but must not edit them. In docs, never link a checkout file with ordinary Markdown; use the revision-aware `code-link` anchor required by `.github/instructions/repo-reading.instructions.md` so links remain valid when another agent has not materialized the checkout.
 - `derived/repo-analysis/` stores generated code-reading notes extracted from local repository checkouts. These files are derived from pinned repository commits and may be regenerated.
 - `docs/` stores AI-maintained markdown knowledge pages by topic.
 - `docs/logs/index.md` is the wiki index.

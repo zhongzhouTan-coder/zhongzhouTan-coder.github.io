@@ -17,13 +17,18 @@ Primary lint commands:
 npx markdownlint-cli2
 ```
 
+Do not add a repository-wide glob such as `**/*.md`. The configuration excludes
+`external-repos/` because materialized third-party checkouts are immutable
+evidence, not files maintained or linted by this wiki.
+
 Workflow:
 
 1. Read the relevant files under `docs/`, `logs/`, and `raw/` before changing anything.
 2. Run `./scripts/lint-docs.sh` to identify broken links, orphan docs pages, missing front matter fields, stub pages, placeholder text, and markdownlint violations.
 3. Run `npx markdownlint-cli2` separately for the configured Markdown scope,
    including docs, repository-reading instructions, repository source records,
-   and derived repository notes.
+   and derived repository notes. Use the configuration's globs as-is so an
+   agent with materialized checkouts does not import upstream lint findings.
 4. Fix safe issues directly when the correct repair is clear.
 5. When fixing markdownlint violations, follow the rules in `.markdownlint-cli2.jsonc`:
    - Fenced code blocks must have a language tag (MD040)

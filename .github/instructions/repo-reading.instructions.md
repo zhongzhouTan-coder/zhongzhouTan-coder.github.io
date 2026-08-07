@@ -188,7 +188,11 @@ Use this structure:
 The `href` is relative from the docs page to the registered checkout. The
 Jekyll layout converts its `data-code-*` metadata to a provider URL pinned to
 the full revision. Always provide a start line; use an end line only for a
-short, complete range. Never commit a machine-specific absolute path.
+short, complete range. Never use an ordinary Markdown link such as
+`[source](../../../external-repos/repo/file.py)`: it bypasses revision metadata,
+breaks when another agent has not materialized that checkout, and cannot be
+rewritten to the pinned provider URL. The code-link checker rejects this form.
+Never commit a machine-specific absolute path.
 
 ## Complete the Workflow
 
@@ -198,6 +202,17 @@ short, complete range. Never commit a machine-specific absolute path.
 4. Update `sources.json`, navigation, related pages, and the chronological log
    only where repository rules require them.
 5. Run `./scripts/lint-docs.sh`.
+
+The normal lint is portable across agent workspaces: it checks repository
+registry metadata and code-link structure but does not require every ignored
+checkout to be materialized. Do not run markdownlint with a repository-wide
+glob, because upstream Markdown under `external-repos/` is outside this wiki's
+lint scope. When the checkout used for the current insight is available, add
+the checkout-dependent verification separately:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/checks/code_links.py --local
+```
 
 Completion requires agreement among raw metadata, derived metadata, the
 manifest, and the code-repository registry; complete evidence coverage for

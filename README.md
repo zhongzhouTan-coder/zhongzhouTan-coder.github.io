@@ -96,6 +96,13 @@ Markdown source, so editor previews open the local dependency checkout. Jekyll
 pages resolve the same references to provider-correct GitHub or GitCode links
 pinned to the inspected commit.
 
+Repository-backed docs must put those targets inside the revision-aware HTML
+`code-link` anchor documented in
+[`repo-reading.instructions.md`](.github/instructions/repo-reading.instructions.md).
+Do not copy a checkout file into an ordinary Markdown link: that link breaks in
+another agent workspace where the ignored checkout is absent, and
+`scripts/checks/code_links.py` rejects it during docs lint.
+
 **Refresh repository evidence:**
 
 ```bash
@@ -143,7 +150,19 @@ can consume substantial network bandwidth and disk space.
 **Lint docs:**
 
 ```bash
-bash scripts/lint-docs.sh
+./scripts/lint-docs.sh
+```
+
+Use the wrapper without adding a repository-wide Markdown glob. The configured
+scope covers this wiki's docs, instructions, source records, and derived
+repository notes while explicitly excluding read-only third-party Markdown in
+`external-repos/`. Normal lint validates registered code-link metadata without
+requiring every external checkout to be present. After materializing the
+checkout used by a repository insight, optionally verify its pinned revision,
+files, and line numbers with:
+
+```bash
+./scripts/run-in-workspace.sh python scripts/checks/code_links.py --local
 ```
 
 ## Web source capture
