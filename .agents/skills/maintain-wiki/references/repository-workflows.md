@@ -18,7 +18,23 @@ Read each selected instruction file completely before editing its governed artif
 
 Treat `AGENTS.md` as authoritative when this reference and the repository diverge.
 
+## Intent Gate
+
+Before selecting an operation, identify the user's requested outcome. Do not
+infer source ingest from an attachment, URL, checkout, file extension, or a new
+file appearing in the workspace. Select source ingest only for an explicit or
+clearly implied request to integrate durable source-backed knowledge into this
+repository.
+
+If the source supports another task, keep the work within that task's scope.
+Reading or analyzing the source is allowed when relevant, but do not populate
+`raw/` or `derived/`, change `sources.json`, create a knowledge page, or update
+the wiki index and log. When intent remains ambiguous, default to this narrower
+non-ingest route unless it prevents safe completion of the requested outcome.
+
 ## Source Ingest
+
+Enter this workflow only after the request passes the intent gate above.
 
 ### Preflight
 

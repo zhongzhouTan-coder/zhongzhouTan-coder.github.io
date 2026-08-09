@@ -47,9 +47,36 @@ This repository is a markdown knowledge base.
 - For web capture, rendering, provenance, and synthesis, read `.github/instructions/web-source.instructions.md`.
 - For `docs/logs/index.md` and `docs/logs/log.md`, read `.github/instructions/logs-maintenance.instructions.md`.
 
-## Workflow Triggers
+## Intent-First Workflow Routing
 
-- When a new source is added: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
+- Follow the user's requested outcome before classifying the input type. The
+  presence of a paper, repository URL or checkout, web page, Markdown file, or
+  other source does not by itself authorize ingesting it into the knowledge
+  base.
+- Select source ingest only when the user explicitly asks to add, ingest,
+  archive, capture, or integrate the source into this knowledge base, or when
+  they clearly ask for a durable knowledge page backed by that source.
+- When a source is supplied only as context for another task, use it only for
+  that task. Do not copy it into `raw/`, create derived artifacts, update
+  `sources.json`, synthesize a docs page, or change the wiki index or log unless
+  the user also requests knowledge-base integration.
+- Route ordinary repository work, such as coding, review, planning, debugging,
+  transformation, or one-off analysis, to the instructions for that task. It
+  does not become a wiki workflow merely because the input is a paper,
+  repository, web page, or Markdown file.
+- Route knowledge-base questions and maintenance requests to the relevant wiki
+  query or maintenance workflow without treating them as new-source ingest.
+- If the requested outcome is genuinely ambiguous and ingestion would create
+  durable repository changes, prefer the narrower non-ingest interpretation.
+  Ask for clarification only when the task cannot be completed safely under
+  that interpretation.
+
+## Ingest Workflow Triggers
+
+The triggers below apply only after the request has passed the intent gate and
+has been classified as source ingest.
+
+- When a new source is added for knowledge-base ingestion: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
 - When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
 - When a new web page source is added: capture it with `scripts/ingestion/web_to_markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical

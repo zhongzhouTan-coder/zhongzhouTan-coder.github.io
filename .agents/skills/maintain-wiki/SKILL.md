@@ -25,18 +25,27 @@ Treat the wiki as a compiled, source-backed knowledge layer: preserve immutable 
 
 Read [repository-workflows.md](references/repository-workflows.md) for the selected operation and its required instruction files.
 
+Select by requested outcome, not by the type of input supplied. A paper,
+repository, URL, or Markdown file is only task context unless the user asks to
+integrate it into the knowledge base. Do not create raw or derived artifacts,
+manifest entries, docs pages, index entries, or log entries for a source that
+the user supplied only to support another task. If durable ingestion is
+ambiguous, use the narrower non-ingest interpretation and clarify only when the
+requested task cannot otherwise be completed safely.
+
 | Request | Operation |
 |---|---|
-| Add a paper, article, local document, web page, or repository | Source ingest |
+| Explicitly add, ingest, archive, capture, or integrate a source into the knowledge base | Source ingest |
 | Ask what the knowledge base says, compare methods, or synthesize a topic | Index-first query |
 | Resolve inconsistent claims, improve a topic hub, or repair missing context | Semantic maintenance |
 | Find or fix broken links, orphans, front matter, or Markdown issues | Mechanical health check |
+| Use a supplied source for coding, review, planning, transformation, or one-off analysis | Outside this skill; follow the requested task |
 
 For PDF or document extraction, also follow `.agents/skills/mineru-doc-ingest/SKILL.md`. For mechanical lint and safe cleanup, also follow `.agents/skills/lint-docs-cleanup/SKILL.md`. Keep this skill responsible for cross-source synthesis, provenance, navigation, and the final repository-wide completion pass.
 
 ## Run the Core Workflow
 
-1. Read `AGENTS.md`, then read only the operation-specific instruction files listed in the reference.
+1. Read `AGENTS.md`, confirm that the request passed its intent gate, then read only the operation-specific instruction files listed in the reference.
 2. Inspect `git status`, `docs/logs/index.md`, the relevant category index and subcategory hub, `sources.json`, and likely related pages.
 3. Classify the evidence path before writing: PDF/document, immutable web capture, pinned repository revision, or directly readable source under `raw/`.
 4. Read the canonical evidence. Prefer the matching complete derived extraction for synthesis when repository rules designate it as primary.
