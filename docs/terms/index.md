@@ -45,6 +45,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 - [Global Memory](global-memory.md) — The off-chip device memory on an accelerator (GPU HBM or Ascend GM) that holds full tensors; kernels move tiles from it into on-chip storage to compute.
 - [Memory Banking](memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
+- [Microscaling](microscaling.md) — A block-floating-point representation that shares one scale across a small group of narrow elements.
 - [Systolic Array](systolic-array.md) — A regular grid of processing elements where data flows rhythmically between neighbors so each weight is reused across many multiply-accumulates without re-fetching.
 
 ## Frameworks

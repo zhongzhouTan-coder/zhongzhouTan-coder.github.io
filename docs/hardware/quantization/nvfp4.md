@@ -17,7 +17,7 @@ updated: 2026-08-09
 
 **Sources:** [Transformer Engine 2.19.0.dev0 NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html), [NVIDIA Technical Blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) (Eduardo Alvarez, 2025-06-24), and the [NVFP4 paper](https://arxiv.org/abs/2509.25149).
 
-**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [Microscaling (MX) Formats](microscaling-mx-formats/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
+**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [OCP MX Formats](microscaling-mx-formats/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
 
 ## TL;DR
 
@@ -59,7 +59,7 @@ Imagine running a large language model at FP8 precision. You want to go smaller 
 
 Before NVFP4, the main 4-bit option was MXFP4, which groups 32 elements and shares a power-of-two E8M0 scale. The problem: when a block contains both a large outlier and a small-but-important value, the power-of-two scale snaps to accommodate the outlier and crushes the small value to zero. Fractional scaling and smaller blocks are the answer.
 
-NVFP4 exists because Blackwell Tensor Cores can accelerate microscaled 4-bit operations natively, making it practical to use finer-grained, higher-precision scales at 4-bit storage cost.
+NVFP4 exists because Blackwell Tensor Cores can accelerate [microscaled](../../terms/microscaling.md) 4-bit operations natively, making it practical to use finer-grained, higher-precision scales at 4-bit storage cost.
 
 ## The Landscape
 

@@ -115,7 +115,7 @@ updated: 2026-08-09
 
 ## Hardware and Numerics
 
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Shared-scale block floating point for narrow tensor math, FPGA/MSFP history, OCP MX format family, implementation-defined specification boundaries, and mixed-format compute flow.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — OCP MX v1.0 block contract, concrete FP4/FP6/FP8/INT8 encodings, conversion and dot-product semantics, implementation-defined boundaries, and FPGA/MSFP context.
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
