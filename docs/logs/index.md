@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-07
+updated: 2026-08-09
 ---
 
 # Wiki Index
@@ -115,6 +115,7 @@ updated: 2026-08-07
 
 ## Hardware and Numerics
 
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Shared-scale block floating point for narrow tensor math, FPGA/MSFP history, OCP MX format family, implementation-defined specification boundaries, and mixed-format compute flow.
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.

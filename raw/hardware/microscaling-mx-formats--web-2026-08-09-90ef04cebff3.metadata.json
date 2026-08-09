@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://fpga.org/category/microscaling-mx-formats/",
+  "final_url": "https://fpga.org/category/microscaling-mx-formats/",
+  "canonical_url": "https://fpga.org/category/microscaling-mx-formats/",
+  "title": "Microscaling (MX) Formats",
+  "author": "Jan Gray",
+  "published_at": "2023-11-27T20:04:09+00:00",
+  "captured_at": "2026-08-09T14:44:46.604Z",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "renderer": "http",
+  "content_sha256": "90ef04cebff36658a6a8a2930e995105cb592a4124f4713579964b3eeb4596fa",
+  "raw_html_bytes": 96129,
+  "extracted_markdown_characters": 34965,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {
+    "connection": "Upgrade, Keep-Alive",
+    "content-encoding": "gzip",
+    "content-type": "text/html; charset=UTF-8",
+    "date": "Sun, 09 Aug 2026 14:44:48 GMT",
+    "host-header": "c2hhcmVkLmJsdWVob3N0LmNvbQ==",
+    "keep-alive": "timeout=5, max=75",
+    "link": "<https://fpga.org/wp-json/>; rel=\"https://api.w.org/\", <https://fpga.org/wp-json/wp/v2/categories/32>; rel=\"alternate\"; title=\"JSON\"; type=\"application/json\"",
+    "server": "Apache",
+    "transfer-encoding": "chunked",
+    "upgrade": "h2,h2c",
+    "vary": "accept,content-type,Accept-Encoding"
+  },
+  "limitations": []
+}

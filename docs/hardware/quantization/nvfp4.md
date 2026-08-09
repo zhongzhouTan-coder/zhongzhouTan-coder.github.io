@@ -10,14 +10,14 @@ sources:
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
   - derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md
-updated: 2026-07-28
+updated: 2026-08-09
 ---
 
 # NVFP4: Blackwell 4-Bit Floating Point
 
 **Sources:** [Transformer Engine 2.19.0.dev0 NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html), [NVIDIA Technical Blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) (Eduardo Alvarez, 2025-06-24), and the [NVFP4 paper](https://arxiv.org/abs/2509.25149).
 
-**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
+**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [Microscaling (MX) Formats](microscaling-mx-formats/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
 
 ## TL;DR
 
@@ -307,6 +307,7 @@ The DeepSeek-R1-0528 results are from post-training quantization (PTQ), not quan
 
 ## Go Deeper
 
+- **Understand the predecessor:** [Microscaling (MX) Formats](microscaling-mx-formats/index.md) for the 32-element E8M0 block-floating-point family that NVFP4 refines with smaller blocks and fractional scales
 - **Read:** [NVFP4 paper](https://arxiv.org/abs/2509.25149) for the full derivation and experimental results
 - **Read:** [Transformer Engine NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html) for the latest API and recipe options
 - **Read:** [NVIDIA blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) for the inference narrative and deployment ecosystem

@@ -34,6 +34,7 @@ appears_in:
   - docs/hardware/index.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/hardware/quantization/index.md
+  - docs/hardware/quantization/microscaling-mx-formats/index.md
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/spatial-gemm.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
@@ -41,7 +42,7 @@ appears_in:
   - docs/training/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-04
+updated: 2026-08-09
 ---
 
 # General Matrix Multiply (GEMM)
@@ -97,6 +98,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How vllm-ascend quantizes the DeepSeek-V4 Lightning Indexer to 8 bits (C8): INT8 keys with FP16 scales on 910B/A2/A3, FP8 e4m3fn.
 - [Hardware and Numerics](../hardware/index.md) — Hardware and numerics pages covering accelerator features, precision formats, and related implementation details.
 - [Quantization](../hardware/quantization/index.md) — Post-training quantization methods and low-precision numeric formats for LLM inference.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Uses MX blocks as the narrow-precision operands inside matrix multiplies and describes the format's accumulation and layout boundaries.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Gated DeltaNet combines global state decay with key-targeted delta updates to improve fixed-state sequence memory while.
 - [Kimi Linear: Expressive Efficient Attention Architecture](../training/kimi/kimi-linear/index.md) — Kimi Linear is a hybrid linear attention architecture that for the first time outperforms full attention across short-context.
 - [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — DeepSeek's mHC projects Hyper-Connections' residual mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp.

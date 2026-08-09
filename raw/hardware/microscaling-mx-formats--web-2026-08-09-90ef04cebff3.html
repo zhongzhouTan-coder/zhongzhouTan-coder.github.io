@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) & !(IE 8)]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Microscaling (MX) Formats | FPGA CPU News</title>
+<link rel="profile" href="https://gmpg.org/xfn/11" />
+<link rel="pingback" href="https://fpga.org/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="https://fpga.org/wp-content/themes/twentytwelve/js/html5.js?ver=3.7.0" type="text/javascript"></script>
+<![endif]-->
+<meta name='robots' content='max-image-preview:large' />
+<link rel='dns-prefetch' href='//secure.gravatar.com' />
+<link rel='dns-prefetch' href='//v0.wordpress.com' />
+<link rel="alternate" type="application/rss+xml" title="FPGA CPU News &raquo; Feed" href="https://fpga.org/feed/" />
+<link rel="alternate" type="application/rss+xml" title="FPGA CPU News &raquo; Comments Feed" href="https://fpga.org/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="FPGA CPU News &raquo; Microscaling (MX) Formats Category Feed" href="https://fpga.org/category/microscaling-mx-formats/feed/" />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-color]){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="wp-block-heading-inline-css">
+h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-background,h3:where(.wp-block-heading).has-background,h4:where(.wp-block-heading).has-background,h5:where(.wp-block-heading).has-background,h6:where(.wp-block-heading).has-background{padding:1.25em 2.375em}h1.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h1.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h2.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h2.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h3.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h3.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h4.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h4.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h5.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h5.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h6.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h6.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]){rotate:180deg}
+/*# sourceURL=https://fpga.org/wp-includes/blocks/heading/style.min.css */
+</style>
+<style id="wp-block-image-inline-css">
+.wp-block-image>a,.wp-block-image>figure>a{display:inline-block}.wp-block-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom}@media not (prefers-reduced-motion){.wp-block-image img.hide{visibility:hidden}.wp-block-image img.show{animation:show-content-image .4s}}.wp-block-image[style*=border-radius] img,.wp-block-image[style*=border-radius]>a{border-radius:inherit}.wp-block-image.has-custom-border img{box-sizing:border-box}.wp-block-image.aligncenter{text-align:center}.wp-block-image.alignfull>a,.wp-block-image.alignwide>a{width:100%}.wp-block-image.alignfull img,.wp-block-image.alignwide img{height:auto;width:100%}.wp-block-image .aligncenter,.wp-block-image .alignleft,.wp-block-image .alignright,.wp-block-image.aligncenter,.wp-block-image.alignleft,.wp-block-image.alignright{display:table}.wp-block-image .aligncenter>figcaption,.wp-block-image .alignleft>figcaption,.wp-block-image .alignright>figcaption,.wp-block-image.aligncenter>figcaption,.wp-block-image.alignleft>figcaption,.wp-block-image.alignright>figcaption{caption-side:bottom;display:table-caption}.wp-block-image .alignleft{float:left;margin:.5em 1em .5em 0}.wp-block-image .alignright{float:right;margin:.5em 0 .5em 1em}.wp-block-image .aligncenter{margin-left:auto;margin-right:auto}.wp-block-image :where(figcaption){margin-bottom:1em;margin-top:.5em}.wp-block-image.is-style-circle-mask img{border-radius:9999px}@supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none){.wp-block-image.is-style-circle-mask img{border-radius:0;-webkit-mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-mode:alpha;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}}:root :where(.wp-block-image.is-style-rounded img,.wp-block-image .is-style-rounded img){border-radius:9999px}.wp-block-image figure{margin:0}.wp-lightbox-container{display:flex;flex-direction:column;position:relative}.wp-lightbox-container img{cursor:zoom-in}.wp-lightbox-container img:hover+button{opacity:1}.wp-lightbox-container button{align-items:center;backdrop-filter:blur(16px) saturate(180%);background-color:#5a5a5a40;border:none;border-radius:4px;cursor:zoom-in;display:flex;height:20px;justify-content:center;opacity:0;padding:0;position:absolute;right:16px;text-align:center;top:16px;width:20px;z-index:100}@media not (prefers-reduced-motion){.wp-lightbox-container button{transition:opacity .2s ease}}.wp-lightbox-container button:focus-visible{outline:3px auto #5a5a5a40;outline:3px auto -webkit-focus-ring-color;outline-offset:3px}.wp-lightbox-container button:hover{cursor:pointer;opacity:1}.wp-lightbox-container button:focus{opacity:1}.wp-lightbox-container button:focus,.wp-lightbox-container button:hover,.wp-lightbox-container button:not(:hover):not(:active):not(.has-background){background-color:#5a5a5a40;border:none}.wp-lightbox-overlay{box-sizing:border-box;cursor:zoom-out;height:100vh;left:0;overflow:hidden;position:fixed;top:0;visibility:hidden;width:100%;z-index:100000}.wp-lightbox-overlay .wp-lightbox-close-button{align-items:center;cursor:pointer;display:flex;font-family:inherit;gap:8px;justify-content:center;line-height:1;min-height:40px;min-width:40px;padding:0 4px;position:absolute;right:calc(env(safe-area-inset-right) + 16px);top:calc(env(safe-area-inset-top) + 16px);z-index:5000000}.wp-lightbox-overlay .wp-lightbox-close-button:focus,.wp-lightbox-overlay .wp-lightbox-close-button:hover,.wp-lightbox-overlay .wp-lightbox-close-button:not(:hover):not(:active):not(.has-background){background:none;border:none}.wp-lightbox-overlay .wp-lightbox-close-button:has(.wp-lightbox-close-text:not([hidden])) .wp-lightbox-close-icon svg{height:1em;width:1em}.wp-lightbox-overlay .wp-lightbox-close-icon svg{display:block}.wp-lightbox-overlay .wp-lightbox-navigation-button-next,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{align-items:center;bottom:16px;cursor:pointer;display:flex;font-family:inherit;gap:4px;justify-content:center;line-height:1;min-height:40px;min-width:40px;padding:0 8px;position:absolute;z-index:2000002}.wp-lightbox-overlay .wp-lightbox-navigation-button-next[hidden],.wp-lightbox-overlay .wp-lightbox-navigation-button-prev[hidden]{display:none}@media (min-width:960px){.wp-lightbox-overlay .wp-lightbox-navigation-button-next,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{bottom:50%;transform:translateY(-50%)}}.wp-lightbox-overlay .wp-lightbox-navigation-button-next:focus,.wp-lightbox-overlay .wp-lightbox-navigation-button-next:hover,.wp-lightbox-overlay .wp-lightbox-navigation-button-next:not(:hover):not(:active):not(.has-background),.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:focus,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:hover,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:not(:hover):not(:active):not(.has-background){background:none;border:none;padding:0 8px}.wp-lightbox-overlay .wp-lightbox-navigation-button-next:has(.wp-lightbox-navigation-text:not([hidden])) .wp-lightbox-navigation-icon svg,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:has(.wp-lightbox-navigation-text:not([hidden])) .wp-lightbox-navigation-icon svg{display:block;height:1.5em;width:1.5em}.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{left:calc(env(safe-area-inset-left) + 16px)}.wp-lightbox-overlay .wp-lightbox-navigation-button-next{right:calc(env(safe-area-inset-right) + 16px)}.wp-lightbox-overlay .wp-lightbox-navigation-icon svg{vertical-align:middle}.wp-lightbox-overlay .lightbox-image-container{height:var(--wp--lightbox-container-height);left:50%;overflow:hidden;position:absolute;top:50%;transform:translate(-50%,-50%);transform-origin:top left;width:var(--wp--lightbox-container-width);z-index:2000001}.wp-lightbox-overlay .wp-block-image{align-items:center;box-sizing:border-box;display:flex;height:100%;justify-content:center;margin:0;position:relative;transform-origin:0 0;width:100%;z-index:3000000}.wp-lightbox-overlay .wp-block-image img{height:var(--wp--lightbox-image-height);min-height:var(--wp--lightbox-image-height);min-width:var(--wp--lightbox-image-width);width:var(--wp--lightbox-image-width)}.wp-lightbox-overlay .wp-block-image figcaption{display:none}.wp-lightbox-overlay button{background:none;border:none}.wp-lightbox-overlay .scrim{background-color:#fff;height:100%;opacity:.9;position:absolute;width:100%;z-index:2000000}.wp-lightbox-overlay.active{visibility:visible}@media not (prefers-reduced-motion){.wp-lightbox-overlay.active{animation:turn-on-visibility .25s both}.wp-lightbox-overlay.active img{animation:turn-on-visibility .35s both}.wp-lightbox-overlay.show-closing-animation:not(.active){animation:turn-off-visibility .35s both}.wp-lightbox-overlay.show-closing-animation:not(.active) img{animation:turn-off-visibility .25s both}.wp-lightbox-overlay.zoom.active{animation:none;opacity:1;visibility:visible}.wp-lightbox-overlay.zoom.active .lightbox-image-container{animation:lightbox-zoom-in .4s}.wp-lightbox-overlay.zoom.active .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.active .scrim{animation:turn-on-visibility .4s forwards}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active){animation:none}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .lightbox-image-container{animation:lightbox-zoom-out .4s}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .scrim{animation:turn-off-visibility .4s forwards}}@keyframes show-content-image{0%{visibility:hidden}99%{visibility:hidden}to{visibility:visible}}@keyframes turn-on-visibility{0%{opacity:0}to{opacity:1}}@keyframes turn-off-visibility{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}to{opacity:0;visibility:hidden}}@keyframes lightbox-zoom-in{0%{transform:translate(calc((-100vw + var(--wp--lightbox-scrollbar-width))/2 + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale))}to{transform:translate(-50%,-50%) scale(1)}}@keyframes lightbox-zoom-out{0%{transform:translate(-50%,-50%) scale(1);visibility:visible}99%{visibility:visible}to{transform:translate(calc((-100vw + var(--wp--lightbox-scrollbar-width))/2 + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale));visibility:hidden}}
+/*# sourceURL=https://fpga.org/wp-includes/blocks/image/style.min.css */
+</style>
+<style id="wp-block-paragraph-inline-css">
+.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
+/*# sourceURL=https://fpga.org/wp-includes/blocks/paragraph/style.min.css */
+</style>
+<style id="wp-block-embed-inline-css">
+.wp-block-embed.alignleft,.wp-block-embed.alignright,.wp-block[data-align=left]>[data-type="core/embed"],.wp-block[data-align=right]>[data-type="core/embed"]{max-width:360px;width:100%}.wp-block-embed.alignleft .wp-block-embed__wrapper,.wp-block-embed.alignright .wp-block-embed__wrapper,.wp-block[data-align=left]>[data-type="core/embed"] .wp-block-embed__wrapper,.wp-block[data-align=right]>[data-type="core/embed"] .wp-block-embed__wrapper{min-width:280px}.wp-block-cover .wp-block-embed{min-height:240px;min-width:320px}.wp-block-group.is-layout-flex .wp-block-embed{flex:1 1 0%;min-width:0}.wp-block-embed{overflow-wrap:break-word}.wp-block-embed :where(figcaption){margin-bottom:1em;margin-top:.5em}.wp-block-embed iframe{max-width:100%}.wp-block-embed__wrapper{position:relative}.wp-embed-responsive .wp-has-aspect-ratio .wp-block-embed__wrapper:before{content:"";display:block;padding-top:50%}.wp-embed-responsive .wp-has-aspect-ratio iframe{bottom:0;height:100%;left:0;position:absolute;right:0;top:0;width:100%}.wp-embed-responsive .wp-embed-aspect-21-9 .wp-block-embed__wrapper:before{padding-top:42.85%}.wp-embed-responsive .wp-embed-aspect-18-9 .wp-block-embed__wrapper:before{padding-top:50%}.wp-embed-responsive .wp-embed-aspect-16-9 .wp-block-embed__wrapper:before{padding-top:56.25%}.wp-embed-responsive .wp-embed-aspect-4-3 .wp-block-embed__wrapper:before{padding-top:75%}.wp-embed-responsive .wp-embed-aspect-1-1 .wp-block-embed__wrapper:before{padding-top:100%}.wp-embed-responsive .wp-embed-aspect-9-16 .wp-block-embed__wrapper:before{padding-top:177.77%}.wp-embed-responsive .wp-embed-aspect-1-2 .wp-block-embed__wrapper:before{padding-top:200%}
+/*# sourceURL=https://fpga.org/wp-includes/blocks/embed/style.min.css */
+</style>
+<style id="wp-block-quote-inline-css">
+.wp-block-quote{box-sizing:border-box;overflow-wrap:break-word}.wp-block-quote.is-large:where(:not(.is-style-plain)),.wp-block-quote.is-style-large:where(:not(.is-style-plain)){margin-bottom:1em;padding:0 1em}.wp-block-quote.is-large:where(:not(.is-style-plain)) p,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) p{font-size:1.5em;font-style:italic;line-height:1.6}.wp-block-quote.is-large:where(:not(.is-style-plain)) cite,.wp-block-quote.is-large:where(:not(.is-style-plain)) footer,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) cite,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) footer{font-size:1.125em;text-align:right}.wp-block-quote>cite{display:block}
+/*# sourceURL=https://fpga.org/wp-includes/blocks/quote/style.min.css */
+</style>
+
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #fff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--blue: #21759b;--wp--preset--color--dark-gray: #444;--wp--preset--color--medium-gray: #9f9f9f;--wp--preset--color--light-gray: #e6e6e6;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-blue-color{color: var(--wp--preset--color--blue) !important;}.has-dark-gray-color{color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-color{color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-color{color: var(--wp--preset--color--light-gray) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-blue-background-color{background-color: var(--wp--preset--color--blue) !important;}.has-dark-gray-background-color{background-color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-background-color{background-color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-background-color{background-color: var(--wp--preset--color--light-gray) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-blue-border-color{border-color: var(--wp--preset--color--blue) !important;}.has-dark-gray-border-color{border-color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-border-color{border-color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-border-color{border-color: var(--wp--preset--color--light-gray) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='twentytwelve-fonts-css' href='https://fpga.org/wp-content/themes/twentytwelve/fonts/font-open-sans.css?ver=20230328' media='all' />
+<link rel='stylesheet' id='twentytwelve-style-css' href='https://fpga.org/wp-content/themes/twentytwelve/style.css?ver=20231107' media='all' />
+<link rel='stylesheet' id='twentytwelve-block-style-css' href='https://fpga.org/wp-content/themes/twentytwelve/css/blocks.css?ver=20230213' media='all' />
+<script id="jquery-core-js" src="https://fpga.org/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://fpga.org/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
+<script data-wp-strategy="defer" defer id="twentytwelve-navigation-js" src="https://fpga.org/wp-content/themes/twentytwelve/js/navigation.js?ver=20141205"></script>
+<link rel="https://api.w.org/" href="https://fpga.org/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://fpga.org/wp-json/wp/v2/categories/32" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://fpga.org/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.0.3" />
+	<style>img#wpstats{display:none}</style>
+		
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Microscaling (MX) Formats &#8211; FPGA CPU News" />
+<meta property="og:url" content="https://fpga.org/category/microscaling-mx-formats/" />
+<meta property="og:site_name" content="FPGA CPU News" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image:alt" content="" />
+<meta property="og:locale" content="en_US" />
+
+<!-- End Jetpack Open Graph Tags -->
+<style id="wp-custom-css">
+blockquote {
+	padding-top : 0.0em !important;
+	margin: 0.0em !important;
+}
+</style>
+</head>
+
+<body class="archive category category-microscaling-mx-formats category-32 wp-embed-responsive wp-theme-twentytwelve custom-font-enabled">
+<div id="page" class="hfeed site">
+	<header id="masthead" class="site-header">
+		<hgroup>
+			<h1 class="site-title"><a href="https://fpga.org/" rel="home">FPGA CPU News</a></h1>
+			<h2 class="site-description">Exploring Parallel Computer Architecture with FPGAs</h2>
+		</hgroup>
+
+		<nav id="site-navigation" class="main-navigation">
+			<button class="menu-toggle">Menu</button>
+			<a class="assistive-text" href="#content">Skip to content</a>
+			<div class="nav-menu"><ul>
+<li ><a href="https://fpga.org/">Home</a></li><li class="page_item page-item-2"><a href="https://fpga.org/about/">About</a></li>
+<li class="page_item page-item-535"><a href="https://fpga.org/gray-research-llc/">Gray Research LLC</a></li>
+<li class="page_item page-item-473"><a href="https://fpga.org/grvi-phalanx/">GRVI Phalanx: FPGA Accelerator Framework</a></li>
+<li class="page_item page-item-387"><a href="https://fpga.org/hoplite/">Hoplite: FPGA Router and NOC Tools</a></li>
+</ul></div>
+		</nav><!-- #site-navigation -->
+
+				<a href="https://fpga.org/"><img src="https://fpga.org/wp-content/uploads/2013/05/cropped-mp25x10x4-light-v6-cropped-rot-960-250.png" width="960" height="250" alt="FPGA CPU News" class="header-image" srcset="https://fpga.org/wp-content/uploads/2013/05/cropped-mp25x10x4-light-v6-cropped-rot-960-250.png 960w, https://fpga.org/wp-content/uploads/2013/05/cropped-mp25x10x4-light-v6-cropped-rot-960-250-300x78.png 300w, https://fpga.org/wp-content/uploads/2013/05/cropped-mp25x10x4-light-v6-cropped-rot-960-250-624x163.png 624w" sizes="(max-width: 960px) 100vw, 960px" decoding="async" fetchpriority="high" /></a>
+			</header><!-- #masthead -->
+
+	<div id="main" class="wrapper">
+
+	<section id="primary" class="site-content">
+		<div id="content" role="main">
+
+					<header class="archive-header">
+				<h1 class="archive-title">
+				Category Archives: <span>Microscaling (MX) Formats</span>				</h1>
+
+						</header><!-- .archive-header -->
+
+			
+	<article id="post-1186" class="post-1186 post type-post status-publish format-standard hentry category-composable-custom-extensions category-microscaling-mx-formats category-risc-v">
+				<header class="entry-header">
+			
+						<h1 class="entry-title">
+				<a href="https://fpga.org/2023/11/27/risc-v-composable-extensions-for-microscaling-data-formats-for-ai-tensors/" rel="bookmark">RISC-V Composable Extensions for MX Microscaling Data Formats for AI Tensors: Part One: Introduction to MX Data</a>
+			</h1>
+								</header><!-- .entry-header -->
+
+				<div class="entry-content">
+			
+<p class="wp-block-paragraph">In this post we review the design and history of <em>MX format</em> reduced precision <a href="https://en.wikipedia.org/wiki/Block_floating_point">block floating point</a> vector data formats. In the next post, we explore several possible <a href="https://github.com/grayresearch/cx">RISC-V composable custom extensions</a> to compute over them.</p>
+
+
+
+<h1 class="wp-block-heading">Microsoft team demonstrates a more frugal way to do AI tensor math, rivals unite in support</h1>
+
+
+
+<p class="wp-block-paragraph">Last month at <a href="https://www.opencompute.org/">Open Compute Project</a> <a href="https://www.opencompute.org/summit/global-summit">Global Summit</a>, seven <em>rival </em>processor and hyperscale CSP industry behemoths came together to support <em>microscaling (MX) </em>data formats for AI workloads. <a href="https://www.opencompute.org/blog/amd-arm-intel-meta-microsoft-nvidia-and-qualcomm-standardize-next-generation-narrow-precision-data-formats-for-ai">AMD, Arm, Intel, Meta, Microsoft, NVIDIA, and Qualcomm Standardize Next-Generation Narrow Precision Data Formats</a>. Notably absent: Google, Amazon, and the RISC-V ecosystem.</p>
+
+
+
+<p class="wp-block-paragraph">Spec: <a href="https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf">Open Compute Project OCP Microscaling Formats (MX) Specification Version 1.0</a>.</p>
+
+
+
+<p class="wp-block-paragraph">This <a href="https://www.opencompute.org/blog/amd-arm-intel-meta-microsoft-nvidia-and-qualcomm-standardize-next-generation-narrow-precision-data-formats-for-ai">MX Alliance</a> proposes standards for new 4b, 6b, 8b floating point element and 8b integer element <em>block floating point</em> formats that are poised to obsolete use of 16-bit and wider floating point formats <em>within matrix multiplies and convolutions</em> in machine learning training and inference workloads.</p>
+
+
+
+<p class="wp-block-paragraph">A block floating point format replaces the <em>k</em> exponent terms of the individual elements of a block of <em>k</em> elements with a single common scaling term, X, stored once. All elements&#8217; mantissas are scaled for that X term. This significantly reduces the block&#8217;s memory footprint, and dramatically reduces the logic resources (ASIC gates or FPGA LUTs) required to implement vector operators (esp. vector dot product). The Spec:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image.png"><img decoding="async" width="997" height="1024" src="https://fpga.org/wp-content/uploads/2023/10/image-997x1024.png" alt="Excerpt of %5.1 of the spec, illustrating an MX format block with one shared scale X and k scalar elements P[]." class="wp-image-1191" srcset="https://fpga.org/wp-content/uploads/2023/10/image-997x1024.png 997w, https://fpga.org/wp-content/uploads/2023/10/image-292x300.png 292w, https://fpga.org/wp-content/uploads/2023/10/image-768x788.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-624x641.png 624w, https://fpga.org/wp-content/uploads/2023/10/image.png 1242w" sizes="(max-width: 997px) 100vw, 997px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">For MX formats, blocks have k=32 elements, the scale factor X is an 8b exponent, and elements may be FP4, FP6, FP8, or INT8:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-1.png"><img decoding="async" width="1024" height="653" src="https://fpga.org/wp-content/uploads/2023/10/image-1-1024x653.png" alt="Excerpt of %5.2 of the spec, a table specifies MX-compliant formats: four formats across six different element types." class="wp-image-1193" srcset="https://fpga.org/wp-content/uploads/2023/10/image-1-1024x653.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-1-300x191.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-1-768x490.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-1-624x398.png 624w, https://fpga.org/wp-content/uploads/2023/10/image-1.png 1232w" sizes="(max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Thus a 32 element MXFP6 block requires 32×6b element data + 8b scale data = 200 bits, and a 256 element vector, in memory, might use 8 MXFP6s = 200 bytes (or more!).</p>
+
+
+
+<p class="wp-block-paragraph">The accompanying whitepaper <a href="https://arxiv.org/abs/2310.10537">Microscaling Data Formats for Deep Learning</a>, evaluating various MX formats on real ML workloads, justifies the interest and expected uptake of these formats. For example, the paper finds “MXFP6 closely matches FP32 for inference after quantization-aware fine tuning” and “generative language models can be trained with MXFP4 weights and MXFP6 activations and gradients incurring only a minor penalty in the model loss.”</p>
+
+
+
+<p class="wp-block-paragraph">For these AI tensor math workloads, MX format data achieves comparable accuracy using only a <em>small fraction</em> of the circuit resources of FP32 data.</p>
+
+
+
+<h2 class="wp-block-heading">A curiously unspecific specification</h2>
+
+
+
+<p class="wp-block-paragraph">The spec declines to specify such essentials as: 1) a canonical in-memory representation of MX data; 2) the required internal precision and final precision of MX dot product; and 3) besides element-wise conversion to/from float32, and dot product, what other MX operations are required, and at what internal and final precision? For example:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph"><em>5.1 Microscaling (MX): &#8220;The layout of the block in physical memory <span style="text-decoration: underline;">is not prescribed</span> in this specification.&#8221;</em></p>
+
+
+
+<p class="wp-block-paragraph"><em>6.1 Dot Product of Two MX-compliant Format Vectors: &#8220;The dot product of two MX-compliant format vectors of length k is <span style="text-decoration: underline;">a scalar number C</span>. &#8230; The <span style="text-decoration: underline;">internal precision</span> of the dot product and order of operations is implementation defined.&#8221;</em></p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">Also, per 6.2 General Dot Product, the dot product of two arbitrary vectors is the sum of the dot products of their constituent MX k-vectors, with type float32. Here again the specification does not prescribe the type, precision, or order of evaluation of the intermediate sums terms (if any).</p>
+
+
+
+<p class="wp-block-paragraph">Leaving these details unspecified is problematic. Diverse &#8220;compliant&#8221; MX libraries and cores will evaluate the same models but with different results. Perhaps these omissions are intentional, and necessary to secure endorsements from rivals with quite different means of evaluating MX dot products.</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.imperial.ac.uk/electrical-engineering/about/what-do-electrical-and-electronic-engineers-do/george-constantinides/">George Constantinides</a> (Imperial College) also writes about this here: <a href="https://constantinides.net/2023/10/30/industry-coheres-around-mx/">Industry Coheres around MX?</a> &#8220;To my mind, the problem with this definition is that × (on elements), the (elided) product on scalings and the sum on element products is undefined. &#8230;&#8221;</p>
+
+
+
+<h1 class="wp-block-heading">Paper trail</h1>
+
+
+
+<p class="wp-block-paragraph">Now let’s review prior work that (I believe) led these researchers to these new data formats.</p>
+
+
+
+<h2 class="wp-block-heading">Project Catapult at ISCA 2014</h2>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.microsoft.com/en-us/research/project/project-catapult/">Project Catapult</a>. Putnam et al, <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Catapult_ISCA_2014.pdf">A Reconfigurable Fabric for Accelerating Large-Scale Datacenter Services</a>, <a href="https://iscaconf.org/isca2014/">ISCA 2014</a>. <a href="https://dl.acm.org/doi/10.5555/2665671.2665678">DOI</a>. <a href="https://www.microsoft.com/en-us/research/publication/a-reconfigurable-fabric-for-accelerating-large-scale-datacenter-services/">PR</a>. This <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=11197258701271301691"><em>well cited</em></a> paper documents Microsoft&#8217;s early Project Catapult work to use parallel FPGA overlay architectures, across myriad FPGAs, to accelerate Bing query document ranking at scale. “We describe a medium-scale deployment of this fabric on a bed of 1,632 servers, and measure its efficacy in accelerating the Bing web search engine.” (I built the <em>§4.6. Document Scoring</em> gadget stage of this ranking pipeline; working with the MSR and Bing teams was a career highlight.) I believe Catapult spurred Intel to acquire Altera for $17B in 2015.</p>
+
+
+
+<p class="wp-block-paragraph">Project Catapult&#8217;s investments in people and in datacenter-networked FPGAs hosting <em>hardware microservices</em> planted the seeds of Project Brainwave.</p>
+
+
+
+<h2 class="wp-block-heading">Project Brainwave at Hot Chips 2017</h2>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.microsoft.com/en-us/research/project/project-brainwave/publications/">Project Brainwave</a>. Chung and Fowers, <a href="https://old.hotchips.org/wp-content/uploads/hc_archives/hc29/HC29.22-Tuesday-Pub/HC29.22.60-NeuralNet1-Pub/HC29.22,622-Brainwave-Datacenter-Chung-Microsoft-2017_08_11_2017.pdf">Accelerating Persistent Neural Networks at Datacenter Scale</a>, <a href="https://hc29.hotchips.org/">Hot Chips 2017</a>. <a href="https://www.youtube.com/watch?v=DbhAMiQ_yvs&amp;t=2027s">Video</a>. The public debut of Brainwave. Leveraging FPGA hardware microservices at massive scale, it achieves high throughput, peak hardware utilization, and very low latency for <em>batch size = 1</em> workloads, by keeping then-enormous ML models, many millions of parameters, <em>entirely in SRAM</em> across thousands of FPGAs&#8217; × thousands of BRAMs, using tens of TBs/s/FPGA of SRAM bandwidth.</p>
+
+
+
+<p class="wp-block-paragraph">Fowers detailed the Brainwave soft DPU microarchitecture, including thousands of dot product units, totaling ~96,000 FMACs using narrow precision <em>MS-FP </em>floating point format: <strong>90 TOPS</strong> ms-fp8 at 720 GFLOPS/W on Stratix 10 280. Despite quantization, its inference accuracy was comparable to float32 (after some retraining).</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/10/image-4.png"><img loading="lazy" decoding="async" width="1024" height="535" src="https://fpga.org/wp-content/uploads/2023/10/image-4-1024x535.png" alt="" class="wp-image-1204" style="aspect-ratio:1.9140186915887851;width:655px;height:auto" srcset="https://fpga.org/wp-content/uploads/2023/10/image-4-1024x535.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-4-300x157.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-4-768x401.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-4-1536x802.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-4-2048x1070.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-4-624x326.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<h3 class="wp-block-heading">Brainwave&#8217;s mysteriously good floating point throughput</h3>
+
+
+
+<p class="wp-block-paragraph">At the time I wondered, &#8220;How did Microsoft hit 90 TOPS? The no. of Stratix 10 DSPs × DSP Fmax &lt;&lt; 90 TOPS. So some/most Brainwave FPUs <em>must </em>be in soft logic (LUTs). But <em>90</em> TOPS?! How?&#8221; To reproduce their result, I carefully designed frugal 8b and 6b FPUs, for Virtex UltraScale+ FPGAs. Try as I might, I couldn&#8217;t get to 90 TOPS. <a href="https://twitter.com/jangray/status/926898784210010112">I wrote</a> in 2017:</p>
+
+
+
+<blockquote class="wp-block-quote has-small-font-size is-layout-flow wp-block-quote-is-layout-flow">
+<p class="has-light-gray-background-color has-background has-small-font-size wp-block-paragraph"><em>#FPGA noodling on LUT-frugal reduced precision floating point.<br>fp8 = fp8*fp8<br>fp8 = fp8+fp8<br>fix16 += fp8*fp8 // commutative sum<br>Thinking { sign:1; exp:4; mant:3 } per <a href="https://arxiv.org/pdf/1703.03073.pdf">Deep CNN Inference with Floating-point Weights and Fixed-point Activations</a>, flush-to-zero.</em><br><em><br>For fp8 ::= { s:1; e:4; m:3 }, fp11 ::= { s:1; e:4; m:6 }:<br>fix16 += (fp8)(fp8*fp8); // ~38 LUTs<br>fix16 += (fp11)(fp8*fp8); // ~46 LUTs</em><br><em><br>Pipelined at 500 MHz, in 1.2 M LUT XCVU9P * 90% utilization</em><br><em>=&gt; ~28000 instances of fix16 += (fp8)(fp8*fp8) =&gt; 28 TFLOPs. (20+ TFLOPS in F1?)<br>Eats 2*28K=56 KB/cycle. In a VU9P: 2160 BRAMs * 8 B/BRAM = 17KB/cycle;<br>960 URAMs * 16 B/URAM = 15KB/cycle. So requires weight or activation reuse.</em><br><em><br>(Compare with XNOR-Net: 36b dot product = 50 LUTs per <a href="https://fpga.org/2014/09/05/quick-fpga-hacks-population-count/">FPGA Hacks: Population count</a>; VU9P URAM+BRAM bandwidth: 294Kb/cycle =&gt; ~300 TOPS @500 MHz with operand reuse</em>.)<br><em><br>For fp6 ::= { s:1; e:3; m:2 }, fp8x ::= { s:1, e:3; m:4 }:<br>fix10 += (fp6)(fp6*fp6); // ~21 LUTs<br>fix10 += (fp8x)(fp6*fp6); // ~24 LUTs</em><br><em><br>Pipelined at 500 MHz, in 1.2 M LUT VU9P * 90% util =&gt; ~51000 instances of</em><br><em>fix10 += (fp6)(fp6*fp6) =&gt; 51 TFLOPs. (40 TFLOPS on F1?)</em><br><em><br><strong>Even fp6 doesn&#8217;t match Brainwave&#8217;s &#8220;90 TFLOPs ms-fp8&#8221; on 500 MHz Stratix-10. Perhaps they are not using fused fp-mul-accumulate?</strong></em></p>
+</blockquote>
+
+
+
+<h3 class="wp-block-heading">Multiplying is easy, young man, adding is harder</h3>
+
+
+
+<p class="wp-block-paragraph">Where do the LUTs go in reduced precision FPGA FMACs?</p>
+
+
+
+<p class="wp-block-paragraph">First let&#8217;s adopt the <a href="https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf">MX Spec</a> notation: &#8220;ExMy: Notation for a scalar format with one sign bit, x exponent bits, and y mantissa bits. E.g., E4M3 refers to an FP8 format with one sign bit, four exponent bits, and three mantissa bits.&#8221; (<em>Mantissa bits</em> is a misnomer here; these are <em>fraction bits</em> (after the binary point), not including the implicit leading 1., or 0. when the number is a denormal.) So working in E4M3 { s:1; e:4; f:3; }, that&#8217;s a 1b sign, 4b exponent, and 3b fraction<em> </em>(<em>i.e., </em>a 4b significand with an implied leading 1). It exactly represents certain real numbers such as 240.0 (+1.111<sub>2</sub> x 2<sup>7</sup>) and -1.0<sub>2</sub> x 2<sup>-7</sup> = -.0078125.</p>
+
+
+
+<p class="wp-block-paragraph">It is inexpensive to <em>multiply </em>such low precision floats in 6-LUT FPGAs. For example assume (flush-to-zero) normalized E4M3 × E4M3 products have a target precision of E4M6. The product of two E4M3 1.<em>f</em> 4b significands lie in [1.000000<sub>2</sub> , 11.100001<sub>2</sub>]. If the product &gt;= 2.0, normalize it by shifting the binary point to the left, i.e., 1.110000<span style="text-decoration: underline;">1</span><sub>2</sub> x 2<sup>-1</sup>, and round/truncate the (underlined) least significant bit. Then multiplication is just a table lookup of the resulting 6b fraction <em>after </em>normalization and rounding. With 3b fraction inputs a.f and b.f you require 2<sup>3+3</sup> = 64 entries, perfect for a 6 6-LUT 64x6b ROM. Add one LUT for the (&gt;=2.0) <em>shift</em> signal and 0.5 of a 5,5-LUT for the XOR of the sign bit. Add 0.5-2 LUTs for zeroes. The (twice biased) product exponent is (a.e + b.e + <em>shift</em>), 4 LUTs. In all, perhaps 14 LUTs and two LUT delays. Cheap.</p>
+
+
+
+<p class="wp-block-paragraph">The greater cost of the dot product&#8217;s multiply-accumulate is the adder / adder tree. The sum of (e.g.) four element-wise products 1×2<sup>-6</sup> + 1×2<sup>-4</sup> + 1×2<sup>-2</sup>  + 1×2<sup>0</sup> = 1.010101<sub>2</sub> x 2<sup>0</sup>. Naively each add requires a pre-addition shifter to align mantissas, an add/sub, and then a CLZ circuit and another shifter to renormalize the sum/difference. How wide those shifters are, how wide the sum reduction adder precision is, ideally, depends on the adder tree requirements. But compared to the two LUT delays of of the multiplier, this FP reduction adds more LUT delays / pipeline stages as well as area. <em>&#8220;It all adds up.&#8221;</em></p>
+
+
+
+<p class="wp-block-paragraph">My 2017 preference was and is to keep the vector reduction sum in <em>fixed point</em> and first convert each product mantissa term to fixed point with a barrel shifter, the shift count controlled by the product term&#8217;s exponent. Then reduction order doesn&#8217;t matter &#8212; fixed point adds are commutative. When I tried this in 2017:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="has-light-gray-background-color has-background has-small-font-size wp-block-paragraph"><em><em>For fp8 ::= { s:1; e:4; m:3 }, fp11 ::= { s:1; e:4; m:6 }:<br>fix16 += (fp8)(fp8*fp8); // ~38 LUTs<br>fix16 += (fp11)(fp8*fp8); // ~46 LUTs</em></em></p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">So the above ~14 LUT multiply incurs an additional ~16 LUT shift and ~16 LUT add/sub. Roughly 2/3 of the FMAC is the adder. Ouch. How does that translate into TOPS? For an XCVU9P device, 1.2 MLUTs × 0.9 / 38 LUTs/mulacc = ~28000 mulaccs × 2 ops/clock × 0.5 GHz = 28 TOPS.</p>
+
+
+
+<p class="wp-block-paragraph">I tried again with 6b×6b floating point but that only reached ~50 TOPS.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="has-light-gray-background-color has-background has-small-font-size wp-block-paragraph"><em>For fp6 ::= { s:1; e:3; m:2 }, fp8x ::= { s:1, e:3; m:4 }:<br>fix10 += (fp6)(fp6*fp6); // ~21 LUTs<br>fix10 += (fp8x)(fp6*fp6); // ~24 LUTs</em><br><em>1.2 MLUTs * 0.9 / 21 LUTs/mulacc = ~51000 mulaccs * 2 ops/clock * 0.5 GHz = 51 TOPS.</em></p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">About half of Microsoft&#8217;s 90 TOPS result, in a comparable one million 6-LUT device. <em>I was stumped.</em></p>
+
+
+
+<p class="wp-block-paragraph">Then came: Chung et al, <a href="https://www.microsoft.com/en-us/research/uploads/prod/2018/03/mi0218_Chung-2018Mar25.pdf">Serving DNNs in Real Time at Datacenter Scale with Project Brainwave</a>, IEEE Micro, March 2018. <a href="https://doi.org/10.1109/MM.2018.022071131">DOI</a>. The Hot Chips follow-on IEEE Micro paper made things somewhat clearer: the 90 TOPS result is for msfp8 format, with a 2b fraction, at 550 MHz. More like my fp6 than my fp8. But the 90 TOPS result was still out of reach!</p>
+
+
+
+<h2 class="wp-block-heading">Brainwave at ISCA 2018, MSFP revealed as block floating point</h2>
+
+
+
+<p class="wp-block-paragraph">Fowers et al, <a href="https://www.microsoft.com/en-us/research/uploads/prod/2018/06/ISCA18-Brainwave-CameraReady.pdf">A Configurable Cloud-Scale DNN Processor for Real-Time AI</a>, <a href="https://iscaconf.org/isca2018/">ISCA 2018</a>. <a href="https://dl.acm.org/doi/10.1109/ISCA.2018.00012">DOI</a>. <a href="https://www.youtube.com/watch?v=S7ubi-bg2Mg">Lightning talk</a>.</p>
+
+
+
+<p class="wp-block-paragraph">This paper details the Brainwave cloud scale DNN system, top to bottom, including the design of the Brainwave Neural Processor Architecture <em>(NPU)</em> SoC. It reveals the representation trick behind the highly efficient MS-FP datatypes &#8212; <em>block floating point</em> formats, recoding vector elements to use a common scaling factor, instead of per-element exponent scaling. This dates back at least to <a href="https://amturing.acm.org/award_winners/wilkinson_0671216.cfm">J.H. Wilkinson</a>, &#8220;Block-floating vectors and matrices&#8221;, pp. 26-27, in <a href="https://books.google.com/books?id=yFogU9Ot-qsC&amp;pg=PP7">Rounding Errors in Algebraic Processes</a>, 1963: </p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/10/image-6.png"><img loading="lazy" decoding="async" width="1024" height="1024" src="https://fpga.org/wp-content/uploads/2023/10/image-6-1024x1024.png" alt="Paragraph 34, Block-floating vectors and matrices, from p. 26 of Wilkinson, URL in the adjacent text, illustrating recoding a vector using a common scale factor instead of a separate exponent per element." class="wp-image-1230" style="width:500px" srcset="https://fpga.org/wp-content/uploads/2023/10/image-6-1024x1024.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-6-300x300.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-6-150x150.png 150w, https://fpga.org/wp-content/uploads/2023/10/image-6-768x768.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-6-624x624.png 624w, https://fpga.org/wp-content/uploads/2023/10/image-6.png 1259w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/10/image-9.png"><img loading="lazy" decoding="async" width="819" height="1024" src="https://fpga.org/wp-content/uploads/2023/10/image-9-819x1024.png" alt="" class="wp-image-1235" style="width:500px" srcset="https://fpga.org/wp-content/uploads/2023/10/image-9-819x1024.png 819w, https://fpga.org/wp-content/uploads/2023/10/image-9-240x300.png 240w, https://fpga.org/wp-content/uploads/2023/10/image-9-768x960.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-9-1229x1536.png 1229w, https://fpga.org/wp-content/uploads/2023/10/image-9-624x780.png 624w, https://fpga.org/wp-content/uploads/2023/10/image-9.png 1282w" sizes="auto, (max-width: 819px) 100vw, 819px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">and is implemented, for example, by Chhabra and Iyer in the TI TMS320C54x DSP <a href="https://www.ti.com/lit/an/spra610/spra610.pdf">app note SPRA610</a>, Dec. 1999. Thanks to OGAWA, Tadashi for this reference.</p>
+
+
+
+<p class="wp-block-paragraph">This Brainwave architecture paper is a must-read for understanding hardware efficient (not just FPGA-efficient) approaches to ultra-high throughput, batch size=1, AI tensor math accelerator design. The authors combine many scaling techniques including datapath specialization, hierarchical decode and dispatch, vector parallelism, vector chaining, matrix to vector dataflow, processsing near SRAM, operand reuse, specialized broadcast and reduction networks, and <em>bespoke, narrow precision data types</em>:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">&#8220;On FPGAs, we employ a narrow precision block floating point format [15] that shares 5-bit exponents across a group of numbers at the native vector level (e.g., a single 5-bit exponent per 128 independent signs and mantissas. … Using variations of BFP, we successfully trim mantissas to as low as 2 to 5 bits with negligible impact on accuracy (within 1-2% of baseline) using just a few epochs of fine-tuning &#8230; Using our variant of BFP, no hyperparameter tuning (e.g., altering layer count or dimensions) is required.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">&#8220;With shared exponents and narrow mantissas, the cost of floating point (traditionally the Achilles heel of FPGAs) drops considerably, <strong>since shared exponents eliminate expensive shifters per MAC</strong>, while <strong>narrow bitwidth multiplications map extremely efficiently onto lookup tables and DSPs</strong>. We employ a variety of strategies to exploit narrow precision to its full potential on FPGAs; for example, by packing 2 or 3 bit multiplications into DSP blocks combined with cell-optimized soft logic multipliers and adders, <strong>as many as 96,000 MACs</strong> can be deployed on a Stratix 10 280 FPGA.&#8221;</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph"><em>A-ha! </em>As I <a href="https://twitter.com/jangray/status/1003687332313116672">tweeted</a>, June 4, 2018:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="has-light-gray-background-color has-background has-small-font-size wp-block-paragraph">#FPGA Update on ms-fp8 etc. Jeremy Fowers&#8217; awesome talk at #ISCA2018 discloses Brainwave uses a block floating point format (e.g. per 128 item vector) in which data are recoded with a single 5b exponent shared by all items + { sign + 2-5b mantissa } per item.<br><br>#FPGA This eliminates all those expensive shifters in the dot product adder reduction tree. (Indeed these are the greatest resource use in my reduced precision MAC experiments earlier in this tweet stream.) MS reports as many as 96000 MACs on a Stratix10-280.<br><br>#FPGA Block floating point quantization noise is mitigated by a few epochs of DNN model fine-tuning without changing model hyperparameters. This component of the Brainwave work shows for CNN/RNN inference, FPGA LUTs are competitive with hard FPUs in a GPU. Bravo, Microsoft.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">Next time, we will revisit this paper below when we turn to the design of RISC-V composable extension(s) for MX data.</p>
+
+
+
+<h2 class="wp-block-heading">Brainwave at NeurIPS 2020</h2>
+
+
+
+<p class="wp-block-paragraph">Rouhani et al, <a href="https://proceedings.neurips.cc/paper/2020/file/747e32ab0fea7fbd2ad9ec03daa3f840-Paper.pdf">Pushing the Limits of Narrow Precision Inferencing at Cloud Scale with Microsoft Floating Point</a>, NeurIPS 2020. <a href="https://dl.acm.org/doi/10.5555/3495724.3496585">DOI</a>. This paper further refines the MS-FP formats from the 2018 paper, and shows &#8220;through the co-evolution of hardware design and algorithms, MSFP16 incurs 3× lower cost compared to Bfloat16 and MSFP12 has 4× lower cost compared to INT8 while delivering a comparable or better accuracy.&#8221; as illustrated in this figure:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-12.png"><img loading="lazy" decoding="async" width="1024" height="466" src="https://fpga.org/wp-content/uploads/2023/10/image-12-1024x466.png" alt="Figure 1: MSFP significantly improves upon previous datatypes in computational efficiency at each fixed level of accuracy. Left: relative area and energy cost of multiply-accumulate (MAC) using different datatypes on the same silicon. Right: ImageNet accuracy for ResNet-50 plotted versus normalized area cost. The area costs are normalized to Float32." class="wp-image-1242" srcset="https://fpga.org/wp-content/uploads/2023/10/image-12-1024x466.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-12-300x137.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-12-768x350.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-12-1536x700.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-12-2048x933.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-12-624x284.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">The relative sizes are presented in more detail in this table:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-11.png"><img loading="lazy" decoding="async" width="1024" height="216" src="https://fpga.org/wp-content/uploads/2023/10/image-11-1024x216.png" alt="Table 1 from the NeurIPS paper: &quot;Table 1: MSFP versus other commonly used numerical formats for DNN inference. Memory and MAC density of various formats are normalized to Float32. In this table, MSFP is assumed to have 8-bit exponent and a bounding-box size of 16. The results listed here are based on topographical synthesis results using TSMC 16nm FF+.&quot;" class="wp-image-1241" srcset="https://fpga.org/wp-content/uploads/2023/10/image-11-1024x216.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-11-300x63.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-11-768x162.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-11-1536x324.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-11-2048x431.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-11-624x131.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Compelling, right? Compelling enough to justify the extra developer attention, software support, and hardware (quantization and dot products) for these MSFP* formats.</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.microsoft.com/en-us/research/blog/a-microsoft-custom-data-type-for-efficient-inference/">PR: A Microsoft custom data type for efficient inference</a>. This post concisely summarizes the key ideas in the paper and evaluation of MSFP* for AI tensor math.</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><a href="https://fpga.org/wp-content/uploads/2023/10/Brainwave_figure2.jpg"><img loading="lazy" decoding="async" width="666" height="695" src="https://fpga.org/wp-content/uploads/2023/10/Brainwave_figure2.jpg" alt="Figure 2: MSFP uses a shared exponent to achieve the dynamic range of floating-point formats such as fp32 and bfloat16 while keeping storage and computation costs close to those of integer formats." class="wp-image-1239" style="width:400px" srcset="https://fpga.org/wp-content/uploads/2023/10/Brainwave_figure2.jpg 666w, https://fpga.org/wp-content/uploads/2023/10/Brainwave_figure2-287x300.jpg 287w, https://fpga.org/wp-content/uploads/2023/10/Brainwave_figure2-624x651.jpg 624w" sizes="auto, (max-width: 666px) 100vw, 666px" /></a></figure>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-16.png"><img loading="lazy" decoding="async" width="1024" height="353" src="https://fpga.org/wp-content/uploads/2023/10/image-16-1024x353.png" alt="" class="wp-image-1249" srcset="https://fpga.org/wp-content/uploads/2023/10/image-16-1024x353.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-16-300x103.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-16-768x265.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-16-1536x529.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-16-2048x706.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-16-624x215.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<h2 class="wp-block-heading">Modern FPGAs with hard block floating point dot product units</h2>
+
+
+
+<p class="wp-block-paragraph">This 2020 Microsoft post also heralds the arrival of hardened BFP dot product units in commercial FPGAs. First introduced in the Achronix Speedster 7t <a href="https://www.achronix.com/machine-learning-processor">Machine Learning Processor</a> (<a href="https://www.achronix.com/sites/default/files/docs/Speedster7t_Machine_Learning_Processor_User_Guide_UG088.pdf">MLP</a>) blocks in 2019, and then in the <a href="https://www.intel.com/content/www/us/en/products/details/fpga/stratix/10/nx.html">Intel Stratix 10 NX (PR)</a> <a href="https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/a1137206-stratix-10-nx-product-brief.pdf">(product brief)</a> in 2020 AI Tensor Block (AITB) units in 2020, these AI tensor math optimized devices provide thousands of hard BFP dot product units. The resemblance to the MSFP Dot Product Unit depicted above is no coincidence. For example, &#8220;<a href="https://www.microsoft.com/en-us/research/blog/a-microsoft-custom-data-type-for-efficient-inference/">Working together with our partners in the Intel Programmable Solutions Group (PSG)</a>, we’ve delivered significant improvement in area and energy efficiency through silicon hardening&#8221;</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-14.png"><img loading="lazy" decoding="async" width="1024" height="571" src="https://fpga.org/wp-content/uploads/2023/10/image-14-1024x571.png" alt="" class="wp-image-1246" srcset="https://fpga.org/wp-content/uploads/2023/10/image-14-1024x571.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-14-300x167.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-14-768x428.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-14-1536x856.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-14-2048x1142.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-14-624x348.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://fpga.org/wp-content/uploads/2023/10/image-15.png"><img loading="lazy" decoding="async" width="1024" height="573" src="https://fpga.org/wp-content/uploads/2023/10/image-15-1024x573.png" alt="" class="wp-image-1247" srcset="https://fpga.org/wp-content/uploads/2023/10/image-15-1024x573.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-15-300x168.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-15-768x430.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-15-1536x860.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-15-2048x1146.png 2048w, https://fpga.org/wp-content/uploads/2023/10/image-15-624x349.png 624w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">(Above frames from Achronix MLP <a href="https://www.youtube.com/watch?v=pjYtyN4eVfQ&amp;t=1299s">training video</a>.)</p>
+
+
+
+<p class="wp-block-paragraph">The Intel white paper, <a href="https://www.intel.com/content/dam/www/public/us/en/documents/white-papers/a1040767-wp-01301-pushing-ai-boundaries-with-scalable-compute-focused-fpgas.pdf">Pushing AI Boundaries with Scalable Compute-Focused FPGAs</a> is helpful, as is the superb FPGA architecture paper by Langhammer et al, <a href="https://dl.acm.org/doi/10.1145/3431920.3439293">Stratix 10 NX Architecture and Applications</a>, FPGA 2021: &#8220;Stratix 10 NX achieves <strong>143</strong> &#8230; <strong>286 </strong>TFLOPs at 600MHz. Depending on the configuration, power efficiency is in the range of <strong>1-4 </strong>&#8230; <strong>TFLOPs/W</strong>.&#8221; Now you&#8217;re talking!</p>
+
+
+
+<p class="wp-block-paragraph">Below is the Intel AI Tensor Block schematic from the white paper. Each block performs up to 30 8b muls, and 30 adds per clock cycle. A Stratix 10 NX has 3960 AITBs so, <em>if you keep it fed</em> and operating at 600 MHz, it performs 3960 × 30 × 2 ops × 0.6 GHz = 143 TOPS — a double that with a 4b mantissa.</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/10/image-18.png"><img loading="lazy" decoding="async" width="1024" height="926" src="https://fpga.org/wp-content/uploads/2023/10/image-18-1024x926.png" alt="" class="wp-image-1251" style="aspect-ratio:1.1058315334773219;width:655px;height:auto" srcset="https://fpga.org/wp-content/uploads/2023/10/image-18-1024x926.png 1024w, https://fpga.org/wp-content/uploads/2023/10/image-18-300x271.png 300w, https://fpga.org/wp-content/uploads/2023/10/image-18-768x694.png 768w, https://fpga.org/wp-content/uploads/2023/10/image-18-1536x1389.png 1536w, https://fpga.org/wp-content/uploads/2023/10/image-18-624x564.png 624w, https://fpga.org/wp-content/uploads/2023/10/image-18.png 1952w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Similarly, new Intel Agilex 5 devices have configurable DSP blocks that implement a streamlined tensor block mode with 10 8b muls + product adds per cycle per DSP. (I would have linked to Intel AITB and Agilex 5 tensor block modes&#8217; detailed specs but it seems Intel does not make that available on the web. <em>Dumb.</em>) </p>
+
+
+
+<p class="wp-block-paragraph">In contrast AMD/Xilinx do not presently implement hard block floating point support in their FPGA fabric, instead providing Versal A.I.Engine (AIE) vector processor arrays.</p>
+
+
+
+<h2 class="wp-block-heading">MX Shared Microexponents, ISCA 2023</h2>
+
+
+
+<p class="wp-block-paragraph">Rouhani et al, <a href="https://www.microsoft.com/en-us/research/publication/with-shared-microexponents-a-little-shifting-goes-a-long-way/">With Shared Microexponents, A Little Shifting Goes a Long Way</a>. <a href="https://dl.acm.org/doi/10.1145/3579371.3589351">DOI</a> (PDF paywalled). <a href="https://arxiv.org/pdf/2302.08007.pdf">PDF (arxiv.org)</a>.</p>
+
+
+
+<p class="wp-block-paragraph">This paper describes a framework <em>Block Data Representations</em> (BDR) to compare the efficiency and quantization loss over a diverse design space of various vector block quantization granularities, with various hierarchies of shared scaling factors, including the 1-level Brainwave block floating point (BFP) formats MSFP*, and novel 2-level shared microexponents (MX) formats, including MX4, MX6, and MX9.</p>
+
+
+
+<p class="wp-block-paragraph"><em>These MX formats are not the MX Alliance formats!</em> Consider Table 2:</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/11/image-5.png"><img loading="lazy" decoding="async" width="1024" height="440" src="https://fpga.org/wp-content/uploads/2023/11/image-5-1024x440.png" alt="" class="wp-image-1401" style="width:500px" srcset="https://fpga.org/wp-content/uploads/2023/11/image-5-1024x440.png 1024w, https://fpga.org/wp-content/uploads/2023/11/image-5-300x129.png 300w, https://fpga.org/wp-content/uploads/2023/11/image-5-768x330.png 768w, https://fpga.org/wp-content/uploads/2023/11/image-5-624x268.png 624w, https://fpga.org/wp-content/uploads/2023/11/image-5.png 1318w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">If I understand correctly, MX9 is a block of k<sub>1</sub>=16 elements, all scaled by 2<sup>d<sub>1</sub></sup>, d<sub>1</sub> is 8b, further subdivided into 8 subblocks of k<sub>2</sub>=2 elements, further scaled by 2<sup>d<sub>2</sub></sup>, d<sub>2</sub> is 1b, each element being sign × 7b magnitude. In all an MX9 of 16 elements occupies (8b + 8×1b + 16×8b)/16 = 9b per element.</p>
+
+
+
+<p class="wp-block-paragraph">The <em>shared </em>microexponents here contrasts with the present MX Alliance spec, in which each element in an MXINT8, MXFP8 (E5M2 or E4M3), MXFP6 (E3M2 or E2M3), and MXFP4 (E2M1) has a standalone <em>private </em>microexponent (0, 5, 4, 3, 2, 2 bits, respectively).</p>
+
+
+
+<p class="wp-block-paragraph">Or, if you prefer, through the lens of this paper, the MX Alliance MXFP[468] formats are 2-level designs with k<sub>1</sub>=32 elements, with d<sub>1</sub> is 8b, and k<sub>2</sub>=1 element, with d<sub>2</sub> variously 5, 4, 3, 2, 2 bits, respectively.</p>
+
+
+
+<p class="wp-block-paragraph">I wonder what transpired between this ISCA2023 paper and the OCP MX Alliance spec and announcement. I imagine intense multiparty discussions, &#8220;can we all <em>please</em> get behind a common MX data schema that evaluates reasonably well on our existing diverse CPUs, GPUs, AIEs, NPUs, etc., that we can evolve future silicon towards, so that we can train our extremely expensive many billion parameter foundational models, just once, and run well on any of them?&#8221; If that&#8217;s approximately what happened, then any model with k<sub>2</sub>&gt;1 would probably have been a non-starter. I imagine Microsoft evaluated what became the MX Alliance data formats as part of their BDR parameter sweep and the results were not quite so good as the MX4, MX6, MX9 reported in the ISCA paper, but <em>plenty good enough</em>, in light of this paper, and the MX Alliance <a href="https://arxiv.org/abs/2310.10537">white paper</a>: a far superior, drop-in replacement to FP32 and FP16, even for training, and much better QSNR and fewer pitfalls than FP8.</p>
+
+
+
+<p class="wp-block-paragraph">As with the NeurIPS 2020 paper cited above, the evaluations in this paper demonstrate compelling efficiency gains: &#8220;MX9 can be used as a drop-in replacement for FP32 or BF16 in the training and inferencing pipeline without the dependency on complex online statistical heuristics or any change in the hyper-parameter settings&#8221; and furthermore &#8220;MX6 is expected to provide roughly 2× improvement over FP8 in area-memory efficiency and achieves inferences results close to FP32 accuracy with a modest level of quantization-aware fine-tuning.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">The paper also mentions several times the advantages of these MX formats vs. FP8:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">&#8220;MX9 has a hardware efficiency close to that of FP8 with significantly higher numerical fidelity. For instance, in the case of a Gaussian distribution with variable variance, the QSNR of MX9 is about 16𝑑𝐵 higher than FP8 (E4M3). A 16𝑑𝐵 higher fidelity is roughly equivalent to having 2 more mantissa bits in the scalar floating-point format. For the same distribution, MX6’s QSNR lies between the two FP8 variants E4M3 and E5M2 while providing an approximately 2× advantage on the hardware cost as measured by the normalized area memory efficiency product. We qualitatively observed a similar trend under different data distributions as well.&#8221;</p>
+</blockquote>
+
+
+
+<h3 class="wp-block-heading">Given MX, what FP types are most important in training and inference?</h3>
+
+
+
+<p class="wp-block-paragraph">Finally (looking ahead to part two), the paper&#8217;s section on Compute Flow is instructive on what kinds of MX data and other reduced precision floating point will be important for ML applications.</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://fpga.org/wp-content/uploads/2023/11/image-6.png"><img loading="lazy" decoding="async" width="1024" height="934" src="https://fpga.org/wp-content/uploads/2023/11/image-6-1024x934.png" alt="" class="wp-image-1403" style="width:500px" srcset="https://fpga.org/wp-content/uploads/2023/11/image-6-1024x934.png 1024w, https://fpga.org/wp-content/uploads/2023/11/image-6-300x274.png 300w, https://fpga.org/wp-content/uploads/2023/11/image-6-768x701.png 768w, https://fpga.org/wp-content/uploads/2023/11/image-6-624x569.png 624w, https://fpga.org/wp-content/uploads/2023/11/image-6.png 1315w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Besides myriad MX vector dot products within the MatMuls above, producing BF16 vectors, are quantization operations (along different reduction dimensions) from BF16 to MX, as well as element-wise BF16 vector operations. <em>Is there a need for elementwise MX vector operations, or do MX data live only as fodder for arrays of dot product units within matmuls and convolutions?</em> It seems FP32 <em>and</em> BF16 are necessary: &#8220;In our experiments, we use BF16 as the default data format for element-wise operations with the exception of the vector operations in the diffusion loop and the Softmax in the mixture-of-experts gating function.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s also worth noting (section 6.2, Table 4, inferencing) that weights and activations may be kept in different representations (e.g. MX4 weights, MX6 activations) which will merit asymmetric input dot product custom instructions.</p>
+
+
+
+<h2 class="wp-block-heading">Necessity is the mother of invention /<br>&#8220;Perspective is worth 90 IQ points&#8221;</h2>
+
+
+
+<p class="wp-block-paragraph">Wrapping up this <em>part one,</em> some reflection on why it was that <em>Microsoft</em> conceived, refined, perfected, and demonstrated MX format, ahead of all of the other AI focused chip and CSP vendors. Obviously it has much to with Microsoft Research&#8217;s decades of work on ML, and then of enterprise and cloud scale ML services, Azure AI services, and Microsoft&#8217;s deep expertise operating cloud scale ML workloads, &#8220;the world&#8217;s computer&#8221;, seeing where does the time go and where do the megawatts go.</p>
+
+
+
+<p class="wp-block-paragraph">But for the specific hardware-software codesign insights in MX formats, I think it has a lot to do with their use of FPGAs in Catapult and Brainwave. <a href="https://twitter.com/jangray/status/1142843916464451584">FPGAs give you a new perspective</a>:</p>
+
+
+
+<blockquote class="wp-block-quote has-light-gray-background-color has-background has-small-font-size is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph"><a href="https://twitter.com/hashtag/FPGA?src=hashtag_click">#FPGA</a> Another observation is that although FPGAs are disrespected by elite ASIC designers, the different constraints there afford new insights and spur new approaches that ASIC people may overlook (but ultimately are headed there when the end of Moore’s Law really starts to bite).<br><br><a href="https://twitter.com/hashtag/FPGA?src=hashtag_click">#FPGA</a> I used to say you can use today’s FPGAs to build seven year old ASICs — but might also be true that today’s FPGAs help you discover complexity effective design trade offs that will bite ASICs in years to come.<br><br><a href="https://twitter.com/hashtag/FPGA?src=hashtag_click">#FPGA</a> Of course things are different in the two worlds — muxes are awful in FPGAs, etc. — but I appreciate the different perspective FPGA implementation affords.<br>“Point of view is worth 80 IQ points” — Alan Kay<br>“I don’t know who discovered water but it wasn’t a fish.”</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">Gate by gate, wire by wire, FPGAs are often so area and energy inefficient, relative to ASICs, that you just <em>have to</em> find a new, better approach. Those insights can make your FPGA competitive with contemporary ASICs, and give you a leg up when you respin your FPGA design insights into an ASIC of your own. Which Microsoft just did:</p>
+
+
+
+<h1 class="wp-block-heading">Microsoft Maia 100: an AI accelerator for MX data</h1>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<span class="embed-youtube" style="text-align:center; display: block;"><iframe loading="lazy" class="youtube-player" width="625" height="352" src="https://www.youtube.com/embed/AHSboyXhjyw?version=3&#038;rel=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;fs=1&#038;hl=en-US&#038;autohide=2&#038;start=541&#038;wmode=transparent" allowfullscreen="true" style="border:0;" sandbox="allow-scripts allow-same-origin allow-popups allow-presentation allow-popups-to-escape-sandbox"></iframe></span>
+</div></figure>
+
+
+
+<p class="wp-block-paragraph">Microsoft: <a href="https://news.microsoft.com/source/features/ai/in-house-chips-silicon-to-service-to-meet-ai-demand/">With a systems approach to chips, Microsoft aims to tailor everything ‘from silicon to service’ to meet AI demand</a>:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">&#8220;At Ignite, we’re introducing our first custom AI accelerator series, Azure Maia, designed to run cloud-based training and inferencing for AI workloads such as OpenAI models, Bing, GitHub Copilot, and ChatGPT. Maia 100 is the first generation in the series, with 105 billion transistors, making it one of the largest chips on 5nm process technology. The innovations for Maia 100 span across the silicon, software, network, racks, and cooling capabilities. This equips the Azure AI infrastructure with end-to-end systems optimization tailored to meet the needs of groundbreaking AI such as GPT.&#8221;</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><a href="https://fpga.org/wp-content/uploads/2023/11/image-4.png"><img loading="lazy" decoding="async" width="736" height="717" src="https://fpga.org/wp-content/uploads/2023/11/image-4.png" alt="" class="wp-image-1398" style="width:400px" srcset="https://fpga.org/wp-content/uploads/2023/11/image-4.png 736w, https://fpga.org/wp-content/uploads/2023/11/image-4-300x292.png 300w, https://fpga.org/wp-content/uploads/2023/11/image-4-624x608.png 624w" sizes="auto, (max-width: 736px) 100vw, 736px" /></a></figure>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s a lovely thing. Looks like TSMC CoWoS with 4 HBM3 (?) stacks.</p>
+
+
+
+<p class="wp-block-paragraph">&#8220;Maia supports our first implementation of the sub 8-bit data types, MX data types, in order to co-design hardware and software,&#8221; says Borkar.</p>
+
+
+
+<h1 class="wp-block-heading">In summary</h1>
+
+
+
+<p class="wp-block-paragraph">It is a very rare and very special accomplishment for computer architects to define new datatypes that win broad (and TBD: enduring?) industry adoption. Then to go on to design and ship a 100 billion transistor SoC realization of your inventions, a monster with integrated networking and HBM, and advanced packaging, and datacenter scale systems integration! Just stunning. Along the way they also developed Brainwave, the greatest FPGA accelerator that there ever was, and probably that there ever will be. Surely a career highlight for everyone involved. <em>I&#8217;m sorry I missed out on all the fun.</em></p>
+
+
+
+<p class="wp-block-paragraph">Congratulations to Eric Chung, Bita Rouhani, everyone on Catapult, Brainwave, and Maia, and to Microsoft and their partners, on this hardware/software co-design tour de force, the 13+ year harvest of an audacious MSR research agenda and teams built up and tenaciously championed by Doug Burger.</p>
+
+
+
+<p class="wp-block-paragraph">Next time, we&#8217;ll explore different approaches to adding MX data type support to RISC-V processors via RISC-V <a href="https://github.com/grayresearch/cx">Composable Custom Extensions</a>.</p>
+					</div><!-- .entry-content -->
+		
+		<footer class="entry-meta">
+			This entry was posted in <a href="https://fpga.org/category/composable-custom-extensions/" rel="category tag">Composable Custom Extensions</a>, <a href="https://fpga.org/category/microscaling-mx-formats/" rel="category tag">Microscaling (MX) Formats</a>, <a href="https://fpga.org/category/risc-v/" rel="category tag">RISC-V</a> on <a href="https://fpga.org/2023/11/27/risc-v-composable-extensions-for-microscaling-data-formats-for-ai-tensors/" title="8:04 pm" rel="bookmark"><time class="entry-date" datetime="2023-11-27T20:04:09+00:00">November 27, 2023</time></a><span class="by-author"> by <span class="author vcard"><a class="url fn n" href="https://fpga.org/author/jan/" title="View all posts by Jan Gray" rel="author">Jan Gray</a></span></span>.								</footer><!-- .entry-meta -->
+	</article><!-- #post -->
+
+		
+		</div><!-- #content -->
+	</section><!-- #primary -->
+
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="search-2" class="widget widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://fpga.org/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form></aside>
+		<aside id="recent-posts-2" class="widget widget_recent_entries">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul>
+											<li>
+					<a href="https://fpga.org/2023/11/27/risc-v-composable-extensions-for-microscaling-data-formats-for-ai-tensors/">RISC-V Composable Extensions for MX Microscaling Data Formats for AI Tensors: Part One: Introduction to MX Data</a>
+									</li>
+											<li>
+					<a href="https://fpga.org/2023/11/04/welcome-amd-embedded-microblaze-v/">Welcome, AMD Embedded Microblaze V</a>
+									</li>
+											<li>
+					<a href="https://fpga.org/2023/08/09/risc-v-composable-custom-extensions-update/">Summer 2023 RISC-V Composable Custom Extensions Update</a>
+									</li>
+											<li>
+					<a href="https://fpga.org/2022/12/06/s3ga-part-2-implementation-rtl-v1/">S3GA: Part 2: Implementation: RTL v1</a>
+									</li>
+											<li>
+					<a href="https://fpga.org/2022/11/30/s3ga-part-1-beginnings/">S3GA: A Simple Scalable Serial FPGA: Part 1: Beginnings</a>
+									</li>
+					</ul>
+
+		</aside><aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">Archives</h3>
+			<ul>
+					<li><a href='https://fpga.org/2023/11/'>November 2023</a></li>
+	<li><a href='https://fpga.org/2023/08/'>August 2023</a></li>
+	<li><a href='https://fpga.org/2022/12/'>December 2022</a></li>
+	<li><a href='https://fpga.org/2022/11/'>November 2022</a></li>
+	<li><a href='https://fpga.org/2022/04/'>April 2022</a></li>
+	<li><a href='https://fpga.org/2019/08/'>August 2019</a></li>
+	<li><a href='https://fpga.org/2019/07/'>July 2019</a></li>
+	<li><a href='https://fpga.org/2018/03/'>March 2018</a></li>
+	<li><a href='https://fpga.org/2017/12/'>December 2017</a></li>
+	<li><a href='https://fpga.org/2017/09/'>September 2017</a></li>
+	<li><a href='https://fpga.org/2017/08/'>August 2017</a></li>
+	<li><a href='https://fpga.org/2017/03/'>March 2017</a></li>
+	<li><a href='https://fpga.org/2017/01/'>January 2017</a></li>
+	<li><a href='https://fpga.org/2016/07/'>July 2016</a></li>
+	<li><a href='https://fpga.org/2016/05/'>May 2016</a></li>
+	<li><a href='https://fpga.org/2016/01/'>January 2016</a></li>
+	<li><a href='https://fpga.org/2015/09/'>September 2015</a></li>
+	<li><a href='https://fpga.org/2015/03/'>March 2015</a></li>
+	<li><a href='https://fpga.org/2015/02/'>February 2015</a></li>
+	<li><a href='https://fpga.org/2014/12/'>December 2014</a></li>
+	<li><a href='https://fpga.org/2014/09/'>September 2014</a></li>
+	<li><a href='https://fpga.org/2014/06/'>June 2014</a></li>
+	<li><a href='https://fpga.org/2013/05/'>May 2013</a></li>
+	<li><a href='https://fpga.org/2012/05/'>May 2012</a></li>
+	<li><a href='https://fpga.org/2003/02/'>February 2003</a></li>
+	<li><a href='https://fpga.org/2003/01/'>January 2003</a></li>
+	<li><a href='https://fpga.org/2002/12/'>December 2002</a></li>
+	<li><a href='https://fpga.org/2002/11/'>November 2002</a></li>
+	<li><a href='https://fpga.org/2000/01/'>January 2000</a></li>
+	<li><a href='https://fpga.org/1998/05/'>May 1998</a></li>
+			</ul>
+
+			</aside><aside id="categories-2" class="widget widget_categories"><h3 class="widget-title">Categories</h3>
+			<ul>
+					<li class="cat-item cat-item-23"><a href="https://fpga.org/category/2grvi/">2GRVI</a>
+</li>
+	<li class="cat-item cat-item-2"><a href="https://fpga.org/category/arm-soc-fpgas/">ARM-SoC-FPGAs</a>
+</li>
+	<li class="cat-item cat-item-30"><a href="https://fpga.org/category/asics/">ASICs</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="https://fpga.org/category/composable-custom-extensions/">Composable Custom Extensions</a>
+</li>
+	<li class="cat-item cat-item-29"><a href="https://fpga.org/category/custom-function-units/">Custom Function Units</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="https://fpga.org/category/fpga-cpu-news-archive/">FPGA CPU News Archive</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="https://fpga.org/category/fpga-cpu-news-usenet-archive/">FPGA CPU News Usenet Archive</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="https://fpga.org/category/fpgas/">FPGAs</a>
+</li>
+	<li class="cat-item cat-item-19"><a href="https://fpga.org/category/grvi-phalanx/">GRVI Phalanx</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://fpga.org/category/meta/">Meta</a>
+</li>
+	<li class="cat-item cat-item-32 current-cat"><a aria-current="page" href="https://fpga.org/category/microscaling-mx-formats/">Microscaling (MX) Formats</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="https://fpga.org/category/nocs/">NOCs</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://fpga.org/category/parallel-computing/">Parallel Computing</a>
+</li>
+	<li class="cat-item cat-item-27"><a href="https://fpga.org/category/risc-v/">RISC-V</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="https://fpga.org/category/s3ga/">S3GA</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://fpga.org/category/uncategorized/">Uncategorized</a>
+</li>
+			</ul>
+
+			</aside><aside id="meta-2" class="widget widget_meta"><h3 class="widget-title">Meta</h3>
+		<ul>
+						<li><a href="https://fpga.org/wp-login.php">Log in</a></li>
+			<li><a href="https://fpga.org/feed/">Entries feed</a></li>
+			<li><a href="https://fpga.org/comments/feed/">Comments feed</a></li>
+
+			<li><a href="https://wordpress.org/">WordPress.org</a></li>
+		</ul>
+
+		</aside><aside id="block-8" class="widget widget_block"><a rel="me" href="https://mastodon.social/@jangray">Jan on Mastodon</a></aside>		</div><!-- #secondary -->
+		</div><!-- #main .wrapper -->
+	<footer id="colophon" role="contentinfo">
+		<div class="site-info">
+									<a href="https://wordpress.org/" class="imprint" title="Semantic Personal Publishing Platform">
+				Proudly powered by WordPress			</a>
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/twentytwelve/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="jetpack-stats-js-before">
+_stq = window._stq || [];
+_stq.push([ "view", {"v":"ext","blog":"95754106","post":"0","tz":"0","srv":"fpga.org","arch_cat":"microscaling-mx-formats","arch_results":"1","j":"1:16.0.1"} ]);
+_stq.push([ "clickTrackerInit", "95754106", "0" ]);
+//# sourceURL=jetpack-stats-js-before
+</script>
+<script data-wp-strategy="defer" defer fetchpriority="low" id="jetpack-stats-js" src="https://stats.wp.com/e-202632.js"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://fpga.org/wp-includes/js/wp-emoji-release.min.js?ver=7.0.3"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://fpga.org/wp-includes/js/wp-emoji-loader.min.js
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+flowchart LR
+    WILK["Wilkinson 1963<br/>block-floating vectors"] --> BFP["Block floating point<br/>shared scale + narrow elements"]
+    BFP --> MSFP["MSFP / Brainwave<br/>FPGA BFP and shared exponents"]
+    MSFP --> OCP["OCP MX v1.0<br/>32 elements + E8M0 scale"]
+    BFP --> BDR["BDR / shared microexponents<br/>ISCA 2023 MX4, MX6, MX9"]
+    BDR -. "distinct from OCP MX formats" .-> OCP
+    OCP --> ACCEL["Matrix-multiply hardware<br/>FPGA, ASIC, GPU, NPU"]
+    OCP -. "related microscaling successor" .-> NVFP4["NVFP4<br/>16 elements + E4M3 + FP32 global"]

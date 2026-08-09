@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-07
+updated: 2026-08-09
 ---
 
 # Wiki Log
@@ -270,3 +270,7 @@ updated: 2026-08-07
 ## 2026-08-07
 
 - Added [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md), backed by pinned vllm-ascend `9a52ca5fc36c1852241822863c50717bee5dc761` and vLLM `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b` evidence. The page traces Qwen3.5 MTP proposal construction, target-logit row alignment, greedy equality verification, stochastic probability-ratio rejection sampling, bonus-token handling, and accepted-token state reconciliation. Added two editable Mermaid diagrams, manifest docs paths, navigation links, and repository evidence-map entries.
+
+## 2026-08-09
+
+- Ingested [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) from the captured FPGA.org category page, preserving the raw HTML/metadata revision and derived Markdown under `raw/hardware/` and `derived/web-markdown/hardware/`. Covers shared-scale block encoding, FPGA-era MSFP/Brainwave history, OCP MXFP4/6/8 and MXINT8 formats, implementation-defined layout and accumulation boundaries, and the mixed-format compute flow; classified the synthesis as medium confidence.
