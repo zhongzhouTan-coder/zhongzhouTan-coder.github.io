@@ -19,6 +19,8 @@ updated: 2026-08-10
 
 **Related pages:** [CUDA Tile IR: The Design Philosophy of Tile Programming](tile-ir/index.md), [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Global Memory](../../terms/global-memory.md), [Matrix Tiling](../../terms/matrix-tiling.md), [GEMM](../../terms/gemm.md)
 
+**CUDA Graphs:** [Capture Once, Replay Many](cuda-graphs/index.md) explains the launch-overhead problem and the static-buffer replay pattern.
+
 ## TL;DR
 
 **What:** CUDA is a heterogeneous programming model in which the CPU host launches device code, called kernels, onto a GPU built from many Streaming Multiprocessors (SMs).

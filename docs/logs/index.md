@@ -35,6 +35,7 @@ updated: 2026-08-10
 
 ## Inference Systems and Frameworks
 
+- [CUDA Graphs in PyTorch: Capture Once, Replay Many](../frameworks/cuda/cuda-graphs/index.md) — How stream capture bundles repeated GPU work, why replay needs static shapes and stable addresses, and when PyTorch graphing removes CPU launch overhead.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.

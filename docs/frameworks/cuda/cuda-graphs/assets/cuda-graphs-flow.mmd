@@ -1,0 +1,12 @@
+flowchart TB
+    INPUT["New batch"] --> COPY["Copy into static input tensors"]
+    COPY --> REPLAY["graph.replay()"]
+    REPLAY --> OUTPUT["Static output tensors hold the iteration result"]
+
+    subgraph SETUP["One-time setup"]
+        EAGER["Eager warmup on a side stream"] --> CAPTURE["Stream capture records kernels and dependencies"]
+        CAPTURE --> GRAPH["CUDA Graph object"]
+    end
+
+    GRAPH --> REPLAY
+    EAGER -.-> COPY

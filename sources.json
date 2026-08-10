@@ -1241,5 +1241,24 @@
       "docs_path": "docs/frameworks/cuda/tile-ir/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:pytorch.org/pytorch-cuda-graphs@2026-08-10-ad0c8a15d55e",
+      "title": "Accelerating PyTorch with CUDA Graphs – PyTorch",
+      "slug": "pytorch-cuda-graphs",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/",
+      "final_url": "https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/",
+      "captured_at": "2026-08-10T09:07:24.838Z",
+      "revision": "ad0c8a15d55eedc5a21ed2de60a90e0951cac920d48afc65c2413bba79610e42",
+      "raw_paths": [
+        "raw/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.html",
+        "raw/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.md",
+      "docs_path": "docs/frameworks/cuda/cuda-graphs/index.md",
+      "status": "ingested"
+    }
   ]
 }

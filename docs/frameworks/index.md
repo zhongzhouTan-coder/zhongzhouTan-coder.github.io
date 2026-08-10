@@ -12,6 +12,7 @@ updated: 2026-08-10
 
 ## CUDA
 
+- [CUDA Graphs in PyTorch: Capture Once, Replay Many](cuda/cuda-graphs/index.md) — Beginner-first guide to capture, stable memory addresses, warmup, replay, partial graphing, NCCL, benchmark interpretation, and failure modes.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](cuda/tile-ir/index.md) — Source-grounded explanation of tile blocks, tensor values, structured tensor views, compiler-owned mapping, and performance portability.
 

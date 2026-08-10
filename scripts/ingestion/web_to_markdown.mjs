@@ -24,7 +24,7 @@ import { chromium } from "playwright-core"
 import TurndownService from "turndown"
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url))
-const DEFAULT_ROOT = resolve(SCRIPT_DIR, "..")
+const DEFAULT_ROOT = resolve(SCRIPT_DIR, "../..")
 const UPSTREAM_REFERENCE =
   "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5"
 const EXTRACTOR = "defuddle@0.13.0 + turndown@7.2.4"
