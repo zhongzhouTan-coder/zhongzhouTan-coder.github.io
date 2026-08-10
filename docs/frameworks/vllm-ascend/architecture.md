@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-05
+updated: 2026-08-10
 ---
 
 # vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM
@@ -111,7 +111,7 @@ When vLLM starts, it calls <a class="code-link" href="../../../external-repos/vl
 | `simple_compile_backend` | `"inductor"` | `"eager"` |
 | `get_compile_backend()` | TorchInductor | `AscendCompiler` (ACL graph-based) |
 | `get_pass_manager_cls()` | Inductor PassManager | `GraphFusionPassManager` |
-| Graph capture | CUDA graphs | `torch_npu.npu.warp_graph` (ACL graphs) |
+| Graph capture | CUDA graphs | `torch.npu.NPUGraph` + `torch.npu.graph` (ACL graphs) |
 | Memory allocator | PyTorch CUDA allocator | `CaMemAllocator` (pluggable, sleep-capable) |
 | `is_sleep_mode_available()` | `False` | `True`, backed by the <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/device_allocator/camem.py#L113" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/device_allocator/camem.py" data-code-line="113"><code>CaMemAllocator</code></a> |
 | `num_compute_units()` | SM count | NPU Cube Core count |
@@ -206,11 +206,13 @@ All collective communication uses HCCL (Huawei Collective Communication Library)
 
 Ascend-specific parallel groups (<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/distributed/parallel_state.py#L86" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/distributed/parallel_state.py" data-code-line="86"><code>parallel_state.py</code></a>) extend vLLM's standard TP/PP/DP groups with fine-grained groups: `_MC2` for MoE EP-like communication, `_MLP_TP`/`_OTP`/`_LMTP`/`_EMBED_TP` for component-specific tensor parallelism, `_P_TP` for PD disaggregation, and `_DYNAMIC_EPLB` for expert-parallel load balancing.
 
-#### ACL Graph Capture — The CUDA Graph Equivalent
+#### ACL Graph Capture — The CUDA-Graph Equivalent
 
-Instead of CUDA graphs, vllm-ascend uses **ACL graph capture** via `torch_npu.npu.warp_graph`:
+vllm-ascend does not execute CUDA Graphs on an NPU. It reuses vLLM's CUDA-oriented graph modes, capture-size configuration, and capture orchestration, but the actual graph object and capture context come from PyTorch NPU's `NPUGraph`/`graph` API backed by Ascend's CANN/ACL runtime:
 
-- **`ACLGraphWrapper`**: Wraps `torch_npu.npu.warp_graph`, managing graph lifecycle (capture → replay) and weak-reference workspace cleanup
+- **`ACLGraphWrapper`**: Creates a `torch.npu.NPUGraph`, captures the runnable inside `torch.npu.graph(..., pool=...)`, stores one entry per `BatchDescriptor`, and calls `entry.aclgraph.replay()` on later matching calls. It also keeps graph workspaces and outputs weakly referenced to reduce memory retention.
+- **`NPUModelRunner.capture_model()`**: Reuses upstream vLLM capture orchestration while temporarily mapping CUDA-facing stream/event calls to `torch.npu` APIs. This is an API-compatibility bridge, not a CUDA graph execution path.
+- **Replay contract**: The wrapper itself does not allocate persistent input buffers or copy new batches into them. The surrounding runner owns that preparation; in debug mode the wrapper checks that replay tensors keep the same addresses captured by the graph.
 - **Three modes**: `FULL` (entire model graph), `PIECEWISE` (section-by-section), and `NONE` (no graph capture)
 - **`npugraph_ex` mode**: Uses static kernel compilation for extra performance on supported devices
 - **`AscendCompiler`**: Custom compile backend (<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/compilation/compiler_interface.py#L39" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/compilation/compiler_interface.py" data-code-line="39"><code>compilation/compiler_interface.py</code></a>) that uses `aot_autograd` + Ascend's `PassManager` for graph fusion instead of TorchInductor
