@@ -1,0 +1,11 @@
+flowchart LR
+    HOST["Host CPU + host memory"] -->|"copy, launch, wait"| DEVICE["Device GPU + global memory"]
+    DEVICE --> GPC["GPC"]
+    GPC --> SM["Streaming Multiprocessor"]
+    SM --> BLOCK["Thread block\n(single SM)"]
+    BLOCK --> WARP["Warp\n32 threads"]
+    WARP --> THREAD["Thread lane\nregisters"]
+    SM --> SHARED["Shared memory\nblock or cluster scope"]
+    SM --> L1["L1 cache\nSM-local"]
+    DEVICE --> L2["L2 cache\nGPU-wide"]
+    DEVICE --> GLOBAL["Global memory\nGPU DRAM"]

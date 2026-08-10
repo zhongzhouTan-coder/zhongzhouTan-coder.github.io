@@ -16,6 +16,7 @@ aliases:
 appears_in:
   - docs/algorithms/flashattention/flashattention-4.md
   - docs/algorithms/flashattention/flashattention.md
+  - docs/frameworks/cuda/index.md
   - docs/frameworks/tilelang/index.md
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/frameworks/triton/index.md
@@ -55,6 +56,7 @@ The Spatial tutorial expresses this with `Foreach(M by bm, N by bn)` over output
 
 ## Where It Appears
 
+- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Connects tile programming to block-level data movement, compile-time tile shapes, and on-chip reuse.
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — The blocked GEMM tutorial is the canonical example: output tiles, $k$-chunks, prefetch, and triple buffering.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Output tiling and the triple-buffered pipeline are the tutorial's core technique.
 - [FlashAttention](../algorithms/flashattention/flashattention.md) — IO-aware tiling is the core trick that makes exact attention memory-bandwidth-optimal.

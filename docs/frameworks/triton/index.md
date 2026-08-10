@@ -16,7 +16,7 @@ updated: 2026-07-28
 **Venue:** MAPL 2019 (3rd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages)
 **Date:** June 22, 2019
 
-**Related pages:** [Frameworks Overview](../index.md), [SGLang](../sglang/index.md), [vLLM](../vllm/vllm-framework.md)
+**Related pages:** [Frameworks Overview](../index.md), [CUDA Programming Model](../cuda/index.md), [SGLang](../sglang/index.md), [vLLM](../vllm/vllm-framework.md)
 
 ## TL;DR
 

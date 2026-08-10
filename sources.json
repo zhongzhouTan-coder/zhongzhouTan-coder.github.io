@@ -1165,5 +1165,43 @@
       ],
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.nvidia.com/cuda-programming-guide-introduction@2026-08-10-8644b0f17d26",
+      "title": "1.1. Introduction — CUDA Programming Guide",
+      "slug": "cuda-programming-guide-introduction",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html",
+      "final_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html",
+      "captured_at": "2026-08-10T06:19:06.799Z",
+      "revision": "8644b0f17d268e4749162f6745886bfdb8b72c3b715e186536f3937285d13702",
+      "raw_paths": [
+        "raw/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.html",
+        "raw/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.md",
+      "docs_path": "docs/frameworks/cuda/index.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:docs.nvidia.com/cuda-programming-model@2026-08-10-27d269165146",
+      "title": "1.2. Programming Model — CUDA Programming Guide",
+      "slug": "cuda-programming-model",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html",
+      "final_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html",
+      "captured_at": "2026-08-10T06:19:15.179Z",
+      "revision": "27d269165146314de12f45ee359a808d37b47265924ca970a5fd6a6c98b1bb7f",
+      "raw_paths": [
+        "raw/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.html",
+        "raw/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.md",
+      "docs_path": "docs/frameworks/cuda/index.md",
+      "status": "ingested"
+    }
   ]
 }

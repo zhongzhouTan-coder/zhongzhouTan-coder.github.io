@@ -10,6 +10,10 @@ updated: 2026-08-10
 
 # Frameworks
 
+## CUDA
+
+- [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
+
 ## vLLM
 
 - [vLLM](vllm/index.md) — Category hub for vLLM serving framework pages.

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html",
+  "final_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html",
+  "canonical_url": "https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html",
+  "title": "1.2. Programming Model — CUDA Programming Guide",
+  "author": "",
+  "published_at": null,
+  "captured_at": "2026-08-10T06:19:15.179Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "local-html",
+  "content_sha256": "27d269165146314de12f45ee359a808d37b47265924ca970a5fd6a6c98b1bb7f",
+  "raw_html_bytes": 61879,
+  "extracted_markdown_characters": 25523,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {},
+  "limitations": [
+    "HTML was supplied from a local file; HTTP status and response headers are unavailable."
+  ]
+}

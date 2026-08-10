@@ -18,7 +18,7 @@ updated: 2026-07-28
 **Inspected commits:** vLLM `d18ed2304a2703e3211fc384a58607e754f5b723`;
 vllm-ascend `8645122088f5cad1701205310573c5ee05c809f5`.
 
-**Related pages:** [Triton Language Theory](index.md), [vLLM Framework](../vllm/vllm-framework.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
+**Related pages:** [Triton Language Theory](index.md), [CUDA Programming Model](../cuda/index.md), [vLLM Framework](../vllm/vllm-framework.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
 
 ## TL;DR
 

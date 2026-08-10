@@ -17,6 +17,7 @@ appears_in:
   - docs/algorithms/flashattention/flashattention-3.md
   - docs/algorithms/flashattention/flashattention-4.md
   - docs/algorithms/flashattention/flashattention.md
+  - docs/frameworks/cuda/index.md
   - docs/frameworks/tilelang/index.md
   - docs/frameworks/triton-ascend/operator-mechanisms.md
   - docs/hardware/quantization/flatquant/index.md
@@ -50,6 +51,7 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 
 ## Where It Appears
 
+- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Defines global memory as device DRAM visible to all SMs and contrasts it with registers, shared memory, and caches.
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — GM is the source and destination of every tile movement on the Ascend NPU.
 - [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Explains how tiled copies stage operands from global memory into shared memory before fragment-level computation.
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
