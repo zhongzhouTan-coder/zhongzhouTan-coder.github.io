@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-09
+updated: 2026-08-10
 ---
 
 # Wiki Log
@@ -275,3 +275,8 @@ updated: 2026-08-09
 
 - Ingested [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) from the captured FPGA.org category page, preserving the raw HTML/metadata revision and derived Markdown under `raw/hardware/` and `derived/web-markdown/hardware/`. Covers shared-scale block encoding, FPGA-era MSFP/Brainwave history, OCP MXFP4/6/8 and MXINT8 formats, implementation-defined layout and accumulation boundaries, and the mixed-format compute flow; classified the synthesis as medium confidence.
 - Re-insighted [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) from `raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf`, preserving the precise derived extraction under `derived/pdf-markdown/hardware/microscaling-mx-formats--ocp-v1.0/`. Added the OCP format table, conversion and dot-product semantics, a local specification figure, and the [Microscaling](../terms/microscaling.md) glossary page; retained medium confidence for the combined normative and historical synthesis.
+
+## 2026-08-10
+
+- Registered TileLang commit `5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd` as immutable repository evidence and added [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) (high confidence for static structure). The page traces eager/lazy Python elaboration into TIRX, target-neutral tile operations, backend context resolution, CUDA pass ordering, tile-op lowering, artifact and adapter construction, platform divergence, failure surfaces, extension points, and a staged study plan; preserved the repository's original lowering overview locally and declared 17 revision-aware evidence findings.
+- Added [TileLang-Ascend: Ascend Backend and TileLang Integration](../frameworks/tilelang-ascend/index.md), backed by clean `tilelang-ascend` commit `34a048c19bd762381db0d0f2d5acfdf3527c459f` on `ascendc_pto` and compared with pinned upstream TileLang `5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd`. The page maps Ascend C/PTO lowering, TVM source codegen, Bisheng/CANN compilation, Cython launch, package divergence, and the current upstream `BackendModule` integration boundary; runtime behavior remains statically inferred.

@@ -27,6 +27,8 @@ appears_in:
   - docs/frameworks/triton-ascend/operator-mechanisms.md
   - docs/frameworks/triton/index.md
   - docs/frameworks/triton/triton-in-vllm.md
+  - docs/frameworks/tilelang/index.md
+  - docs/frameworks/tilelang-ascend/index.md
   - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
   - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
   - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
@@ -42,7 +44,7 @@ appears_in:
   - docs/training/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-09
+updated: 2026-08-10
 ---
 
 # General Matrix Multiply (GEMM)
@@ -91,6 +93,8 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/triton/index.md) — The original Triton language and compiler for expressing tiled neural network computations as portable, high-performance GPU.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Uses a tiled GEMM to connect TileLang's Python DSL to TIRX, target-specific lowering, and runtime adapters.
+- [TileLang-Ascend: Ascend Backend and TileLang Integration](../frameworks/tilelang-ascend/index.md) — Uses Ascend GEMM as the concrete path from TileLang IR through Ascend C/PTO codegen and the CANN runtime.
 - [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
 - [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/triton-ascend/index.md) — A beginner-friendly tour of triton-ascend: how it bridges the Triton GPU kernel language to Huawei Ascend NPU hardware through a.
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.

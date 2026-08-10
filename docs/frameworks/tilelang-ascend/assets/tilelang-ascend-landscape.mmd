@@ -1,0 +1,9 @@
+flowchart LR
+    TVM["TVM compiler infrastructure"] --> TL["TileLang common DSL and TIR"]
+    TL --> GPU["Upstream TileLang backend registry"]
+    TL --> ASC["TileLang-Ascend source variant"]
+    ASC --> AC["Ascend C codegen"]
+    ASC --> PTO["PTO codegen"]
+    ASC --> NPU["Separate npuir branch"]
+    GPU -. "current upstream integration target" .-> FUTURE["First-class Ascend BackendModule"]
+    ASC -. "current package boundary" .-> FUTURE

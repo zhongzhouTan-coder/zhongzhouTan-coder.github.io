@@ -17,13 +17,14 @@ appears_in:
   - docs/algorithms/flashattention/flashattention-3.md
   - docs/algorithms/flashattention/flashattention-4.md
   - docs/algorithms/flashattention/flashattention.md
+  - docs/frameworks/tilelang/index.md
   - docs/frameworks/triton-ascend/operator-mechanisms.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/hardware/spatial-gemm.md
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/training/kimi/kimi-k3/index.md
-updated: 2026-08-06
+updated: 2026-08-10
 ---
 
 # Global Memory
@@ -50,6 +51,7 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 ## Where It Appears
 
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — GM is the source and destination of every tile movement on the Ascend NPU.
+- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Explains how tiled copies stage operands from global memory into shared memory before fragment-level computation.
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — Emits LSE tensors directly to global memory for the KL-loss backward kernel.

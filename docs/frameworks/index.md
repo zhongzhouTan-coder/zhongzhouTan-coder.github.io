@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-07
+updated: 2026-08-10
 ---
 
 # Frameworks
@@ -33,6 +33,14 @@ updated: 2026-08-07
 
 - [Triton: Tiled GPU Kernel Language and Compiler](triton/index.md) — Original Triton language (MAPL 2019): Triton-C tile-programming frontend, Triton-IR tile-level LLVM extensions, Triton-JIT compiler with hierarchical tiling, memory coalescing, shared memory allocation/synchronization, and auto-tuning.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](triton/triton-in-vllm.md) — Codebase-driven tour: vLLM's triton_utils infrastructure, custom op registration, ~163 kernel files across 12 categories, universal coding patterns, and vllm-ascend's CANN-backend adaptation.
+
+## TileLang
+
+- [TileLang Design and Code Learning Path](tilelang/index.md) — Repository-backed tour of the Python tile DSL, eager/lazy TIRX elaboration, target-neutral tile operations, backend manifests, CUDA pass ordering, JIT adapters, failure surfaces, and a staged learning path.
+
+## TileLang-Ascend
+
+- [TileLang-Ascend: Ascend Backend and TileLang Integration](tilelang-ascend/index.md) — Ascend C/PTO compiler paths, CANN/Bisheng runtime boundary, and the current integration gap with upstream TileLang.
 
 ## Triton Ascend
 

@@ -1125,6 +1125,45 @@
       "derived_path": "derived/pdf-markdown/hardware/microscaling-mx-formats.md",
       "docs_path": "docs/hardware/quantization/microscaling-mx-formats/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "github:tile-ai/tilelang@5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd",
+      "title": "TileLang Codebase",
+      "slug": "tilelang-codebase",
+      "repo_slug": "tilelang",
+      "revision": "5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/tile-ai/tilelang",
+      "raw_paths": [
+        "raw/frameworks/tilelang-codebase--github-5a9b2a54b9a0.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/tilelang/5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd/",
+      "docs_paths": [
+        "docs/frameworks/tilelang/index.md",
+        "docs/frameworks/tilelang-ascend/index.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:tile-ai/tilelang-ascend@34a048c19bd762381db0d0f2d5acfdf3527c459f",
+      "title": "TileLang-Ascend Codebase",
+      "slug": "tilelang-ascend-codebase",
+      "repo_slug": "tilelang-ascend",
+      "revision": "34a048c19bd762381db0d0f2d5acfdf3527c459f",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/tile-ai/tilelang-ascend",
+      "raw_paths": [
+        "raw/frameworks/tilelang-ascend-codebase--github-34a048c19bd7.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/tilelang-ascend/34a048c19bd762381db0d0f2d5acfdf3527c459f/",
+      "docs_paths": [
+        "docs/frameworks/tilelang-ascend/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

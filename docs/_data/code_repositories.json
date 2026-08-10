@@ -70,5 +70,17 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm-ascend",
     "revision": "9a52ca5fc36c1852241822863c50717bee5dc761"
+  },
+  "tilelang-5a9b2a54b9a0": {
+    "local_checkout": "external-repos/tilelang",
+    "provider": "github",
+    "repository_url": "https://github.com/tile-ai/tilelang",
+    "revision": "5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd"
+  },
+  "tilelang-ascend-34a048c19bd7": {
+    "local_checkout": "external-repos/tilelang-ascend",
+    "provider": "github",
+    "repository_url": "https://github.com/tile-ai/tilelang-ascend",
+    "revision": "34a048c19bd762381db0d0f2d5acfdf3527c459f"
   }
 }

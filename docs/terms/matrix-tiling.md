@@ -16,10 +16,11 @@ aliases:
 appears_in:
   - docs/algorithms/flashattention/flashattention-4.md
   - docs/algorithms/flashattention/flashattention.md
+  - docs/frameworks/tilelang/index.md
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/frameworks/triton/index.md
   - docs/hardware/spatial-gemm.md
-updated: 2026-08-06
+updated: 2026-08-10
 ---
 
 # Matrix Tiling
@@ -58,6 +59,7 @@ The Spatial tutorial expresses this with `Foreach(M by bm, N by bn)` over output
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Output tiling and the triple-buffered pipeline are the tutorial's core technique.
 - [FlashAttention](../algorithms/flashattention/flashattention.md) — IO-aware tiling is the core trick that makes exact attention memory-bandwidth-optimal.
 - [Triton](../frameworks/triton/index.md) — Elevates tiles to first-class language citizens; hierarchical tiling is the compiler's core optimization.
+- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Uses tiled GEMM as the entry point for learning explicit memory scopes, pipelining, and target-specific lowering.
 - [CANNBot Skills Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — Tiling is one of the 25 optimization points and a required pre-analysis step before profiling.
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
 

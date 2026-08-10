@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-09
+updated: 2026-08-10
 ---
 
 # Wiki Index
@@ -55,6 +55,8 @@ updated: 2026-08-09
 - [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Token-budget scheduling, chunked prefills, mixed FIA GQA layouts, and the parallel GDN recurrent path.
 - [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/triton/index.md) — Original Triton language (MAPL 2019): Triton-C tile-programming frontend, Triton-IR tile-level LLVM extensions, Triton-JIT compiler with hierarchical tiling, memory coalescing, shared memory allocation/synchronization, and auto-tuning; achieves cuBLAS/cuDNN parity for matmul and convolution.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — Codebase-driven tour: vLLM's triton_utils infrastructure, custom op registration, ~163 kernel files across 12 categories, universal coding patterns with concrete examples, and vllm-ascend's CANN-backend adaptation with dual Triton+AscendC strategy.
+- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Pinned code-reading guide to TileLang's Python DSL, TIRX construction, backend-owned lowering pipelines, JIT specialization and caching, execution adapters, extension points, and practical learning stages.
+- [TileLang-Ascend: Ascend Backend and TileLang Integration](../frameworks/tilelang-ascend/index.md) — Ascend C/PTO compiler paths, CANN/Bisheng source compilation, Cython launch, and the current relationship to upstream TileLang.
 - [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/triton-ascend/index.md) — Beginner-friendly architecture tour: five-layer design (backend registration, compilation pipeline, MLIR passes, runtime driver, CANN extensions), TTIR→HIVM→LLVM→Linalg→Bisheng compilation flow, SIMD/SIMT/Unstructured-in-SIMT three-mode compilation, and relationship to vllm-ascend.
 - [Triton Ascend 算子机制学习路径](../frameworks/triton-ascend/operator-mechanisms.md) — 图解 AIC/AIV、UB/L1/L0、MTE 和异步指令队列，并用代码追踪、容量估算、profiling 症状和分阶段练习讲解 Vector、Cube 与 CV Fusion。
 - [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — Deep insight into CANNBot's seven Triton-domain skills and the triton-op-generator plugin pipeline: task extraction, algorithm sketch design, pure-Triton code generation, precision verification with five-category decision matrix, five-stage ULP isolation debugging, 25-point ordered latency optimization, and simulator-driven bottleneck diagnosis.

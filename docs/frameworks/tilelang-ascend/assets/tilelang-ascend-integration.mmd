@@ -1,0 +1,14 @@
+flowchart TD
+    A["Python kernel with tilelang.jit"] --> B["TileLang language facade"]
+    B --> C["TIR plus Ascend intrinsics"]
+    C --> D["Ascend lowering and optimization passes"]
+    D --> E{"Target model"}
+    E -->|"ascendc or auto"| F["target.build.tilelang_ascend"]
+    E -->|"pto"| G["target.build.tilelang_ascend_pto"]
+    F --> H["Ascend C source"]
+    G --> I["PTO source"]
+    H --> J["Bisheng plus CANN"]
+    I --> J
+    J --> K["Shared library"]
+    K --> L["Cython adapter and lib.call"]
+    L --> M["Ascend NPU"]
