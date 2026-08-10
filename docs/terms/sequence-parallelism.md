@@ -7,6 +7,7 @@ confidence: high
 category: training
 sources:
   - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - SP
   - seq-parallel
@@ -23,7 +24,8 @@ appears_in:
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-06
+  - docs/algorithms/context-parallelism/index.md
+updated: 2026-08-10
 ---
 
 # Sequence Parallelism
@@ -59,6 +61,7 @@ Memory per device scales as $O(L/N)$ instead of $O(L)$, and with sparse attentio
 - [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — Introduces the original LLaMA model family, showing that smaller decoder-only Transformers trained longer on public data can.
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 - [Training Parallelism](../training/parallelism/index.md) — Data, tensor, pipeline, and sequence parallelism techniques for large-model training.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Extends the sequence-sharding and ring-communication idea to exact multi-turn inference and distributed KV state.
 
 ## Related Terms
 

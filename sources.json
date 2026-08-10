@@ -1259,6 +1259,19 @@
       "derived_path": "derived/web-markdown/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.md",
       "docs_path": "docs/frameworks/cuda/cuda-graphs/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2411.01783v3",
+      "title": "Context Parallelism for Scalable Million-Token Inference",
+      "slug": "context-parallelism-scalable-million-token-inference",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/algorithms/context-parallelism-scalable-million-token-inference.md",
+      "docs_path": "docs/algorithms/context-parallelism/index.md",
+      "status": "ingested"
     }
   ]
 }

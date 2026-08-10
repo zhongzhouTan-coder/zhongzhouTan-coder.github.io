@@ -11,6 +11,7 @@ sources:
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
   - raw/training/k3-technical-report--paper.pdf
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
+  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - key-value cache
   - key/value cache
@@ -48,7 +49,8 @@ appears_in:
   - docs/training/kimi/kimi-k3/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-06
+  - docs/algorithms/context-parallelism/index.md
+updated: 2026-08-10
 ---
 
 # KV Cache
@@ -107,6 +109,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Shards persistent KV state across context-parallel ranks and chooses whether to circulate KV or queries.
 
 ## Related Terms
 

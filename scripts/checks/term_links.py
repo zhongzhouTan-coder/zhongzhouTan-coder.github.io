@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
+import os
 import re
 import sys
 from dataclasses import asdict, dataclass
@@ -44,6 +46,14 @@ class Term:
     @property
     def names(self) -> tuple[str, ...]:
         return (self.title, *self.aliases)
+
+
+@dataclass(frozen=True)
+class Fix:
+    term_path: str
+    document_path: str
+    added_to_appears_in: bool
+    added_to_where_it_appears: bool
 
 
 def parse_front_matter(path: Path) -> tuple[dict[str, str | list[str]], int]:
@@ -175,6 +185,176 @@ def first_mention(path: Path, term: Term) -> tuple[int, str] | None:
     return None
 
 
+def docs_files(root: Path) -> list[Path]:
+    """Return consumer docs checked by the bidirectional term-link contract."""
+    return [
+        path
+        for path in sorted((root / "docs").rglob("*.md"))
+        if "_site" not in path.parts
+        and "terms" not in path.relative_to(root / "docs").parts[:1]
+        and "logs" not in path.relative_to(root / "docs").parts[:1]
+    ]
+
+
+def consumer_term_links(
+    root: Path, terms: list[Term]
+) -> dict[str, dict[Path, list[int]]]:
+    term_by_path = {term.path: term for term in terms}
+    result: dict[str, dict[Path, list[int]]] = {}
+    for path in docs_files(root):
+        relative = repo_path(root, path)
+        term_links: dict[Path, list[int]] = {}
+        for line_number, _, target in markdown_links(path):
+            resolved = resolve_link(root, path, target)
+            if resolved in term_by_path:
+                term_links.setdefault(resolved, []).append(line_number)
+        result[relative] = term_links
+    return result
+
+
+def front_matter_title(path: Path) -> str:
+    metadata, _ = parse_front_matter(path)
+    title = metadata.get("title")
+    return title if isinstance(title, str) and title else path.stem
+
+
+def add_front_matter_list_values(lines: list[str], key: str, values: list[str]) -> bool:
+    """Append missing values to an existing front-matter list."""
+    if not values or not lines or lines[0].strip() != "---":
+        return False
+    try:
+        front_matter_end = next(
+            index
+            for index, line in enumerate(lines[1:], start=1)
+            if line.strip() == "---"
+        )
+    except StopIteration:
+        return False
+
+    field_index = next(
+        (
+            index
+            for index, line in enumerate(lines[1:front_matter_end], start=1)
+            if re.match(rf"^{re.escape(key)}:\s*$", line)
+        ),
+        None,
+    )
+    if field_index is None:
+        return False
+
+    insertion = field_index + 1
+    while insertion < front_matter_end and re.match(r"^\s+-\s+", lines[insertion]):
+        insertion += 1
+    lines[insertion:insertion] = [f"  - {value}" for value in values]
+    return True
+
+
+def set_updated_date(lines: list[str], updated: str) -> None:
+    for index, line in enumerate(lines):
+        if re.match(r"^updated:\s*", line):
+            lines[index] = f"updated: {updated}"
+            return
+
+
+def add_where_it_appears_links(
+    root: Path, term: Term, lines: list[str], documents: list[str]
+) -> bool:
+    """Append deterministic backlinks to an existing glossary section."""
+    if not documents:
+        return False
+    section_index = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if re.match(r"^##\s+Where It Appears\s*$", line, re.IGNORECASE)
+        ),
+        None,
+    )
+    if section_index is None:
+        return False
+
+    insertion = len(lines)
+    for index in range(section_index + 1, len(lines)):
+        if re.match(r"^##\s+", lines[index]):
+            insertion = index
+            break
+    while insertion > section_index + 1 and not lines[insertion - 1].strip():
+        insertion -= 1
+
+    bullets = []
+    for document in documents:
+        document_path = root / document
+        target = os.path.relpath(document_path, term.path.parent).replace(os.sep, "/")
+        bullets.append(f"- [{front_matter_title(document_path)}]({target})")
+    if insertion > section_index + 1:
+        bullets.insert(0, "")
+    bullets.append("")
+    lines[insertion:insertion] = bullets
+    return True
+
+
+def apply_safe_fixes(root: Path, *, updated: str | None = None) -> list[Fix]:
+    """Synchronize metadata only when an explicit consumer link proves intent.
+
+    This deliberately does not create links from plain-text mentions or repair
+    missing prose, aliases, index entries, stale paths, or name collisions.
+    Those changes require semantic judgment.
+    """
+    load_issues: list[Issue] = []
+    terms = load_terms(root, load_issues)
+    links_by_doc = consumer_term_links(root, terms)
+    updated = updated or dt.date.today().isoformat()
+    fixes: list[Fix] = []
+
+    for term in terms:
+        linked_documents = sorted(
+            document
+            for document, term_links in links_by_doc.items()
+            if term.path in term_links
+        )
+        if not linked_documents:
+            continue
+        existing_where = {
+            repo_path(root, resolved)
+            for _, _, target in where_it_appears_links(term.path)
+            if (resolved := resolve_link(root, term.path, target)) is not None
+            and resolved.is_relative_to(root)
+        }
+        add_to_metadata = [
+            document for document in linked_documents if document not in term.appears_in
+        ]
+        add_to_where = [
+            document for document in linked_documents if document not in existing_where
+        ]
+        if not add_to_metadata and not add_to_where:
+            continue
+
+        lines = term.path.read_text(encoding="utf-8").splitlines()
+        metadata_changed = add_front_matter_list_values(
+            lines, "appears_in", add_to_metadata
+        )
+        where_changed = add_where_it_appears_links(root, term, lines, add_to_where)
+
+        # Avoid half-registering a new consumer when the term page lacks either
+        # of the existing structures needed by the bidirectional contract.
+        if add_to_metadata and not metadata_changed:
+            continue
+        if add_to_where and not where_changed:
+            continue
+        set_updated_date(lines, updated)
+        term.path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        for document in sorted(set(add_to_metadata) | set(add_to_where)):
+            fixes.append(
+                Fix(
+                    term_path=term.relative_path,
+                    document_path=document,
+                    added_to_appears_in=document in add_to_metadata,
+                    added_to_where_it_appears=document in add_to_where,
+                )
+            )
+    return fixes
+
+
 def load_terms(root: Path, issues: list[Issue]) -> list[Term]:
     terms_dir = root / "docs" / "terms"
     terms: list[Term] = []
@@ -235,22 +415,7 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
             else:
                 owners[normalized] = term
 
-    docs_files = [
-        path
-        for path in sorted((root / "docs").rglob("*.md"))
-        if "_site" not in path.parts
-        and "terms" not in path.relative_to(root / "docs").parts[:1]
-        and "logs" not in path.relative_to(root / "docs").parts[:1]
-    ]
-    links_by_doc: dict[str, dict[Path, list[int]]] = {}
-    for path in docs_files:
-        relative = repo_path(root, path)
-        term_links: dict[Path, list[int]] = {}
-        for line_number, _, target in markdown_links(path):
-            resolved = resolve_link(root, path, target)
-            if resolved in term_by_path:
-                term_links.setdefault(resolved, []).append(line_number)
-        links_by_doc[relative] = term_links
+    links_by_doc = consumer_term_links(root, terms)
 
     index_path = root / "docs" / "terms" / "index.md"
     index_targets = {
@@ -381,6 +546,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT)
     parser.add_argument("--json", action="store_true", dest="json_output")
     parser.add_argument(
+        "--fix",
+        action="store_true",
+        help=(
+            "register already-linked consumer pages in appears_in and "
+            "Where It Appears; semantic findings remain unchanged"
+        ),
+    )
+    parser.add_argument(
         "--strict-mentions",
         action="store_true",
         help="treat unlinked plain-text term mentions as errors",
@@ -391,6 +564,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = args.root.resolve()
+    fixes = apply_safe_fixes(root) if args.fix else []
     issues = validate(root, strict_mentions=args.strict_mentions)
     errors = [issue for issue in issues if issue.severity == "error"]
     warnings = [issue for issue in issues if issue.severity == "warning"]
@@ -402,12 +576,23 @@ def main() -> int:
                     "ok": not errors,
                     "error_count": len(errors),
                     "warning_count": len(warnings),
+                    "fixes": [asdict(fix) for fix in fixes],
                     "issues": [asdict(issue) for issue in issues],
                 },
                 indent=2,
             )
         )
     else:
+        for fix in fixes:
+            actions = []
+            if fix.added_to_appears_in:
+                actions.append("appears_in")
+            if fix.added_to_where_it_appears:
+                actions.append("Where It Appears")
+            print(
+                f"term links fixed: {fix.term_path}: registered "
+                f"{fix.document_path} in {' and '.join(actions)}"
+            )
         for issue in issues:
             location = issue.path
             if issue.line is not None:

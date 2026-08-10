@@ -1,0 +1,14 @@
+flowchart TD
+  TP["Tensor parallelism<br/>Megatron-LM"] --> CP["Context parallelism<br/>this paper"]
+  SP["Sequence parallelism<br/>long-sequence training"] --> RSA["Ring Self-Attention<br/>training-time ring"]
+  RSA --> CP
+  RA["Ring Attention<br/>blockwise exact attention"] --> CP
+  GQA["GQA / MQA<br/>smaller KV payload"] -. "reduces ring traffic" .-> CP
+  PP["Pipeline parallelism<br/>layer and throughput scaling"] -. "composes with" .-> CP
+  CP --> Prefill["Exact long-context<br/>prefill"]
+  CP --> Decode["Pass-Q decode<br/>latency tradeoff"]
+  Sparse["Sparse or approximate<br/>attention"] -. "alternative beyond 1M" .-> Prefill
+
+  style CP fill:#d5e8d4,stroke:#82b366,stroke-width:3px
+  style Prefill fill:#dae8fc,stroke:#6c8ebf
+  style Decode fill:#fff2cc,stroke:#d6b656

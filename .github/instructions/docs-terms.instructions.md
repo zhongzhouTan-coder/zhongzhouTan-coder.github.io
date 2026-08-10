@@ -171,8 +171,18 @@ Run the glossary consistency check after adding or changing terms or their
 consumer pages:
 
 ```bash
+./scripts/run-in-workspace.sh python scripts/checks/term_links.py --fix
 ./scripts/run-in-workspace.sh python scripts/checks/term_links.py
 ```
+
+Use this as an agent iteration: run `--fix` once, inspect and resolve the
+remaining diagnostics with semantic context, then rerun the checker without
+`--fix`. The fixer handles only finite bookkeeping already proven by an
+explicit consumer-page Markdown link: it adds that page to `appears_in` and to
+the existing "Where It Appears" section. It does not choose link placement for
+plain-text mentions, create or rewrite definitions, resolve alias collisions,
+remove stale paths, or organize the glossary index. Those cases remain agent
+work because they require judgment.
 
 The checker treats each term page as the single source of truth; do not maintain
 a separate hand-written term registry. It validates the glossary index,

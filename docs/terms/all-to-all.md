@@ -9,6 +9,7 @@ sources:
   - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
   - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
   - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - alltoall
   - all-to-all collective
@@ -17,7 +18,8 @@ appears_in:
   - docs/frameworks/vllm-ascend/architecture.md
   - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
   - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
-updated: 2026-08-06
+  - docs/algorithms/context-parallelism/index.md
+updated: 2026-08-10
 ---
 
 # All-to-All
@@ -55,6 +57,7 @@ In NCCL, all-to-all is implemented as a collective primitive alongside the other
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses All-to-All to return pass-Q partial attention outputs to their source ranks before merging.
 
 ## Related Terms
 

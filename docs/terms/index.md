@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-03
+updated: 2026-08-10
 ---
 
 # Terms Glossary
@@ -19,6 +19,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Training
 
+- [Pipeline Parallelism](pipeline-parallelism.md) — Assigns layer ranges to stages and streams microbatches through them for model capacity and throughput.
 - [Microbatch](microbatch.md) — A small chunk of a training batch used to enable pipeline parallelism; the unit of work injected into a pipeline schedule.
 - [Mixture of Experts](mixture-of-experts.md) — Routes each token through a small subset of many expert feed-forward networks to increase total capacity without activating every parameter.
 - [Hyper-Connections](hyper-connections.md) — Widens the residual stream into n parallel streams mixed by learnable mappings; mHC constrains that mixing to a doubly stochastic manifold to keep it trainable at scale.
@@ -27,9 +28,12 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [All-to-All](all-to-all.md) — A many-to-many collective that scatters each rank's data to all ranks while gathering from all ranks, effectively performing a distributed matrix transpose.
 - [All-Reduce](all-reduce.md) — A many-to-many collective that reduces equally shaped tensors across ranks and delivers the identical reduced result to every rank.
 - [Sequence Parallelism](sequence-parallelism.md) — A distributed training strategy that splits the input sequence along the length dimension across GPUs, forming a fourth parallelism dimension orthogonal to data, pipeline, and tensor parallelism.
+- [Tensor Parallelism](tensor-parallelism.md) — Splits weight matrices and hidden or head dimensions across accelerator ranks.
 
 ## Algorithms
 
+- [Context Parallelism](context-parallelism.md) — Distributes a long sequence and its KV state across ranks while preserving exact attention.
+- [Grouped-Query Attention](grouped-query-attention.md) — Shares each key/value head across a group of query heads to reduce KV-cache and communication cost.
 - [Delta Rule](delta-rule.md) — Corrects an associative memory using the error between its current key-addressed prediction and the target value.
 - [General Matrix Multiply (GEMM)](gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
 - [Inner Product](inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
@@ -40,9 +44,11 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Outer Product](outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
+- [Ring Attention](ring-attention.md) — Circulates query or KV blocks around a rank ring and merges partial softmax results into exact attention.
 
 ## Hardware
 
+- [FP8](fp8.md) — An 8-bit floating-point family used to reduce model and activation memory traffic at a controlled numerical cost.
 - [Global Memory](global-memory.md) — The off-chip device memory on an accelerator (GPU HBM or Ascend GM) that holds full tensors; kernels move tiles from it into on-chip storage to compute.
 - [Memory Banking](memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
 - [Microscaling](microscaling.md) — A block-floating-point representation that shares one scale across a small group of narrow elements.

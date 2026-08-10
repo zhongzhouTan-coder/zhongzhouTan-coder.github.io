@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-30
+updated: 2026-08-10
 ---
 
 # Algorithms
@@ -42,6 +42,10 @@ updated: 2026-07-30
 - [Transformers Are RNNs: Linear Attention](linear-attention/index.md) — Kernel feature maps and associative reordering eliminate the quadratic attention matrix; causal prefix states expose a fixed-size recurrent interpretation and its accuracy/throughput tradeoffs.
 - [Linear Attention Without Softmax: Su Jianlin's Survey](linear-attention/linear-attention-without-softmax.md) — 苏剑林's blog survey identifying softmax as the root cause of attention's O(n²) complexity; catalogs three linear attention families (kernel maps, double-softmax, cosine-similarity Taylor approximation) and their autoregressive generation support.
 - [Matrix Exponentiation for Linear Transitions](linear-attention/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
+
+## Distributed Inference
+
+- [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q ring attention, load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling.
 
 ## Model Papers
 

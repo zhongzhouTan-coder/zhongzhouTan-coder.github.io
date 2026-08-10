@@ -11,6 +11,7 @@ sources:
   - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
   - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
   - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - allreduce
   - all_reduce
@@ -24,7 +25,8 @@ appears_in:
   - docs/training/parallelism/gpipe/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-06
+  - docs/algorithms/context-parallelism/index.md
+updated: 2026-08-10
 ---
 
 # All-Reduce
@@ -81,6 +83,7 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
 - [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md) — GPipe introduces synchronous micro-batch pipeline parallelism with re-materialization, achieving near-linear speedup when.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Contrasts CP's ring KV/Q traffic with tensor parallelism's frequent all-reduces across model layers.
 
 ## Related Terms
 

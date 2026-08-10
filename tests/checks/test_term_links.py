@@ -92,6 +92,33 @@ appears_in:{appears}
 
         self.assertIn("unregistered-term-link", self.kinds())
 
+    def test_fix_registers_an_explicit_consumer_link_bidirectionally(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "---\ntitle: Topic Page\n---\n\n"
+            "A [key-value cache](../terms/kv-cache.md) stores state.\n",
+        )
+
+        fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
+
+        self.assertEqual(len(fixes), 1)
+        self.assertTrue(fixes[0].added_to_appears_in)
+        self.assertTrue(fixes[0].added_to_where_it_appears)
+        term_text = (self.root / "docs/terms/kv-cache.md").read_text(encoding="utf-8")
+        self.assertIn("  - docs/topic/page.md", term_text)
+        self.assertIn("- [Topic Page](../topic/page.md)", term_text)
+        self.assertEqual(self.kinds(), [])
+
+    def test_fix_leaves_plain_text_mentions_for_agent_judgment(self) -> None:
+        self.write_term(appears_in="")
+        self.write("docs/topic/page.md", "A key-value cache stores state.\n")
+
+        fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
+
+        self.assertEqual(fixes, [])
+        self.assertIn("unlinked-term-mention", self.kinds())
+
     def test_plain_mention_warns_and_strict_mode_fails(self) -> None:
         self.write_term(appears_in="")
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
@@ -104,9 +131,7 @@ appears_in:{appears}
 
         strict_issues = TERM_LINKS.validate(self.root, strict_mentions=True)
         strict_mention = next(
-            issue
-            for issue in strict_issues
-            if issue.kind == "unlinked-term-mention"
+            issue for issue in strict_issues if issue.kind == "unlinked-term-mention"
         )
         self.assertEqual(strict_mention.severity, "error")
 

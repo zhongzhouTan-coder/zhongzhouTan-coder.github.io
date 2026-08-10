@@ -23,6 +23,12 @@ need Python, Node.js, Ruby, or Bundler dependencies. For example:
 ```bash
 ./scripts/run-in-workspace.sh python scripts/wiki/search.py "KV cache"
 ./scripts/run-in-workspace.sh python scripts/repositories/worktree.py --help
+./scripts/run-in-workspace.sh python scripts/checks/term_links.py --fix
 npm run ingest:web -- --help
 ./scripts/lint-docs.sh
 ```
+
+The term-link fixer only synchronizes glossary metadata and backlinks for
+consumer pages that already contain an explicit Markdown link to a term. It
+leaves plain-text mentions, missing definitions, alias collisions, stale paths,
+and glossary-index organization for an agent to resolve with semantic context.
