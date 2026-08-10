@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph SIMT["CUDA C++ / PTX"]
+        S1["Programmer chooses thread-to-data mapping"] --> S2["Threads and blocks"]
+        S2 --> S3["Threads coordinate with tensor cores"]
+    end
+
+    subgraph TILE["Tile IR"]
+        T1["Programmer chooses tile grid and tile shapes"] --> T2["Tile block computes a tensor tile"]
+        T2 --> T3["Compiler chooses thread mapping, memory path, and tensor-core use"]
+    end
+
+    S3 --> HW["NVIDIA GPU hardware"]
+    T3 --> HW

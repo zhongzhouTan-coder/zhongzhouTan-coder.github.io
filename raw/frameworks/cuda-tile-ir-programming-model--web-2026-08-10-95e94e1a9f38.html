@@ -1,0 +1,1218 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Programming Model &#8212; Tile IR</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=7250be15" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script src="../_static/documentation_options.js?v=23c900a6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=4ea706d9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sections/prog_model';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/tile-ir/latest/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '13.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Syntax" href="syntax.html" />
+    <link rel="prev" title="1. Introduction" href="introduction.html" />
+
+
+<!-- borrowed from looking at the legate project's documentation, likely for user tracking? -->
+<!-- <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script> -->
+
+
+  <script >bazadebezolkohpepadr="1746711516"</script><script type="text/javascript" src="https://docs.nvidia.com/akam/13/681cb352"  defer></script></head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Tile IR - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Tile IR - Home"/>
+  
+  
+    <p class="title logo__title">Tile IR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Tile IR - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Tile IR - Home"/>
+  
+  
+    <p class="title logo__title">Tile IR</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syntax.html">3. Syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bytecode.html">4. Binary Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">5. Type System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantics.html">6. Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_model.html">7. Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">8. Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_info.html">9. Debug Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">10. Stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization_guide.html">11. Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">12. Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">13. Release Notes</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">2. </span>Programming Model</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="programming-model">
+<span id="section-prog-model"></span><h1><span class="section-number">2. </span>Programming Model<a class="headerlink" href="#programming-model" title="Link to this heading">#</a></h1>
+<p><strong>Tile IR</strong> extends CUDA’s low-level programming model with new abstractions that differ from what has
+previously existed in CUDA C++ or PTX.</p>
+<p>This section introduces the programming model of <strong>Tile IR</strong> and familiarizes the reader with
+its core concepts and abstractions. We do this by working through a series of real programs, building up to a dynamic,
+high-performance implementation of GEMM that makes use of the all major features of <strong>Tile IR</strong>.</p>
+<p><strong>Tile IR</strong> has an expressive tile-based programming model. We introduce users to the various ways to represent
+tensor computation by progressively adapting the example programs to take better advantage of <strong>Tile IR</strong> features
+which help simplify programs and enable the compiler to provide performance portability. We start by first introducing
+concepts that readers may be familiar with from prior art.</p>
+<section id="tile-kernels">
+<h2><span class="section-number">2.1. </span>Tile Kernels<a class="headerlink" href="#tile-kernels" title="Link to this heading">#</a></h2>
+<p><strong>Tile IR</strong> programs are referred to as <em>tile kernels</em>, which like CUDA C++ or PTX, are functions which run as <cite>N</cite>
+copies in parallel when invoked. The primary difference is the basic unit of execution: a <em>tile-block</em>, which
+expresses the computation performed by a single logical tile thread operating over a multi-dimensional
+tile of data.</p>
+<p>During execution, each tile kernel is referred to as a tile kernel instance.</p>
+<p>Below is a simple <strong>Tile IR</strong> kernel which prints “Hello World!”.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_tile.module</span><span class="w"> </span><span class="nf">@hello_world_module</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@hello_world_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">print</span><span class="w"> </span><span class="s2">&quot;</span><span class="s">Hello World!</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For those familiar with CUDA threads, it is important to note that <strong>Tile IR</strong>’s threads are different.
+Before we go any further into formalisms, it is essential we highlight those differences.</p>
+<p>Tile kernels are the entry point of the program, executing as parallel instances of tile blocks.</p>
+<section id="what-s-different-about-tile-programming">
+<h3><span class="section-number">2.1.1. </span>What’s different about tile programming?<a class="headerlink" href="#what-s-different-about-tile-programming" title="Link to this heading">#</a></h3>
+<p><strong>Tile IR</strong> is an extension to the CUDA programming model that enables first class support for tile programming.
+Tiled kernels express programs as a grid of logical tile threads that operate over tiles. The mapping of both
+the grid and individual tile threads to the underlying hardware’s threads is abstracted away from the
+programming model and is handled by the compiler.</p>
+<p>The SIMT programming model of NVIDIA’s streaming multiprocessor (SM) is one in which threads operate over
+(relatively) small pieces of data and the user is responsible for dividing and scheduling the threads into
+the appropriate blocks to compute over the input data in an efficient manner. This model gives flexibility
+to programmers on how to map threads to data, or vice-versa. SIMT is the programming model exposed by
+CUDA and PTX and has served NVIDIA GPUs well since its introduction in 2006.</p>
+<p>The rise in importance of deep learning has both introduced a greater regularity to user workloads
+and an ever increasing need to deliver performance for these workloads. As discussed in the
+<a class="reference internal" href="introduction.html#section-introduction"><span class="std std-ref">Introduction</span></a>, this has led to new specialized hardware in the form of tensor cores.</p>
+<p>Tensor cores introduce a new dimension to the SIMT programming model. Now, SM threads must cooperate with
+the tensor cores in order to reach peak performance. With each new generation of hardware the interplay between
+these two pieces of silicon has unlocked amazing new performance but with increasing programming complexity.</p>
+<p><strong>Tile IR</strong> has been built to aid in the implementation of high-performance algorithms that take full advantage
+of the underlying hardware’s capabilities while mitigating the increase in programming complexity.</p>
+<p>By abstracting thread-to-data mapping, <strong>Tile IR</strong> simplifies the use of specialized hardware like Tensor Cores compared to
+traditional SIMT models.</p>
+</section>
+<section id="kernel-i-o">
+<h3><span class="section-number">2.1.2. </span>Kernel I/O<a class="headerlink" href="#kernel-i-o" title="Link to this heading">#</a></h3>
+<p>To illustrate the design of <strong>Tile IR</strong> we will move from our simple hello world kernel
+to one which implements 1-d tensor (i.e., vector) addition with a fixed block size <code class="code docutils literal notranslate"><span class="pre">128</span></code>.
+All examples presented in this section can be found in the <a class="reference internal" href="appendix.html#section-appendix-sub-prog"><span class="std std-ref">Programming Model Example Programs</span></a>.</p>
+<p>Tile kernels accept inputs and outputs as parameters; this is the only mechanism for consuming and producing data,
+so we start by defining the kernel parameters.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nf">entry</span><span class="w"> </span><span class="nf">@vector_block_add_128x1_kernel</span><span class="p">(</span>
+<span class="w">    </span><span class="nv">%a_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">ptr&lt;f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">%b_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">ptr&lt;f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">%c_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">ptr&lt;f32</span><span class="o">&gt;&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above code fragment defines a kernel named <code class="code docutils literal notranslate"><span class="pre">vector_block_add_128x1_kernel</span></code> which takes three arguments, representing
+the two input buffers <code class="code docutils literal notranslate"><span class="pre">a</span></code> and <code class="code docutils literal notranslate"><span class="pre">b</span></code>, and the output buffer <code class="code docutils literal notranslate"><span class="pre">c</span></code>. The types of all the arguments are scalar
+pointers, which are represented as zero dimensional tensors containing a single pointer.</p>
+<p>All values in <strong>Tile IR</strong> are either tensors, or tensor views (see <a class="reference internal" href="types.html#type-views"><span class="std std-ref">Tensor View</span></a>). A tensor is an n-dimensional rectangular array,
+described by its rank (number of dimensions), the shape (extent along each dimension), and its primitive element type.
+Tensors may have a rank of 0 or higher. Rank-0 tensors are scalars. The rank, dimensions, and element type are all part
+of the tensor type and are statically known. Tensor types are assigned to values which represent a logical view of a
+multidimensional array contained in global memory. Global memory is always accessed via tensors, and thus
+pointer arguments always point to CUDA device allocations in global device memory. Tile kernels do not have return values
+and thus omit a return type annotation (note that tile functions may have a return type, and will be discussed later).</p>
+<p>An astute reader might now be wondering why we gave the inputs and outputs scalar pointer types instead of
+tensors types with statically known rank, shape, and stride. A common pattern in the <strong>Tile IR</strong> programming model
+is for kernels to take unstructured base pointers as parameters which can then be used to construct the required tensor.
+This flexibility gives rise to multiple ways to use pointers depending on the desired program behavior, but we will first
+focus on the most flexible representation by converting our base pointer into a tensor of arbitrary pointers.
+A tensor of arbitrary pointers is a flexible abstraction which allows you to perform scatter/gather style loads
+from a set of addresses all at once, and treat a set of addresses as a logical tile.</p>
+<p>We must take a few steps to convert a base pointer
+<code class="code docutils literal notranslate"><span class="pre">%a_ptr_base_scalar</span></code> into a tensor of pointers representing the <code class="code docutils literal notranslate"><span class="pre">128x1</span></code> tile we want to compute
+on which contains addresses from <code class="code docutils literal notranslate"><span class="pre">(base</span> <span class="pre">+</span> <span class="pre">0,</span> <span class="pre">...,</span> <span class="pre">base</span> <span class="pre">+</span> <span class="pre">127)</span></code></p>
+<p>We start by creating an offset tensor which represents the inclusive <code class="code docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">127)</span></code> interval.
+We use <a class="reference internal" href="operations.html#op-cuda-tile-iota"><span class="std std-ref">cuda_tile.iota</span></a> which constructs a range tensor that counts from <code class="code docutils literal notranslate"><span class="pre">0</span></code> to <code class="code docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code>
+forming an <code class="code docutils literal notranslate"><span class="pre">n</span></code> sized vector.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iota</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We then reshape from a scalar <code class="code docutils literal notranslate"><span class="pre">ptr&lt;f32&gt;</span></code> to a 1-d tensor <code class="code docutils literal notranslate"><span class="pre">1xptr&lt;f32&gt;</span></code> so we have the correct rank.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_ptr_base_tensor </span><span class="o">= </span><span class="nf">reshape</span><span class="w"> </span><span class="nv">%a_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>We then broadcast the pointer so we have a 1-d tensor of <code class="code docutils literal notranslate"><span class="pre">(base,</span> <span class="pre">...,</span> <span class="pre">base)</span></code> containing 128 elements.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_ptr </span><span class="o">= </span><span class="nf">broadcast</span><span class="w"> </span><span class="nv">%a_ptr_base_tensor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Add the offset tensor to the tensor of pointers to obtain a <code class="code docutils literal notranslate"><span class="pre">tile&lt;128xptr&lt;f32&gt;&gt;</span></code> that contains
+pointers of <code class="code docutils literal notranslate"><span class="pre">(base</span> <span class="pre">+</span> <span class="pre">0,</span> <span class="pre">...,</span> <span class="pre">base</span> <span class="pre">+</span> <span class="pre">127)</span></code> as its values. Now we have a tensor of pointers which represents
+the tile that we would like to compute on. We perform the same set of steps for <code class="code docutils literal notranslate"><span class="pre">a</span></code>, <code class="code docutils literal notranslate"><span class="pre">b</span></code>, and <code class="code docutils literal notranslate"><span class="pre">c</span></code>.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_tensor </span><span class="o">= </span><span class="nf">offset</span><span class="w"> </span><span class="nv">%a_ptr</span><span class="p">,</span><span class="w"> </span><span class="nv">%offset</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Finally, we load both operands, perform the addition, and store to the output.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_val</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%a_tensor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+<span class="nv">%b_val</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%b_tensor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+<span class="nv">%c_val </span><span class="o">= </span><span class="nf">addf</span><span class="w"> </span><span class="nv">%a_val</span><span class="p">,</span><span class="w"> </span><span class="nv">%b_val</span><span class="w"> </span><span class="n">rounding</span><span class="o">&lt;</span><span class="n">nearest_even</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xf32</span><span class="o">&gt;</span>
+<span class="nf">store_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%c_tensor</span><span class="p">,</span><span class="w"> </span><span class="nv">%c_val</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128xf32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>We now have a complete
+kernel for a single tile-block that performs addition over 128 element vectors. As you can see this code is
+written from a single thread of control, but its level of parallelism will be determined by the compiler.</p>
+<p>Kernels communicate with global memory via pointer arguments, which can be transformed into tensors using shape and stride
+manipulation for flexible data access.</p>
+</section>
+</section>
+<section id="tile-grid">
+<h2><span class="section-number">2.2. </span>Tile Grid<a class="headerlink" href="#tile-grid" title="Link to this heading">#</a></h2>
+<p>So far we have only examined kernels which are written for a single tile block. <strong>Tile IR</strong> allows tile blocks to be grouped into a <strong>tile grid</strong>, similar to CUDA C++, enabling users to launch sets of tile blocks that execute in parallel. Tile kernels, as with PTX, are implicitly parameterized over
+the tile block coordinates (which can be queried via <a class="reference internal" href="operations.html#op-cuda-tile-get-tile-block-id"><span class="std std-ref">cuda_tile.get_tile_block_id</span></a>) and can be 1-d, 2-d, or 3-d.</p>
+<p>When a tile kernel is launched the user specifies the grid size, which determines the number of tile blocks
+launched. The number of tile blocks launched is equal to the size of the grid. For example if we launch our
+previous example with a <code class="code docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">2)</span></code> grid, we will run an identical computation twice.</p>
+<p>We can now look at an <strong>improved</strong> hello world program which shows off querying the grid size and coordinates.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nf">cuda_tile.module</span><span class="w"> </span><span class="nf">@hello_world_module</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// TileIR kernel function</span>
+<span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@hello_world_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Step 1. Get the tile block ID</span>
+<span class="w">        </span><span class="nv">%block_x_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_y_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_z_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.get_tile_block_id</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+
+<span class="w">        </span><span class="c1">// Step 2. Get the tile block dimensions</span>
+<span class="w">        </span><span class="nv">%block_dim_x</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_dim_y</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_dim_z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.get_num_tile_blocks</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+
+<span class="w">        </span><span class="c1">// Step 3. Print the tile block ID and dimensions. Each tile executes the </span>
+<span class="w">        </span><span class="c1">// following print statement and prints a single line.</span>
+<span class="w">        </span><span class="n">cuda_tile.print</span><span class="w"> </span><span class="s2">&quot;</span><span class="s">Hello, I am tile &lt;%i, %i, %i&gt; in a kernel with &lt;%i, %i, %i&gt; tiles.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">%block_x_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_y_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_z_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_dim_x</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_dim_y</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_dim_z</span>
+<span class="w">            </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">              </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Each tile kernel can be launched with a 1-d, 2-d, or 3-d grid. Each tile block can query its position in the grid using
+<a class="reference internal" href="operations.html#op-cuda-tile-get-tile-block-id"><span class="std std-ref">cuda_tile.get_tile_block_id</span></a> and query the first, second, or third dimension index by varying the argument.
+Tile kernels can also observe the grid dimensions in a similar way using <a class="reference internal" href="operations.html#op-cuda-tile-get-num-tile-blocks"><span class="std std-ref">cuda_tile.get_num_tile_blocks</span></a>.</p>
+<p>If we use a grid that is <code class="code docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">2)</span></code> we will see two prints:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w">      </span><span class="s2">&quot;Hello, I am tile &lt;0, 0, 0&gt; in a kernel with &lt;1, 1, 2&gt; tiles.&quot;</span>
+<span class="linenos">2</span><span class="w">      </span><span class="s2">&quot;Hello, I am tile &lt;0, 0, 1&gt; in a kernel with &lt;1, 1, 2&gt; tiles.&quot;</span>
+</pre></div>
+</div>
+<p>The tile grid organizes parallel execution of tile blocks, allowing kernels to scale across the problem size by querying
+their coordinates within the grid.</p>
+<section id="implementing-gemm">
+<h3><span class="section-number">2.2.1. </span>Implementing GEMM<a class="headerlink" href="#implementing-gemm" title="Link to this heading">#</a></h3>
+<p>Now that we understand the basics concepts of the <strong>Tile IR</strong> programming model, we will introduce how to compute
+a 2-d GEMM for a single block, and then generalize it step by step to a full GEMM by utilizing the
+tile grid and introducing control flow and manual tiling.</p>
+<p>This progression demonstrates how to compose basic tile operations into a complex, high-performance parallel algorithm.</p>
+</section>
+<section id="gemm-with-a-single-block">
+<h3><span class="section-number">2.2.2. </span>GEMM with a Single Block<a class="headerlink" href="#gemm-with-a-single-block" title="Link to this heading">#</a></h3>
+<p>Let’s first start by naturally moving from a single static block vector addition to a single static square block
+matrix multiplication.</p>
+<p>This example proceeds much as before:</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@gemm_block_64x64_kernel</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">%a_ptr_base_scalar:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%b_ptr_base_scalar:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%c_ptr_base_scalar:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>We start with a set of scalar pointers. To simplify this example, we assume that each of these pointers point
+to allocations which are at least 64 elements in length with stride equal to 1.</p>
+<p>Then much like before we declare a square offset tensor.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%offset_flat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iota</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">4096xi32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="w"> </span><span class="nv">%offset_flat</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">4096xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We declare pointers to the underlying tiles the same way as before for A, B, C.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%a_ptr_base_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="w"> </span><span class="nv">%a_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="w">    </span><span class="nv">%a_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">broadcast</span><span class="w"> </span><span class="nv">%a_ptr_base_tensor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="w">    </span><span class="nv">%a_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="nv">%a_ptr</span><span class="p">,</span><span class="w"> </span><span class="nv">%offset</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>The only difference here is that we are building square tiles in 2D instead of 1D.</p>
+<p>We then load the input arguments, compute the MMA operation (see <a class="reference internal" href="operations.html#op-cuda-tile-mmaf"><span class="std std-ref">cuda_tile.mmaf</span></a> for floating-point and <a class="reference internal" href="operations.html#op-cuda-tile-mmai"><span class="std std-ref">cuda_tile.mmai</span></a> for integers) to
+compute the output tile, and then store it.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="c1">// Load a single 64x64 matrix from the tile.</span>
+<span class="w">    </span><span class="nv">%A_block</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%a_tensor</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+<span class="w">    </span><span class="c1">// Load a single 64x64 matrix from the tile.</span>
+<span class="w">    </span><span class="nv">%B_block</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%b_tensor</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+<span class="w">    </span><span class="nv">%C_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmaf</span><span class="w"> </span><span class="nv">%A_block</span><span class="p">,</span><span class="w"> </span><span class="nv">%B_block</span><span class="p">,</span><span class="w"> </span><span class="nv">%init_accum:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">store_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%c_tensor</span><span class="p">,</span><span class="w"> </span><span class="nv">%C_block</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>If you are experienced in implementing matrix multiplication, you can see that this works well for a single <code class="code docutils literal notranslate"><span class="pre">64x64</span></code>
+square multiplication, but what happens if we want to run the tile kernel over a large input problem size in parallel?</p>
+<p>Basic matrix multiplication is achieved by constructing 2D tiles from pointers and performing matrix-multiply-accumulate (MMA)
+operations within a single block.</p>
+</section>
+<section id="gemm-block-by-block">
+<h3><span class="section-number">2.2.3. </span>GEMM Block by Block<a class="headerlink" href="#gemm-block-by-block" title="Link to this heading">#</a></h3>
+<p>Let us look at how to generalize this to work for a large matrix size – say <code class="code docutils literal notranslate"><span class="pre">4096x4096</span></code>, where each tile block will
+compute a single output tile of the final matrix. Note that we are still working with the assumption that our problem
+shape is static and we will return to handling dynamically shaped inputs later on this section.</p>
+<p>The kernel declaration looks identical to what we have been thus far taking scalar pointers to our inputs and outputs
+as arguments.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@gemm_square_4096_tile_64x64_kernel</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">%a_ptr_base_scalar:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%b_ptr_base_scalar:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%c_ptr_base_scalar:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>In order to do full matrix multiplication over a large matrix we need to split the problem across multiple tile blocks
+using the tile grid. We will use a 2-d grid and as such each thread will need to first read its 2-d block
+coordinates.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="c1">// Read Tile block id&#39;s.</span>
+<span class="w">    </span><span class="nv">%block_x_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_y_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_z_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_tile_block_id</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The block coordinates determine which tile of the output matrix we will be computing on this tile block. The kernel
+is structured as a reduction over the K dimension of the matrix, producing individual but complete output tiles. It
+loop over the reduction dimension computing a matrix-multiply-accumulate (MMA) operation over each input tile
+that contributes to the output tile.</p>
+<p>As we have been doing before the kernel begins by setting up the initial state. As this kernel is structured as a
+loop we will first start by setting up the loop state.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%m_tile_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%m_stride_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="c1">// todo fix the line # and restore this %n_tile_size = cuda_tile.constant &lt;i32: 64&gt; : tile&lt;i32&gt;</span>
+<span class="w">    </span><span class="nv">%k_tile_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>First we specify the tile sizes as constants. In this case because we are using square tiles of square matrices
+everything is equivalent to 64. Constants in <strong>Tile IR</strong> can be tensor valued, and in this case we create 0-d
+tensors containing a single scalar value.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%range_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%range_step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%init_accum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">f32</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000000e+00</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Next we initialize constants for the loop which we will talk about more in a moment, and zero initialize an
+accumulator value for the MMA. It is worth noting that the tensor here is a value, the <strong>Tile IR</strong> compiler
+will deal with allocation and execution.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%tile_size_range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.iota</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We also create a shared range from <code class="code docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">63)</span></code> using <a class="reference internal" href="operations.html#op-cuda-tile-iota"><span class="std std-ref">cuda_tile.iota</span></a> again for the reduction dimension.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%a_tile_base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.muli</span><span class="w"> </span><span class="nv">%block_x_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%k_tile_size</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%a_tile_base_reshape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%a_tile_base</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xi32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%a_tile_base_tensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%a_tile_base_reshape</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%m_offsets_vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.addi</span><span class="w"> </span><span class="nv">%a_tile_base_tensor</span><span class="p">,</span><span class="w"> </span><span class="nv">%tile_size_range</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We must first compute the tensor of offsets for A and B so that we can obtain a tensor of pointers for each in order to load
+them from memory.</p>
+<p>Conceptually we start by computing the offsets of the M dimension using the below Python pseudo code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">m_offsets</span> <span class="o">=</span> <span class="n">block_x_index</span> <span class="o">*</span> <span class="n">k_tile_size</span> <span class="o">+</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_tile_size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This produces a vector starting from the “top-corner” of the tile at <code class="code docutils literal notranslate"><span class="pre">(block_x_index</span> <span class="pre">*</span> <span class="pre">k_tile_size,</span> <span class="pre">block_x_index</span> <span class="pre">*</span> <span class="pre">k_tile_size</span> <span class="pre">+</span> <span class="pre">k_tile_size)</span></code>.</p>
+<p>The striding of the A matrix is <code class="code docutils literal notranslate"><span class="pre">(64,</span> <span class="pre">1)</span></code>, meaning we can omit the extra multiplication by 1 for the K dimension
+as each value in the row of the offset matrix is sequential.</p>
+<p>For this the offsets in the K dimension would be <code class="code docutils literal notranslate"><span class="pre">k_offs</span> <span class="pre">=</span> <span class="pre">arange(0,</span> <span class="pre">k_tile_size)</span></code>, so we can reuse
+<cite>%tile_size_range</cite> below.</p>
+<p>Again we can use the following Python pseudo code to compute the offset matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a_tile</span> <span class="o">=</span> <span class="n">reshape</span><span class="p">(</span><span class="n">m_offsets</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">m_stride</span> <span class="o">+</span> <span class="n">reshape</span><span class="p">(</span><span class="n">k_offsets</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span> <span class="o">*</span> <span class="n">k_stride</span>
+</pre></div>
+</div>
+<p>In a libraries like Python’s NumPy this computation hides implicit broadcasting that must be expanded in <strong>Tile IR</strong>.</p>
+<p>We will do this in two pieces by first computing the offsets along the <code class="code docutils literal notranslate"><span class="pre">M</span></code> dimension, the relative offsets
+along the <code class="code docutils literal notranslate"><span class="pre">K</span></code> dimension, and then adding them together to produce the correct tensor of offsets.</p>
+<p>We broadcast the <code class="code docutils literal notranslate"><span class="pre">m_offsets</span></code> into a matrix where each column is identical and scaled by stride.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%m_offsets_matrix </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%m_offsets_vec</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x1xi32</span><span class="o">&gt;</span>
+<span class="nv">%m_offsets_broadcast </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%m_offsets_matrix</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x1xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%m_offsets </span><span class="o">= </span><span class="nf">cuda_tile.muli</span><span class="w"> </span><span class="nv">%m_offsets_broadcast</span><span class="p">,</span><span class="w"> </span><span class="nv">%m_stride_factor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The matrix, which is now scaled by 64, would then contain these values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="p">[[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">],</span>
+<span class="p">[</span>  <span class="mi">64</span><span class="p">,</span>   <span class="mi">64</span><span class="p">,</span>   <span class="mi">64</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">64</span><span class="p">,</span>   <span class="mi">64</span><span class="p">,</span>   <span class="mi">64</span><span class="p">],</span>
+<span class="p">[</span> <span class="mi">128</span><span class="p">,</span>  <span class="mi">128</span><span class="p">,</span>  <span class="mi">128</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>  <span class="mi">128</span><span class="p">,</span>  <span class="mi">128</span><span class="p">,</span>  <span class="mi">128</span><span class="p">],</span>
+   <span class="o">...</span><span class="p">,</span>
+<span class="p">[</span><span class="mi">3904</span><span class="p">,</span> <span class="mi">3904</span><span class="p">,</span> <span class="mi">3904</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">3904</span><span class="p">,</span>  <span class="mi">3904</span><span class="p">,</span>  <span class="mi">3904</span><span class="p">],</span>
+<span class="p">[</span><span class="mi">3968</span><span class="p">,</span> <span class="mi">3968</span><span class="p">,</span> <span class="mi">3968</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">3968</span><span class="p">,</span>  <span class="mi">3968</span><span class="p">,</span>  <span class="mi">3968</span><span class="p">],</span>
+<span class="p">[</span><span class="mi">4032</span><span class="p">,</span> <span class="mi">4032</span><span class="p">,</span> <span class="mi">4032</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">4032</span><span class="p">,</span>  <span class="mi">4032</span><span class="p">,</span>  <span class="mi">4032</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>We then broadcast the k_offsets into a matrix where row is identical and scaled by stride.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%ak_offsets_matrix </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%tile_size_range</span><span class="w"> </span><span class="p">:</span>
+<span class="w">     </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%ak_offsets_broadcast </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%ak_offsets_matrix</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%ak_offsets </span><span class="o">= </span><span class="nf">cuda_tile.muli</span><span class="w"> </span><span class="nv">%ak_offsets_broadcast</span><span class="p">,</span><span class="w"> </span><span class="nv">%m_stride_factor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>A is a row-major matrix (i.e the K dimension’s stride is 1) so the K offsets contains sequential values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="p">[[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">],</span>
+<span class="p">[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">],</span>
+<span class="p">[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">],</span>
+   <span class="o">...</span><span class="p">,</span>
+<span class="p">[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">],</span>
+<span class="p">[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">],</span>
+<span class="p">[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>    <span class="mi">62</span><span class="p">,</span>    <span class="mi">63</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>We add the two of them together resulting in rows where the i-th row begins at the
+i-th`value of :code:`m_offsets and each column contains the next 63 integers.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_tile_offsets </span><span class="o">= </span><span class="nf">cuda_tile.addi</span><span class="w"> </span><span class="nv">%m_offsets</span><span class="p">,</span><span class="w"> </span><span class="nv">%ak_offsets</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="p">[[</span>   <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>   <span class="mi">61</span><span class="p">,</span>   <span class="mi">62</span><span class="p">,</span>   <span class="mi">63</span><span class="p">],</span>
+<span class="p">[</span>  <span class="mi">64</span><span class="p">,</span>   <span class="mi">65</span><span class="p">,</span>   <span class="mi">66</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>  <span class="mi">125</span><span class="p">,</span>  <span class="mi">126</span><span class="p">,</span>  <span class="mi">127</span><span class="p">],</span>
+<span class="p">[</span> <span class="mi">128</span><span class="p">,</span>  <span class="mi">129</span><span class="p">,</span>  <span class="mi">130</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span>  <span class="mi">189</span><span class="p">,</span>  <span class="mi">190</span><span class="p">,</span>  <span class="mi">191</span><span class="p">],</span>
+   <span class="o">...</span><span class="p">,</span>
+<span class="p">[</span><span class="mi">3904</span><span class="p">,</span> <span class="mi">3905</span><span class="p">,</span> <span class="mi">3906</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">3965</span><span class="p">,</span> <span class="mi">3966</span><span class="p">,</span> <span class="mi">3967</span><span class="p">],</span>
+<span class="p">[</span><span class="mi">3968</span><span class="p">,</span> <span class="mi">3969</span><span class="p">,</span> <span class="mi">3970</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">4029</span><span class="p">,</span> <span class="mi">4030</span><span class="p">,</span> <span class="mi">4031</span><span class="p">],</span>
+<span class="p">[</span><span class="mi">4032</span><span class="p">,</span> <span class="mi">4033</span><span class="p">,</span> <span class="mi">4034</span><span class="p">,</span>  <span class="o">...</span><span class="p">,</span> <span class="mi">4093</span><span class="p">,</span> <span class="mi">4094</span><span class="p">,</span> <span class="mi">4095</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>Note that because this is the 0-th tile of the output matrix it is centered around (0, 0), the next tile will be
+centered around (64, 0), then (128, 0) and so on. The above computation will result in the 64 x 64 grid at that
+point based on the grid coordinates.</p>
+<p>Now we must do the same for B.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_offs</span> <span class="o">=</span> <span class="n">j</span> <span class="o">*</span> <span class="n">n_tile_size</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_tile_size</span><span class="p">)</span>
+<span class="n">b_tile</span> <span class="o">=</span> <span class="n">k_offs</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">k_stride</span> <span class="o">+</span> <span class="n">n_offs</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">n_stride</span>
+</pre></div>
+</div>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%b_tile_base </span><span class="o">= </span><span class="nf">cuda_tile.muli</span><span class="w"> </span><span class="nv">%block_y_index</span><span class="p">,</span><span class="w"> </span><span class="nv">%k_tile_size</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="nv">%b_tile_base_reshape </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%b_tile_base</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xi32</span><span class="o">&gt;</span>
+<span class="nv">%b_tile_base_tensor </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%b_tile_base_reshape</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span>
+<span class="nv">%n_offsets_vec </span><span class="o">= </span><span class="nf">cuda_tile.addi</span><span class="w"> </span><span class="nv">%b_tile_base_tensor</span><span class="p">,</span><span class="w"> </span><span class="nv">%tile_size_range</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%bk_offsets_matrix </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%tile_size_range</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x1xi32</span><span class="o">&gt;</span>
+<span class="nv">%bk_offsets </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%bk_offsets_matrix</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x1xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%n_offsets_matrix </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%n_offsets_vec</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%n_offsets_broadcast </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%n_offsets_matrix</span><span class="w"> </span><span class="p">:</span><span class="w">  </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%n_offsets </span><span class="o">= </span><span class="nf">cuda_tile.muli</span><span class="w"> </span><span class="nv">%n_offsets_broadcast</span><span class="p">,</span><span class="w"> </span><span class="nv">%m_stride_factor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%b_tile_offsets </span><span class="o">= </span><span class="nf">cuda_tile.muli</span><span class="w"> </span><span class="nv">%bk_offsets</span><span class="p">,</span><span class="w"> </span><span class="nv">%n_offsets</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Now that we have computed the initial offsets for the pointers we simply convert the base pointers and
+add the offsets like before.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%a_ptr_base_tensor </span><span class="o">= </span><span class="nf">cuda_tile.reshape</span><span class="w"> </span><span class="nv">%a_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="nv">%a_ptr </span><span class="o">= </span><span class="nf">cuda_tile.broadcast</span><span class="w"> </span><span class="nv">%a_ptr_base_tensor</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="nv">%a_tile_ptr </span><span class="o">= </span><span class="nf">offset</span><span class="w"> </span><span class="nv">%a_ptr</span><span class="p">,</span><span class="w"> </span><span class="nv">%a_tile_offsets</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Large matrix operations are decomposed into smaller tiles processed by a grid of blocks, requiring careful calculation of global
+memory offsets for each block.</p>
+</section>
+<section id="looping-over-tiles">
+<h3><span class="section-number">2.2.4. </span>Looping Over Tiles<a class="headerlink" href="#looping-over-tiles" title="Link to this heading">#</a></h3>
+<p>Now after all that preparation we can perform the core computation of the kernel.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%C_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%a_ptr_final</span><span class="p">,</span><span class="w"> </span><span class="nv">%b_ptr_final</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="nv">%k</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="p">(</span><span class="nv">%range_start</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nv">%k_tile_size</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="nv">%range_start</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">iter_values</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">%acc_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">%init_accum</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%a_tile_ptr_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">%a_tile_ptr</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%b_tile_ptr_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">%b_tile_ptr</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Load a single 64x64 matrix from the tile.</span>
+<span class="w">    </span><span class="nv">%A_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%a_tile_ptr</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+
+<span class="w">    </span><span class="c1">// Load a single 64x64 matrix from the tile.</span>
+<span class="w">    </span><span class="nv">%B_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%b_tile_ptr</span><span class="w"> </span><span class="p">:</span>
+<span class="w">        </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+
+<span class="w">    </span><span class="nv">%C_tile_acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmaf</span><span class="w"> </span><span class="nv">%A_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%B_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%acc_prev:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span>
+
+
+<span class="w">    </span><span class="c1">// Advance by K block size.</span>
+<span class="w">    </span><span class="nv">%block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nv">%a_tile_ptr_next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="nv">%a_tile_ptr_prev</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_size</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="w">    </span><span class="nv">%b_tile_ptr_next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="nv">%b_tile_ptr_prev</span><span class="p">,</span><span class="w"> </span><span class="nv">%block_size</span>
+<span class="w">        </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+
+<span class="w">    </span><span class="c1">// Store the partial sum to the 64x64 accumulator.</span>
+<span class="w">    </span><span class="n">continue</span><span class="w"> </span><span class="nv">%C_tile_acc</span><span class="p">,</span><span class="w"> </span><span class="nv">%a_tile_ptr_next</span><span class="p">,</span><span class="w"> </span><span class="nv">%b_tile_ptr_next</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After completing the reduction over the K dimension we need to store the output tile to the C matrix.</p>
+<p>We do the same as we did with A and B, but this time the computation is a little different as we can compute
+both the X and Y dimensions using only the block coordinates. To think about this intuitively the tiled “column”
+“rows” produce a single output tile.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cm_offsets</span> <span class="o">=</span> <span class="n">block_x_index</span> <span class="o">*</span> <span class="n">BLOCK_SIZE_M</span> <span class="o">+</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">BLOCK_SIZE_M</span><span class="p">)</span>
+<span class="n">cn_offsets</span> <span class="o">=</span> <span class="n">pid_n</span> <span class="o">*</span> <span class="n">BLOCK_SIZE_N</span> <span class="o">+</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">BLOCK_SIZE_N</span><span class="p">)</span>
+<span class="n">c_tile</span> <span class="o">=</span> <span class="n">c_ptr</span> <span class="o">+</span> <span class="n">stride_cm</span> <span class="o">*</span> <span class="n">reshape</span><span class="p">(</span><span class="n">cm_offsets</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">stride_cn</span> <span class="o">*</span> <span class="n">reshape</span><span class="p">(</span><span class="n">cn_offsets</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We omit the index computation for <cite>%c_tile_offset</cite> then add it to the base pointer like before.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%c_tile_offsets </span><span class="o">= </span><span class="nf">muli</span><span class="w"> </span><span class="nv">%c_tile_x_offsets</span><span class="p">,</span><span class="w"> </span><span class="nv">%c_tile_y_offsets</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span>
+<span class="nv">%c_ptr_base_tensor </span><span class="o">= </span><span class="nf">reshape</span><span class="w"> </span><span class="nv">%c_ptr_base_scalar</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="nv">%c_ptr </span><span class="o">= </span><span class="nf">broadcast</span><span class="w"> </span><span class="nv">%c_ptr_base_tensor</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1x1xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="nv">%c_tile_ptr </span><span class="o">= </span><span class="nf">offset</span><span class="w"> </span><span class="nv">%c_ptr</span><span class="p">,</span><span class="w"> </span><span class="nv">%c_tile_offsets</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xi32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p>We can then store the value just as we have done in all prior kernels.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nf">store_ptr_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%c_tile_ptr</span><span class="p">,</span><span class="w"> </span><span class="nv">%C_tile</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x64xf32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>Structured control flow allows efficient iteration over reduction dimensions, accumulating results in registers before writing the
+final output tile to memory.</p>
+</section>
+</section>
+<section id="structured-pointers">
+<h2><span class="section-number">2.3. </span>Structured Pointers<a class="headerlink" href="#structured-pointers" title="Link to this heading">#</a></h2>
+<p>The previous examples have looked at how to define matrix multiplication using tensors of pointers and
+scatter/gather style loads and stores, which take arbitrary tensors of pointers to operate on. These operations
+give maximal expressivity to programmers but at the cost of potential performance.</p>
+<p>These are valuable to understand; as we saw in the last section, you can build arbitrary tensors
+of pointers then load and store to them flexibly.</p>
+<p>For example, if a user created a complete disjoint tensor of pointers, it is challenging for a human or a
+compiler to obtain meaningful performance from this program. In the worst case, each element will become
+a completely disjoint memory operation, preventing vectorized or tensorized operations, or code which makes
+use of cache or thread locality</p>
+<p>This flexibility comes at a cost in both requiring more setup and manual computation to implement even relatively simple
+algorithms like a tiled GEMM, and the potential of being inefficient. Due to the fact that load/store take arbitrary tensors
+in the degenerate case it is quite possible that they get decomposed into a sequence of arbitrary loads and stores, which
+do not make good use of memory locality or the underlying hardware.</p>
+<p><strong>Tile IR</strong> will do its best to obtain good performance with these stores, but optimal performance can more easily be achieved
+by using a structured pointer, called a <code class="code docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">view</span></code> in <strong>Tile IR</strong>. tensor views allow us to simplify the programming model
+of <strong>Tile IR</strong> and to improve the efficiency of user programs.</p>
+<p>As we have seen in our previous examples, when a kernel is given a tensor it is a scalar base pointer
+into global memory.</p>
+<figure class="align-default" id="id1">
+<img alt="A view of global memory" src="../_images/global_memory.svg" />
+<figcaption>
+<p><span class="caption-text">The base pointer to A points to an allocation that lives in global memory.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>By formulating our previous problem with the correct sizes, we completely side stepped the complex
+offset computation, and avoided dealing with imperfect tiling, or store/load masking.
+See XX for more details about masking.</p>
+<p>When constructing a <code class="code docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">view</span></code> we convert the raw pointer into a tensor using static or dynamic
+shape and stride information.</p>
+<p>In order to both simplify the programming model of <strong>Tile IR</strong> and to improve the efficiency of user programs
+<strong>Tile IR</strong> also has a structured pointer type known as a <cite>tensor view</cite>. A <cite>tensor view</cite> can be constructed from raw
+pointers via <a class="reference internal" href="operations.html#op-cuda-tile-make-tensor-view"><span class="std std-ref">cuda_tile.make_tensor_view</span></a> and attaches shape and stride information to the pointer and
+effectively represents a typed pointer to a tensor.</p>
+<p>When constructing a <cite>tensor view</cite>, we convert the raw pointer into a tensor using static or dynamic
+shape and stride information, which is done via <a class="reference internal" href="operations.html#op-cuda-tile-make-tensor-view"><span class="std std-ref">cuda_tile.make_tensor_view</span></a>. This op attaches shape and stride information to the pointer and
+effectively converts a typed pointer to a tensor.</p>
+<figure class="align-default" id="id2">
+<img alt="A view of global memory" src="../_images/tensor_view.svg" />
+<figcaption>
+<p><span class="caption-text">The base pointer to A points to an allocation that lives in global memory.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Structured pointers, or tensor views, encapsulate shape and stride information, enabling the compiler to optimize memory access and
+simplifying the user’s code.</p>
+</section>
+<section id="tiling-views">
+<h2><span class="section-number">2.4. </span>Tiling &amp; Views<a class="headerlink" href="#tiling-views" title="Link to this heading">#</a></h2>
+<p>Once you have constructed a tensor view, we can make use of <a class="reference internal" href="operations.html#op-cuda-tile-make-partition-view"><span class="std std-ref">cuda_tile.make_partition_view</span></a> to perform
+tiling of the underlying tensor.</p>
+<figure class="align-default" id="id3">
+<img alt="A view of global memory" src="../_images/tiled.svg" />
+<figcaption>
+<p><span class="caption-text">The base pointer to A points to an allocation that lives in global memory.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the last section we simplified the problem by choosing tile dimensions that made the
+problem perfectly square, in the same layout, using simple tiling and static input dimensions, etc.
+We will relax those constraints to show more complex tile mappings as we explore views and partitions.</p>
+<section id="vector-addition-with-views">
+<h3><span class="section-number">2.4.1. </span>Vector Addition with Views<a class="headerlink" href="#vector-addition-with-views" title="Link to this heading">#</a></h3>
+<p>We can now implement a more complex vector operation with SAXPY or “Single-Precision A·X Plus Y” (a common
+BLAS operation). We can use <code class="code docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">view</span></code> and <a class="reference internal" href="operations.html#op-cuda-tile-make-partition-view"><span class="std std-ref">cuda_tile.make_partition_view</span></a> to implement this operation for
+arbitrary sized vectors.</p>
+<p>The kernel first defines its arguments. We now take the inputs <code class="code docutils literal notranslate"><span class="pre">%X</span></code>, <code class="code docutils literal notranslate"><span class="pre">%Y</span></code>, <code class="code docutils literal notranslate"><span class="pre">%alpha</span></code>,
+as well as the dimensions of the <strong>full</strong> vectors, as arguments.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nf">entry</span><span class="w"> </span><span class="nf">@saxpy_memref</span><span class="p">(</span><span class="nv">%X:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nv">%Y:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nv">%alpha:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nv">%M</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nv">%N</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</pre></div>
+</div>
+<p>For those familiar with other tile programming models, you might wonder why we need to take the input tensor sizes as arguments
+instead of using them to control the number of blocks and remain implicit in the program.</p>
+<p>The tensor view model differs from some existing tile programming models, wherein each kernel is unaware of the overall dimensions
+of the problem size beyond the need to mask loads and stores. In contrast, <code class="code docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">view</span></code>’s require the overall tensor dimensions in order to enable
+efficient and correct lowering of tiling and its related operations automatically.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%x_memref </span><span class="o">= </span><span class="nf">make_tensor_view</span><span class="w"> </span><span class="nv">%X</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%M</span><span class="p">,</span><span class="w"> </span><span class="nv">%N</span><span class="p">],</span><span class="w"> </span><span class="n">strides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%M</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="nv">%y_memref </span><span class="o">= </span><span class="nf">make_tensor_view</span><span class="w"> </span><span class="nv">%Y</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%M</span><span class="p">,</span><span class="w"> </span><span class="nv">%N</span><span class="p">],</span><span class="w"> </span><span class="n">strides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%M</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The tensor view’s constructor takes the shapes and strides dynamically resulting in a dynamically shaped tensor view specified
+by <cite>?</cite> in the type like so: <code class="code docutils literal notranslate"><span class="pre">!cuda_tile.tile</span> <span class="pre">view&lt;?x?xf32,</span> <span class="pre">strides=[?,1]&gt;</span></code>.</p>
+<p>We use <a class="reference internal" href="operations.html#op-cuda-tile-make-partition-view"><span class="std std-ref">cuda_tile.make_partition_view</span></a> to create views for <code class="code docutils literal notranslate"><span class="pre">%x</span></code> and <code class="code docutils literal notranslate"><span class="pre">%y</span></code>
+which represent a <code class="code docutils literal notranslate"><span class="pre">(M/128</span> <span class="pre">x</span> <span class="pre">N/256)</span></code> tensor of tiles. Each tile will have the size
+specified by tile parameter of the partition type.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%x_view </span><span class="o">= </span><span class="nf">make_partition_view</span><span class="w"> </span><span class="nv">%x_memref</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x256</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span>
+<span class="nv">%y_view </span><span class="o">= </span><span class="nf">make_partition_view</span><span class="w"> </span><span class="nv">%y_memref</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x256</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="operations.html#op-cuda-tile-load-view-tko"><span class="std std-ref">cuda_tile.load_view_tko</span></a> allows us to load the tile specified by <code class="code docutils literal notranslate"><span class="pre">%view[%x,</span> <span class="pre">%y]</span></code>
+for both <cite>%X</cite> and <cite>%Y</cite>.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%x_tile</span><span class="p">,</span><span class="w"> </span><span class="nv">%token_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_view_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%x_view</span><span class="p">[</span><span class="nv">%tileIdX</span><span class="p">,</span><span class="w"> </span><span class="nv">%tileIdY</span><span class="p">]</span><span class="w"> </span><span class="p">:</span>
+<span class="w">    </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x256</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x256xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>We can then simply compute using the tiles directly to obtain our result tile.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="c1">// Step 6. Compute sAXPY: y = alpha * A + y</span>
+</pre></div>
+</div>
+<p>Finally we accumulate the result into <code class="code docutils literal notranslate"><span class="pre">%Y</span></code> directly. Here we treat it as both an input and
+output parameter in this kernel.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>Combining tensor views with partitioning simplifies kernel implementation, allowing direct loading and operating on logical tiles
+without manual offset arithmetic.</p>
+</section>
+<section id="dynamic-gemm-with-views">
+<h3><span class="section-number">2.4.2. </span>Dynamic GEMM with Views<a class="headerlink" href="#dynamic-gemm-with-views" title="Link to this heading">#</a></h3>
+<p>We have now introduced the core concepts of <strong>Tile IR</strong>. We can put together many of these ideas
+to support a dynamic GEMM kernel using structured pointers. To start, we make two changes to this GEMM:
+the inputs are actually transposed into column-major layout, and the inputs are in <code class="code docutils literal notranslate"><span class="pre">fp16</span></code> while the output is
+in <code class="code docutils literal notranslate"><span class="pre">fp32</span></code>.</p>
+<p>We take the input and output tensors (as pointers), all dimension, and all strides as arguments.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@gemm_kloop_kernel</span><span class="p">(</span>
+<span class="w">        </span><span class="nv">%A_ptr:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f16</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%B_ptr:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f16</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%C_ptr:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">!cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%M:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%N:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%K:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">%stride_ak:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%stride_bn:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%stride_cm:</span><span class="w"> </span><span class="n n-Type">!cuda_tile.tile</span><span class="o">&lt;</span><span class="n n-Type">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The <strong>Tile IR</strong> compiler can optimize the memory loads and stores of <a class="reference internal" href="types.html#type-tensor-view"><span class="std std-ref">cuda_tile.tensor_view</span></a> if the
+alignment of the underlying pointers and strides are known. If these are statically known then we can
+infer the alignment directly but if they are dynamic, as they are in this case, we can use the
+<a class="reference internal" href="operations.html#op-cuda-tile-assume"><span class="std std-ref">cuda_tile.assume</span></a> operation to inform the compiler that the pointer is properly aligned.</p>
+<p>Here we use the <code class="code docutils literal notranslate"><span class="pre">div_by</span></code> predicate to inform the compiler about the divisibility of these
+values which can be used to infer alignment constraints directly.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%A_ptr_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%A_ptr</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f16</span><span class="o">&gt;&gt;</span>
+<span class="nv">%B_ptr_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%B_ptr</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f16</span><span class="o">&gt;&gt;</span>
+<span class="nv">%C_ptr_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%C_ptr</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">f32</span><span class="o">&gt;&gt;</span>
+<span class="nv">%stride_ak_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%stride_ak</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="nv">%stride_bn_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%stride_bn</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="nv">%stride_cm_assume </span><span class="o">= </span><span class="nf">assume</span><span class="w"> </span><span class="k">#cuda_tile.div_by</span><span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="nv">%stride_cm</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We create a tensor view for <code class="code docutils literal notranslate"><span class="pre">%A</span></code>, <code class="code docutils literal notranslate"><span class="pre">%B</span></code>, and <code class="code docutils literal notranslate"><span class="pre">%C</span></code>.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="c1">// A reference to the A tensor pointed to by A_ptr, (K x M)</span>
+<span class="nv">%A </span><span class="o">= </span><span class="nf">make_tensor_view</span><span class="w"> </span><span class="nv">%A_ptr_assume</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%K</span><span class="p">,</span><span class="w"> </span><span class="nv">%M</span><span class="p">],</span><span class="w"> </span><span class="n">strides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%stride_ak</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// A reference to the B tensor pointed to by B_ptr, (N x K)</span>
+<span class="nv">%B </span><span class="o">= </span><span class="nf">make_tensor_view</span><span class="w"> </span><span class="nv">%B_ptr_assume</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%N</span><span class="p">,</span><span class="w"> </span><span class="nv">%K</span><span class="p">],</span><span class="w"> </span><span class="n">strides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%stride_bn</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="c1">// A reference to the C tensor pointed to by C_ptr, (M x N)</span>
+<span class="nv">%C </span><span class="o">= </span><span class="nf">make_tensor_view</span><span class="w"> </span><span class="nv">%C_ptr_assume</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%M</span><span class="p">,</span><span class="w"> </span><span class="nv">%N</span><span class="p">],</span><span class="w"> </span><span class="n">strides</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">%stride_cm</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>We create a <a class="reference internal" href="types.html#type-partition-view"><span class="std std-ref">cuda_tile.partition_view</span></a> for each tensor. First A:</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%A_block  </span><span class="o">= </span><span class="nf">make_partition_view</span><span class="w"> </span><span class="nv">%A</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x64</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Then B:</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%B_block  </span><span class="o">= </span><span class="nf">make_partition_view</span><span class="w"> </span><span class="nv">%B</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">64x128</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>And last C:</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%C_block  </span><span class="o">= </span><span class="nf">make_partition_view</span><span class="w"> </span><span class="nv">%C</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x128</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="c1">// Load a single 64x128 matrix from the tile.</span>
+<span class="w">    </span><span class="nv">%B_frag</span><span class="p">,</span><span class="w"> </span><span class="nv">%t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_view_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%B_block</span><span class="w"> </span><span class="p">[</span><span class="nv">%k</span><span class="p">,</span><span class="w"> </span><span class="nv">%bidy</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">64x128</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x128xf16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>We then read the the tile block grid coordinates using <a class="reference internal" href="operations.html#op-cuda-tile-get-tile-block-id"><span class="std std-ref">cuda_tile.get_tile_block_id</span></a>.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%bidx</span><span class="p">,</span><span class="w"> </span><span class="nv">%bidy</span><span class="p">,</span><span class="w"> </span><span class="nv">%bidz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_tile_block_id</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Due to the <code class="code docutils literal notranslate"><span class="pre">K</span></code> dimension being dynamic we could do calculations ourselves to compute the size of the
+index space of the reduction but <strong>Tile IR</strong> provides an operation to do this for us. <a class="reference internal" href="operations.html#op-cuda-tile-get-index-space-shape"><span class="std std-ref">cuda_tile.get_index_space_shape</span></a>
+to get the size of the index space, and thus the size of the reduction loop.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%mk_len_i32:2 </span><span class="o">= </span><span class="nf">get_index_space_shape</span><span class="w"> </span><span class="nv">%A_block</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x64</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>No we can use a <a class="reference internal" href="operations.html#op-cuda-tile-for"><span class="std std-ref">cuda_tile.for</span></a> loop to iterate over the tile blocks.</p>
+<p>A <code class="code docutils literal notranslate"><span class="pre">for</span></code> loop is one of the structured control flow operations in <strong>Tile IR</strong> it steps
+a loop variable over a range from <code class="code docutils literal notranslate"><span class="pre">(start,</span> <span class="pre">end,</span> <span class="pre">step)</span></code> executing the body for each value in the range.
+The <cite>iter_values</cite> are loop carried variables of the body which are initialized in the loop header and are updated
+each iteration by yielding them with the <a class="reference internal" href="operations.html#op-cuda-tile-continue"><span class="std std-ref">cuda_tile.continue</span></a> operation.</p>
+<p>In order to implement the reduction we start from <code class="code docutils literal notranslate"><span class="pre">0</span></code> to the size of the tiled <code class="code docutils literal notranslate"><span class="pre">K</span></code> dimension,
+stepping uniformly by <code class="code docutils literal notranslate"><span class="pre">1</span></code> on each step and a single loop carried variable representing the accumulator
+tile.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%result </span><span class="o">= </span><span class="nf">for</span><span class="w"> </span><span class="nv">%k</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="p">(</span><span class="nv">%i0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nv">%mk_len_i32#1</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="nv">%i1</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">iter_values</span><span class="p">(</span><span class="nv">%acc_prev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">%cst</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x128xf32</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We load tiles from A and B.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load a single 128x64 matrix from the tile.</span>
+<span class="nv">%A_frag</span><span class="p">,</span><span class="w"> </span><span class="nv">%t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_view_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%A_block</span><span class="p">[</span><span class="nv">%bidx</span><span class="p">,</span><span class="w"> </span><span class="nv">%k</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x64</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x64xf16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+<span class="c1">// Load a single 64x128 matrix from the tile.</span>
+<span class="nv">%B_frag</span><span class="p">,</span><span class="w"> </span><span class="nv">%t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_view_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%B_block</span><span class="w"> </span><span class="p">[</span><span class="nv">%k</span><span class="p">,</span><span class="w"> </span><span class="nv">%bidy</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">64x128</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf16</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x128xf16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>We compute the MMA, and then continue to the next loop iteration with
+the value.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">%acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmaf</span><span class="w"> </span><span class="nv">%A_frag</span><span class="p">,</span><span class="w"> </span><span class="nv">%B_frag</span><span class="p">,</span><span class="w"> </span><span class="nv">%acc_prev:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x64xf16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">64x128xf16</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x128xf32</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">continue</span><span class="w"> </span><span class="nv">%acc</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x128xf32</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Finally, like our previous implementation, outside the loop we store to the tile back to
+<code class="code docutils literal notranslate"><span class="pre">%C</span></code> this time via the view avoiding the need to compute the offsets again.</p>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="nv">%t3 </span><span class="o">= </span><span class="nf">store_view_tko</span><span class="w"> </span><span class="n">weak</span><span class="w"> </span><span class="nv">%result</span><span class="p">,</span><span class="w"> </span><span class="nv">%C_block</span><span class="p">[</span><span class="nv">%bidx</span><span class="p">,</span><span class="w"> </span><span class="nv">%bidy</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">128x128xf32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">partition_view</span><span class="o">&lt;</span><span class="n">tile</span><span class="o">=</span><span class="p">(</span><span class="n">128x128</span><span class="p">),</span><span class="w"> </span><span class="n">tensor_view</span><span class="o">&lt;</span>?<span class="n">x</span>?<span class="n">xf32</span><span class="p">,</span><span class="w"> </span><span class="n">strides</span><span class="o">=</span><span class="p">[</span>?<span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">dim_map</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">token</span>
+</pre></div>
+</div>
+<p>Tensor views support dynamic shapes and strides, enabling robust, flexible kernels that handle varying input sizes
+while maintaining high performance.</p>
+</section>
+</section>
+<section id="cross-tileblock-communication">
+<h2><span class="section-number">2.5. </span>Cross TileBlock Communication<a class="headerlink" href="#cross-tileblock-communication" title="Link to this heading">#</a></h2>
+<div class="highlight-mlir notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="n">cuda_tile.module</span><span class="w"> </span><span class="nf">@hello_cross_block</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">global</span><span class="w"> </span><span class="nf">@_global_printf_mutex</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">1xi32</span><span class="o">&gt;</span>
+
+<span class="w">    </span><span class="n">entry</span><span class="w"> </span><span class="nf">@hello_cross_block_kernel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nv">%idx</span><span class="p">,</span><span class="w"> </span><span class="nv">%idy</span><span class="p">,</span><span class="w"> </span><span class="nv">%idz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_tile_block_id</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="nv">%tilex</span><span class="p">,</span><span class="w"> </span><span class="nv">%tiley</span><span class="p">,</span><span class="w"> </span><span class="nv">%tilez</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_num_tile_blocks</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="nv">%2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_global</span><span class="w"> </span><span class="nf">@_global_printf_mutex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;&gt;</span>
+<span class="w">      </span><span class="nv">%3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="nv">%4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cuda_tile.constant</span><span class="w"> </span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="n">loop</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">%t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_token</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">token</span>
+<span class="w">        </span><span class="nv">%6</span><span class="p">,</span><span class="w"> </span><span class="nv">%t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atomic_cas_tko</span><span class="w"> </span><span class="n">relaxed</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="nv">%2</span><span class="p">,</span><span class="w"> </span><span class="nv">%4</span><span class="p">,</span><span class="w"> </span><span class="nv">%3</span><span class="w"> </span><span class="n">token</span><span class="o">=%</span><span class="n">t1</span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;!</span><span class="n">cuda_tile.ptr</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n n-Type">!cuda_tile.token</span>
+<span class="w">        </span><span class="nv">%7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trunci</span><span class="w"> </span><span class="nv">%6</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i1</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">if</span><span class="w"> </span><span class="nv">%7</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">break</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">print</span><span class="w"> </span><span class="s2">&quot;</span><span class="s">current tile: %i / %i\0A</span><span class="s2">&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">%idx</span><span class="p">,</span><span class="w"> </span><span class="nv">%tilex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="nv">%5</span><span class="p">,</span><span class="w"> </span><span class="nv">%t4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atomic_rmw_tko</span><span class="w"> </span><span class="n">relaxed</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="nv">%2</span><span class="p">,</span><span class="w"> </span><span class="n">xchg</span><span class="p">,</span><span class="w"> </span><span class="nv">%4:</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="n">ptr</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">tile</span><span class="o">&lt;</span><span class="kt">i32</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n n-Type">!cuda_tile.token</span>
+<span class="w">      </span><span class="n">return</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="introduction.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Introduction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="syntax.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Syntax</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tile-kernels">2.1. Tile Kernels</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-different-about-tile-programming">2.1.1. What’s different about tile programming?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel-i-o">2.1.2. Kernel I/O</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tile-grid">2.2. Tile Grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementing-gemm">2.2.1. Implementing GEMM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemm-with-a-single-block">2.2.2. GEMM with a Single Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gemm-block-by-block">2.2.3. GEMM Block by Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#looping-over-tiles">2.2.4. Looping Over Tiles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-pointers">2.3. Structured Pointers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tiling-views">2.4. Tiling &amp; Views</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-addition-with-views">2.4.1. Vector Addition with Views</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-gemm-with-views">2.4.2. Dynamic GEMM with Views</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-tileblock-communication">2.5. Cross TileBlock Communication</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2025-2026 NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  <noscript><img src="https://docs.nvidia.com/akam/13/pixel_681cb352?a=dD1lMzI2YTExNzc2ZjA3MmFiYmZkZDNmMTJiYjM1NmRhMTliNTNkMGEzJmpzPW9mZg==" style="visibility: hidden; position: absolute; left: -999px; top: -999px;" /></noscript></body>
+</html>

@@ -17,7 +17,7 @@ updated: 2026-08-10
 
 **Sources:** [CUDA Programming Guide introduction](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/introduction.html) and [CUDA Programming Model](https://docs.nvidia.com/cuda/cuda-programming-guide/01-introduction/programming-model.html), captured on 2026-08-10.
 
-**Related pages:** [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Global Memory](../../terms/global-memory.md), [Matrix Tiling](../../terms/matrix-tiling.md), [GEMM](../../terms/gemm.md)
+**Related pages:** [CUDA Tile IR: The Design Philosophy of Tile Programming](tile-ir/index.md), [Triton: Tiled GPU Kernel Language](../triton/index.md), [Triton in vLLM and vllm-ascend](../triton/triton-in-vllm.md), [Global Memory](../../terms/global-memory.md), [Matrix Tiling](../../terms/matrix-tiling.md), [GEMM](../../terms/gemm.md)
 
 ## TL;DR
 
@@ -190,6 +190,8 @@ For a performance-sensitive kernel, ask two separate questions:
 ## 7. Tile Programming: A Higher-Level Kernel Model
 
 CUDA supports both ordinary SIMT programming and a tile programming model. In SIMT, the programmer writes per-thread code and controls each thread's indexing. In tile programming, the programmer writes code for an entire block and describes multidimensional **tiles**; the compiler maps tile operations onto the block's threads.
+
+The companion [CUDA Tile IR insight](tile-ir/index.md) explains why this abstraction exists: tile programs make logical tensor work explicit while the compiler owns the volatile mapping to threads, memory, and tensor cores.
 
 | Concept | SIMT programming | Tile programming |
 |---|---|---|

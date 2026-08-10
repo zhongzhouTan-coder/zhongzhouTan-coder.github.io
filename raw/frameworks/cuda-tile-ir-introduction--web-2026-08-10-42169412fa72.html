@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Introduction &#8212; Tile IR</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=7250be15" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script src="../_static/documentation_options.js?v=23c900a6"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=4ea706d9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'sections/introduction';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://docs.nvidia.com/cuda/tile-ir/latest/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '13.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Programming Model" href="prog_model.html" />
+    <link rel="prev" title="Tile IR" href="../index.html" />
+
+
+<!-- borrowed from looking at the legate project's documentation, likely for user tracking? -->
+<!-- <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script> -->
+
+
+  <script >bazadebezolkohpepadr="1746711516"</script><script type="text/javascript" src="https://docs.nvidia.com/akam/13/681cb352"  defer></script></head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Tile IR - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Tile IR - Home"/>
+  
+  
+    <p class="title logo__title">Tile IR</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Tile IR - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Tile IR - Home"/>
+  
+  
+    <p class="title logo__title">Tile IR</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prog_model.html">2. Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syntax.html">3. Syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bytecode.html">4. Binary Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">5. Type System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantics.html">6. Semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_model.html">7. Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">8. Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_info.html">9. Debug Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">10. Stability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization_guide.html">11. Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">12. Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">13. Release Notes</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">1. </span>Introduction</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="introduction">
+<span id="section-introduction"></span><h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h1>
+<p>This document describes <strong>Tile IR</strong>, a portable, low-level tile virtual machine and instruction set.</p>
+<p>Unlike PTX, which models the GPU as a data-parallel single instruction multiple thread (SIMT) processor, <strong>Tile IR</strong> models the GPU as a tile-based processor.
+In <strong>Tile IR</strong>, each logical thread (tile block) computes over partial fragments (tiles) of multi-dimensional arrays (tensors).</p>
+<section id="scalable-data-parallel-computing-with-tiles-on-gpu">
+<h2><span class="section-number">1.1. </span>Scalable Data Parallel Computing with Tiles on GPU<a class="headerlink" href="#scalable-data-parallel-computing-with-tiles-on-gpu" title="Link to this heading">#</a></h2>
+<p>The CUDA platform provides portability through CUDA C++ and PTX, allowing code written for older GPU generations to run
+efficiently on newer ones. These mechanisms enable developers to write software for one family of GPUs and
+continue to deploy it on future generations.</p>
+<p>The rapid evolution of hardware features, such as tensor cores, has increased programming-model complexity,
+requiring greater expertise and hardware understanding to write portable and performant code.
+Since Volta, each new GPU generation introduces powerful new hardware features, giving rise to new programming paradigms.</p>
+<p>To address these challenges, <strong>Tile IR</strong> introduces a virtual instruction set that enables native programming of the hardware in terms of tiles,
+allowing developers to write higher-level code that can be efficiently executed across multiple
+GPUs with minimal changes.</p>
+<p>While PTX ensures portability for SIMT programs, <strong>Tile IR</strong> extends the CUDA platform with native support for tile-based programs,
+allowing developers to focus on partitioning their data-parallel programs into tiles and tile blocks, letting <strong>Tile IR</strong> handle
+the mapping onto hardware resources such as threads, the memory hierarchy, and tensor cores.</p>
+<p>By raising the level of abstraction, <strong>Tile IR</strong> enables users to build new higher-level hardware-specific DSLs, compilers,
+and frameworks for NVIDIA hardware.</p>
+</section>
+<section id="goals-and-scope">
+<h2><span class="section-number">1.2. </span>Goals and Scope<a class="headerlink" href="#goals-and-scope" title="Link to this heading">#</a></h2>
+<p><strong>Tile IR</strong> aims to provide a performance-portable programming model and instruction set for tile-based parallel programming.</p>
+<p>Core goals:</p>
+<ul class="simple">
+<li><p>Introduce a data-parallel tile programming abstraction that aligns with programmer intent and acts as a code generation target for DSLs and compilers.</p></li>
+<li><p>Abstract tensor-cores and their programming model to enable hardware innovation without disrupting the NVIDIA ecosystem or customers’ existing software investments.</p></li>
+<li><p>Abstract low-level, architecture-specific details such as CUDA threads and memory hierarchy to ensure programs can be efficiently recompiled for different GPUs.</p></li>
+<li><p>Minimize abstraction overhead. While portability has a cost, <strong>Tile IR</strong> aims to keep this cost low, introducing only a modest performance overhead.</p></li>
+<li><p>Provide user controls and optimization hints to recover peak performance when needed.</p></li>
+<li><p>Provide seamless interoperability with existing CUDA programming models like CUDA C++ and PTX.</p></li>
+</ul>
+<p><strong>Tile IR</strong> achieves these core goals through the following key components, in order of importance:</p>
+<ol class="arabic simple">
+<li><p>A versioned specification of the <strong>Tile IR</strong> abstract machine, including a versioned and portable bytecode representation.</p></li>
+<li><p>An optimizing compiler for <strong>Tile IR</strong> programs, available as part of the CUDA driver and as a standalone tool in the CUDA toolkit, similar to PTX.</p></li>
+<li><p>An MLIR dialect that existing compilers can use to target <strong>Tile IR</strong> as a backend compiler target.</p></li>
+</ol>
+</section>
+<section id="document-structure">
+<h2><span class="section-number">1.3. </span>Document Structure<a class="headerlink" href="#document-structure" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#section-introduction"><span class="std std-ref">Introduction</span></a> this section.</p></li>
+<li><p><a class="reference internal" href="prog_model.html#section-prog-model"><span class="std std-ref">Programming Model</span></a> describes the programming model of <strong>Tile IR</strong>.</p></li>
+<li><p><a class="reference internal" href="syntax.html#section-syntax"><span class="std std-ref">Syntax</span></a> defines the syntax of <strong>Tile IR</strong> programs used throughout the specification.</p></li>
+<li><p><a class="reference internal" href="bytecode.html#section-bytecode"><span class="std std-ref">Binary Format</span></a> describes the <strong>Tile IR</strong> byte code and its binary format.</p></li>
+<li><p><a class="reference internal" href="types.html#section-types"><span class="std std-ref">Type System</span></a> defines the type system of <strong>Tile IR</strong>.</p></li>
+<li><p><a class="reference internal" href="semantics.html#section-semantics"><span class="std std-ref">Semantics</span></a> describes the semi-formal semantics of <strong>Tile IR</strong>.</p></li>
+<li><p><a class="reference internal" href="memory_model.html#section-memory-model"><span class="std std-ref">Memory Model</span></a> describes the <strong>Tile IR</strong> memory model.</p></li>
+<li><p><a class="reference internal" href="operations.html#section-operations"><span class="std std-ref">Operations</span></a> a listing of the full set of <strong>Tile IR</strong> operations.</p></li>
+<li><p><a class="reference internal" href="debug_info.html#section-debug-info"><span class="std std-ref">Debug Info</span></a> describes the debug information format for <strong>Tile IR</strong> programs.</p></li>
+<li><p><a class="reference internal" href="stability.html#section-stability"><span class="std std-ref">Stability</span></a> describes the stability guarantees of the <strong>Tile IR</strong>.</p></li>
+<li><p><a class="reference internal" href="appendix.html#section-appendix"><span class="std std-ref">Appendix</span></a> contains relevant reference materials, including full programs and references.</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tile IR</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="prog_model.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Programming Model</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scalable-data-parallel-computing-with-tiles-on-gpu">1.1. Scalable Data Parallel Computing with Tiles on GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goals-and-scope">1.2. Goals and Scope</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-structure">1.3. Document Structure</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2025-2026 NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  <noscript><img src="https://docs.nvidia.com/akam/13/pixel_681cb352?a=dD1lMzI2YTExNzc2ZjA3MmFiYmZkZDNmMTJiYjM1NmRhMTliNTNkMGEzJmpzPW9mZg==" style="visibility: hidden; position: absolute; left: -999px; top: -999px;" /></noscript></body>
+</html>

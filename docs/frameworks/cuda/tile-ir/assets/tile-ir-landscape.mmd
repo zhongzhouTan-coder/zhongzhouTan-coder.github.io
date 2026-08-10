@@ -1,0 +1,9 @@
+flowchart TD
+    CUDA["CUDA C++ and PTX\nportable SIMT model"] --> TENSOR["Tensor cores add\ncooperation complexity"]
+    HARDWARE["Rapid GPU generation changes"] --> TENSOR
+    TENSOR --> GAP["Performance requires\nmore hardware-specific mapping"]
+    GAP --> TILE["Tile IR\nversioned tile abstract machine"]
+    TILE --> COMPILER["Optimizing Tile IR compiler"]
+    TILE --> MLIR["MLIR dialect target\nfor DSLs and compilers"]
+    TILE --> INTEROP["CUDA C++ and PTX\ninteroperability"]
+    TILE --> DSL["Higher-level DSLs,\ncompilers, and frameworks"]

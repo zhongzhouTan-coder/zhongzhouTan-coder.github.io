@@ -13,6 +13,7 @@ updated: 2026-08-10
 ## CUDA
 
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
+- [CUDA Tile IR: The Design Philosophy of Tile Programming](cuda/tile-ir/index.md) — Source-grounded explanation of tile blocks, tensor values, structured tensor views, compiler-owned mapping, and performance portability.
 
 ## vLLM
 

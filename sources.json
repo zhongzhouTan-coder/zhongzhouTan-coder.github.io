@@ -1203,5 +1203,43 @@
       "docs_path": "docs/frameworks/cuda/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.nvidia.com/cuda-tile-ir-introduction@2026-08-10-42169412fa72",
+      "title": "1. Introduction — Tile IR",
+      "slug": "cuda-tile-ir-introduction",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.nvidia.com/cuda/tile-ir/latest/sections/introduction.html",
+      "final_url": "https://docs.nvidia.com/cuda/tile-ir/latest/sections/introduction.html",
+      "captured_at": "2026-08-10T08:04:34.406Z",
+      "revision": "42169412fa72091fdd4471040ce04d3d8869ef99e499fd181c3a072eae9717e9",
+      "raw_paths": [
+        "raw/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.html",
+        "raw/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.md",
+      "docs_path": "docs/frameworks/cuda/tile-ir/index.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:docs.nvidia.com/cuda-tile-ir-programming-model@2026-08-10-95e94e1a9f38",
+      "title": "2. Programming Model — Tile IR",
+      "slug": "cuda-tile-ir-programming-model",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.nvidia.com/cuda/tile-ir/latest/sections/prog_model.html",
+      "final_url": "https://docs.nvidia.com/cuda/tile-ir/latest/sections/prog_model.html",
+      "captured_at": "2026-08-10T08:04:51.618Z",
+      "revision": "95e94e1a9f3847c3dae54271bf9cbb1dc43f24e54398e1a195388483d6b4024b",
+      "raw_paths": [
+        "raw/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.html",
+        "raw/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.md",
+      "docs_path": "docs/frameworks/cuda/tile-ir/index.md",
+      "status": "ingested"
+    }
   ]
 }

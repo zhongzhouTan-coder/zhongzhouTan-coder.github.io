@@ -23,6 +23,7 @@ appears_in:
   - docs/algorithms/kronecker-product.md
   - docs/frameworks/deepseek/v4-attention-code-reading.md
   - docs/frameworks/cuda/index.md
+  - docs/frameworks/cuda/tile-ir/index.md
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/frameworks/triton-ascend/index.md
   - docs/frameworks/triton-ascend/operator-mechanisms.md
@@ -79,6 +80,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 ## Where It Appears
 
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Uses vector addition and tile programming to show how device-memory traffic and on-chip reuse shape kernel cost.
+- [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Uses dynamic GEMM to show tile-block decomposition, tensor views, partition views, and compiler-owned mapping.
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Builds a blocked, outer-product GEMM in the Spatial DSL and discusses inner-product and systolic-array variants plus SRAM banking.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The knowledge-base insight page for the same tutorial: output tiling, MemFold/MemReduce, triple buffering, and banking.
 - [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Measures attention against optimized GEMM kernels that reach 80–90% of H100 peak, and overlaps GEMM with softmax.
