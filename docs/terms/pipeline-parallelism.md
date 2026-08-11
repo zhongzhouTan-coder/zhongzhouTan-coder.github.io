@@ -12,6 +12,7 @@ aliases:
   - pipeline model parallelism
 appears_in:
   - docs/algorithms/context-parallelism/index.md
+  - docs/frameworks/vllm/vllm-context-parallelism.md
 updated: 2026-08-10
 ---
 
@@ -39,6 +40,7 @@ Pipeline parallelism does not split the tokens of one request across stages, so 
 ## Where It Appears
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Describes why pipeline parallelism alone does not remove long-prompt latency.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP currently rejects PP greater than one in its MRV2 validation.
 
 ## Related Terms
 

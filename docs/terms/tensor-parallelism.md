@@ -12,6 +12,7 @@ aliases:
   - tensor model parallelism
 appears_in:
   - docs/algorithms/context-parallelism/index.md
+  - docs/frameworks/vllm/vllm-context-parallelism.md
 updated: 2026-08-10
 ---
 
@@ -39,6 +40,7 @@ Tensor parallelism shards model weights, which CP does not, but its frequent col
 ## Where It Appears
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Uses TP8 within each host and CP across hosts to balance model fit with long-context latency.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP reuses TP ranks when PCP is disabled and may span the full TP x PCP group.
 
 ## Related Terms
 

@@ -1,0 +1,11 @@
+flowchart TB
+    TP["Tensor parallelism<br/>split model compute"] --> Groups["vLLM V1 model-parallel groups"]
+    Paged["Paged KV cache<br/>logical blocks to physical blocks"] --> DCP["Decode context parallelism<br/>shard persistent KV"]
+    MLA["Multi-head latent attention"] --> PCP["Prefill context parallelism<br/>partition transient prefill"]
+    Groups --> DCP
+    Groups --> PCP
+    DCP --> Exact["Exact distributed attention<br/>LSE reconstruction"]
+    PCP --> Exact
+    Exact --> Serving["Long-context prefill + decode serving"]
+    DCP -. "cache-type and backend limits" .-> Limits["Support boundaries"]
+    PCP -. "MLA-only MRV2 path" .-> Limits

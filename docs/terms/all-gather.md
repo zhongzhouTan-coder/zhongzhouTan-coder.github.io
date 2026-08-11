@@ -26,7 +26,9 @@ appears_in:
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
   - docs/algorithms/context-parallelism/index.md
-updated: 2026-08-10
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+  - docs/frameworks/vllm/dcp-attention/index.md
+updated: 2026-08-11
 ---
 
 # All-Gather
@@ -81,6 +83,9 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
 - [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses ring send/recv instead of an all-gather of the full context for exact prefill and decode attention.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP gathers prefill cache inputs and restores hidden states; DCP gathers attention statistics.
+
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Gathers per-rank LSE statistics before correcting local attention outputs.
 
 ## Related Terms
 

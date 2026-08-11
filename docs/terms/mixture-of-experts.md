@@ -40,7 +40,8 @@ appears_in:
   - docs/training/kimi/kimi-k3/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/mhc/index.md
-updated: 2026-08-06
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+updated: 2026-08-10
 ---
 
 # Mixture of Experts
@@ -92,6 +93,7 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 - [Kimi](../training/kimi/index.md) — Kimi model family: the Kimi Linear attention architecture and the Kimi K3 frontier model.
 - [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — DeepSeek's mHC projects Hyper-Connections' residual mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP size participates in MoE sharding and process-world sizing.
 
 ## Related Terms
 

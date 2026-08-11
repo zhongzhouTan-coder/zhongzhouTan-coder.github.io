@@ -10,11 +10,14 @@ Run the repository docs lint and cleanup workflow for the requested scope.
 Primary lint commands:
 
 ```bash
+# Auto-fix Markdown formatting in the configured repository scope
+./scripts/run-in-workspace.sh npx markdownlint-cli2 --fix
+
+# Verify Markdown formatting without changing files
+./scripts/run-in-workspace.sh npx markdownlint-cli2
+
 # Full lint: custom checks + markdownlint
 ./scripts/lint-docs.sh
-
-# Markdownlint only (configured docs, instructions, and source records)
-npx markdownlint-cli2
 ```
 
 Do not add a repository-wide glob such as `**/*.md`. The configuration excludes
@@ -24,21 +27,30 @@ evidence, not files maintained or linted by this wiki.
 Workflow:
 
 1. Read the relevant files under `docs/`, `logs/`, and `raw/` before changing anything.
-2. Run `./scripts/lint-docs.sh` to identify broken links, orphan docs pages, missing front matter fields, stub pages, placeholder text, and markdownlint violations.
-3. Run `npx markdownlint-cli2` separately for the configured Markdown scope,
-   including docs, repository-reading instructions, repository source records,
-   and derived repository notes. Use the configuration's globs as-is so an
-   agent with materialized checkouts does not import upstream lint findings.
-4. Fix safe issues directly when the correct repair is clear.
-5. When fixing markdownlint violations, follow the rules in `.markdownlint-cli2.jsonc`:
+2. When a lint report already identifies Markdownlint issues, run
+   `./scripts/run-in-workspace.sh npx markdownlint-cli2 --fix` first. Use the
+   configured scope as-is; do not add file globs. Inspect the resulting diff to
+   confirm the formatter changed only Markdown syntax and spacing.
+3. Run `./scripts/run-in-workspace.sh npx markdownlint-cli2` without `--fix`.
+   Resolve any remaining Markdownlint findings manually. The configured scope
+   includes docs, repository instructions, source records, and derived
+   repository notes while excluding third-party checkouts.
+4. Run `./scripts/lint-docs.sh` to validate Markdown formatting plus broken
+   links, orphan pages, front matter, source integrity, and other semantic
+   repository checks. If no prior lint report was supplied, start with this
+   command, then return to step 2 when it reports Markdownlint issues.
+5. Fix remaining safe issues directly when the correct repair is clear.
+6. When fixing Markdownlint violations manually, follow the rules in `.markdownlint-cli2.jsonc`:
    - Fenced code blocks must have a language tag (MD040)
    - No bare URLs — wrap in `<>` or `[]()` (MD034)
    - No emphasis-as-headings — use `##` headings instead (MD036)
    - Ordered lists must use sequential numbering 1/2/3 (MD029)
    - Blank lines around headings (MD022) and fenced code blocks (MD031)
    - Use backtick fenced code blocks, not indented (MD046, MD048)
-6. Update `logs/index.md` or `logs/log.md` if the cleanup changes repository navigation or ingest history.
-7. Treat deletion conservatively.
+7. Rerun `./scripts/lint-docs.sh` after every documentation or log change and
+   require a successful exit before reporting completion.
+8. Update `logs/index.md` or `logs/log.md` if the cleanup changes repository navigation or ingest history.
+9. Treat deletion conservatively.
 
 Safe fixes include:
 

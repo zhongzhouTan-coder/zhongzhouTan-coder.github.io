@@ -50,6 +50,7 @@ appears_in:
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/algorithms/context-parallelism/index.md
+  - docs/frameworks/vllm/vllm-context-parallelism.md
 updated: 2026-08-10
 ---
 
@@ -110,6 +111,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Shards persistent KV state across context-parallel ranks and chooses whether to circulate KV or queries.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP shards persistent decode KV state; PCP gathers prefill cache inputs without duplicating decode writes.
 
 ## Related Terms
 

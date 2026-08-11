@@ -12,7 +12,9 @@ aliases:
   - context parallel
 appears_in:
   - docs/algorithms/context-parallelism/index.md
-updated: 2026-08-10
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+  - docs/frameworks/vllm/dcp-attention/index.md
+updated: 2026-08-11
 ---
 
 # Context Parallelism
@@ -39,6 +41,9 @@ Context parallelism is strongest for long prefill, where attention compute can h
 ## Where It Appears
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Exact pass-KV and pass-Q ring attention for Llama3 405B, scaling to 1M-token prefill on 128 H100 GPUs.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) - Separates prefill batch partitioning from decode KV sharding in the V1 serving runtime.
+
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) - Shows how DCP merges local outputs and LSE statistics to recover exact global attention.
 
 ## Related Terms
 

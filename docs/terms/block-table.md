@@ -19,7 +19,8 @@ appears_in:
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-framework.md
   - docs/frameworks/vllm/vllm-overview.md
-updated: 2026-08-06
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+updated: 2026-08-10
 ---
 
 # Block Table
@@ -54,6 +55,7 @@ The table itself costs a small constant indirection per block per step. If block
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — A code-backed explanation of how vLLM rebuilds a token-level batch each engine iteration, mixes prefill and decode work.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP scales attention block size while PCP retains global block ownership.
 
 ## Related Terms
 

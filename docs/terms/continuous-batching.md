@@ -22,7 +22,8 @@ appears_in:
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-framework.md
   - docs/frameworks/vllm/vllm-overview.md
-updated: 2026-08-06
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+updated: 2026-08-10
 ---
 
 # Continuous Batching
@@ -82,6 +83,7 @@ is sparse or request lengths are uniform.
 - [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
 - [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP rewrites the continuous batch into rank-local prefill chunks and replicated decodes.
 
 ## Related Terms
 

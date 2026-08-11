@@ -19,7 +19,9 @@ appears_in:
   - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
   - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
   - docs/algorithms/context-parallelism/index.md
-updated: 2026-08-10
+  - docs/frameworks/vllm/vllm-context-parallelism.md
+  - docs/frameworks/vllm/dcp-attention/index.md
+updated: 2026-08-11
 ---
 
 # All-to-All
@@ -58,6 +60,9 @@ In NCCL, all-to-all is implemented as a collective primitive alongside the other
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses All-to-All to return pass-Q partial attention outputs to their source ranks before merging.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — The optional DCP A2A backend exchanges partial attention output and LSE in one payload.
+
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Packs output and LSE payloads into an optional all-to-all exact-reduction path.
 
 ## Related Terms
 

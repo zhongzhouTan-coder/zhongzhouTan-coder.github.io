@@ -737,7 +737,9 @@
         "docs/frameworks/vllm/vllm-continuous-batching/index.md",
         "docs/frameworks/vllm/vllm-overview.md",
         "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
-        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md"
+        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
+        "docs/frameworks/vllm/vllm-context-parallelism.md",
+        "docs/frameworks/vllm/dcp-attention/index.md"
       ],
       "status": "ingested"
     },

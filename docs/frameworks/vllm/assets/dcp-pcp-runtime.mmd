@@ -1,0 +1,11 @@
+flowchart LR
+    Config["ParallelConfig<br/>TP x PCP x DCP"] --> Groups["TP / DCP / PCP<br/>process groups"]
+    Groups --> Runner["GPUModelRunner<br/>one V1 step"]
+    Runner --> PCP["PCPManager<br/>mirror prefill chunks<br/>replicate decodes"]
+    Runner --> DCP["DCP metadata<br/>local KV lengths<br/>interleave ownership"]
+    PCP --> Cache["MLA KV-cache update<br/>gather prefill inputs"]
+    DCP --> Attention["Attention backend<br/>local KV attention"]
+    Cache --> Attention
+    Attention --> Merge["AG+RS, AG+AR, or A2A<br/>exact LSE merge"]
+    Merge --> Restore["PCP restore<br/>all-gather hidden states<br/>global batch order"]
+    Restore --> Sample["Sampling / postprocess"]
