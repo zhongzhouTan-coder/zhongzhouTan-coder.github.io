@@ -145,10 +145,20 @@ the initial path to these answers short:
 4. Where do the supported platforms diverge?
 5. What was inferred statically versus verified at runtime?
 
-Use a table or prose when sufficient. When a flow diagram materially improves
-the mechanism explanation, save its editable Mermaid source as a local `.mmd`
-asset and link it from the page. Prefer one reader question per visual; keep a
-symbol-heavy implementation map separate from the first conceptual visual.
+Plan each rich element around a reader question and a teaching job. Use prose
+for one idea, a table for exact mappings or platform differences, and a worked
+trace for runtime state changes. When a flow diagram materially improves
+hierarchy, branching, concurrency, or ownership, save its editable Mermaid
+source as a local `.mmd` asset and link it from the page. Prefer one reader
+question per visual; keep a symbol-heavy implementation map separate from the
+first conceptual visual. Omit any diagram that only restates nearby prose.
+
+For a worked runtime trace, follow one concrete request, token, tensor, cache
+block, or message. Name the actor, input state, operation, and output state at
+each step, and link every non-obvious step to revision-aware evidence. Use
+portable Markdown callouts labeled `Evidence` and `Inference` when the reader
+could otherwise confuse direct code behavior with repository-level synthesis;
+do not hide required reasoning inside callouts.
 
 ## Draft Repository-Backed Docs
 

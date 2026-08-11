@@ -152,6 +152,21 @@ A numbered end-to-end trace showing all mechanisms interacting in one scenario. 
 [A numbered walkthrough: ① draft → ② schedule → ③ verify → result.]
 ```
 
+Use one concrete object throughout the trace: a request, token sequence, tensor,
+batch, cache block, or protocol message. At every step, name the acting
+component, the input state, the action, and the resulting state. A compact table
+is preferable when the state transitions would be hard to compare in prose:
+
+```markdown
+| Step | Actor | Input state | Action | Output state |
+|---:|---|---|---|---|
+| 1 | [component] | [before] | [operation] | [after] |
+```
+
+Do not add a runtime diagram if the numbered trace already answers the same
+question. Add one only when concurrency, branching, ownership, or handoff
+boundaries remain difficult to understand.
+
 ### 10. What This Buys You
 
 Results as a narrative, not a data dump. Structure:
@@ -176,6 +191,10 @@ Rules:
 - Show only the numbers that answer a specific question. Link to the paper for full tables.
 - Explicitly teach the reader how to interpret results, especially counterintuitive ones.
 - Use caution markers (⚠️) to flag results that are commonly misinterpreted.
+- Prefer an original source chart when it directly answers the question. When
+  synthesizing a chart from reported values, cite the exact source table or
+  values, preserve axes, units, workload conditions, and uncertainty, and label
+  repository-derived calculations separately from source-reported results.
 
 ### 11. Where It Breaks
 
@@ -220,6 +239,60 @@ Curated links grouped by reader intent:
 - **Reproduce:** [Code link or "not available at time of writing"]
 ```
 
+## Representation Selection Workflow
+
+Choose rich content by the reader question, not by a desire to decorate the
+page. Before drafting, make a small representation plan in working notes for
+each proposed rich element:
+
+```text
+Reader question: [What should become easier to understand?]
+Evidence: [Which source figure, table, code path, or claim supports it?]
+Representation: [Prose, example, table, trace, source visual, or synthesis.]
+Teaching job: [What understanding would be lost if this were removed?]
+```
+
+Use the smallest representation that preserves the important relationship:
+
+| Reader need | Preferred representation | Avoid |
+|---|---|---|
+| Understand one idea | Short prose plus a concrete example | A diagram that restates the paragraph |
+| Decode names, symbols, shapes, or ownership | Symbol or mapping table | Dense prose enumeration |
+| Compare methods, modes, or platforms | Comparison table | Parallel bullet lists |
+| Follow changing state over time | Numbered worked trace | An unanchored generic flowchart |
+| Understand hierarchy, branching, or concurrency | Original figure or justified diagram | A linear trace that hides topology |
+| Inspect empirical evidence | Original chart or compact result table | Decorative charting of a few values |
+| Notice a caveat or evidence boundary | Labeled callout | Repeated colored boxes |
+| Understand prior-work relationships | Landscape Mermaid | A flat related-work list |
+
+Search canonical source material for suitable figures and charts before
+synthesizing a visual. There is no target number of visuals per page. After
+drafting, apply the deletion test: if removing an element does not reduce
+understanding, comparison, retrieval, or evidence quality, remove it.
+
+## Callouts
+
+Use portable Markdown blockquotes as semantic landmarks. Keep essential
+reasoning in the normal page flow; a reader who skips callouts must still
+understand the mechanism.
+
+```markdown
+> **Intuition:** [Plain-language mental model.]
+
+> **Important:** [Requirement or invariant the reader must retain.]
+
+> **Warning:** [Concrete misuse, failure condition, or interpretation risk.]
+
+> **Evidence:** [What the source directly establishes.]
+
+> **Inference:** [Repository-level conclusion derived from the evidence.]
+```
+
+Use only the labels needed by the page. Do not use callouts to add color, repeat
+nearby prose, or hide long explanations. Distinguish `Evidence` from
+`Inference` whenever a synthesized claim could otherwise be mistaken for a
+source claim.
+
 ## Comparison Tables
 
 When comparing methods, formats, or systems, prefer this table style:
@@ -249,6 +322,9 @@ When creating or updating a paper-insight page:
 
 ## Diagrams
 
+- Give every diagram one explicit teaching job and one primary reader question.
+  If nearby prose or a table answers the same question equally well, omit the
+  diagram.
 - Search the paper extraction and captured web Markdown for relevant figures
   before creating a visual.
 - Use original paper/web figures for the Big Picture, architecture, mechanism,
@@ -263,9 +339,17 @@ When creating or updating a paper-insight page:
 - Every visual must have a caption explaining what the reader should see and
   whether it is an original source figure or a synthesized explanation.
 - Source-figure captions must identify and link the paper or web source.
+- Synthesized charts must cite the exact source values, preserve units and
+  experimental conditions, and keep editable source or input data beside the
+  rendered asset.
 - Prefer numbered annotations (①, ②, ③) that are referenced in surrounding
   prose, without altering the original image.
 - Place visuals before the text that explains them.
+- Use descriptive alt text, expand abbreviations, label axes and units, and
+  summarize the visual's takeaway in prose for readers who cannot render or
+  inspect it.
+- Do not add generic icons, stock or AI-generated decoration, repeated colored
+  boxes, or a Mermaid diagram that merely restates the surrounding prose.
 
 ## Style Rules
 
@@ -286,12 +370,19 @@ Before publishing a page, verify:
 3. **Audit every visual.** Is The Landscape a linked local Mermaid file? For
    every other visual, was a suitable original paper/web figure used and saved
    locally? If a synthesized fallback was used, is its necessity and synthesized
-   status clear?
+   status clear? Can you state the reader question and teaching job in one
+   sentence, and would understanding actually decrease if the visual vanished?
 4. **Is there a concrete example in "Why This Exists"?** If not, add one.
 5. **If the page uses dense notation, is there a Symbol Map before Deep Dive?** If not, add a naming-convention paragraph and a compact symbol table.
 6. **Does every Deep Dive subsection have an "intuition" sentence?** If not, you don't understand it well enough yet.
 7. **Are limitations framed as failure modes with conditions?** If not, rewrite as a table.
 8. **Does the results section teach interpretation, not just report numbers?** If not, add "how to read these numbers" guidance.
+9. **Does "Putting It Together" track one concrete object and expose each state
+   transition?** If not, rewrite it as a numbered trace or compact state table.
+10. **Are callouts sparse and semantic?** If a callout repeats prose, hides
+    essential reasoning, or exists only for color, remove or rewrite it.
+11. **Are charts auditable?** Verify the cited values, axes, units, conditions,
+    and the boundary between reported data and repository-derived calculations.
 
 ## Confidence Mapping
 

@@ -107,7 +107,21 @@ has been classified as source ingest.
 - **Do not move a page across categories casually.** `kb-check-integrity.py` requires each `sources.json` `docs_path` to stay under `docs/{category}/`, and the page's raw/derived sources live under `raw/{category}/` and `derived/pdf-markdown/{category}/`. Relocating a page to another category therefore requires moving its raw and derived sources and updating the manifest `category`. Prefer reorganizing within the page's existing category.
 - **When moving or renaming any docs page:** use `git mv` to preserve history, recompute relative links in the moved page and in every page that links to it, update `sources.json` (`docs_path` or `docs_paths`), update the category index and subcategory hub, update `docs/logs/index.md`, append `docs/logs/log.md`, then run `./scripts/lint-docs.sh`.
 
-## Diagram Conventions
+## Rich Content and Diagram Conventions
+
+- **Every rich element must perform a teaching job.** Before adding a figure,
+  chart, diagram, table, trace, or callout, state the reader question it
+  answers. If removing the element would not reduce understanding, retrieval,
+  comparison, or evidence quality, omit it.
+- **Choose the representation from the reader question.** Use prose for one
+  idea, a worked example for an abstract mechanism, a table for exact mappings
+  or comparisons, a numbered trace for state that changes over time, an
+  original figure for source architecture or results, and Mermaid for
+  relationships or simple synthesized flows. Do not impose a visual quota.
+- **Plan rich content before drafting.** In working notes, record each proposed
+  element's reader question, evidence source, chosen representation, and
+  teaching job. Search the canonical source for an existing figure or chart
+  before synthesizing anything.
 
 - **Original source figures are the first choice.** Before creating any visual,
   inspect the paper's extracted figures and the captured web page's images. For
@@ -128,6 +142,22 @@ has been classified as source ingest.
   explicitly requests one or when the mechanism cannot be understood clearly
   without it; label the caption as a synthesized explanation rather than a
   source figure.
+- **Use worked traces for runtime behavior.** Follow one concrete request,
+  tensor, token sequence, batch, or state transition from input to output. Make
+  state changes and handoff boundaries explicit; repository-backed traces must
+  link their non-obvious steps to revision-aware code evidence.
+- **Use callouts as semantic landmarks, not decoration.** Prefer portable
+  Markdown blockquotes labeled `Intuition`, `Important`, `Warning`, `Evidence`,
+  or `Inference`. Use the smallest label set that helps scanning, keep essential
+  reasoning in the main flow, and never use callouts merely to add color.
+- **Keep charts source-backed.** Prefer an original result chart when it answers
+  the reader's question. For a synthesized chart, cite the exact source table or
+  values, preserve units and experimental conditions, distinguish reported
+  values from derived calculations, and store the local chart with its
+  reproducible input data or editable source.
+- **Avoid decorative richness.** Do not add generic icons, stock or AI-generated
+  illustrations, repeated colored boxes, or diagrams that restate nearby prose.
+  Richness should come from a better representation of information.
 - **Always save editable diagrams locally** in the docs folder (for example,
   `docs/topic/assets/`). Use `.mmd` for the Landscape and any approved simple
   fallback flow, `.drawio` for approved complex architecture diagrams, and
@@ -136,5 +166,9 @@ has been classified as source ingest.
   it directly to a local file. Do not use tools that open a browser tab.
 - **Link all editable diagram files** from the docs page so they are
   discoverable and reusable.
+- **Make every visual accessible and interpretable.** Use descriptive alt text,
+  label axes and units, explain abbreviations, provide a source-aware caption,
+  and summarize the takeaway in surrounding prose so the page remains useful
+  when the visual cannot be rendered.
 
 Run `./scripts/lint-docs.sh` after docs or logs changes.

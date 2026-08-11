@@ -73,11 +73,17 @@ Require the canonical evidence to live under `raw/`. If the requested source is 
 1. Extract the source's scope, strongest claims, evidence, assumptions, limitations, and relationship to existing work.
 2. Separate source claims from repository-level inference.
 3. Select the best existing page to update, or create one with a distinct retrieval purpose.
-4. Follow the paper insight structure only for paper insight pages; adapt structure for reference, framework, comparison, or learning pages.
-5. Inspect original source figures before creating visuals. Follow the repository's diagram rules and keep selected assets local to the consuming page.
-6. Identify cross-paper technical terms. Create or update term pages and link the first meaningful occurrence as required.
-7. Update related pages only when the new evidence changes a claim, confidence, comparison, limitation, landscape, or useful retrieval link.
-8. Handle contradictions with the policy in `SKILL.md`; avoid treating incomparable experiments as disagreement.
+4. Make a compact representation plan in working notes. For every proposed
+   figure, chart, diagram, table, trace, or callout, record the reader question,
+   supporting evidence, chosen representation, and teaching job. Omit elements
+   that would not improve understanding, comparison, retrieval, or evidence.
+5. Follow the paper insight structure only for paper insight pages; adapt structure for reference, framework, comparison, or learning pages.
+6. Inspect original source figures and charts before synthesizing visuals. Follow
+   the repository's rich-content rules and keep selected assets local to the
+   consuming page.
+7. Identify cross-paper technical terms. Create or update term pages and link the first meaningful occurrence as required.
+8. Update related pages only when the new evidence changes a claim, confidence, comparison, limitation, landscape, or useful retrieval link.
+9. Handle contradictions with the policy in `SKILL.md`; avoid treating incomparable experiments as disagreement.
 
 ### Integrate
 

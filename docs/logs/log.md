@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-10
+updated: 2026-08-11
 ---
 
 # Wiki Log
@@ -290,3 +290,4 @@ updated: 2026-08-10
 ## 2026-08-11
 
 - Added [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md), backed by the existing pinned vLLM revision `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`. The focused insight derives the stable LSE correction kernel, proves equivalence with ordinary attention, and contrasts AG+RS, AG+AR, and A2A output distribution.
+- Optimized the docs authoring workflow in `AGENTS.md`, the wiki synthesis workflow, and the page-content/repository-reading instructions: every rich element now requires a reader question and teaching job, representation choice follows the information relationship, runtime explanations use concrete state traces, callouts distinguish semantic roles, charts remain source-auditable, and decorative visuals are explicitly excluded.
