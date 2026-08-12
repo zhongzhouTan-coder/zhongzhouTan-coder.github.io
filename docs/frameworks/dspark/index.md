@@ -5,7 +5,8 @@ layout: default
 confidence: high
 sources:
   - raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf
-updated: 2026-07-15
+  - derived/pdf-markdown/frameworks/dspark-confidence-scheduled-speculative-decoding.md
+updated: 2026-08-12
 ---
 
 # DSpark: Confidence-Scheduled Speculative Decoding
@@ -14,242 +15,301 @@ updated: 2026-07-15
 **Authors:** Xin Cheng, Xingkai Yu, Chenze Shao, Jiashi Li, Yunfan Xiong, Yi Qian, Jiaqi Zhu, Shirong Ma, Xiaokang Zhang, Jiasheng Ye, Qinyu Chen, Chengqi Deng, Jiping Yu, Damai Dai, Zhengyan Zhang, Yixuan Wei, Yixuan Tan, Wenkai Yang, Runxin Xu, Yu Wu, Zhean Xu, Xuanyu Wang, Muyang Chen, Rui Tian, Xiao Bi, Zhewen Hao, Shaoyuan Chen, Huanqi Cao, Wentao Zhang, Anyi Xu, Huishuai Zhang, Dongyan Zhao, Wenfeng Liang  
 **arXiv:** 2607.05147v1 - 6 Jul 2026
 
-**Related pages:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [SGLang: Structured Language Model Programs](../sglang/index.md)
+**Related pages:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md) · [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md) · [DeepSeek-V4: Million-Token Context](../../training/deepseek/deepseek-v4/index.md) · [SGLang: Structured Language Model Programs](../sglang/index.md)
+
+> **Evidence:** This page uses the completed PDF extraction at `derived/pdf-markdown/frameworks/dspark-confidence-scheduled-speculative-decoding.md` for the paper's equations, figures, experiments, and deployment details. A few extracted symbols were malformed by PDF layout conversion; they were checked against the source PDF and the surrounding definitions before being normalized here.
 
 ## TL;DR
 
-**What:** DSpark is a speculative decoding framework for high-concurrency LLM serving that improves both draft quality and verification scheduling.
-**How:** It keeps a parallel draft backbone, adds a lightweight sequential head so draft suffixes depend on earlier sampled draft tokens, then uses calibrated confidence scores and hardware throughput curves to choose per-request verification lengths.
-**The number:** In DeepSeek-V4 production serving, DSpark improves matched-capacity per-user generation speed by 60%-85% for V4-Flash and 57%-78% for V4-Pro versus the previous MTP-1 baseline.
+**What:** DSpark is a speculative decoding framework that improves both the draft block and the target-model verification decision.
+**How:** A parallel backbone proposes the block, a lightweight sequential head restores prefix dependence, and a calibrated scheduler allocates verification capacity using the engine's measured throughput curve.
+**The number:** In DeepSeek-V4 live serving, DSpark improves matched-capacity per-user generation speed by 60%-85% on V4-Flash and 57%-78% on V4-Pro over the MTP-1 baseline.
 
 ## The Big Picture
 
-![DSpark decoding cycle](dspark-decoding-cycle.drawio.svg)
+![DSpark target-model anchor, semi-autoregressive draft, and hardware-aware prefix scheduling cycle](./assets/dspark-architecture.jpg)
 
-*1. A parallel backbone proposes a multi-token draft block. 2. A lightweight sequential head corrects the suffix using the sampled draft prefix. 3. A calibrated confidence scheduler decides how much of each request is worth verifying on the target model.*
+*Source: [DSpark, Figure 1](https://arxiv.org/abs/2607.05147). 1. The target model emits an anchor token from the prompt. 2. A parallel block produces draft logits, then a sequential head samples draft tokens and confidence scores from left to right. 3. The prefix scheduler keeps only the worthwhile draft prefix before target verification, where the target accepts a prefix and emits a corrected bonus token.*
 
-The diagram's key point is that **DSpark is not just a better drafter**: it also decides when verifying an extra draft token is a good use of scarce target-model batch capacity.
+The figure's central lesson is **DSpark is a drafter and a batch-capacity allocator**. It uses a fast parallel proposal to create options, then spends target-model work only on the prefix extensions that have enough expected value under current load.
 
 ## Why This Exists
 
-Imagine a busy serving batch where one request is drafting the phrase "of course, I can help." A fully parallel drafter may propose later tokens without knowing which earlier draft token was actually sampled. That can create a mixed suffix: the first tokens follow one plausible continuation, while the later tokens drift toward another.
+Imagine a busy batch in which one request is heading toward the phrase "of course, I can help." A fully parallel drafter can produce "of problem" or "no course": each position is individually plausible, but later positions were not conditioned on the sampled earlier token.
 
-Speculative verification accepts only a contiguous prefix. If the third draft token fails, the fourth and fifth proposed tokens cannot be used even if they looked locally plausible. Under high concurrency, asking the target model to verify those weak suffixes wastes batch slots that could have served another request.
-
-DSpark exists because **speculative decoding has two coupled bottlenecks**: the drafter must produce draft blocks whose suffixes survive verification, and the serving engine must avoid spending target-model capacity on suffixes unlikely to survive.
+Speculative verification accepts only a contiguous prefix. If the third draft token is rejected, later proposals are discarded even if they would have matched the target model. Verifying those weak suffixes also consumes target-model batch capacity that could serve another request. **The paper therefore treats suffix quality and verification budget as one coupled serving problem.**
 
 ## The Landscape
 
 ```mermaid
-flowchart TD
-    SD[Speculative decoding] --> AR[Autoregressive drafters]
-    SD --> PD[Parallel drafters]
-    AR --> ARB[Strong prefix conditioning]
-    AR --> ARC[Draft latency grows with block length]
-    PD --> DFlash[DFlash-style parallel backbone]
-    PD --> PDC[Suffix decay from independent positions]
-    PD --> Eagle3[Eagle3-style draft modeling]
-    DFlash --> DSpark[DSpark]
-    Eagle3 --> DSpark
-    DSpark --> SAR[Semi-autoregressive draft correction]
-    DSpark --> CSV[Confidence-scheduled verification]
+flowchart LR
+  SD[Lossless speculative decoding] --> AR[Autoregressive drafters]
+  SD --> PG[Parallel drafters]
+  SD --> SYS[System-aware verification scheduling]
+  AR --> EAGLE[Eagle3]
+  AR --> AR_COST[Draft latency grows with block length]
+  PG --> DFLASH[DFlash]
+  PG --> PAR_DECAY[Independent positions cause suffix decay]
+  SYS --> STATIC[Static thresholds or fixed lengths]
+  EAGLE --> DSPARK[DSpark]
+  DFLASH --> DSPARK
+  STATIC --> DSPARK
+  DSPARK --> SAR[Semi-autoregressive draft]
+  DSPARK --> CAS[Calibrated asynchronous scheduling]
 ```
 
-DSpark sits between the two older drafter families. **Autoregressive drafters condition well but become slow for long blocks**; parallel drafters are fast but tend to lose suffix quality. DSpark keeps the parallel backbone's throughput advantage while adding just enough sequential dependency to make later draft positions less brittle.
+*Editable source: [dspark-landscape.mmd](./assets/dspark-landscape.mmd).* **DSpark combines the strongest useful properties of the competing paths**: the initial capacity of a deep parallel drafter, local prefix dependence from autoregression, and system-aware verification instead of a fixed length or threshold.
 
 ## The Core Idea
 
-DSpark treats speculative decoding as a joint model-and-systems problem: first make the proposed draft block internally consistent, then verify only the prefix lengths that are likely to pay off on the current hardware load.
+DSpark makes speculative decoding a two-stage control loop: first make a long draft block internally coherent without paying for a full autoregressive draft, then choose how much of that block the target model should verify based on calibrated prefix survival and the current batch-throughput tradeoff.
+
+## Symbol Map
+
+The paper uses $k$ for a position inside one draft block and $r$ for a request in the active batch. The symbol $B$ is overloaded: $B_k$ is a transition bias, while $B$ in the scheduler is the target-model token batch size.
+
+| Symbol | Human name | Shape or scope | Plain meaning |
+|---|---|---|---|
+| $x_0$ | anchor token | One token per request | The target-model token that starts the next draft cycle. |
+| $\gamma$ | maximum draft length | Per cycle | The largest number of draft tokens proposed by the drafter. |
+| $U_k$ | base logits | Vocabulary vector at position $k$ | The parallel backbone's prediction before sequential correction. |
+| $B_k$ | transition bias | Vocabulary vector at position $k$ | A prefix-dependent correction added to $U_k$. |
+| $c_{r,k}$ | conditional survival probability | One scalar per request and position | Probability that token $k$ survives, assuming the earlier prefix survived. |
+| $a_{r,j}$ | prefix survival probability | One scalar per request and prefix length | Probability that the first $j$ draft tokens survive together. |
+| $\ell_r$ | scheduled verification length | One integer per request | How many draft tokens request $r$ sends to target verification. |
+| $B$ | target batch size | Total tokens in a verification pass | $B = \sum_r (1 + \ell_r)$ under the paper's simplifying model. |
+| $\mathrm{SPS}(B)$ | engine capacity curve | Profiled lookup over batch sizes | Target-model steps per second at token batch size $B$. |
+| $\Theta$ | expected token throughput | One scalar for a candidate schedule | Expected accepted tokens multiplied by $\mathrm{SPS}(B)$. |
 
 ## Deep Dive
 
-### Semi-Autoregressive Draft Generation
+### Lossless Verification Turns Draft Quality into Prefix Survival
 
-**What it does:** DSpark generates a draft block with a parallel backbone, then samples each draft token with a lightweight prefix-dependent correction.
+**What it does:** Speculative decoding samples a draft block and lets the target model accept the longest valid prefix, followed by one target-generated bonus token.
 
-**Why it matters:** This targets the "of course, I can help" failure case where a parallel drafter's suffix does not condition on the prefix that was actually sampled.
+**Why it matters:** A token's value is not independent of earlier tokens. A rejection at position $k$ discards every proposed token after $k$, so early positions have greater leverage than late positions.
 
-**How it works:**
+**How it works:** At each position, rejection sampling compares draft and target distributions with acceptance probability $\min(1, p^t_k(x_k) / p^d_k(x_k))$. The target distribution remains exact because the accepted prefix and bonus token are produced by the standard lossless correction rule. If $c_{r,k}$ is the conditional survival probability, the expected survival of prefix $j$ is
 
-| Stage | Mechanism | Role |
+$$
+a_{r,j} = \prod_{i=1}^{j} c_{r,i}.
+$$
+
+The ordinary per-token latency is governed by draft time, verification time, and accepted length. DSpark improves all three levers indirectly: it keeps the parallel draft pass cheap, raises accepted length, and avoids verifying low-value suffixes.
+
+**The intuition:** Speculative decoding is a chain, so a weak link near the front throws away more work than a weak link at the end.
+
+**A concrete example:** In the "of course" request, an incorrect first token prevents every later draft token from contributing, even if those later tokens were individually reasonable.
+
+**Remember:** DSpark optimizes prefix survival, not isolated token accuracy.
+
+### Parallel Capacity Plus a Small Sequential Head
+
+**What it does:** DSpark keeps the expensive draft backbone parallel and adds a cheap sequential correction that conditions each sampled token on the prefix actually sampled.
+
+**Why it matters:** Autoregressive drafters preserve dependencies but their draft latency grows with $\gamma$; fully parallel drafters keep latency nearly fixed but suffer suffix decay.
+
+**How it works:** The DFlash-style backbone consumes the anchor plus $\gamma - 1$ mask embeddings and emits $\gamma$ base-logit vectors in one pass. The sequential stage samples left to right from
+
+$$
+p_k(v \mid x_0, x_{<k}) = \operatorname{softmax}\left(U_k(v) + B_k(x_0, x_{<k}, v)\right).
+$$
+
+The default Markov head uses a low-rank transition matrix $B = W_1 W_2$ with rank 256 in the paper's default configuration. The RNN head keeps a recurrent state for the whole in-block prefix; it offers marginal extra gains at longer lengths but is more complex, so the Markov head is used by default in experiments and deployment.
+
+**The intuition:** Let the large parallel module decide what is plausible, and let a tiny serial module keep the sampled suffix on one semantic path.
+
+**A concrete example:** Once the first draft token is sampled as "of," the Markov head can boost "course" and suppress the competing continuation "problem" at the next position.
+
+**Remember:** A little autoregression repairs the exact failure mode of independent parallel positions without making the whole draft autoregressive.
+
+### Confidence Head and Sequential Temperature Scaling
+
+**What it does:** DSpark predicts each token's conditional survival probability and calibrates the resulting prefix probabilities before scheduling.
+
+**Why it matters:** A scheduler needs absolute probabilities to estimate expected accepted tokens, not just a ranking of which candidate looks better.
+
+**How it works:** The confidence head projects the backbone hidden state and the previous-token embedding through a sigmoid. Its soft target is the analytical acceptance probability
+
+$$
+c_k^* = 1 - \frac{1}{2}\lVert p_k^d - p_k^t \rVert_1.
+$$
+
+Because prefix survival is a product of conditional probabilities, Sequential Temperature Scaling calibrates those cumulative products from left to right on held-out data. The one-dimensional temperature search reduces overconfidence while preserving the candidate ranking.
+
+![DSpark conditional acceptance by draft position for math, code, and chat](./assets/position-wise-acceptance.jpg)
+
+*Source: [DSpark, Figure 2](https://arxiv.org/abs/2607.05147). DFlash starts strongly because its parallel backbone can be deeper, but its conditional acceptance decays across positions; DSpark keeps a high, flatter curve by restoring local dependence.*
+
+**The intuition:** Calibration answers "how likely is this prefix to survive?" rather than merely "which prefix looks best?"
+
+**A concrete example:** If two requests have similarly ranked suffixes but one confidence estimate is overconfident, an uncalibrated scheduler may spend capacity on a prefix that rarely survives.
+
+**Remember:** STS is part of the scheduling mechanism, not a cosmetic confidence post-processing step.
+
+### Hardware-Aware Prefix Scheduling
+
+**What it does:** DSpark allocates different verification lengths to active requests to maximize expected batch token throughput.
+
+**Why it matters:** Verifying an extra token is cheap when the engine has spare capacity and expensive when it pushes the target model onto a lower-throughput part of its batch curve.
+
+**How it works:** For request $r$, the scheduler considers every prefix extension $(r,j)$ with survival $a_{r,j}$, sorts candidates by survival, and evaluates
+
+$$
+  au = \sum_{r=1}^{R}\left(1 + \sum_{j=1}^{\ell_r} a_{r,j}\right),
+\qquad
+\Theta = \tau \cdot \mathrm{SPS}(B).
+$$
+
+The offline algorithm admits candidates along this greedy path while $\Theta$ improves. The paper's crucial causality result is that a retrospective search over current candidates can leak a sampled token into the decision that should precede it. The theoretical algorithm therefore stops at the first throughput decline when a unimodal SPS curve is assumed.
+
+**The intuition:** The scheduler is spending a shared target-model budget, one prefix extension at a time.
+
+**A concrete example:** If request A's fourth token has low survival but request B's second token has high survival, the global ranking can extend B without blindly extending A.
+
+**Remember:** The optimization target is expected accepted tokens per unit of target-model capacity, not the longest draft block.
+
+### Production Scheduling Adds a Causal Delay
+
+**What it does:** The production scheduler adapts the theoretical allocation to jagged hardware capacity curves, CUDA graph replay, and Zero-Overhead Scheduling (ZOS).
+
+**Why it matters:** The ideal algorithm's global search assumes a smooth, unimodal capacity curve and dynamic decisions available before the next engine step. Real SPS curves are discrete and graph-replay systems need future batch sizes early.
+
+**How it works:** DSpark makes two related decisions at different times:
+
+| Decision | Information used | Purpose |
 |---|---|---|
-| Parallel backbone | DFlash-style hidden states and base logits for all draft positions in one pass | Keeps draft latency low for multi-token blocks |
-| Sequential head | Prefix-dependent transition bias before each draft-token sample | Makes later positions depend on earlier sampled draft tokens |
-| Target verification | Full model checks the draft block in parallel | Preserves exact target-model distribution recovery |
+| Current candidate ranking | Current cumulative confidence values | Prioritize the most promising draft tokens. |
+| Upcoming capacity limit | Confidence outputs from two steps earlier | Set a dynamic top-$k$ limit without stalling the current step. |
 
-The paper studies two sequential heads:
+The delayed capacity signal is a causal barrier: it cannot depend on the current draft token that has not yet been sampled. That lets production remove the theoretical early-stop break and search across jagged SPS cliffs while preserving the non-anticipating property required for exact target-distribution recovery.
 
-| Head | Mechanism | Deployment interpretation |
+For variable-length verification, DeepSeek flattens tokens from different requests and passes their sequence relationships through a marker tensor in sparse attention. The paper reports that only the DeepSeek-V4 index-attention and compress kernels need modification for this routing.
+
+**The intuition:** The system plans capacity from an earlier snapshot while ranking today's candidates with today's scores, keeping the GPU moving without letting future token realizations choose their own admission.
+
+**A concrete example:** The engine can enter the next graph replay with a capacity limit already known, even while the current batch is still producing the confidence values used to rank its draft prefixes.
+
+**Remember:** The two-step delay is the production mechanism that reconciles dynamic scheduling with lossless speculation and low scheduling overhead.
+
+### Training Makes Early Prefixes Count
+
+**What it does:** DSpark trains the parallel backbone, sequential head, and confidence head against the frozen target model.
+
+**Why it matters:** Next-token accuracy alone does not teach the drafter which errors destroy an entire suffix or give the scheduler trustworthy probabilities.
+
+**How it works:** The objective combines position-weighted cross entropy, total-variation distribution matching, and confidence binary cross entropy:
+
+| Loss | Target | Why it is included |
 |---|---|---|
-| Markov head | Low-rank first-order transition bias from the immediately previous token | Default choice; simple and efficient |
-| RNN head | Recurrent state over the draft-block prefix | Slightly stronger at long draft lengths, but more complex |
+| Cross entropy | Ground-truth token | Keeps the draft distribution useful for language modeling. |
+| Total variation | Target distribution | Directly optimizes a proxy for rejection-sampling acceptance. |
+| Confidence loss | Soft acceptance target $c_k^*$ | Teaches the scheduler's probability signal. |
 
-One implementation detail is that DSpark treats the anchor token as the first prediction position, so `anchor + gamma - 1` mask inputs produce `gamma` draft logits.
+The position weight is $w_k = \exp(-(k-1)/\gamma)$, emphasizing early positions. The target model and the shared embedding and language-model head stay frozen. During scalable training, the authors communicate hidden states rather than full vocabulary logits and pack independently sampled anchor blocks with token-level attention indices.
 
-**The intuition:** DSpark lets the expensive part stay parallel and gives the cheap part responsibility for keeping the suffix on the same path as the sampled prefix.
+**The intuition:** The loss function knows that an early mistake wastes more future work than a late mistake.
 
-**A concrete example:** If the first sampled draft token commits the phrase toward "of course," the sequential head nudges later draft positions toward that same continuation instead of letting them drift toward a separate plausible phrase such as "no problem."
+**A concrete example:** The first token in the "of course" block receives more leverage in the objective because its rejection prevents every later token from being accepted.
 
-**Remember:** The sequential head is small, but it attacks the exact place where parallel drafting loses accepted length: suffix consistency.
-
-### Confidence-Scheduled Verification
-
-**What it does:** DSpark predicts how likely each draft prefix is to survive target verification and chooses verification lengths per request.
-
-**Why it matters:** In a busy batch, the weak fourth or fifth token from the example should not automatically consume target-model capacity.
-
-**How it works:**
-
-DSpark's confidence head predicts a conditional survival probability `c_k` for each draft position: the probability that token `k` will pass target verification, assuming all previous draft tokens in the block have already been accepted.
-
-Because speculative verification accepts only a contiguous prefix, DSpark converts conditional scores into prefix survival probabilities:
-
-```text
-a_r,j = product_i<=j c_r,i
-```
-
-For a batch of active requests, the scheduler chooses verification lengths `l_r` to maximize expected system throughput:
-
-```text
-Theta = expected accepted tokens * SPS(B)
-```
-
-Here `SPS(B)` is a profiled steps-per-second curve for target-model batch size `B`. Candidate prefix extensions are globally ranked by survival probability, then admitted while expected throughput improves.
-
-**The intuition:** The scheduler treats each extra verified draft token as a budget decision, not a fixed threshold decision.
-
-**A concrete example:** If the fourth token in the "of course" request has low prefix survival probability while another request has a high-confidence second token, DSpark can spend the target-model batch slot on the second request instead.
-
-**Remember:** Verification length is a load-aware allocation problem, not merely a model-confidence cutoff.
-
-### Confidence Calibration
-
-**What it does:** Sequential Temperature Scaling (STS) aligns DSpark's predicted prefix survival probabilities with observed acceptance rates.
-
-**Why it matters:** The scheduler needs absolute probabilities to decide whether verifying another token is worth the hardware cost.
-
-**How it works:**
-
-| Signal | Scheduler needs | Calibration issue |
-|---|---|---|
-| Raw confidence scores | Rank candidate prefix extensions | Scores can be overconfident |
-| Prefix survival probabilities | Estimate expected accepted tokens | Absolute probability errors distort throughput optimization |
-| STS-calibrated confidence | Match cumulative survival estimates to observed rates | Alpaca reliability diagrams improve from about 3%-8% ECE to about 1% average ECE |
-
-**The intuition:** Ranking tells the scheduler which token looks better; calibration tells it whether the token is good enough to spend capacity on.
-
-**A concrete example:** If the "of course" request's fifth token is ranked above another candidate but both probabilities are overestimated, the scheduler may overfill verification work unless the confidence values are calibrated.
-
-**Remember:** DSpark's scheduler depends on calibrated probabilities because it multiplies expected accepted tokens by a hardware throughput curve.
-
-### Training Objective
-
-**What it does:** DSpark trains the draft backbone, sequential head, and confidence head while keeping the target model frozen.
-
-**Why it matters:** The drafter must both predict useful draft tokens and expose confidence information that the serving scheduler can trust.
-
-**How it works:**
-
-| Loss | Purpose |
-|---|---|
-| Cross entropy | Predict the ground-truth next tokens |
-| Total-variation matching | Match draft distributions to target distributions, directly improving expected acceptance |
-| Confidence loss | Predict analytical soft acceptance labels derived from draft-target total variation distance |
-
-The draft model shares the target embedding layer and language-model head, also frozen. All losses are position-weighted to emphasize earlier draft positions, since an early rejection discards the whole suffix.
-
-**The intuition:** Training is shaped around prefix survival, not just next-token accuracy.
-
-**A concrete example:** In the phrase example, the first uncertain token deserves more training weight than a later token because a miss near the front prevents the rest of the draft block from being accepted.
-
-**Remember:** Prefix verification makes early draft positions disproportionately important.
-
-### Production Serving Adaptation
-
-**What it does:** DeepSeek adapts DSpark to CUDA graph replay, Zero-Overhead Scheduling, and variable-length verification in DeepSeek-V4 serving.
-
-**Why it matters:** A theoretically good scheduler can still lose its gains if dynamic decisions stall GPU execution.
-
-**How it works:**
-
-| Production component | DSpark adaptation |
-|---|---|
-| Drafter | Three [MoE](../../terms/mixture-of-experts.md) backbone layers, maximum block size `gamma = 5`, Markov head |
-| Scheduler | Uses confidence information from two steps earlier to choose the upcoming capacity limit |
-| Current-token ranking | Ranks candidate tokens by current cumulative confidence |
-| Kernels | Flatten variable-length verified prefixes and use marker tensors inside sparse attention |
-
-The paper argues that the delayed capacity decision creates a causal barrier that preserves exact target-distribution recovery while avoiding scheduling stalls. For DeepSeek-V4, it says only the index-attention and compress kernels needed modification.
-
-**The intuition:** DSpark moves the expensive planning decision far enough ahead that the GPU can keep replaying efficient execution graphs.
-
-**A concrete example:** When the busy batch includes the low-confidence "of course" suffix, the engine can already have a capacity limit ready instead of pausing the GPU to compute one synchronously.
-
-**Remember:** The production gain depends on making dynamic verification scheduling compatible with the serving engine's execution model.
+**Remember:** DSpark trains for prefix survival and calibrated decisions, not only for local next-token likelihood.
 
 ## Putting It Together
 
-1. The request reaches a speculative decoding step with an anchor token and a maximum draft block length.
-2. The parallel backbone proposes base logits for the draft positions in one pass.
-3. The sequential head samples the draft block one token at a time, nudging suffix tokens toward the sampled prefix.
-4. The confidence head estimates conditional survival probabilities and converts them into prefix survival probabilities.
-5. The scheduler compares candidate prefix extensions across all active requests against the profiled `SPS(B)` throughput curve.
-6. The target model verifies only the selected prefix lengths, accepts the longest valid prefix for each request, and appends the target-generated bonus token.
+Follow one request with prompt ending in `ABC` inside a larger active batch. The target model emits `D` as the anchor, and the request is eligible for at most five draft tokens.
 
-This end-to-end path is why **DSpark's unit of optimization is not a single request**. It is the whole serving batch: which draft tokens across all requests deserve target-model verification right now?
+| Step | Actor | Input state | Action | Output state |
+|---:|---|---|---|---|
+| 1 | Target model | Prompt ending in `ABC` | Run one target step. | Anchor `D` starts the next cycle. |
+| 2 | Parallel backbone | `D` plus four mask embeddings | Produce five base-logit vectors in one forward pass. | Candidate distributions $U_1, \ldots, U_5$. |
+| 3 | Sequential head | $U_k$ plus the sampled prefix | Sample `E`, then condition the next positions on the tokens already sampled. | A coherent draft such as `E F G H I` and conditional scores $c_1, \ldots, c_5$. |
+| 4 | Confidence head and STS | Conditional scores for this request | Convert them to calibrated prefix survival $a_j = \prod_{i \le j} c_i$. | A survival estimate for every possible prefix. |
+| 5 | Batch scheduler | All active requests, current rankings, and the two-step-old capacity signal | Rank current prefix extensions and apply the delayed dynamic top-$k$ capacity limit. | A per-request verification length $\ell_r$; low-value suffixes are dropped. |
+| 6 | Target model | Flattened variable-length prefixes | Verify the selected prefixes in one batch. | The longest valid prefix is accepted; a target-generated bonus token repairs the first rejection. |
+| 7 | Serving loop | Accepted tokens and new target state | Feed the new anchor into the next cycle. | The process repeats with no change to the target distribution. |
+
+This trace shows why **DSpark's unit of optimization is the active batch**. Draft quality decides which prefixes can survive; the scheduler decides which of those prefixes deserve target-model capacity now.
 
 ## What This Buys You
 
 ### The headline claim
 
-DSpark shifts the production throughput-versus-interactivity frontier by improving draft accepted length and avoiding low-value verification work under load.
+DSpark moves the serving Pareto frontier outward by combining a stronger long-block drafter with verification budgets that expand under spare capacity and contract as concurrency saturates the engine.
 
 ### How we know: offline draft quality
 
-The offline evaluation disables confidence scheduling to isolate draft quality. DSpark is compared with Eagle3 and DFlash on Qwen3-4B, Qwen3-8B, Qwen3-14B, and Gemma4-12B across math, code, and chat benchmarks.
+The offline evaluation disables confidence scheduling so that accepted-length results measure the drafter alone. Across Qwen3-4B, 8B, and 14B targets, DSpark improves macro-average accepted length as follows:
 
-| Baseline | Qwen3-4B | Qwen3-8B | Qwen3-14B |
+| Comparison | Qwen3-4B | Qwen3-8B | Qwen3-14B |
 |---|---:|---:|---:|
-| Eagle3 | +30.9% | +26.7% | +30.0% |
-| DFlash | +16.3% | +18.4% | +18.3% |
+| DSpark over Eagle3 | +30.9% | +26.7% | +30.0% |
+| DSpark over DFlash | +16.3% | +18.4% | +18.3% |
 
-The accepted length is higher on structured tasks than open-ended chat. For Qwen3-4B, DSpark averages about 5.57 on math, 5.12 on code, and 3.49 on chat, which helps explain why a static verification budget is brittle.
+The effect generalizes to Gemma4-12B. On Qwen3-4B, DSpark's accepted length averages about 5.57 on math, 5.12 on code, and 3.49 on chat, showing why one fixed verification length cannot fit all domains.
+
+The position-wise result explains the aggregate gain: DFlash starts with strong first-position capacity but decays across the block, while DSpark stays flatter. The paper also reports that a two-layer DSpark beats a five-layer DFlash across domains, and that increasing proposal length from 7 to 15 widens DSpark's relative gain from roughly 16%/15%/18% to 30%/26%/22% on math/code/chat. Increasing draft length from 4 to 16 adds only 0.2%-1.3% to full-round latency in the reported batch-128 setup.
+
+![Position-wise conditional acceptance for DSpark and baselines](./assets/position-wise-acceptance.jpg)
+
+*Source: [DSpark, Figure 2](https://arxiv.org/abs/2607.05147). The paper's diagnostic isolates each position after conditioning on an accepted earlier prefix, revealing parallel capacity at the front and suffix decay at the tail.*
+
+### How we know: confidence pruning and calibration
+
+![Accepted and rejected tokens under confidence-threshold sweeps](./assets/confidence-threshold-sweep.jpg)
+
+*Source: [DSpark, Figure 5](https://arxiv.org/abs/2607.05147). Thresholding is a diagnostic, not the final production policy: as the threshold rises, acceptance increases from 76.9% to 92.5% on math, 67.6% to 92.0% on code, and 45.7% to 95.7% on chat while fewer tokens are verified.*
+
+The threshold sweep shows that confidence can identify low-value suffixes, especially in open-ended chat. Production cannot use a static threshold safely because the opportunity cost of a verification token changes with load.
+
+![Reliability diagrams before and after sequential temperature scaling](./assets/confidence-calibration.jpg)
+
+*Source: [DSpark, Figure 6](https://arxiv.org/abs/2607.05147). Raw confidence is discriminative but overconfident; sequential temperature scaling reduces the reported expected calibration error from roughly 3%-8% to about 1% on the illustrated evaluation.*
 
 ### How we know: live traffic serving
 
-The production comparison is DSpark-5 versus MTP-1, the previous production baseline.
+![DeepSeek-V4 throughput versus per-user generation speed](./assets/production-frontier.jpg)
 
-| Engine | Moderate SLA result | Strict SLA result | Matched-capacity per-user speed |
+*Source: [DSpark, Figure 7](https://arxiv.org/abs/2607.05147). The green DSpark frontier lies outside the MTP baseline across the measured V4-Flash and V4-Pro traffic regimes.*
+
+The production comparison is DSpark-5 against MTP-1 in preview DeepSeek-V4-Flash and V4-Pro serving.
+
+| Engine | Moderate interactivity target | Strict interactivity target | Matched-capacity per-user speed |
 |---|---|---|---|
-| DeepSeek-V4-Flash | +51% aggregate throughput at 80 tok/s/user SLA | +661% aggregate throughput at 120 tok/s/user SLA | +60%-85% |
-| DeepSeek-V4-Pro | +52% aggregate throughput at 35 tok/s/user SLA | +406% aggregate throughput at 50 tok/s/user SLA | +57%-78% |
+| DeepSeek-V4-Flash | +51% aggregate throughput at 80 tok/s/user | +661% at 120 tok/s/user | +60%-85% |
+| DeepSeek-V4-Pro | +52% aggregate throughput at 35 tok/s/user | +406% at 50 tok/s/user | +57%-78% |
+
+![Load-adaptive throughput and verification budget](./assets/load-adaptive-verification-budget.jpg)
+
+*Source: [DSpark, Figure 8](https://arxiv.org/abs/2607.05147). DSpark grows from roughly four to six verified tokens per request when capacity is available, then reduces its budget as concurrency rises; the MTP-1 reference remains near a fixed two-token budget in the plotted deployment.*
 
 ### The mechanism behind the numbers
 
-Parallel drafters can use deeper networks because draft latency is not multiplied by draft length, so their first-token accuracy can be high. DSpark keeps that first-token capacity while the sequential head reduces suffix decay. The confidence scheduler then expands verification budgets when capacity is available and restricts them when target-model throughput saturates.
+The offline gain comes from the drafter: a deeper parallel backbone improves the first position, and the sequential head prevents the later positions from drifting into incompatible modes. The live gain comes from the scheduler: it uses idle target capacity at moderate concurrency and prunes risky suffixes when the target-model batch curve becomes expensive.
 
 ### How to read these numbers
 
-The very large strict-SLA ratios are not representative multiplicative speedups over a well-utilized baseline. They mainly show that MTP-1 collapses into a low-concurrency regime under strict interactivity targets, while DSpark can still sustain useful throughput.
+> **Warning:** The +661% and +406% strict-SLA ratios are not ordinary speedups over a well-utilized baseline. At those interactivity targets, MTP-1 collapses toward a low-concurrency operating point; the more stable claim is that DSpark keeps useful throughput at a frontier the baseline cannot efficiently sustain.
 
 ## Where It Breaks
 
 | Failure mode | When it happens | Impact |
 |---|---|---|
-| Fixed draft-side overhead is not recovered | Requests have inherently low acceptance rates or short useful continuations | The initial `gamma`-token draft work may cost more than the accepted tokens save |
-| Scheduler depends on hardware profiling | The `SPS(B)` curve is stale, wrong for the deployment, or mismatched to the serving engine | Verification lengths can be misallocated across requests |
-| Confidence errors distort capacity allocation | Predicted prefix survival probabilities are poorly calibrated outside the calibration distribution | The scheduler may over-verify weak suffixes or under-verify useful drafts |
-| Kernel and engine support are missing | The serving stack cannot efficiently flatten variable-length verified prefixes or encode marker tensors | The algorithmic gain may be eaten by implementation overhead |
-| Offline gains do not transfer cleanly | Workload mix, concurrency, SLA target, or prompt domain differs from the evaluated setup | Accepted-length improvements may not produce the same live traffic throughput gains |
+| Draft overhead is unrecoverable | A request has very low acceptance or a short continuation | The fixed cost of generating the initial $\gamma$-token block can exceed the saved target work. |
+| Calibration shifts out of domain | Confidence is used on workloads unlike the held-out calibration set | Expected accepted-token estimates become biased, leading to poor capacity allocation. |
+| Hardware profile is stale | $\mathrm{SPS}(B)$ does not match the deployed engine, model, or kernel configuration | The scheduler may choose verification lengths that land on the wrong throughput regime. |
+| Load changes faster than the delay | The two-step-old capacity signal no longer predicts the upcoming batch regime | The rank-preserving policy can remain correct but less throughput-optimal. |
+| Causal scheduling is implemented incorrectly | A current sampled token influences the admission decision for that same token | The non-anticipating condition can fail, invalidating the lossless distribution guarantee. |
+| Variable-length execution is inefficient | The serving stack pads or poorly balances flattened prefix tokens | Kernel overhead can erase the algorithmic scheduling gain. |
+| Offline and live regimes differ | Domain mix, concurrency, SLA, or target model differs from the reported evaluation | Accepted-length improvements may not translate into the same serving frontier. |
 
 ## One Thing to Remember
 
-DSpark's memorable frame is **speculative decoding as batch-capacity allocation**: make the draft block more internally consistent, estimate which prefixes will survive, and spend target-model verification only where the expected accepted tokens justify the hardware cost.
+DSpark's durable frame is **speculative decoding as causal batch-capacity allocation**: make the draft suffix depend on the prefix that was actually sampled, estimate which prefixes will survive, and use a delayed hardware signal to spend target-model verification only where the expected accepted tokens justify the cost.
 
 ## Go Deeper
 
-- **Read:** `raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf`
-- **Build on:** Eagle3, DFlash, and MTP-1 as the main comparison points discussed by the paper.
-- **Understand the context:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md) and [SGLang: Structured Language Model Programs](../sglang/index.md)
-- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
-- **Reproduce:** Code is not listed in this repository at the time of writing.
+- **Read:** [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147) and the local [raw PDF](../../../raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf).
+- **Build on:** [DFlash](https://arxiv.org/abs/2602.06036), [EAGLE-3](https://openreview.net/forum?id=4exx1hUffq), and MTP-1, the production baseline used by the paper.
+- **Understand the serving context:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md), [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md), [PagedAttention](../../terms/pagedattention.md), and [Mixture of Experts](../../terms/mixture-of-experts.md).
+- **Reuse the visual:** [dspark-landscape.mmd](./assets/dspark-landscape.mmd) is the editable synthesis of the paper's related-work relationships.
+- **Reproduce:** The paper announces DSpark checkpoints and the DeepSpec training repository; no corresponding local code source is registered in this knowledge base.

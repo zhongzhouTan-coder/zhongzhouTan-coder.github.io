@@ -1,0 +1,14 @@
+flowchart LR
+    SD[Lossless speculative decoding] --> AR[Autoregressive drafters]
+    SD --> PG[Parallel drafters]
+    SD --> SYS[System-aware verification scheduling]
+    AR --> EAGLE[Eagle3]
+    AR --> AR_COST[Draft latency grows with block length]
+    PG --> DFLASH[DFlash]
+    PG --> PAR_DECAY[Independent positions cause suffix decay]
+    SYS --> STATIC[Static thresholds or fixed lengths]
+    EAGLE --> DSPARK[DSpark]
+    DFLASH --> DSPARK
+    STATIC --> DSPARK
+    DSPARK --> SAR[Semi-autoregressive draft]
+    DSPARK --> CAS[Calibrated asynchronous scheduling]

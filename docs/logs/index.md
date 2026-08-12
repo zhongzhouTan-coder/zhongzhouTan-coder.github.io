@@ -68,7 +68,7 @@ updated: 2026-08-10
 - [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — Framework architecture, Python-embedded programming model, RadixAttention KV cache reuse, compressed FSM decoding, API speculative execution, and performance results.
 - [DeepSeek](../frameworks/deepseek/index.md) — Category hub for DeepSeek model implementation readings.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — Navigable implementation map of DeepSeek V4's hybrid compressed attention across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU), covering CSA/HCA compressors, sparse MLA backends, heterogeneous KV cache, multi-stream overlap, and platform-specific kernel dispatch.
-- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/dspark/index.md) — DeepSeek speculative decoding framework that combines semi-autoregressive draft generation, calibrated confidence estimates, hardware-aware verification scheduling, production DeepSeek-V4 deployment results, and an editable Draw.io decoding-cycle visual.
+- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/dspark/index.md) — PDF-extraction-backed re-insight of semi-autoregressive drafting, calibrated prefix survival, causal two-step-delayed scheduling, and the DeepSeek-V4 production throughput frontier.
 - [Harbor: Agent Evaluation Framework (Code Reading)](../frameworks/harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.
 
 ## Algorithms

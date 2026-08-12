@@ -288,6 +288,7 @@
       "raw_paths": [
         "raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"
       ],
+      "derived_path": "derived/pdf-markdown/frameworks/dspark-confidence-scheduled-speculative-decoding.md",
       "docs_path": "docs/frameworks/dspark/index.md",
       "status": "ingested"
     },
