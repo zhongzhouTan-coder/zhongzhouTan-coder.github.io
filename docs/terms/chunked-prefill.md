@@ -18,7 +18,8 @@ appears_in:
   - docs/frameworks/vllm/vllm-code-learning-path.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-overview.md
-updated: 2026-08-06
+  - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
+updated: 2026-08-13
 ---
 
 # Chunked Prefill
@@ -50,3 +51,4 @@ The chunk size is a tradeoff: smaller chunks provide more opportunities to inter
 - [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md) — Contrasts prompt chunking inside one mixed scheduler with isolating prefill and decode in separate engine pools.

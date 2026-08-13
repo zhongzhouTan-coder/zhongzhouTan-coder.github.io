@@ -295,3 +295,7 @@ updated: 2026-08-11
 
 - Added [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md), backed by the existing pinned vLLM revision `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`. The focused insight derives the stable LSE correction kernel, proves equivalence with ordinary attention, and contrasts AG+RS, AG+AR, and A2A output distribution.
 - Optimized the docs authoring workflow in `AGENTS.md`, the wiki synthesis workflow, and the page-content/repository-reading instructions: every rich element now requires a reader question and teaching job, representation choice follows the information relationship, runtime explanations use concrete state traces, callouts distinguish semantic roles, charts remain source-auditable, and decorative visuals are explicitly excluded.
+
+## 2026-08-13
+
+- Added [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md), backed by a new immutable vLLM revision `2d24355eb87b716fc1169e66731dc0386ed1a3a2`. The medium-confidence static insight traces one request through router, prefill, NIXL KV handoff, decode admission, worker transfer, block leases, completion, and streaming; compares pull and push modes; preserves vLLM's original scheduler/worker connector figure; and adds scaling, compatibility, observability, failure-policy, multi-turn, and rollout guidance.

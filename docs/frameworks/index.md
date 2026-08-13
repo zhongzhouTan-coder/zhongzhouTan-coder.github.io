@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-10
+updated: 2026-08-13
 ---
 
 # Frameworks
@@ -23,6 +23,7 @@ updated: 2026-08-10
 - [vLLM: PagedAttention Serving Framework](vllm/vllm-framework.md) — LLM serving framework design, [PagedAttention](../terms/pagedattention.md) KV-cache paging, [block tables](../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Code Learning Path and Request Flow](vllm/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
+- [vLLM Prefill/Decode Disaggregated Deployment Path](vllm/prefill-decode-disaggregated-deployment/index.md) — How one request crosses a router, prefill pool, NIXL KV-transfer plane, and decode pool, including pull/push coordination, scaling, compatibility, and failure behavior.
 - [vLLM DCP Attention: From Local LSE to Exact Global Output](vllm/dcp-attention/index.md) — Focused derivation of exact DCP attention reconstruction from local outputs, gathered LSE values, and final output collectives.
 - [vLLM Kimi K3 Code Reading Map](vllm/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid [KDA](../terms/kimi-delta-attention.md)/MLA attention, latent [MoE](../terms/mixture-of-experts.md), DeepGEMM MegaMoE, MTP, and K3-specific kernels.
 

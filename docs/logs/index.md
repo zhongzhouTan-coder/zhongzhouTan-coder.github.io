@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-10
+updated: 2026-08-13
 ---
 
 # Wiki Index
@@ -46,6 +46,7 @@ updated: 2026-08-10
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
+- [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md) — Deployment trace across the router, prefill pool, NIXL KV-transfer plane, and decode pool, with pull/push modes, scaling, compatibility gates, and failure handling.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/vllm/vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group KV cache managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — Code-reading map of DCP KV ownership, PCP batch partitioning, exact LSE attention merging, cache block scaling, and support boundaries.
 - [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Focused derivation of the DCP local-attention, LSE-correction, and AG+RS/AG+AR reduction path.

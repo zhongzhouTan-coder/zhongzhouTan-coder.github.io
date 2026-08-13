@@ -82,5 +82,11 @@
     "provider": "github",
     "repository_url": "https://github.com/tile-ai/tilelang-ascend",
     "revision": "34a048c19bd762381db0d0f2d5acfdf3527c459f"
+  },
+  "vllm-2d24355eb87b": {
+    "local_checkout": "external-repos/vllm-2d24355eb87b",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "2d24355eb87b716fc1169e66731dc0386ed1a3a2"
   }
 }
