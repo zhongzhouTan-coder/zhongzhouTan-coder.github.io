@@ -15,7 +15,7 @@ updated: 2026-08-14
 **Authors:** DeepSeek-AI  
 **arXiv:** 2026 (<research@deepseek.com>)  
 
-**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md)
 
 ## TL;DR
 
@@ -353,7 +353,7 @@ V3.2's reasoning performance comes from scaled RL compute: the post-training bud
 ## Go Deeper
 
 - [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) — The MLA architecture that DSA builds upon.
-- [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode. <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+- [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode.
 - [Multi-Query Attention](../attention-variants/multi-query-attention.md) — The original shared-KV-head insight.
 - [The Transformer](../foundations/transformer.md) — The vanilla attention baseline.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../../frameworks/dspark/index.md) — DeepSeek's speculative decoding framework deployed on V4.

@@ -10,6 +10,7 @@ sources:
 aliases:
   - 8-bit floating point
   - float8
+mention_lint: off
 appears_in:
   - docs/algorithms/context-parallelism/index.md
   - docs/algorithms/attention-variants/deepseek-v2-mla.md

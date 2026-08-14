@@ -92,6 +92,42 @@
               tooltip.textContent = term.tooltip;
               link.appendChild(tooltip);
             });
+
+            const currentTerm = termByPath.get(normalizedPath(window.location.href));
+            const article = document.querySelector('.kb-article');
+            if (!currentTerm || !article || !currentTerm.backlinks) {
+              return;
+            }
+
+            const existingPaths = new Set(
+              Array.from(article.querySelectorAll('a[href]')).map(function (link) {
+                return normalizedPath(link.href);
+              })
+            );
+            const additionalBacklinks = currentTerm.backlinks.filter(function (backlink) {
+              return !existingPaths.has(normalizedPath(backlink.url));
+            });
+            if (!additionalBacklinks.length) {
+              return;
+            }
+
+            const details = document.createElement('details');
+            details.className = 'kb-term-backlinks';
+            const summary = document.createElement('summary');
+            summary.textContent = 'Additional backlinks (' + additionalBacklinks.length + ')';
+            details.appendChild(summary);
+
+            const list = document.createElement('ul');
+            additionalBacklinks.forEach(function (backlink) {
+              const item = document.createElement('li');
+              const link = document.createElement('a');
+              link.href = backlink.url;
+              link.textContent = backlink.title;
+              item.appendChild(link);
+              list.appendChild(item);
+            });
+            details.appendChild(list);
+            article.appendChild(details);
           })
           .catch(function () {
             // Term previews are progressive enhancement; ordinary links still work.

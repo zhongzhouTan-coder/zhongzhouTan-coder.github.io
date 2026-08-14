@@ -48,6 +48,7 @@ class Term:
     title: str
     aliases: tuple[str, ...]
     mention_aliases: tuple[str, ...]
+    mention_lint: str
     appears_in: frozenset[str]
 
     @property
@@ -56,7 +57,11 @@ class Term:
 
     @property
     def mention_names(self) -> tuple[str, ...]:
-        return (self.title, *self.mention_aliases)
+        if self.mention_lint == "off":
+            return ()
+        if self.mention_lint == "aliases":
+            return (self.title, *self.mention_aliases)
+        return (self.title,)
 
     @property
     def slug(self) -> str:
@@ -82,7 +87,6 @@ class IgnoreDirective:
 class Fix:
     term_path: str
     document_path: str
-    added_to_appears_in: bool
     added_to_where_it_appears: bool
 
 
@@ -210,6 +214,11 @@ def name_pattern(name: str) -> re.Pattern[str]:
     return re.compile(rf"(?<![\w]){re.escape(name)}(?![\w])", re.IGNORECASE)
 
 
+def unlinked_prose(line: str) -> str:
+    """Remove existing Markdown links before looking for unlinked mentions."""
+    return MARKDOWN_LINK_RE.sub("", line)
+
+
 def first_mention(
     path: Path, term: Term, *, ignored_lines: frozenset[int] = frozenset()
 ) -> tuple[int, str] | None:
@@ -217,6 +226,7 @@ def first_mention(
     for line_number, line in eligible_lines(path):
         if line_number in ignored_lines:
             continue
+        line = unlinked_prose(line)
         for name, pattern in patterns:
             if pattern.search(line):
                 return line_number, name
@@ -290,37 +300,6 @@ def front_matter_title(path: Path) -> str:
     return title if isinstance(title, str) and title else path.stem
 
 
-def add_front_matter_list_values(lines: list[str], key: str, values: list[str]) -> bool:
-    """Append missing values to an existing front-matter list."""
-    if not values or not lines or lines[0].strip() != "---":
-        return False
-    try:
-        front_matter_end = next(
-            index
-            for index, line in enumerate(lines[1:], start=1)
-            if line.strip() == "---"
-        )
-    except StopIteration:
-        return False
-
-    field_index = next(
-        (
-            index
-            for index, line in enumerate(lines[1:front_matter_end], start=1)
-            if re.match(rf"^{re.escape(key)}:\s*$", line)
-        ),
-        None,
-    )
-    if field_index is None:
-        return False
-
-    insertion = field_index + 1
-    while insertion < front_matter_end and re.match(r"^\s+-\s+", lines[insertion]):
-        insertion += 1
-    lines[insertion:insertion] = [f"  - {value}" for value in values]
-    return True
-
-
 def set_updated_date(lines: list[str], updated: str) -> None:
     for index, line in enumerate(lines):
         if re.match(r"^updated:\s*", line):
@@ -366,11 +345,11 @@ def add_where_it_appears_links(
 
 
 def apply_safe_fixes(root: Path, *, updated: str | None = None) -> list[Fix]:
-    """Synchronize metadata only when an explicit consumer link proves intent.
+    """Synchronize curated Where It Appears links from appears_in metadata.
 
-    This deliberately does not create links from plain-text mentions or repair
-    missing prose, aliases, index entries, stale paths, or name collisions.
-    Those changes require semantic judgment.
+    Consumer links do not promote pages into the curated appears_in set. This
+    deliberately does not choose curated pages, create prose links, or repair
+    aliases, stale paths, and name collisions; those require semantic judgment.
     """
     load_issues: list[Issue] = []
     terms = load_terms(root, load_issues)
@@ -379,49 +358,33 @@ def apply_safe_fixes(root: Path, *, updated: str | None = None) -> list[Fix]:
     fixes: list[Fix] = []
 
     for term in terms:
-        linked_documents = sorted(
-            document
-            for document, term_links in links_by_doc.items()
-            if term.path in term_links
-        )
-        if not linked_documents:
-            continue
         existing_where = {
             repo_path(root, resolved)
             for _, _, target in where_it_appears_links(term.path)
             if (resolved := resolve_link(root, term.path, target)) is not None
             and resolved.is_relative_to(root)
         }
-        add_to_metadata = [
-            document for document in linked_documents if document not in term.appears_in
-        ]
         add_to_where = [
-            document for document in linked_documents if document not in existing_where
+            document
+            for document in sorted(term.appears_in)
+            if document not in existing_where
+            and term.path in links_by_doc.get(document, {})
         ]
-        if not add_to_metadata and not add_to_where:
+        if not add_to_where:
             continue
 
         lines = term.path.read_text(encoding="utf-8").splitlines()
-        metadata_changed = add_front_matter_list_values(
-            lines, "appears_in", add_to_metadata
-        )
         where_changed = add_where_it_appears_links(root, term, lines, add_to_where)
-
-        # Avoid half-registering a new consumer when the term page lacks either
-        # of the existing structures needed by the bidirectional contract.
-        if add_to_metadata and not metadata_changed:
-            continue
         if add_to_where and not where_changed:
             continue
         set_updated_date(lines, updated)
         term.path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        for document in sorted(set(add_to_metadata) | set(add_to_where)):
+        for document in add_to_where:
             fixes.append(
                 Fix(
                     term_path=term.relative_path,
                     document_path=document,
-                    added_to_appears_in=document in add_to_metadata,
-                    added_to_where_it_appears=document in add_to_where,
+                    added_to_where_it_appears=True,
                 )
             )
     return fixes
@@ -451,6 +414,23 @@ def load_terms(root: Path, issues: list[Issue]) -> list[Term]:
             title = path.stem
         aliases = tuple(string_list(metadata, "aliases"))
         mention_aliases = tuple(string_list(metadata, "mention_aliases"))
+        mention_lint = metadata.get("mention_lint", "canonical")
+        if not isinstance(mention_lint, str) or mention_lint not in {
+            "off",
+            "canonical",
+            "aliases",
+        }:
+            issues.append(
+                Issue(
+                    "error",
+                    "invalid-mention-lint",
+                    relative,
+                    None,
+                    "mention_lint must be one of: off, canonical, aliases",
+                    title,
+                )
+            )
+            mention_lint = "canonical"
         normalized_aliases = {normalize_name(alias) for alias in aliases}
         for mention_alias in mention_aliases:
             if normalize_name(mention_alias) not in normalized_aliases:
@@ -474,16 +454,50 @@ def load_terms(root: Path, issues: list[Issue]) -> list[Term]:
                 title=title,
                 aliases=aliases,
                 mention_aliases=mention_aliases,
+                mention_lint=mention_lint,
                 appears_in=frozenset(string_list(metadata, "appears_in")),
             )
         )
     return terms
 
 
-def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
+def review_documents(root: Path, paths: tuple[Path, ...]) -> set[str]:
+    """Resolve an optional file/directory scope for mention review."""
+    documents = docs_files(root)
+    docs_root = (root / "docs").resolve()
+    if not paths:
+        return {repo_path(root, path) for path in documents}
+
+    selected: set[str] = set()
+    for requested in paths:
+        candidate = requested if requested.is_absolute() else root / requested
+        candidate = candidate.resolve()
+        if not candidate.is_relative_to(docs_root):
+            raise ValueError(f"mention-review path is outside docs/: {requested}")
+        if candidate.is_file():
+            if candidate not in documents:
+                raise ValueError(f"path is not a consumer docs page: {requested}")
+            selected.add(repo_path(root, candidate))
+            continue
+        if candidate.is_dir():
+            selected.update(
+                repo_path(root, document)
+                for document in documents
+                if document.is_relative_to(candidate)
+            )
+            continue
+        raise ValueError(f"mention-review path does not exist: {requested}")
+    return selected
+
+
+def validate(
+    root: Path,
+    *,
+    strict_mentions: bool = False,
+    review_paths: tuple[Path, ...] | None = None,
+) -> list[Issue]:
     issues: list[Issue] = []
     terms = load_terms(root, issues)
-    term_by_path = {term.path: term for term in terms}
     term_by_slug = {term.slug: term for term in terms}
 
     owners: dict[str, Term] = {}
@@ -508,6 +522,11 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
                 owners[normalized] = term
 
     links_by_doc = consumer_term_links(root, terms)
+    if strict_mentions and review_paths is None:
+        review_paths = ()
+    reviewed_documents = (
+        review_documents(root, review_paths) if review_paths is not None else set()
+    )
 
     index_path = root / "docs" / "terms" / "index.md"
     index_targets = {
@@ -632,7 +651,9 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
                     )
                 )
                 continue
-            target_text = eligible_by_number.get(directive.target_line or -1, "")
+            target_text = unlinked_prose(
+                eligible_by_number.get(directive.target_line or -1, "")
+            )
             mentions_term = any(
                 name_pattern(name).search(target_text)
                 for name in term.mention_names
@@ -658,20 +679,8 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
                     directive.target_line
                 )
 
-        for term_path, line_numbers in term_links.items():
-            term = term_by_path[term_path]
-            if document not in term.appears_in:
-                issues.append(
-                    Issue(
-                        "error",
-                        "unregistered-term-link",
-                        document,
-                        line_numbers[0],
-                        f"links {term.relative_path}, but that term's appears_in does not list this page",
-                        term.title,
-                    )
-                )
-
+        if document not in reviewed_documents:
+            continue
         for term in terms:
             mention = first_mention(
                 path,
@@ -704,8 +713,18 @@ def parse_args() -> argparse.Namespace:
         "--fix",
         action="store_true",
         help=(
-            "register already-linked consumer pages in appears_in and "
-            "Where It Appears; semantic findings remain unchanged"
+            "add missing Where It Appears links for pages already curated in "
+            "appears_in; consumer links never expand the curated set"
+        ),
+    )
+    parser.add_argument(
+        "--review-mentions",
+        nargs="*",
+        type=Path,
+        metavar="PATH",
+        help=(
+            "review unlinked mentions in all consumer docs, or only beneath "
+            "the supplied files/directories; omitted during structural lint"
         ),
     )
     parser.add_argument(
@@ -720,7 +739,19 @@ def main() -> int:
     args = parse_args()
     root = args.root.resolve()
     fixes = apply_safe_fixes(root) if args.fix else []
-    issues = validate(root, strict_mentions=args.strict_mentions)
+    try:
+        issues = validate(
+            root,
+            strict_mentions=args.strict_mentions,
+            review_paths=(
+                tuple(args.review_mentions)
+                if args.review_mentions is not None
+                else None
+            ),
+        )
+    except ValueError as error:
+        print(f"term links error: {error}", file=sys.stderr)
+        return 2
     errors = [issue for issue in issues if issue.severity == "error"]
     warnings = [issue for issue in issues if issue.severity == "warning"]
 
@@ -739,14 +770,9 @@ def main() -> int:
         )
     else:
         for fix in fixes:
-            actions = []
-            if fix.added_to_appears_in:
-                actions.append("appears_in")
-            if fix.added_to_where_it_appears:
-                actions.append("Where It Appears")
             print(
-                f"term links fixed: {fix.term_path}: registered "
-                f"{fix.document_path} in {' and '.join(actions)}"
+                f"term links fixed: {fix.term_path}: added curated "
+                f"Where It Appears link for {fix.document_path}"
             )
         for issue in issues:
             location = issue.path

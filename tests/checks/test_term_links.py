@@ -33,6 +33,7 @@ class TermLinkTests(unittest.TestCase):
         self,
         appears_in: str = "docs/topic/page.md",
         mention_aliases: tuple[str, ...] = (),
+        mention_lint: str = "canonical",
     ) -> None:
         appears = f"\n  - {appears_in}" if appears_in else ""
         detectable_aliases = "".join(
@@ -52,6 +53,7 @@ category: algorithms
 aliases:
   - key-value cache
 mention_aliases:{detectable_aliases}
+mention_lint: {mention_lint}
 appears_in:{appears}
 ---
 
@@ -68,7 +70,7 @@ appears_in:{appears}
             "# Terms\n\n- [KV Cache](kv-cache.md) — Stored attention state.\n",
         )
 
-    def kinds(self, **kwargs: bool) -> list[str]:
+    def kinds(self, **kwargs: object) -> list[str]:
         return [issue.kind for issue in TERM_LINKS.validate(self.root, **kwargs)]
 
     def test_valid_bidirectional_links_pass(self) -> None:
@@ -91,47 +93,77 @@ appears_in:{appears}
         self.assertIn("missing-term-link", kinds)
         self.assertNotIn("unlinked-term-mention", kinds)
 
-    def test_document_link_requires_appears_in_registration(self) -> None:
+    def test_consumer_link_does_not_require_curated_registration(self) -> None:
         self.write_term(appears_in="")
         self.write(
             "docs/topic/page.md",
             "A [key-value cache](../terms/kv-cache.md) stores attention state.\n",
         )
 
-        self.assertIn("unregistered-term-link", self.kinds())
+        self.assertEqual(self.kinds(), [])
 
-    def test_fix_registers_an_explicit_consumer_link_bidirectionally(self) -> None:
-        self.write_term(appears_in="")
+    def test_fix_repairs_where_it_appears_for_a_curated_page(self) -> None:
+        self.write_term()
         self.write(
             "docs/topic/page.md",
             "---\ntitle: Topic Page\n---\n\n"
             "A [key-value cache](../terms/kv-cache.md) stores state.\n",
         )
+        term_path = self.root / "docs/terms/kv-cache.md"
+        term_path.write_text(
+            term_path.read_text(encoding="utf-8").replace(
+                "- [Topic](../topic/page.md) — Usage.", "_Missing backlink._"
+            ),
+            encoding="utf-8",
+        )
 
         fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
 
         self.assertEqual(len(fixes), 1)
-        self.assertTrue(fixes[0].added_to_appears_in)
         self.assertTrue(fixes[0].added_to_where_it_appears)
-        term_text = (self.root / "docs/terms/kv-cache.md").read_text(encoding="utf-8")
-        self.assertIn("  - docs/topic/page.md", term_text)
+        term_text = term_path.read_text(encoding="utf-8")
         self.assertIn("- [Topic Page](../topic/page.md)", term_text)
         self.assertEqual(self.kinds(), [])
 
+    def test_fix_does_not_promote_a_consumer_into_appears_in(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "A [key-value cache](../terms/kv-cache.md) stores state.\n",
+        )
+
+        fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
+
+        self.assertEqual(fixes, [])
+        term_text = (self.root / "docs/terms/kv-cache.md").read_text(encoding="utf-8")
+        self.assertNotIn("docs/topic/page.md", term_text)
+
     def test_fix_leaves_plain_text_mentions_for_agent_judgment(self) -> None:
-        self.write_term(appears_in="", mention_aliases=("key-value cache",))
+        self.write_term(
+            appears_in="",
+            mention_aliases=("key-value cache",),
+            mention_lint="aliases",
+        )
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
 
         fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
 
         self.assertEqual(fixes, [])
-        self.assertIn("unlinked-term-mention", self.kinds())
+        self.assertIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
 
     def test_plain_mention_warns_and_strict_mode_fails(self) -> None:
-        self.write_term(appears_in="", mention_aliases=("key-value cache",))
+        self.write_term(
+            appears_in="",
+            mention_aliases=("key-value cache",),
+            mention_lint="aliases",
+        )
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
 
-        issues = TERM_LINKS.validate(self.root)
+        self.assertNotIn("unlinked-term-mention", self.kinds())
+
+        issues = TERM_LINKS.validate(self.root, review_paths=())
         mention = next(
             issue for issue in issues if issue.kind == "unlinked-term-mention"
         )
@@ -147,10 +179,69 @@ appears_in:{appears}
         self.write_term(appears_in="")
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
 
-        self.assertNotIn("unlinked-term-mention", self.kinds())
+        self.assertNotIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
 
         self.write_term(appears_in="", mention_aliases=("key-value cache",))
-        self.assertIn("unlinked-term-mention", self.kinds())
+        self.assertNotIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
+
+        self.write_term(
+            appears_in="",
+            mention_aliases=("key-value cache",),
+            mention_lint="aliases",
+        )
+        self.assertIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
+
+    def test_mention_lint_off_disables_discovery(self) -> None:
+        self.write_term(appears_in="", mention_lint="off")
+        self.write("docs/topic/page.md", "A KV Cache stores state.\n")
+
+        self.assertNotIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
+
+    def test_invalid_mention_lint_mode_fails(self) -> None:
+        self.write_term(appears_in="", mention_lint="sometimes")
+
+        self.assertIn("invalid-mention-lint", self.kinds())
+
+    def test_existing_navigation_link_is_not_an_unlinked_mention(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "See [KV Cache design](another-page.md) for the detailed topic.\n",
+        )
+
+        self.assertNotIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
+
+    def test_mention_review_can_be_scoped_to_a_path(self) -> None:
+        self.write_term(appears_in="")
+        self.write("docs/topic/page.md", "A KV Cache stores state.\n")
+        self.write("docs/other/page.md", "Another KV Cache stores state.\n")
+
+        issues = TERM_LINKS.validate(
+            self.root, review_paths=(Path("docs/topic"),)
+        )
+        mentions = [
+            issue for issue in issues if issue.kind == "unlinked-term-mention"
+        ]
+        self.assertEqual(len(mentions), 1)
+        self.assertEqual(mentions[0].path, "docs/topic/page.md")
+
+    def test_mention_review_rejects_paths_outside_docs(self) -> None:
+        self.write_term(appears_in="")
+
+        with self.assertRaisesRegex(ValueError, "outside docs"):
+            TERM_LINKS.validate(
+                self.root, review_paths=(self.root.parent,)
+            )
 
     def test_detectable_alias_must_also_be_registered_as_an_alias(self) -> None:
         self.write_term(appears_in="")
@@ -172,7 +263,9 @@ appears_in:{appears}
             "<!-- termlint-ignore: kv-cache -- Fixture name, not the concept. -->\n",
         )
 
-        self.assertNotIn("unlinked-term-mention", self.kinds())
+        self.assertNotIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
 
         self.write(
             "docs/topic/page.md",
@@ -180,7 +273,9 @@ appears_in:{appears}
             "<!-- termlint-ignore: kv-cache -- Fixture name, not the concept. -->\n"
             "A KV Cache stores attention state.\n",
         )
-        self.assertIn("unlinked-term-mention", self.kinds())
+        self.assertIn(
+            "unlinked-term-mention", self.kinds(review_paths=())
+        )
 
     def test_comment_only_ignore_applies_to_previous_prose_line(self) -> None:
         self.write_term(appears_in="")

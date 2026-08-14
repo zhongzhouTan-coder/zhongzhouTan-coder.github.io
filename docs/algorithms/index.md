@@ -46,7 +46,7 @@ updated: 2026-08-14
 
 ## Distributed Inference
 
-- [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q [ring attention](../terms/ring-attention.md), load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling. <!-- termlint-ignore: context-parallelism -- Navigation label already links the dedicated context-parallelism insight. -->
+- [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q [ring attention](../terms/ring-attention.md), load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling.
 
 ## Model Papers
 

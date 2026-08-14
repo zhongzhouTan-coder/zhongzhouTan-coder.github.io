@@ -17,7 +17,7 @@ updated: 2026-08-14
 **Code:** [github.com/MiniMax-AI/MSA](https://github.com/MiniMax-AI/MSA)
 **Model:** [MiniMax-M3 on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3)
 
-**Related pages:** [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [FlashAttention](../../../algorithms/flashattention/flashattention.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+**Related pages:** [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [FlashAttention](../../../algorithms/flashattention/flashattention.md)
 
 ## TL;DR
 
@@ -370,7 +370,7 @@ MSA matches GQA's pretraining quality on a 109B MoE model with native multimodal
 
 - [MSA inference kernel on GitHub](https://github.com/MiniMax-AI/MSA): Open-source implementation of the exp-free TopK and KV-outer sparse attention kernels.
 - [MiniMax-M3 model on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3): Production-grade natively multimodal model powered by MSA.
-- [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first. <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+- [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first.
 - [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md): Compare with DSA's token-level, shared-index approach to sparse attention on MLA.
 - [FlashAttention](../../../algorithms/flashattention/flashattention.md): The IO-aware attention kernel lineage that MSA's KV-outer kernel builds upon.
 

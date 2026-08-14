@@ -14,6 +14,7 @@ aliases:
   - general matrix multiplication
   - matrix multiply
   - matmul
+mention_lint: off
 appears_in:
   - docs/algorithms/flashattention/flashattention-2.md
   - docs/algorithms/flashattention/flashattention-3.md
@@ -46,7 +47,7 @@ appears_in:
   - docs/training/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-10
+updated: 2026-08-14
 ---
 
 # General Matrix Multiply (GEMM)

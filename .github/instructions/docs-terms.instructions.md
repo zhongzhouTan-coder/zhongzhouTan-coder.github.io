@@ -26,6 +26,7 @@ aliases:
   - another-name
 mention_aliases:
   - alternative-spelling
+mention_lint: canonical
 appears_in:
   - docs/training/megatron-lm/index.md
   - docs/algorithms/transformer.md
@@ -41,10 +42,21 @@ updated: 2026-07-27
 - `category`: required. One of `training`, `algorithms`, `hardware`, `frameworks`, `benchmarks`, or `general`. This groups terms in the index.
 - `aliases`: optional. Alternative names or spellings for the term. Helps with search and auto-linking.
 - `mention_aliases`: optional. The subset of `aliases` precise enough for the
-  term-link checker to detect in plain prose. Every entry must also appear in
-  `aliases`. Do not include ambiguous abbreviations such as `CP`, `TP`, or `PP`
-  unless their repository-wide use is reliably unambiguous.
-- `appears_in`: optional but strongly recommended. This is the canonical list of docs pages that use this term, as repository-relative paths. Every listed page must contain an ordinary Markdown link to this term page, and every docs page that links the term must be listed here.
+  term-link checker to detect when `mention_lint: aliases` is selected. Every
+  entry must also appear in `aliases`. Do not include ambiguous abbreviations
+  such as `CP`, `TP`, or `PP` unless their repository-wide use is reliably
+  unambiguous.
+- `mention_lint`: optional; defaults to `canonical`. Use `off` for common or
+  simple terms whose plain-text occurrences do not normally need glossary
+  links, `canonical` to review only the title, or `aliases` to review the title
+  plus `mention_aliases`.
+- `appears_in`: optional but strongly recommended. This is a curated list of
+  the best explanatory or source-defining docs pages, not an exhaustive
+  backlink registry. Keep roughly 5-10 high-value pages when the term is widely
+  used. Every listed page must contain an ordinary Markdown link to this term
+  page and must appear under "Where It Appears." Other consumer links are valid
+  without being added here; exhaustive backlinks are generated into
+  `docs/terms.json` at site-build time.
 - All other front matter fields follow [`docs-front-matter.instructions.md`](docs-front-matter.instructions.md).
 
 ## Body Structure
@@ -84,7 +96,9 @@ Use this section when the term is often confused with nearby concepts. Prefer di
 
 ### 6. Where It Appears
 
-Bullet list of papers and docs pages where this term is used. Each entry links to the relevant page. This section is the primary cross-linking surface.
+Curated bullet list of the best papers and docs pages for learning where this
+term matters. Each entry links to the relevant page. Do not mirror every
+consumer link here; complete backlinks are generated automatically.
 
 ```markdown
 ## Where It Appears
@@ -117,7 +131,9 @@ When an agent creates or updates a paper insight page, it MUST also:
 
 2. **For each term:** check if `docs/terms/{term-slug}.md` exists.
    - If missing: create it following this instruction file.
-   - If present: add the new paper to the `appears_in` front matter list and update the "Where It Appears" section.
+   - If present: add the paper to `appears_in` and "Where It Appears" only when
+     it is one of the strongest examples, definitions, or applications of the
+     term. Ordinary consumers need only the in-content link.
 3. **Add cross-links** from the paper page body to the term pages by linking the first meaningful occurrence of each term in the prose. Do not put related-term links in front matter fields such as `summary` or `description`.
 4. **Update `docs/terms/index.md`** when adding a new term.
 
@@ -125,11 +141,17 @@ When an agent creates or updates a paper insight page, it MUST also:
 
 When an agent creates a new term page for any reason other than ingesting a new paper (e.g., the user asks for a term, or a gap is discovered), the agent MUST also perform these retroactive steps:
 
-1. **Search existing docs pages** for occurrences of the term (and its aliases). Use `grep_search` with the term name as a plain-text query, scoped to `docs/**/*.md` excluding `docs/terms/` and `docs/logs/`.
-2. **For each page that mentions the term:** add it to the term's `appears_in` front matter and its "Where It Appears" section.
-3. **For each page that mentions the term:** add a markdown link from the first meaningful in-content occurrence to the new term page. Do not link from front matter, headings, image captions, or code blocks.
+1. **Search relevant existing docs pages** for meaningful occurrences of the
+   term and its precise aliases. Use the scoped mention-review command below;
+   do not force a repository-wide cleanup for a common term.
+2. **Link only pages where the glossary link materially helps comprehension.**
+   Do not add links in front matter, headings, captions, code, navigation-only
+   lists, or every repetitive use.
+3. **Curate `appears_in` and "Where It Appears"** with the best 5-10 learning
+   pages. Generated backlinks preserve complete consumer coverage.
 4. **Update `docs/terms/index.md`** with the new term entry.
-5. **Update `docs/logs/log.md`** with a brief entry recording the term creation and which pages were back-linked.
+5. **Update `docs/logs/log.md`** with a brief entry recording the term creation
+   and representative pages that were linked.
 
 ## Terms Index Format
 
@@ -169,7 +191,12 @@ Use this style when linking terms from paper pages:
 The interleaved schedule keeps [microbatches](../../terms/microbatch.md) in flight.
 ```
 
-Use ordinary Markdown link text when the surrounding sentence needs pluralization, lowercase text, or an acronym. The rendered site enhances links to `docs/terms/{slug}.md` with hover previews by reading `docs/terms.json`, which is generated from term page front matter. Do not duplicate tooltip text inside paper pages; keep reusable descriptions on the term page.
+Use ordinary Markdown link text when the surrounding sentence needs
+pluralization, lowercase text, or an acronym. The rendered site enhances links
+to `docs/terms/{slug}.md` with hover previews by reading `docs/terms.json`.
+That build-generated endpoint also contains exhaustive consumer backlinks,
+leaving `appears_in` free to remain curated. Do not duplicate tooltip text
+inside paper pages; keep reusable descriptions on the term page.
 
 ## Term Link Validation
 
@@ -179,29 +206,30 @@ consumer pages:
 ```bash
 ./scripts/run-in-workspace.sh python scripts/checks/term_links.py --fix
 ./scripts/run-in-workspace.sh python scripts/checks/term_links.py
+./scripts/run-in-workspace.sh python scripts/checks/term_links.py \
+  --review-mentions docs/path/to/changed-page.md
 ```
 
-Use this as an agent iteration: run `--fix` once, inspect and resolve the
-remaining diagnostics with semantic context, then rerun the checker without
-`--fix`. The fixer handles only finite bookkeeping already proven by an
-explicit consumer-page Markdown link: it adds that page to `appears_in` and to
-the existing "Where It Appears" section. It does not choose link placement for
-plain-text mentions, create or rewrite definitions, resolve alias collisions,
-remove stale paths, or organize the glossary index. Those cases remain agent
-work because they require judgment.
+The default command performs structural validation only. It checks term
+metadata, the glossary index, curated `appears_in` entries, "Where It Appears,"
+consumer link targets, and reviewed exclusions without searching the whole wiki
+for new link opportunities. `--fix` only adds missing "Where It Appears" links
+for pages already selected in `appears_in`; it never promotes every consumer
+into the curated set.
 
-The checker treats each term page as the single source of truth; do not maintain
-a separate hand-written term registry. It validates the glossary index,
-`appears_in`, the local links under "Where It Appears", and links from consuming
-docs pages in both directions. Plain-text occurrences of a canonical title or
-an alias explicitly opted in through `mention_aliases` that have no term link
-are warnings by default. Other aliases remain available for search and glossary
-lookup without producing lint warnings. Use
-`--strict-mentions` to make those findings fail while cleaning or reviewing a
-focused scope. Front matter, headings, code, image captions, term pages, and log
-pages are excluded from mention discovery. Glossary-to-glossary navigation is
-also excluded from `appears_in` validation; keep those links under "Related
-Terms" instead.
+Use `--review-mentions` during authoring. With no paths it reviews all consumer
+docs; with file or directory arguments it reviews only that scope. Add
+`--strict-mentions` to make its findings errors. Existing Markdown link labels
+are excluded because a navigation link already resolves the reader's need.
+Plain-text mention decisions remain agent work because they require semantic
+judgment.
+
+The checker treats each term page as the source of truth for definition,
+aliases, mention policy, and curated appearances; do not maintain a separate
+hand-written exhaustive registry. Front matter, headings, code, image captions,
+existing Markdown links, term pages, and log pages are excluded from mention
+discovery. Glossary-to-glossary navigation is also excluded from `appears_in`
+validation; keep those links under "Related Terms" instead.
 
 When a detected occurrence is genuinely not a glossary reference, suppress
 that occurrence with a reviewed HTML comment using the term page's filename

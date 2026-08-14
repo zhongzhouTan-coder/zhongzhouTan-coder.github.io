@@ -15,7 +15,7 @@ updated: 2026-08-14
 **Authors:** Zichuan Fu, Wentao Song, Yejing Wang, Xian Wu, Yefeng Zheng, Yingying Zhang, Derong Xu, Xuetao Wei, Tong Xu, Xiangyu Zhao (City University of Hong Kong, Xi'an Jiaotong University, Tencent YouTu Lab, Westlake University, USTC, SUSTech)
 **Published:** 2025
 
-**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention-variants/multi-query-attention.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention-variants/multi-query-attention.md)
 
 ## TL;DR
 

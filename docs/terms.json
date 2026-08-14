@@ -16,7 +16,24 @@ permalink: /terms.json
     {
       "title": {{ term.title | jsonify }},
       "url": {{ term.url | relative_url | jsonify }},
-      "tooltip": {{ preview | jsonify }}
+      "tooltip": {{ preview | jsonify }},
+      "backlinks": [
+        {%- assign backlink_first = true -%}
+        {%- for consumer in site.pages -%}
+          {%- unless consumer.path contains "terms/" -%}
+            {%- unless consumer.path contains "logs/" -%}
+              {%- if consumer.content contains term.path -%}
+                {%- unless backlink_first -%},{%- endunless -%}
+                {%- assign backlink_first = false -%}
+                {
+                  "title": {{ consumer.title | default: consumer.path | jsonify }},
+                  "url": {{ consumer.url | relative_url | jsonify }}
+                }
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      ]
     }
   {%- endif -%}
 {%- endfor -%}

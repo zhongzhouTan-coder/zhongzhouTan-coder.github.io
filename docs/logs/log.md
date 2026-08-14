@@ -303,4 +303,5 @@ updated: 2026-08-14
 
 ## 2026-08-14
 
-- Reviewed and resolved all 56 remaining term-link warnings: added 47 meaningful glossary links and their bidirectional term-page registrations across FP8, grouped-query attention, context/ring attention, KV cache, and tensor/pipeline parallelism; documented navigation-only matches with 14 occurrence-scoped reviewed exclusions.
+- Reviewed and resolved all 56 remaining term-link warnings: added 47 meaningful glossary links across FP8, grouped-query attention, context/ring attention, KV cache, and tensor/pipeline parallelism; navigation-only labels are now recognized as existing links rather than glossary gaps.
+- Optimized glossary maintenance by making `appears_in` a curated teaching set, generating exhaustive consumer backlinks in `terms.json`, separating structural lint from explicit path-scoped mention review, and adding per-term `mention_lint` modes for common versus high-value concepts.

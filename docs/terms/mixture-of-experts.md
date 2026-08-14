@@ -13,6 +13,7 @@ sources:
 aliases:
   - MoE
   - sparse expert model
+mention_lint: off
 appears_in:
   - docs/algorithms/attention-variants/deepseek-v2-mla.md
   - docs/algorithms/attention-variants/index.md
@@ -41,7 +42,7 @@ appears_in:
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/mhc/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
-updated: 2026-08-10
+updated: 2026-08-14
 ---
 
 # Mixture of Experts

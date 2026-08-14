@@ -15,6 +15,7 @@ sources:
 aliases:
   - key-value cache
   - key/value cache
+mention_lint: off
 appears_in:
   - docs/algorithms/attention-variants/deepseek-v2-mla.md
   - docs/algorithms/attention-variants/grouped-query-attention/index.md

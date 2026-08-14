@@ -17,7 +17,7 @@ updated: 2026-08-14
 
 **Repositories:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `9a52ca5fc36c1852241822863c50717bee5dc761`; [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`.
 
-**Related pages:** [Qwen3.5 / Qwen3.6 inference path](./qwen3.5-qwen3.6-inference.md), [vLLM continuous batching](../vllm/vllm-continuous-batching/index.md), [vLLM-Ascend architecture](./architecture.md), [Grouped-Query Attention](../../algorithms/attention-variants/grouped-query-attention/index.md), [Chunked Prefill](../../terms/chunked-prefill.md), [Continuous Batching](../../terms/continuous-batching.md), [Block Table](../../terms/block-table.md). <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+**Related pages:** [Qwen3.5 / Qwen3.6 inference path](./qwen3.5-qwen3.6-inference.md), [vLLM continuous batching](../vllm/vllm-continuous-batching/index.md), [vLLM-Ascend architecture](./architecture.md), [Grouped-Query Attention](../../algorithms/attention-variants/grouped-query-attention/index.md), [Chunked Prefill](../../terms/chunked-prefill.md), [Continuous Batching](../../terms/continuous-batching.md), [Block Table](../../terms/block-table.md).
 
 ## TL;DR
 
@@ -266,6 +266,6 @@ These are code-path claims, not a benchmark result. They explain why a mixed bat
 
 - **Read:** [Qwen3.5 / Qwen3.6 inference path](./qwen3.5-qwen3.6-inference.md) for model loading, hybrid attention, quantization, and MTP.
 - **Understand the scheduler:** [vLLM continuous batching](../vllm/vllm-continuous-batching/index.md) for the broader V1 token-budget and paged-KV story.
-- **Understand the attention contrast:** [Grouped-Query Attention](../../algorithms/attention-variants/grouped-query-attention/index.md) and [Linear Attention](../../terms/linear-attention.md). <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
+- **Understand the attention contrast:** [Grouped-Query Attention](../../algorithms/attention-variants/grouped-query-attention/index.md) and [Linear Attention](../../terms/linear-attention.md).
 - **Build on it:** [vLLM-Ascend architecture](./architecture.md) for plugin, platform, worker, backend, and graph integration.
 - **Reproduce:** Inspect the pinned checkouts through the revision-aware code links; no NPU runtime reproduction was available here.

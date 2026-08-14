@@ -11,7 +11,7 @@ updated: 2026-08-13
 
 # Terms Glossary
 
-Quick-lookup definitions for technical concepts that appear across multiple papers in this knowledge base. Each term page is a self-contained definition page with backlinks to the papers that use it.
+Quick-lookup definitions for technical concepts that appear across multiple papers in this knowledge base. Each term page is a self-contained definition with a curated set of teaching examples; the generated term data supplies exhaustive consumer backlinks.
 
 ## General
 

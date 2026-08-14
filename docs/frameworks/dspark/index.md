@@ -15,7 +15,7 @@ updated: 2026-08-14
 **Authors:** Xin Cheng, Xingkai Yu, Chenze Shao, Jiashi Li, Yunfan Xiong, Yi Qian, Jiaqi Zhu, Shirong Ma, Xiaokang Zhang, Jiasheng Ye, Qinyu Chen, Chengqi Deng, Jiping Yu, Damai Dai, Zhengyan Zhang, Yixuan Wei, Yixuan Tan, Wenkai Yang, Runxin Xu, Yu Wu, Zhean Xu, Xuanyu Wang, Muyang Chen, Rui Tian, Xiao Bi, Zhewen Hao, Shaoyuan Chen, Huanqi Cao, Wentao Zhang, Anyi Xu, Huishuai Zhang, Dongyan Zhao, Wenfeng Liang  
 **arXiv:** 2607.05147v1 - 6 Jul 2026
 
-**Related pages:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md) · [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md) · [DeepSeek-V4: Million-Token Context](../../training/deepseek/deepseek-v4/index.md) · [SGLang: Structured Language Model Programs](../sglang/index.md) <!-- termlint-ignore: continuous-batching -- Navigation label already links the dedicated continuous-batching insight. -->
+**Related pages:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md) · [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md) · [DeepSeek-V4: Million-Token Context](../../training/deepseek/deepseek-v4/index.md) · [SGLang: Structured Language Model Programs](../sglang/index.md)
 
 > **Evidence:** This page uses the completed PDF extraction at `derived/pdf-markdown/frameworks/dspark-confidence-scheduled-speculative-decoding.md` for the paper's equations, figures, experiments, and deployment details. A few extracted symbols were malformed by PDF layout conversion; they were checked against the source PDF and the surrounding definitions before being normalized here.
 
@@ -310,6 +310,6 @@ DSpark's durable frame is **speculative decoding as causal batch-capacity alloca
 
 - **Read:** [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147) and the local [raw PDF](../../../raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf).
 - **Build on:** [DFlash](https://arxiv.org/abs/2602.06036), [EAGLE-3](https://openreview.net/forum?id=4exx1hUffq), and MTP-1, the production baseline used by the paper.
-- **Understand the serving context:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md), [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md), [PagedAttention](../../terms/pagedattention.md), and [Mixture of Experts](../../terms/mixture-of-experts.md). <!-- termlint-ignore: continuous-batching -- Navigation label already links the dedicated continuous-batching insight. -->
+- **Understand the serving context:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md), [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md), [PagedAttention](../../terms/pagedattention.md), and [Mixture of Experts](../../terms/mixture-of-experts.md).
 - **Reuse the visual:** [dspark-landscape.mmd](./assets/dspark-landscape.mmd) is the editable synthesis of the paper's related-work relationships.
 - **Reproduce:** The paper announces DSpark checkpoints and the DeepSpec training repository; no corresponding local code source is registered in this knowledge base.
