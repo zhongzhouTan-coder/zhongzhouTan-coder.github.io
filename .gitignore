@@ -5,3 +5,4 @@ external-repos/
 .venv/**
 __pycache__/
 *.py[cod]
+.sass-cache/
