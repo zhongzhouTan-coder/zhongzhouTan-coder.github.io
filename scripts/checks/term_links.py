@@ -23,6 +23,12 @@ MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[([^]]+)]\(([^)]+)\)")
 INLINE_CODE_RE = re.compile(r"`[^`]*`")
 IMAGE_RE = re.compile(r"!\[[^]]*]\([^)]+\)")
 HTML_TAG_RE = re.compile(r"<[^>]+>")
+TERMLINT_IGNORE_MARKER = "termlint-ignore:"
+TERMLINT_IGNORE_RE = re.compile(
+    r"<!--\s*termlint-ignore:\s*([a-z0-9]+(?:-[a-z0-9]+)*)\s+--\s+"
+    r"(\S(?:.*?\S)?)\s*-->",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -41,11 +47,35 @@ class Term:
     relative_path: str
     title: str
     aliases: tuple[str, ...]
+    mention_aliases: tuple[str, ...]
     appears_in: frozenset[str]
 
     @property
     def names(self) -> tuple[str, ...]:
         return (self.title, *self.aliases)
+
+    @property
+    def mention_names(self) -> tuple[str, ...]:
+        return (self.title, *self.mention_aliases)
+
+    @property
+    def slug(self) -> str:
+        return self.path.stem
+
+
+@dataclass(frozen=True)
+class EligibleLine:
+    number: int
+    raw: str
+    scrubbed: str
+
+
+@dataclass(frozen=True)
+class IgnoreDirective:
+    line: int
+    target_line: int | None
+    slug: str
+    reason: str
 
 
 @dataclass(frozen=True)
@@ -101,14 +131,14 @@ def repo_path(root: Path, path: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
 
 
-def eligible_lines(path: Path) -> list[tuple[int, str]]:
+def eligible_line_details(path: Path) -> list[EligibleLine]:
     """Return prose lines eligible for term mention/link validation."""
     lines = path.read_text(encoding="utf-8").splitlines()
     _, front_matter_end = parse_front_matter(path)
     in_fence = False
     fence_marker = ""
     previous_was_image = False
-    result: list[tuple[int, str]] = []
+    result: list[EligibleLine] = []
 
     for line_number, line in enumerate(lines, start=1):
         if front_matter_end and line_number <= front_matter_end:
@@ -133,8 +163,12 @@ def eligible_lines(path: Path) -> list[tuple[int, str]]:
         scrubbed = IMAGE_RE.sub("", line)
         scrubbed = INLINE_CODE_RE.sub("", scrubbed)
         scrubbed = HTML_TAG_RE.sub("", scrubbed)
-        result.append((line_number, scrubbed))
+        result.append(EligibleLine(line_number, line, scrubbed))
     return result
+
+
+def eligible_lines(path: Path) -> list[tuple[int, str]]:
+    return [(line.number, line.scrubbed) for line in eligible_line_details(path)]
 
 
 def markdown_links(path: Path) -> list[tuple[int, str, str]]:
@@ -176,13 +210,51 @@ def name_pattern(name: str) -> re.Pattern[str]:
     return re.compile(rf"(?<![\w]){re.escape(name)}(?![\w])", re.IGNORECASE)
 
 
-def first_mention(path: Path, term: Term) -> tuple[int, str] | None:
-    patterns = [(name, name_pattern(name)) for name in term.names if name]
+def first_mention(
+    path: Path, term: Term, *, ignored_lines: frozenset[int] = frozenset()
+) -> tuple[int, str] | None:
+    patterns = [(name, name_pattern(name)) for name in term.mention_names if name]
     for line_number, line in eligible_lines(path):
+        if line_number in ignored_lines:
+            continue
         for name, pattern in patterns:
             if pattern.search(line):
                 return line_number, name
     return None
+
+
+def ignore_directives(path: Path) -> tuple[list[IgnoreDirective], list[tuple[int, str]]]:
+    """Parse reviewed term-warning suppressions from eligible prose."""
+    details = eligible_line_details(path)
+    directives: list[IgnoreDirective] = []
+    malformed: list[tuple[int, str]] = []
+    previous_prose_line: int | None = None
+
+    for detail in details:
+        marker_count = detail.raw.casefold().count(TERMLINT_IGNORE_MARKER)
+        matches = list(TERMLINT_IGNORE_RE.finditer(detail.raw))
+        if marker_count != len(matches):
+            malformed.append((detail.number, detail.raw.strip()))
+        for match in matches:
+            without_directive = detail.scrubbed.strip()
+            target_line = detail.number
+            if not without_directive:
+                target_line = (
+                    previous_prose_line
+                    if previous_prose_line == detail.number - 1
+                    else None
+                )
+            directives.append(
+                IgnoreDirective(
+                    line=detail.number,
+                    target_line=target_line,
+                    slug=match.group(1).casefold(),
+                    reason=match.group(2).strip(),
+                )
+            )
+        if detail.scrubbed.strip():
+            previous_prose_line = detail.number
+    return directives, malformed
 
 
 def docs_files(root: Path) -> list[Path]:
@@ -377,12 +449,31 @@ def load_terms(root: Path, issues: list[Issue]) -> list[Term]:
         title = metadata.get("title", path.stem)
         if not isinstance(title, str):
             title = path.stem
+        aliases = tuple(string_list(metadata, "aliases"))
+        mention_aliases = tuple(string_list(metadata, "mention_aliases"))
+        normalized_aliases = {normalize_name(alias) for alias in aliases}
+        for mention_alias in mention_aliases:
+            if normalize_name(mention_alias) not in normalized_aliases:
+                issues.append(
+                    Issue(
+                        "error",
+                        "unregistered-mention-alias",
+                        relative,
+                        None,
+                        (
+                            f"mention_aliases entry '{mention_alias}' must also "
+                            "appear in aliases"
+                        ),
+                        title,
+                    )
+                )
         terms.append(
             Term(
                 path=path.resolve(),
                 relative_path=relative,
                 title=title,
-                aliases=tuple(string_list(metadata, "aliases")),
+                aliases=aliases,
+                mention_aliases=mention_aliases,
                 appears_in=frozenset(string_list(metadata, "appears_in")),
             )
         )
@@ -393,6 +484,7 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
     issues: list[Issue] = []
     terms = load_terms(root, issues)
     term_by_path = {term.path: term for term in terms}
+    term_by_slug = {term.slug: term for term in terms}
 
     owners: dict[str, Term] = {}
     for term in terms:
@@ -507,6 +599,65 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
 
     for document, term_links in links_by_doc.items():
         path = root / document
+        directives, malformed_directives = ignore_directives(path)
+        ignored_lines_by_term: dict[Path, set[int]] = {}
+
+        for line_number, _ in malformed_directives:
+            issues.append(
+                Issue(
+                    "error",
+                    "invalid-termlint-ignore",
+                    document,
+                    line_number,
+                    (
+                        "termlint-ignore must use '<!-- termlint-ignore: "
+                        "term-slug -- review reason -->'"
+                    ),
+                )
+            )
+
+        eligible_by_number = {
+            line_number: line for line_number, line in eligible_lines(path)
+        }
+        for directive in directives:
+            term = term_by_slug.get(directive.slug)
+            if term is None:
+                issues.append(
+                    Issue(
+                        "error",
+                        "unknown-termlint-ignore",
+                        document,
+                        directive.line,
+                        f"termlint-ignore references unknown term slug '{directive.slug}'",
+                    )
+                )
+                continue
+            target_text = eligible_by_number.get(directive.target_line or -1, "")
+            mentions_term = any(
+                name_pattern(name).search(target_text)
+                for name in term.mention_names
+                if name
+            )
+            if term.path in term_links or not mentions_term:
+                issues.append(
+                    Issue(
+                        "error",
+                        "stale-termlint-ignore",
+                        document,
+                        directive.line,
+                        (
+                            f"termlint-ignore for '{directive.slug}' no longer suppresses "
+                            "an unlinked detectable mention"
+                        ),
+                        term.title,
+                    )
+                )
+                continue
+            if directive.target_line is not None:
+                ignored_lines_by_term.setdefault(term.path, set()).add(
+                    directive.target_line
+                )
+
         for term_path, line_numbers in term_links.items():
             term = term_by_path[term_path]
             if document not in term.appears_in:
@@ -522,7 +673,11 @@ def validate(root: Path, *, strict_mentions: bool = False) -> list[Issue]:
                 )
 
         for term in terms:
-            mention = first_mention(path, term)
+            mention = first_mention(
+                path,
+                term,
+                ignored_lines=frozenset(ignored_lines_by_term.get(term.path, set())),
+            )
             if mention is None or term.path in term_links:
                 continue
             line_number, matched_name = mention

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf
   - derived/pdf-markdown/training/mhc-manifold-constrained-hyper-connections.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # mHC: Manifold-Constrained Hyper-Connections
@@ -231,7 +231,7 @@ which conveniently aligns with the layers-per-pipeline-stage.
 
 **What it does:** mHC extends the DualPipe schedule so the extra cross-stage communication and stage-boundary recomputation overlap with compute instead of delaying it.
 
-**Why it matters:** pipeline parallelism already moves activations between stages; an $n$-fold wider stream means $n$-fold more communication, and stage-boundary recomputation adds compute — both would enlarge pipeline bubbles.
+**Why it matters:** [pipeline parallelism](../../terms/pipeline-parallelism.md) already moves activations between stages; an $n$-fold wider stream means $n$-fold more communication, and stage-boundary recomputation adds compute — both would enlarge pipeline bubbles.
 
 **How it works:** ① the $$\mathcal{F}_{\text{post,res}}$$ kernels of FFN layers run on a dedicated high-priority compute stream so the communication stream is never blocked; ② attention layers avoid persistent kernels so long-running attention can be preempted and flexibly scheduled; ③ recomputation is decoupled from pipeline communication because each stage's initial activation $$\mathbf{x}_{l_0}$$ is already cached locally.
 

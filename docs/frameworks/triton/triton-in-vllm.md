@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
   - derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/important-files.md
   - derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/important-files.md
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # Triton in Practice: How vLLM and vllm-ascend Use Triton
@@ -64,7 +64,7 @@ vLLM's job is to serve LLMs fast. That means every microsecond in the critical p
 | Fused MoE with top-k gating + quantization | Requires fusing routing, dequant, [matmul](../../terms/gemm.md), and activation in one kernel launch |
 | AWQ 4-bit dequant + matmul | Unpack 4-bit groups with interleaved bit-reversal, then scales/zeros per group |
 | Fused QK RMSNorm + partial RoPE + gate copy | Collapses split → norm → rotary → gate chunk into one launch |
-| Per-token-group FP8 quantization | Dynamic quantization at granularity finer than per-tensor |
+| Per-token-group [FP8](../../terms/fp8.md) quantization | Dynamic quantization at granularity finer than per-tensor |
 
 Hand-writing CUDA for each of these is slow to develop and maintain. Triton lets vLLM write them in Python with tile-level abstractions, getting ~90%+ of hand-tuned CUDA performance with far less code.
 

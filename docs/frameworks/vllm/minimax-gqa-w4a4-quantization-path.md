@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-61221e9add8c.md
   - derived/repo-analysis/frameworks/vllm/72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0/important-files.md
   - derived/repo-analysis/frameworks/vllm-ascend/61221e9add8c717b304005bd9d48d6215d035be7/important-files.md
-updated: 2026-08-04
+updated: 2026-08-14
 ---
 
 # MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)
@@ -48,7 +48,7 @@ end.
 | Weight | A learned matrix stored in the checkpoint. W4 stores each quantized value in 4 bits. |
 | Activation | The runtime tensor entering a layer. A4 converts it to 4 bits for the quantized matrix multiplication. |
 | Scale | Metadata used to map between a small 4-bit value range and the model's numerical range. |
-| GQA | [Grouped-query attention](../../algorithms/attention-variants/grouped-query-attention/) shares fewer key/value heads across more query heads. |
+| GQA | [Grouped-query attention](../../terms/grouped-query-attention.md) shares fewer key/value heads across more query heads. |
 | MoE | [Mixture of Experts](../../terms/mixture-of-experts.md) routes a token through selected feed-forward experts. |
 | GEMM | [General matrix multiply](../../terms/gemm.md), the expensive operation these schemes accelerate. |
 | Checkpoint | Saved model weights plus configuration describing how those weights are encoded. |
@@ -211,7 +211,7 @@ Each linear layer gets its scheme stored on `layer.scheme` and is wrapped in `Co
 
 **NVFP4** — <a class="code-link" href="../../../external-repos/vllm-72cd5424da80/vllm/model_executor/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4.py#L28" data-code-repo="vllm-72cd5424da80" data-code-path="vllm/model_executor/layers/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4.py" data-code-line="28" data-code-end-line="148"><code>CompressedTensorsW4A4Fp4</code></a>:
 
-- Packed FP4 weights plus a per-tensor global weight scale and per-group FP8 (E4M3) scales, `group_size = 16`.
+- Packed FP4 weights plus a per-tensor global weight scale and per-group [FP8](../../terms/fp8.md) (E4M3) scales, `group_size = 16`.
 - In W4A4 mode it also loads an `input_global_scale` and precomputes `alpha = input_global_scale * weight_global_scale` for the runtime activation-quantization path (`process_weights_after_loading`).
 - `min_capability = 75`; true W4A4 with input-activation quantization requires SM100+ (Blackwell), while SM75–SM90 uses Marlin W4A16 weight-only fallback.
 

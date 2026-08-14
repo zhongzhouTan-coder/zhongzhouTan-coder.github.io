@@ -9,7 +9,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/kimi-k3-code-reading.md
-updated: 2026-07-29
+updated: 2026-08-14
 ---
 
 # vLLM Kimi K3 Code Reading Map
@@ -223,7 +223,7 @@ For prefill tokens, `_forward_prefill_fused()` runs fused key-concat plus KV-cac
 The fused cache insert path dispatches by cache dtype:
 
 - bf16 cache: `fused_mla_key_concat_kv_cache_insert`;
-- plain fp8 cache: `fused_mla_qkv_quant_kv_cache_fp8_insert`;
+- plain [FP8](../../terms/fp8.md) cache: `fused_mla_qkv_quant_kv_cache_fp8_insert`;
 - `fp8_ds_mla`: `fused_mla_key_concat_ds_mla_insert`.
 
 Chunked-context prefill merges context and suffix attention states with `merge_attn_states(...)`.
@@ -375,7 +375,7 @@ Use this order when debugging or modifying K3 support:
 - **Wrong tokenizer mode:** K3 requires `kimi_k3` rendering so XTML structural markers remain special tokens.
 - **Unsupported tail-fusion hardware:** the latent-MoE tail fusion is intentionally narrow: SM100, bf16, TP 8/16, K3 target dimensions, small token count.
 - **MegaMoE configuration mismatch:** MegaMoE requires expert parallelism, SITU activation, latent MoE, grouped top-k, one expert group, and expert count divisible by EP size.
-- **MLA context parallelism:** `MultiHeadLatentAttention` asserts no decode/prefill context parallelism in this implementation.
+- **MLA [context parallelism](../../terms/context-parallelism.md):** `MultiHeadLatentAttention` asserts no decode/prefill context parallelism in this implementation.
 - **fp8 MLA cache policy mismatch:** plain fp8 KV cache requires fp8 prefill query quantization; `fp8_ds_mla` expects bf16 prefill query.
 - **KDA fast-path constraints:** fused decode and FlashKDA prefill require specific shapes, dtype, gate lower bound, and GPU capabilities.
 - **Static reading limitation:** this page does not prove runtime correctness or performance; it maps the code paths in a clean pinned checkout.

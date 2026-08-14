@@ -14,7 +14,10 @@ appears_in:
   - docs/algorithms/context-parallelism/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-11
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
+  - docs/training/kimi/kimi-k3/index.md
+updated: 2026-08-14
 ---
 
 # Context Parallelism
@@ -44,6 +47,10 @@ Context parallelism is strongest for long prefill, where attention compute can h
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) - Separates prefill batch partitioning from decode KV sharding in the V1 serving runtime.
 
 - [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) - Shows how DCP merges local outputs and LSE statistics to recover exact global attention.
+
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md)
+- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md)
+- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md)
 
 ## Related Terms
 

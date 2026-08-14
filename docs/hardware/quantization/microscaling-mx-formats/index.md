@@ -9,7 +9,7 @@ sources:
   - raw/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.metadata.json
   - derived/pdf-markdown/hardware/microscaling-mx-formats.md
   - derived/web-markdown/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.md
-updated: 2026-08-09
+updated: 2026-08-14
 ---
 
 # Microscaling (MX) Formats: Block Floating Point for AI Hardware
@@ -23,7 +23,7 @@ updated: 2026-08-09
 ## TL;DR
 
 **What:** The OCP MX specification builds a vector data type from one shared scale, same-type private elements, and a fixed scaling block size.
-**How:** Its concrete formats use 32 elements and an 8-bit E8M0 scale, while the element payload is FP4, FP6, FP8, or INT8 and the physical layout remains implementation-defined.
+**How:** Its concrete formats use 32 elements and an 8-bit E8M0 scale, while the element payload is FP4, FP6, [FP8](../../../terms/fp8.md), or INT8 and the physical layout remains implementation-defined.
 **The number:** One MXFP6 block is $32 \times 6 + 8 = 200$ bits; the specification also requires a supported implementation to provide the listed conversion and dot-product semantics.
 
 ## The Big Picture

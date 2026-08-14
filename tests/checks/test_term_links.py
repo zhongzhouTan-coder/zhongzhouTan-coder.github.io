@@ -29,8 +29,15 @@ class TermLinkTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
-    def write_term(self, appears_in: str = "docs/topic/page.md") -> None:
+    def write_term(
+        self,
+        appears_in: str = "docs/topic/page.md",
+        mention_aliases: tuple[str, ...] = (),
+    ) -> None:
         appears = f"\n  - {appears_in}" if appears_in else ""
+        detectable_aliases = "".join(
+            f"\n  - {alias}" for alias in mention_aliases
+        )
         where = (
             "\n- [Topic](../topic/page.md) — Usage."
             if appears_in
@@ -44,6 +51,7 @@ summary: "Stored attention state."
 category: algorithms
 aliases:
   - key-value cache
+mention_aliases:{detectable_aliases}
 appears_in:{appears}
 ---
 
@@ -111,7 +119,7 @@ appears_in:{appears}
         self.assertEqual(self.kinds(), [])
 
     def test_fix_leaves_plain_text_mentions_for_agent_judgment(self) -> None:
-        self.write_term(appears_in="")
+        self.write_term(appears_in="", mention_aliases=("key-value cache",))
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
 
         fixes = TERM_LINKS.apply_safe_fixes(self.root, updated="2026-08-10")
@@ -120,7 +128,7 @@ appears_in:{appears}
         self.assertIn("unlinked-term-mention", self.kinds())
 
     def test_plain_mention_warns_and_strict_mode_fails(self) -> None:
-        self.write_term(appears_in="")
+        self.write_term(appears_in="", mention_aliases=("key-value cache",))
         self.write("docs/topic/page.md", "A key-value cache stores state.\n")
 
         issues = TERM_LINKS.validate(self.root)
@@ -134,6 +142,69 @@ appears_in:{appears}
             issue for issue in strict_issues if issue.kind == "unlinked-term-mention"
         )
         self.assertEqual(strict_mention.severity, "error")
+
+    def test_aliases_are_not_detected_unless_opted_in(self) -> None:
+        self.write_term(appears_in="")
+        self.write("docs/topic/page.md", "A key-value cache stores state.\n")
+
+        self.assertNotIn("unlinked-term-mention", self.kinds())
+
+        self.write_term(appears_in="", mention_aliases=("key-value cache",))
+        self.assertIn("unlinked-term-mention", self.kinds())
+
+    def test_detectable_alias_must_also_be_registered_as_an_alias(self) -> None:
+        self.write_term(appears_in="")
+        term_path = self.root / "docs/terms/kv-cache.md"
+        term_path.write_text(
+            term_path.read_text(encoding="utf-8").replace(
+                "mention_aliases:", "mention_aliases:\n  - attention memory"
+            ),
+            encoding="utf-8",
+        )
+
+        self.assertIn("unregistered-mention-alias", self.kinds())
+
+    def test_reviewed_inline_ignore_suppresses_only_its_line(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "KV Cache names an unrelated fixture. "
+            "<!-- termlint-ignore: kv-cache -- Fixture name, not the concept. -->\n",
+        )
+
+        self.assertNotIn("unlinked-term-mention", self.kinds())
+
+        self.write(
+            "docs/topic/page.md",
+            "KV Cache names an unrelated fixture. "
+            "<!-- termlint-ignore: kv-cache -- Fixture name, not the concept. -->\n"
+            "A KV Cache stores attention state.\n",
+        )
+        self.assertIn("unlinked-term-mention", self.kinds())
+
+    def test_comment_only_ignore_applies_to_previous_prose_line(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "KV Cache names an unrelated fixture.\n"
+            "<!-- termlint-ignore: kv-cache -- Fixture name, not the concept. -->\n",
+        )
+
+        self.assertNotIn("unlinked-term-mention", self.kinds())
+
+    def test_invalid_unknown_and_stale_ignores_fail(self) -> None:
+        self.write_term(appears_in="")
+        self.write(
+            "docs/topic/page.md",
+            "KV Cache fixture. <!-- termlint-ignore: kv-cache -->\n"
+            "Text. <!-- termlint-ignore: missing-term -- Reviewed false positive. -->\n"
+            "Text. <!-- termlint-ignore: kv-cache -- No matching mention here. -->\n",
+        )
+
+        kinds = self.kinds()
+        self.assertIn("invalid-termlint-ignore", kinds)
+        self.assertIn("unknown-termlint-ignore", kinds)
+        self.assertIn("stale-termlint-ignore", kinds)
 
     def test_where_it_appears_matches_front_matter(self) -> None:
         self.write_term()

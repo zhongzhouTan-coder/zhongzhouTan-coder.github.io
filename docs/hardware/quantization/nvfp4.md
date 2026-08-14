@@ -10,7 +10,7 @@ sources:
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
   - derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md
-updated: 2026-08-09
+updated: 2026-08-14
 ---
 
 # NVFP4: Blackwell 4-Bit Floating Point
@@ -21,7 +21,7 @@ updated: 2026-08-09
 
 ## TL;DR
 
-**What:** NVFP4 is NVIDIA's Blackwell-generation 4-bit floating-point format for inference and training, with a hierarchical two-level scaling scheme — FP8 E4M3 block scales per 16 elements plus an FP32 global tensor scale.
+**What:** NVFP4 is NVIDIA's Blackwell-generation 4-bit floating-point format for inference and training, with a hierarchical two-level scaling scheme — [FP8](../../terms/fp8.md) E4M3 block scales per 16 elements plus an FP32 global tensor scale.
 **How:** NVFP4 encodes each micro-block with fractional E4M3 scales (non-power-of-two), cuts block size from 32 to 16 versus MXFP4, and adds training-stability mechanisms: 2D weight scaling, stochastic rounding (hardware-accelerated on Blackwell), and Random Hadamard Transform for outlier smoothing.
 **The number:** 3.5× smaller than FP16 and 1.8× smaller than FP8 in memory footprint, with 1 percentage point or less accuracy degradation versus FP8 on DeepSeek-R1-0528 evaluations (AIME 2024 improved by 2pp).
 
@@ -207,7 +207,7 @@ Scale tensors are padded for hardware alignment: first dimension to a multiple o
 
 ### Distributed Training
 
-**What it does:** Handles NVFP4 quantization in multi-GPU settings with sequence parallelism and tensor parallelism.
+**What it does:** Handles NVFP4 quantization in multi-GPU settings with sequence parallelism and [tensor parallelism](../../terms/tensor-parallelism.md).
 
 **Why it matters:** Block scales are local (each GPU computes its own), but the global scale must be consistent across GPUs for gathered tensors.
 

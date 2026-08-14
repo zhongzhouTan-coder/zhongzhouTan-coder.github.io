@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-11
+updated: 2026-08-14
 ---
 
 # Wiki Log
@@ -300,3 +300,7 @@ updated: 2026-08-11
 
 - Added [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md), backed by a new immutable vLLM revision `2d24355eb87b716fc1169e66731dc0386ed1a3a2`. The medium-confidence static insight traces one request through router, prefill, NIXL KV handoff, decode admission, worker transfer, block leases, completion, and streaming; compares pull and push modes; preserves vLLM's original scheduler/worker connector figure; and adds scaling, compatibility, observability, failure-policy, multi-turn, and rollout guidance.
 - Added [Layer Normalization in Transformers](../algorithms/foundations/layer-normalization/index.md) from an immutable capture of an accessible article that explicitly cites and summarizes the requested Zhihu page; direct Zhihu capture was blocked by its verification layer. The medium-confidence insight contrasts BatchNorm and LayerNorm axes, corrects implementation ambiguities, preserves two original figures, and adds the [Layer Normalization](../terms/layer-normalization.md) glossary term with a Transformer backlink.
+
+## 2026-08-14
+
+- Reviewed and resolved all 56 remaining term-link warnings: added 47 meaningful glossary links and their bidirectional term-page registrations across FP8, grouped-query attention, context/ring attention, KV cache, and tensor/pipeline parallelism; documented navigation-only matches with 14 occurrence-scoped reviewed exclusions.

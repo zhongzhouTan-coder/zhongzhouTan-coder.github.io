@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf
   - derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # DeepSeek-V2 Multi-Head Latent Attention
@@ -15,7 +15,7 @@ updated: 2026-08-06
 **Authors:** DeepSeek-AI  
 **arXiv:** 2405.04434 - May 7, 2024  
 
-**Related pages:** [The Transformer](../foundations/transformer.md) · [Multi-Query Attention](multi-query-attention.md) · [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) · [FlashAttention-2](../flashattention/flashattention-2.md)
+**Related pages:** [The Transformer](../foundations/transformer.md) · [Multi-Query Attention](multi-query-attention.md) · [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) · [FlashAttention-2](../flashattention/flashattention-2.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 
 ## TL;DR
 
@@ -262,7 +262,7 @@ MLA lets DeepSeek-V2 keep strong multi-head attention behavior while making long
 | DeepSeek-V2 cache equivalence | GQA group count varies | about 2.25 GQA groups | smaller than common GQA layouts while preserving more capability |
 | Large MoE ablation cache | MHA: 860.2K elements/token | MLA: 34.6K elements/token | about 4% of MHA cache |
 | Large MoE MMLU | MHA: 57.5 | MLA: 59.0 | lower cache without measured quality loss in this ablation |
-| Full-system throughput | DeepSeek 67B baseline | 5.76x max generation throughput | deployment benefit comes from MLA plus FP8, KV quantization, and MoE |
+| Full-system throughput | DeepSeek 67B baseline | 5.76x max generation throughput | deployment benefit comes from MLA plus [FP8](../../terms/fp8.md), KV quantization, and MoE |
 | Full-system training cost | DeepSeek 67B baseline | 42.5% fewer GPU hours per trillion tokens | sparse activation changes training economics |
 
 ### The mechanism behind the numbers
@@ -291,6 +291,6 @@ MLA is **KV-cache compression without giving up the idea of many attention heads
 ## Go Deeper
 
 - **Read:** `raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf` for the DeepSeek-V2 architecture, training, inference, and ablation details.
-- **Build on:** [Multi-Query Attention](multi-query-attention.md) and [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) for the earlier KV-cache-reduction line.
+- **Build on:** [Multi-Query Attention](multi-query-attention.md) and [Grouped-Query Attention in Llama 2](grouped-query-attention/index.md) for the earlier KV-cache-reduction line. <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 - **Understand the context:** [The Transformer](../foundations/transformer.md) for standard MHA and [FlashAttention-2](../flashattention/flashattention-2.md) for the kernel family DeepSeek-V2 says its MLA implementation builds on.
 - **Reproduce:** DeepSeek reports model checkpoints and code at `https://github.com/deepseek-ai/DeepSeek-V2`; this page only ingests the local PDF source.

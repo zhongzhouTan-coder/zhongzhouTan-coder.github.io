@@ -13,7 +13,14 @@ aliases:
 appears_in:
   - docs/algorithms/context-parallelism/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
-updated: 2026-08-10
+  - docs/frameworks/sarathi/index.md
+  - docs/training/index.md
+  - docs/training/mhc/index.md
+  - docs/training/parallelism/gpipe/index.md
+  - docs/training/parallelism/index.md
+  - docs/training/parallelism/megatron-lm/index.md
+  - docs/training/parallelism/sequence-parallelism/index.md
+updated: 2026-08-14
 ---
 
 # Pipeline Parallelism
@@ -41,6 +48,14 @@ Pipeline parallelism does not split the tokens of one request across stages, so 
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Describes why pipeline parallelism alone does not remove long-prompt latency.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP currently rejects PP greater than one in its MRV2 validation.
+
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md)
+- [Training](../training/index.md)
+- [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md)
+- [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md)
+- [Training Parallelism](../training/parallelism/index.md)
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md)
+- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md)
 
 ## Related Terms
 

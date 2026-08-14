@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf
   - derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # FlashAttention-3: Hopper Asynchrony and FP8 Attention
@@ -19,7 +19,7 @@ updated: 2026-08-06
 
 ## TL;DR
 
-**What:** FlashAttention-3 adapts exact attention to NVIDIA Hopper GPUs by exploiting hardware asynchrony (TMA, WGMMA) and low-precision FP8.
+**What:** FlashAttention-3 adapts exact attention to NVIDIA Hopper GPUs by exploiting hardware asynchrony (TMA, WGMMA) and low-precision [FP8](../../terms/fp8.md).
 **How:** It uses warp specialization to overlap data movement with compute, ping-pong scheduling to hide softmax latency, and a two-stage WGMMA-softmax pipeline with FP8 layout engineering.
 **The number:** 1.5-2.0× faster than FlashAttention-2 in FP16/BF16, up to 740 TFLOPs/s, and nearly 1.2 PFLOPs/s for FP8 forward attention.
 

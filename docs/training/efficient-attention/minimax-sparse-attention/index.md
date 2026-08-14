@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/minimax-sparse-attention--paper.pdf
   - derived/pdf-markdown/training/minimax-sparse-attention.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # MiniMax Sparse Attention (MSA)
@@ -17,7 +17,7 @@ updated: 2026-08-06
 **Code:** [github.com/MiniMax-AI/MSA](https://github.com/MiniMax-AI/MSA)
 **Model:** [MiniMax-M3 on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3)
 
-**Related pages:** [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [FlashAttention](../../../algorithms/flashattention/flashattention.md)
+**Related pages:** [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [FlashAttention](../../../algorithms/flashattention/flashattention.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 
 ## TL;DR
 
@@ -125,7 +125,7 @@ Both papers independently arrived at a 2048-token attention budget, but their ar
 | **Backbone** | MLA in MQA mode — all query heads share 1 KV latent per token | GQA — query heads partitioned into groups (16:1), each group has own KV |
 | **Selection granularity** | Token-level — selects individual KV latent vectors | Block-level — selects 128-token blocks, max-pools per-block scores |
 | **Selection scope** | Token-shared — all query heads per token share one set of selected KV entries | Per-GQA-group — each group independently selects its own top-k blocks |
-| **Indexer design** | Multi-head ReLU with learned head weights $w_{t,j}^I$, FP8 | One index query per group + one shared index key head, simple dot-product |
+| **Indexer design** | Multi-head ReLU with learned head weights $w_{t,j}^I$, [FP8](../../../terms/fp8.md) | One index query per group + one shared index key head, simple dot-product |
 | **Selection budget** | $k = 2048$ tokens | $k = 16$ blocks × $B_k = 128$ = 2048 tokens |
 | **Training routes** | CPT only: dense warmup → sparse from MLA checkpoint | PT (from scratch) and CPT (from GQA checkpoint), both with indexer warmup |
 | **Forced local** | Not specified | Always include local block (reserves 1 of 16 slots) |
@@ -370,7 +370,7 @@ MSA matches GQA's pretraining quality on a 109B MoE model with native multimodal
 
 - [MSA inference kernel on GitHub](https://github.com/MiniMax-AI/MSA): Open-source implementation of the exp-free TopK and KV-outer sparse attention kernels.
 - [MiniMax-M3 model on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3): Production-grade natively multimodal model powered by MSA.
-- [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first.
+- [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first. <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 - [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md): Compare with DSA's token-level, shared-index approach to sparse attention on MLA.
 - [FlashAttention](../../../algorithms/flashattention/flashattention.md): The IO-aware attention kernel lineage that MSA's KV-outer kernel builds upon.
 

@@ -5,11 +5,11 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-09
+updated: 2026-08-14
 ---
 
 # Quantization
 
 - [MX Formats: Block Floating Point for AI Hardware](microscaling-mx-formats/index.md) — [Microscaling](../../terms/microscaling.md) history and hardware analysis, OCP's 32-element MXFP4/6/8 and MXINT8 family, specification boundaries, and mixed-format compute flow.
 - [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
-- [NVFP4: Blackwell 4-Bit Floating Point](nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical FP8/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, [GEMM](../../terms/gemm.md) layout constraints, distributed training behavior, and deployment ecosystem.
+- [NVFP4: Blackwell 4-Bit Floating Point](nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical [FP8](../../terms/fp8.md)/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, [GEMM](../../terms/gemm.md) layout constraints, distributed training behavior, and deployment ecosystem.

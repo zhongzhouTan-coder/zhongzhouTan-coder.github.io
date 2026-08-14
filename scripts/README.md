@@ -32,3 +32,9 @@ The term-link fixer only synchronizes glossary metadata and backlinks for
 consumer pages that already contain an explicit Markdown link to a term. It
 leaves plain-text mentions, missing definitions, alias collisions, stale paths,
 and glossary-index organization for an agent to resolve with semantic context.
+
+Plain-text mention lint always detects canonical term titles and detects only
+aliases opted in through a term page's `mention_aliases` field. Reviewed false
+positives can use an occurrence-local `termlint-ignore` HTML comment with a term
+slug and reason; invalid, unknown, or stale directives fail the check. See
+`.github/instructions/docs-terms.instructions.md` for the directive format.

@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM
@@ -159,7 +159,7 @@ This is the most aggressive integration mechanism. `vllm_ascend/patch/` contains
 
 - CUDA graph references redirected to ACL graph paths
 - DeepSeek MTP (multi-token prediction) adapted for Ascend
-- Eagle3, FP8, Triton paths adapted
+- Eagle3, [FP8](../../terms/fp8.md), Triton paths adapted
 - Model-specific paths: Qwen3, MiniMax M2, Kimi K2.5
 
 Patches are applied once globally via `_ensure_global_patch()` and never re-applied. This is a practical trade-off: it allows vllm-ascend to work with upstream vLLM without maintaining a fork, at the cost of fragility when vLLM internals change.
@@ -191,7 +191,7 @@ vLLM's attention is replaced by custom backends, all registered as `AttentionBac
 
 The two sparse backends — <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/sfa_v1.py#L112" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/sfa_v1.py" data-code-line="112" data-code-end-line="113"><code>AscendSFABackend</code></a> and <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/dsa_v1.py#L191" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="191" data-code-end-line="192"><code>AscendDSABackend</code></a> — share the [Lightning Indexer](../../terms/lightning-indexer.md) but differ in what it selects and which operator generation runs it: SFA (DeepSeek-V3.2-style) selects top-k **tokens** over the uncompressed KV cache via `npu_lightning_indexer_quant`; DSA (DeepSeek-V4) selects top-k **compressed blocks** via `npu_vllm_quant_lightning_indexer` + its AICPU metadata pre-op, with an always-8-bit ("C8") indexer cache. See [DeepSeek-V4 Lightning Indexer C8 Quantization](./deepseek-v4-lightning-indexer-c8.md).
 
-Each backend also has a **context-parallel variant** (`AscendAttentionDCP`, `AscendDSACP`, `AscendSFADCP`) activated when decode context parallelism (`enable_dcp()`) is on.
+Each backend also has a **[context-parallel](../../terms/context-parallelism.md) variant** (`AscendAttentionDCP`, `AscendDSACP`, `AscendSFADCP`) activated when decode context parallelism (`enable_dcp()`) is on.
 
 The `AscendFABackend` FA3 path is only taken when the user explicitly selects `FLASH_ATTN` and `flash_attn_npu_v3` passes the <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/fa3_v1.py#L12" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/fa3_v1.py" data-code-line="12"><code>AscendFABackend</code></a> validation (`_validate_fa3_backend`); it is the training-inference-consistency path. On 310P devices the whole selection collapses to a single dense `AscendAttentionBackend310` — MLA/SFA/DSA are not yet supported there.
 
@@ -201,7 +201,7 @@ The attention computation uses Ascend's **FIA** (Fused Infer Attention) API inst
 
 All collective communication uses HCCL (Huawei Collective Communication Library) through two abstractions:
 
-- **`PyHcclCommunicator`**: A Python wrapper around the HCCL C API, analogous to vLLM's `PyNcclCommunicator` for custom [all-reduce](../../terms/all-reduce.md) in tensor parallelism. Manages HCCL unique IDs, communicator creation, and collective operations.
+- **`PyHcclCommunicator`**: A Python wrapper around the HCCL C API, analogous to vLLM's `PyNcclCommunicator` for custom [all-reduce](../../terms/all-reduce.md) in [tensor parallelism](../../terms/tensor-parallelism.md). Manages HCCL unique IDs, communicator creation, and collective operations.
 - **`NPUCommunicator`**: Implements `DeviceCommunicatorBase`, providing `all_to_all` via `dist.all_to_all` with HCCL backend. Uses a no-op `all2all_manager` — MoE [all-to-all](../../terms/all-to-all.md) communication uses mc2/[all_gather](../../terms/all-gather.md) instead.
 
 Ascend-specific parallel groups (<a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/distributed/parallel_state.py#L86" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/distributed/parallel_state.py" data-code-line="86"><code>parallel_state.py</code></a>) extend vLLM's standard TP/PP/DP groups with fine-grained groups: `_MC2` for MoE EP-like communication, `_MLP_TP`/`_OTP`/`_LMTP`/`_EMBED_TP` for component-specific tensor parallelism, `_P_TP` for PD disaggregation, and `_DYNAMIC_EPLB` for expert-parallel load balancing.

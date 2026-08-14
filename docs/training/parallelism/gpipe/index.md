@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf
   - derived/pdf-markdown/training/gpipe-micro-batch-pipeline-parallelism.md
-updated: 2026-07-27
+updated: 2026-08-14
 ---
 
 # GPipe: Micro-Batch Pipeline Parallelism
@@ -19,7 +19,7 @@ updated: 2026-07-27
 
 ## TL;DR
 
-**What:** GPipe is a pipeline parallelism library that lets you train models larger than a single accelerator's memory by splitting layers across devices and streaming [microbatches](../../../terms/microbatch.md) through them — with synchronous gradient updates that guarantee correctness regardless of the number of partitions.
+**What:** GPipe is a [pipeline parallelism](../../../terms/pipeline-parallelism.md) library that lets you train models larger than a single accelerator's memory by splitting layers across devices and streaming [microbatches](../../../terms/microbatch.md) through them — with synchronous gradient updates that guarantee correctness regardless of the number of partitions.
 
 **How:** Partition the model into K sequential cells on K accelerators; split each mini-batch into M micro-batches; pipeline forward/backward passes so all accelerators stay busy; accumulate gradients across micro-batches and apply synchronously at the end of each mini-batch; use activation recomputation to slash memory.
 

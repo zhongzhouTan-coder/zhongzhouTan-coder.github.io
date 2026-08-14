@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/swat-sliding-window-attention-training--paper.pdf
   - derived/pdf-markdown/training/swat-sliding-window-attention-training.md
-updated: 2026-07-29
+updated: 2026-08-14
 ---
 
 # SWAT: Sliding Window Attention Training
@@ -15,7 +15,7 @@ updated: 2026-07-29
 **Authors:** Zichuan Fu, Wentao Song, Yejing Wang, Xian Wu, Yefeng Zheng, Yingying Zhang, Derong Xu, Xuetao Wei, Tong Xu, Xiangyu Zhao (City University of Hong Kong, Xi'an Jiaotong University, Tencent YouTu Lab, Westlake University, USTC, SUSTech)
 **Published:** 2025
 
-**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention-variants/multi-query-attention.md)
+**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention-variants/multi-query-attention.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 
 ## TL;DR
 

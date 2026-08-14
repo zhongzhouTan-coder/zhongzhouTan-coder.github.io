@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-9a52ca5fc36c.md
   - derived/repo-analysis/frameworks/vllm-ascend/9a52ca5fc36c1852241822863c50717bee5dc761/important-files.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend
@@ -97,7 +97,7 @@ Then each stage in detail:
 
 ## Deep Dive: The GDN + FIA Hybrid Attention
 
-Qwen3.6 inherits the Qwen3.5 hybrid design: a stack of alternating linear-attention (GDN) and full-attention layers, wrapped in the same `Qwen3_5DecoderLayer` shell. The two attention families use completely different Ascend machinery. Importantly, the full-attention layers are **standard grouped-query attention (the "GQA path")**: `use_mla` is `False` (it is set only for DeepSeek-MLA architectures) and `use_sparse` is `False` (it is set only for `index_topk` SFA-style models), so `get_attn_backend_cls` selects `AscendAttentionBackend` — not MLA, SFA, or DSA, which are the DeepSeek-family backends:
+Qwen3.6 inherits the Qwen3.5 hybrid design: a stack of alternating linear-attention (GDN) and full-attention layers, wrapped in the same `Qwen3_5DecoderLayer` shell. The two attention families use completely different Ascend machinery. Importantly, the full-attention layers are **standard [grouped-query attention](../../terms/grouped-query-attention.md) (the "GQA path")**: `use_mla` is `False` (it is set only for DeepSeek-MLA architectures) and `use_sparse` is `False` (it is set only for `index_topk` SFA-style models), so `get_attn_backend_cls` selects `AscendAttentionBackend` — not MLA, SFA, or DSA, which are the DeepSeek-family backends:
 
 | Layer type | Ascend implementation | Compute engine | Evidence |
 |---|---|---|---|
@@ -110,7 +110,7 @@ Two properties stand out for the Qwen3.5/Qwen3.6 family specifically. First, the
 
 ## KV-Cache Quantization: C8 on the GQA/FIA Path
 
-KV-cache quantization is a separate concern from the ModelSlim weight schemes above: it quantizes the K/V tensors that the FIA op reads back on every step. On the GQA/FIA path this is **C8 — static per-channel INT8 [KV cache](../../terms/kv-cache.md)** (the QuaRot-style scheme), not FP8.
+KV-cache quantization is a separate concern from the ModelSlim weight schemes above: it quantizes the K/V tensors that the FIA op reads back on every step. On the GQA/FIA path this is **C8 — static per-channel INT8 [KV cache](../../terms/kv-cache.md)** (the QuaRot-style scheme), not [FP8](../../terms/fp8.md).
 
 ### Activation and Scale Wiring (Load Time)
 

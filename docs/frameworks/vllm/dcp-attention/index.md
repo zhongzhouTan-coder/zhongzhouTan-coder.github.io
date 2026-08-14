@@ -9,7 +9,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/context-parallelism.md
-updated: 2026-08-11
+updated: 2026-08-14
 ---
 
 # vLLM DCP Attention: From Local LSE to Exact Global Output
@@ -52,7 +52,7 @@ DCP group:
 
 ## Why This Exists
 
-Without DCP, one rank must read every key and value in a long request's KV cache. That makes decode attention increasingly expensive and forces every rank to store the same persistent context. DCP lets rank `i` read only its KV shard, but local attention normalizes against only that shard. Simply summing the local outputs would therefore be wrong because every rank used a different softmax denominator.
+Without DCP, one rank must read every key and value in a long request's [KV cache](../../../terms/kv-cache.md). That makes decode attention increasingly expensive and forces every rank to store the same persistent context. DCP lets rank `i` read only its KV shard, but local attention normalizes against only that shard. Simply summing the local outputs would therefore be wrong because every rank used a different softmax denominator.
 
 The missing information is small: each rank needs to contribute its local output and its local log-sum-exp statistic. The LSE tells the group how much weight that local output should receive in the global softmax. This is why DCP communicates normalization metadata instead of exchanging the full KV context.
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
   - derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # Sequence Parallelism: Long Sequence Training from System Perspective
@@ -24,7 +24,7 @@ updated: 2026-08-06
 
 **How:** Ring Self-Attention (RSA) circulates key and value embeddings around a ring of GPUs in two passes: first for $QK^T$ scores, second for the weighted $AV$ output. Each GPU accumulates partial results without ever needing the full $L \times L$ attention matrix locally.
 
-**The number:** On 64 P100 GPUs, sequence parallelism achieves **13.7× larger batch size** and **3.0× longer sequence length** than tensor parallelism; with sparse attention it handles **114K+ tokens** — 27× longer than single-device approaches.
+**The number:** On 64 P100 GPUs, sequence parallelism achieves **13.7× larger batch size** and **3.0× longer sequence length** than [tensor parallelism](../../../terms/tensor-parallelism.md); with sparse attention it handles **114K+ tokens** — 27× longer than single-device approaches.
 
 ## The Big Picture
 
@@ -32,7 +32,7 @@ updated: 2026-08-06
 
 *Pipeline parallelism (a) splits by layer, tensor parallelism (b) splits weight matrices by column/row, and sequence parallelism (c) splits the input sequence into chunks. All devices in (c) hold identical model parameters but different sub-sequences.*
 
-Sequence parallelism fills a gap in the parallelism taxonomy. Pipeline parallelism splits the model vertically (by layers); tensor parallelism splits model weights horizontally (by hidden/head dimensions); sequence parallelism splits the **data** along a new axis — sequence length. This makes it orthogonal to the other three paradigms, enabling true **4D parallelism**: data + pipeline + tensor + sequence.
+Sequence parallelism fills a gap in the parallelism taxonomy. [Pipeline parallelism](../../../terms/pipeline-parallelism.md) splits the model vertically (by layers); tensor parallelism splits model weights horizontally (by hidden/head dimensions); sequence parallelism splits the **data** along a new axis — sequence length. This makes it orthogonal to the other three paradigms, enabling true **4D parallelism**: data + pipeline + tensor + sequence.
 
 ## Why This Exists
 

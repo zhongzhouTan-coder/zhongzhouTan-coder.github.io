@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf
   - derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md
-updated: 2026-08-03
+updated: 2026-08-14
 ---
 
 # DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use
@@ -15,7 +15,7 @@ updated: 2026-08-03
 **Authors:** DeepSeek-AI  
 **arXiv:** 2026 (<research@deepseek.com>)  
 
-**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md)
+**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md) <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 
 ## TL;DR
 
@@ -56,7 +56,7 @@ flowchart TB
     Architecture --> PostTrain --> Agent
 ```
 
-*① A lightning indexer with small FP8 heads computes $I_{t,s}$ scores to select top-k KV entries per query. ② MLA main attention only attends to selected entries, reducing core complexity to $O(Lk)$. ③ Eight domain specialists are distilled into SFT data, then merged into one mixed GRPO stage. ④ Synthetic agentic tasks are auto-generated (environment + tools + verifier) and used for RL, producing out-of-domain generalization.*
+*① A lightning indexer with small [FP8](../../terms/fp8.md) heads computes $I_{t,s}$ scores to select top-k KV entries per query. ② MLA main attention only attends to selected entries, reducing core complexity to $O(Lk)$. ③ Eight domain specialists are distilled into SFT data, then merged into one mixed GRPO stage. ④ Synthetic agentic tasks are auto-generated (environment + tools + verifier) and used for RL, producing out-of-domain generalization.*
 
 ## Why This Exists
 
@@ -353,7 +353,7 @@ V3.2's reasoning performance comes from scaled RL compute: the post-training bud
 ## Go Deeper
 
 - [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) — The MLA architecture that DSA builds upon.
-- [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode.
+- [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) — The GQA predecessor to MLA's MQA mode. <!-- termlint-ignore: grouped-query-attention -- Navigation label already links the dedicated GQA insight. -->
 - [Multi-Query Attention](../attention-variants/multi-query-attention.md) — The original shared-KV-head insight.
 - [The Transformer](../foundations/transformer.md) — The vanilla attention baseline.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../../frameworks/dspark/index.md) — DeepSeek's speculative decoding framework deployed on V4.

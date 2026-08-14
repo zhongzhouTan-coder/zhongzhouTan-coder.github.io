@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/multi-query-attention-one-write-head--paper.pdf
   - derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md
-updated: 2026-08-03
+updated: 2026-08-14
 ---
 
 # Multi-Query Attention: One Write-Head is All You Need
@@ -106,7 +106,7 @@ flowchart TD
 - **Reduce $h$** (fewer heads): dropping from $h=8$ to $h=1$ also shrinks K and V by 8×, but perplexity degrades from 29.9 to 31.2 on Billion-Word LM — much worse than MQA's 30.2.
 - **Reduce $d_k, d_v$** (smaller per-head dimension): shrinking from 128 to 16 (while keeping $h=8$) also degrades to 30.9 perplexity — worse than MQA.
 
-**Descendant:** Grouped-Query Attention (GQA, Ainslie et al., 2023) — generalizes MQA by using $g$ key-value groups where $1 < g < h$, interpolating between MQA ($g=1$) and MHA ($g=h$). GQA is used in Llama 2, Llama 3, and other modern LLMs. [DeepSeek-V2 Multi-Head Latent Attention](deepseek-v2-mla.md) continues the same KV-cache reduction line, but stores a low-rank latent K/V memory instead of choosing a smaller number of raw K/V heads.
+**Descendant:** [Grouped-Query Attention](../../terms/grouped-query-attention.md) (GQA, Ainslie et al., 2023) — generalizes MQA by using $g$ key-value groups where $1 < g < h$, interpolating between MQA ($g=1$) and MHA ($g=h$). GQA is used in Llama 2, Llama 3, and other modern LLMs. [DeepSeek-V2 Multi-Head Latent Attention](deepseek-v2-mla.md) continues the same KV-cache reduction line, but stores a low-rank latent K/V memory instead of choosing a smaller number of raw K/V heads.
 
 ## The Core Idea
 

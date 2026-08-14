@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
   - derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # vLLM: PagedAttention Serving Framework
@@ -120,7 +120,7 @@ For block sizes 16 to 64, the paper reports comparable end-to-end performance be
 
 ## Distributed Execution
 
-vLLM supports Megatron-LM-style tensor parallelism. Each worker stores only the KV cache for its shard of attention heads, but all workers share the same logical-to-physical block mapping from the centralized scheduler.
+vLLM supports Megatron-LM-style [tensor parallelism](../../terms/tensor-parallelism.md). Each worker stores only the KV cache for its shard of attention heads, but all workers share the same logical-to-physical block mapping from the centralized scheduler.
 
 At each decoding step:
 

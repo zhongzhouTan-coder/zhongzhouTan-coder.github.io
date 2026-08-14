@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf
   - derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md
-updated: 2026-07-24
+updated: 2026-08-14
 ---
 
 # FlashAttention-2: Better Parallelism and Work Partitioning
@@ -255,7 +255,7 @@ FA2 sits between the original IO-aware algorithm and later architecture-specific
 
 - [FlashAttention](flashattention.md) establishes exact tiled attention with online softmax and recomputation.
 - FlashAttention-2 keeps the same exact-attention semantics but improves GPU occupancy and work partitioning.
-- [FlashAttention-3](flashattention-3.md) targets Hopper with TMA/WGMMA asynchrony, warp specialization, and FP8 forward attention.
+- [FlashAttention-3](flashattention-3.md) targets Hopper with TMA/WGMMA asynchrony, warp specialization, and [FP8](../../terms/fp8.md) forward attention.
 - [FlashAttention-4](flashattention-4.md) targets Blackwell with TMEM, larger MMA tiles, exponential emulation, 2-CTA backward, and load-balanced scheduling.
 
 Compared with [vLLM](../../frameworks/vllm/vllm-framework.md), FA2 is a kernel-level attention optimization. vLLM manages serving-time KV-cache memory and scheduling, while FA2 makes exact attention kernels faster for training, finetuning, and inference.

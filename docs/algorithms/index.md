@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-13
+updated: 2026-08-14
 ---
 
 # Algorithms
@@ -27,13 +27,13 @@ updated: 2026-08-13
 - [FlashAttention](flashattention/index.md) — Category hub for the FlashAttention algorithm and kernel family.
 - [FlashAttention: IO-Aware Exact Attention](flashattention/flashattention.md) — Original IO-aware exact attention algorithm: tiling, online softmax, recomputation, IO complexity, block-sparse extension, landscape evolutionary tree, and training/runtime results.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](flashattention/flashattention-2.md) — Exact attention kernel optimization: reduced non-matmul overhead, sequence-parallel thread blocks, warp-level work partitioning, causal block skipping, Big Picture comparison diagram, landscape showing FA1→FA2 utilization gap closure, and A100/H100 performance results.
-- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](flashattention/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, [GEMM](../terms/gemm.md)-softmax overlap, FP8 block quantization, incoherent processing, Big Picture pipeline diagram, landscape of Hopper hardware exploitation, and speed/accuracy results.
+- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](flashattention/flashattention-3.md) — Hopper attention kernel design: warp specialization, TMA/WGMMA asynchrony, [GEMM](../terms/gemm.md)-softmax overlap, [FP8](../terms/fp8.md) block quantization, incoherent processing, Big Picture pipeline diagram, landscape of Hopper hardware exploitation, and speed/accuracy results.
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](flashattention/flashattention-4.md) — Exact attention algorithm and Blackwell kernel design: asymmetric scaling response, exponential emulation, conditional softmax rescaling, TMEM-based pipelining, 2-CTA backward pass, LPT scheduling, landscape of shifting hardware bottlenecks, and performance results.
 
 ## Attention Variants
 
 - [Attention Variants](attention-variants/index.md) — Category hub for attention designs that reduce query/key redundancy or KV-cache pressure.
-- [Multi-Query Attention: One Write-Head is All You Need](attention-variants/multi-query-attention.md) — Eliminates per-head key/value projections, sharing one K/V across all heads; reduces incremental decoder inference cost 12× (46→3.8 µs/token) with negligible quality loss; orthogonal to local attention and ancestor of Grouped-Query Attention (GQA).
+- [Multi-Query Attention: One Write-Head is All You Need](attention-variants/multi-query-attention.md) — Eliminates per-head key/value projections, sharing one K/V across all heads; reduces incremental decoder inference cost 12× (46→3.8 µs/token) with negligible quality loss; orthogonal to local attention and ancestor of [Grouped-Query Attention](../terms/grouped-query-attention.md) (GQA).
 - [Grouped-Query Attention in Llama 2](attention-variants/grouped-query-attention/index.md) — Llama 2's 34B/70B attention choice: use 8 KV groups to cut KV-cache pressure while preserving more quality and cleaner tensor-parallel serving than single-KV-head MQA.
 - [Collaborative Multi-Head Attention: Collaborate Instead of Concatenate](attention-variants/collaborative-attention.md) — Redesigns MHA with shared key/query projections and per-head mixing vectors, enabling 4× compression of Q/K dimensions; CP tensor decomposition for post-hoc conversion of pretrained models.
 - [DeepSeek-V2 Multi-Head Latent Attention](attention-variants/deepseek-v2-mla.md) — DeepSeek-V2's MLA design: low-rank joint K/V latent cache, decoupled RoPE side channel, query compression, [MoE](../terms/mixture-of-experts.md) serving context, and reported 93.3% KV-cache reduction with 5.76× maximum generation throughput versus DeepSeek 67B.
@@ -46,7 +46,7 @@ updated: 2026-08-13
 
 ## Distributed Inference
 
-- [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q ring attention, load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling.
+- [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q [ring attention](../terms/ring-attention.md), load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling. <!-- termlint-ignore: context-parallelism -- Navigation label already links the dedicated context-parallelism insight. -->
 
 ## Model Papers
 

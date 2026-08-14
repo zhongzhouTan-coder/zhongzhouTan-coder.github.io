@@ -52,7 +52,8 @@ appears_in:
   - docs/algorithms/context-parallelism/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
-updated: 2026-08-13
+  - docs/frameworks/vllm/dcp-attention/index.md
+updated: 2026-08-14
 ---
 
 # KV Cache
@@ -114,6 +115,8 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Shards persistent KV state across context-parallel ranks and chooses whether to circulate KV or queries.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP shards persistent decode KV state; PCP gathers prefill cache inputs without duplicating decode writes.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md) — Transfers request-specific paged KV blocks from an independently scaled prefill pool into decode-owned storage.
+
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md)
 
 ## Related Terms
 

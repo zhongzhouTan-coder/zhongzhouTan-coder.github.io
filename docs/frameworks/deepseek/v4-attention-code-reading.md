@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
   - derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/deepseek-v4-attention.md
   - derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/deepseek-v4-attention.md
-updated: 2026-07-28
+updated: 2026-08-14
 ---
 
 # DeepSeek V4 Attention: Code Reading Map
@@ -35,7 +35,7 @@ updated: 2026-07-28
 The DeepSeek V4 attention code is a production serving implementation of the hybrid compressed attention architecture described in the [DeepSeek-V4 technical report](../../training/deepseek/deepseek-v4/index.md). It must handle:
 
 - **Heterogeneous layer types:** CSA (compress_ratio=4), HCA (compress_ratio=128), and SWA-only (compress_ratio=1) layers in the same model
-- **Three KV cache types:** SwA cache (sliding window), compressor state cache (partial compression states in float32), and main MLA cache (compressed entries in fp8/bf16)
+- **Three KV cache types:** SwA cache (sliding window), compressor state cache (partial compression states in float32), and main MLA cache (compressed entries in [FP8](../../terms/fp8.md)/BF16)
 - **Multi-platform dispatch:** NVIDIA (FlashMLA / FlashInfer / Triton), AMD ROCm (AITER), Intel XPU, Huawei Ascend NPU (DSA)
 - **Multi-stream overlap:** Up to 4-way overlap of input [GEMMs](../../terms/gemm.md), indexer, and compressor on CUDA; NPU stream overlap on Ascend
 - **FP8/MXFP4 quantization:** UE8M0 block-scaled fp8 (`fp8_ds_mla` layout) for main KV cache; MXFP4 for indexer keys

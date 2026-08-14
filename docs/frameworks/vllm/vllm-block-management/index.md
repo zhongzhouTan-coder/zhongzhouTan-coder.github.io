@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-dd11df04f3b7.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/important-files.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/block-management.md
-updated: 2026-08-04
+updated: 2026-08-14
 ---
 
 # vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack
@@ -247,7 +247,7 @@ Higher effective batch size is the direct consequence of the three waste classes
 
 ### ⚠️ How to read these numbers
 
-These are 2023 single-GPU OPT-13B benchmarks. Do **not** treat "2-4×" as a universal multiplier for modern models, multi-GPU deployments, or FP8 caches. The qualitative claim — paging beats contiguous reservation — is what generalizes, not the specific ratios. Also, prefix-cache hit rates in these benchmarks depend heavily on the workload's prompt overlap; a dataset with unique prompts gets far less benefit from sections 4-5.
+These are 2023 single-GPU OPT-13B benchmarks. Do **not** treat "2-4×" as a universal multiplier for modern models, multi-GPU deployments, or [FP8](../../../terms/fp8.md) caches. The qualitative claim — paging beats contiguous reservation — is what generalizes, not the specific ratios. Also, prefix-cache hit rates in these benchmarks depend heavily on the workload's prompt overlap; a dataset with unique prompts gets far less benefit from sections 4-5.
 
 ## Where It Breaks
 

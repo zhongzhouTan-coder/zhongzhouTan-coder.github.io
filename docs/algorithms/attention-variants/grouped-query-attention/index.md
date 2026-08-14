@@ -6,7 +6,7 @@ confidence: medium
 sources:
   - raw/algorithms/grouped-query-attention-llama-2--paper.pdf
   - derived/pdf-markdown/algorithms/grouped-query-attention-llama-2.md
-updated: 2026-07-26
+updated: 2026-08-14
 ---
 
 # Grouped-Query Attention in Llama 2
@@ -19,7 +19,7 @@ updated: 2026-07-26
 
 ## TL;DR
 
-**What:** Grouped-Query Attention (GQA) is the middle point between full multi-head attention and multi-query attention: many query heads share a smaller number of key/value heads.
+**What:** [Grouped-Query Attention](../../../terms/grouped-query-attention.md) (GQA) is the middle point between full multi-head attention and multi-query attention: many query heads share a smaller number of key/value heads.
 
 **How:** Llama 2 uses 8 KV projections for its larger 34B and 70B models, reducing KV-cache growth while avoiding the strongest quality and tensor-parallel serving drawbacks of single-KV-head MQA.
 

@@ -6,7 +6,7 @@ confidence: medium
 sources:
   - raw/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1--arxiv-2308.16369v1.pdf
   - derived/pdf-markdown/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # Sarathi: Chunked Prefills for Efficient LLM Inference
@@ -48,7 +48,7 @@ The figure makes the central contrast visible: baseline iterations have uneven w
 
 Imagine a server with a long prompt and several active generations. A full prefill keeps the GPU busy, but the following decode steps process one token per request and repeatedly reload model weights for tiny matrix-vector operations. A decode-only batch of four requests can spend 12.49 ms per token in the paper's LLaMA-13B/A6000 example, while a hybrid batch with one 1021-token prefill and three decodes reduces the marginal decode cost to 1.2 ms per token.
 
-Pipeline parallelism adds a second problem. A microbatch containing many prompt tokens takes a different time from one containing only decodes; later stages wait for the slower work, creating bubbles. Different prompt lengths and different KV-cache lengths create still more variation. Sarathi makes each unit closer to the same compute shape before it enters the pipeline.
+[Pipeline parallelism](../../terms/pipeline-parallelism.md) adds a second problem. A microbatch containing many prompt tokens takes a different time from one containing only decodes; later stages wait for the slower work, creating bubbles. Different prompt lengths and different KV-cache lengths create still more variation. Sarathi makes each unit closer to the same compute shape before it enters the pipeline.
 
 ## The Landscape
 

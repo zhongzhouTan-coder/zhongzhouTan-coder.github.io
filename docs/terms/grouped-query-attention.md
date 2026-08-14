@@ -12,7 +12,12 @@ aliases:
   - grouped query attention
 appears_in:
   - docs/algorithms/context-parallelism/index.md
-updated: 2026-08-10
+  - docs/algorithms/attention-variants/grouped-query-attention/index.md
+  - docs/algorithms/attention-variants/multi-query-attention.md
+  - docs/algorithms/index.md
+  - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
+  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
+updated: 2026-08-14
 ---
 
 # Grouped-Query Attention
@@ -40,6 +45,12 @@ Fewer KV heads reduce cache and communication cost, but the model must be traine
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Uses Llama3's 128 query heads and 8 KV heads to make pass-KV communication efficient.
 - [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245) - Introduces grouped-query adaptation from multi-head checkpoints.
+
+- [Grouped-Query Attention in Llama 2](../algorithms/attention-variants/grouped-query-attention/index.md)
+- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention-variants/multi-query-attention.md)
+- [Algorithms](../algorithms/index.md)
+- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md)
+- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md)
 
 ## Related Terms
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/k3-technical-report--paper.pdf
   - derived/pdf-markdown/training/k3-technical-report.md
-updated: 2026-07-29
+updated: 2026-08-14
 ---
 
 # Kimi K3: Open 3T-Class Frontier Model
@@ -152,7 +152,7 @@ Kimi K3 notation mixes architecture, MoE routing, RL, and distributed-training s
 
 ### Infrastructure for 3T Pretraining and 1M RL
 
-**What it does:** Adds KDA Context Parallelism, MoonEP balanced expert-parallel training, memory/offload policies, and persistent rollout infrastructure.
+**What it does:** Adds KDA [Context Parallelism](../../../terms/context-parallelism.md), MoonEP balanced expert-parallel training, memory/offload policies, and persistent rollout infrastructure.
 
 **Why it matters:** K3's architecture would be mostly theoretical without systems work: KDA is recurrent across context shards, MoE routing creates imbalanced expert loads, 2.8T parameters exceed [device memory](../../../terms/global-memory.md), and 1M-token rollouts create severe cache pressure.
 

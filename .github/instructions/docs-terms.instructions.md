@@ -24,6 +24,8 @@ sources:
 aliases:
   - alternative-spelling
   - another-name
+mention_aliases:
+  - alternative-spelling
 appears_in:
   - docs/training/megatron-lm/index.md
   - docs/algorithms/transformer.md
@@ -38,6 +40,10 @@ updated: 2026-07-27
 - `tooltip`: strongly recommended. Two or three plain-language sentences for term hover previews on related paper pages. Define the term, explain why it matters, and optionally mention the most common confusion. If omitted, hover previews should fall back to `summary`.
 - `category`: required. One of `training`, `algorithms`, `hardware`, `frameworks`, `benchmarks`, or `general`. This groups terms in the index.
 - `aliases`: optional. Alternative names or spellings for the term. Helps with search and auto-linking.
+- `mention_aliases`: optional. The subset of `aliases` precise enough for the
+  term-link checker to detect in plain prose. Every entry must also appear in
+  `aliases`. Do not include ambiguous abbreviations such as `CP`, `TP`, or `PP`
+  unless their repository-wide use is reliably unambiguous.
 - `appears_in`: optional but strongly recommended. This is the canonical list of docs pages that use this term, as repository-relative paths. Every listed page must contain an ordinary Markdown link to this term page, and every docs page that links the term must be listed here.
 - All other front matter fields follow [`docs-front-matter.instructions.md`](docs-front-matter.instructions.md).
 
@@ -188,12 +194,31 @@ The checker treats each term page as the single source of truth; do not maintain
 a separate hand-written term registry. It validates the glossary index,
 `appears_in`, the local links under "Where It Appears", and links from consuming
 docs pages in both directions. Plain-text occurrences of a canonical title or
-explicit alias that have no term link are warnings by default. Use
+an alias explicitly opted in through `mention_aliases` that have no term link
+are warnings by default. Other aliases remain available for search and glossary
+lookup without producing lint warnings. Use
 `--strict-mentions` to make those findings fail while cleaning or reviewing a
 focused scope. Front matter, headings, code, image captions, term pages, and log
 pages are excluded from mention discovery. Glossary-to-glossary navigation is
 also excluded from `appears_in` validation; keep those links under "Related
 Terms" instead.
+
+When a detected occurrence is genuinely not a glossary reference, suppress
+that occurrence with a reviewed HTML comment using the term page's filename
+slug and a required reason:
+
+```markdown
+KV Cache is the name of this benchmark fixture.
+<!-- termlint-ignore: kv-cache -- Fixture name, not the attention concept. -->
+```
+
+The comment may instead appear at the end of the prose line. A comment-only
+directive applies only to the immediately preceding line. Suppressions are
+occurrence-local: the checker continues looking for later unsuppressed mentions
+on the same page. Unknown slugs, missing reasons, misplaced comments, comments
+for already-linked terms, and comments whose target no longer contains a
+detectable name are lint errors. Do not use suppressions to avoid linking a
+meaningful first occurrence.
 
 ## Slug Convention
 

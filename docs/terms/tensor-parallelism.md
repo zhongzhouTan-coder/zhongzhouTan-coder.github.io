@@ -13,7 +13,14 @@ aliases:
 appears_in:
   - docs/algorithms/context-parallelism/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
-updated: 2026-08-10
+  - docs/frameworks/vllm-ascend/architecture.md
+  - docs/frameworks/vllm/vllm-framework.md
+  - docs/hardware/quantization/nvfp4.md
+  - docs/training/index.md
+  - docs/training/parallelism/index.md
+  - docs/training/parallelism/megatron-lm/index.md
+  - docs/training/parallelism/sequence-parallelism/index.md
+updated: 2026-08-14
 ---
 
 # Tensor Parallelism
@@ -41,6 +48,14 @@ Tensor parallelism shards model weights, which CP does not, but its frequent col
 
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Uses TP8 within each host and CP across hosts to balance model fit with long-context latency.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP reuses TP ranks when PCP is disabled and may span the full TP x PCP group.
+
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md)
+- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md)
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md)
+- [Training](../training/index.md)
+- [Training Parallelism](../training/parallelism/index.md)
+- [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md)
+- [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md)
 
 ## Related Terms
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/deepseek-v4--paper.pdf
   - derived/pdf-markdown/training/deepseek-v4.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention
@@ -64,7 +64,7 @@ flowchart TD
     J --> H
 ```
 
-DeepSeek-V4 sits at the convergence of three evolutionary lines: (1) KV compression (MQA → MLA), (2) sparse attention (DSA, MSA), and (3) low-precision attention (FP8/FP4). Its key novelty is combining compression *and* sparsity in a hybrid, interleaved architecture — CSA layers compress lightly and select sparsely, while HCA layers compress aggressively and attend densely.
+DeepSeek-V4 sits at the convergence of three evolutionary lines: (1) KV compression (MQA → MLA), (2) sparse attention (DSA, MSA), and (3) low-precision attention ([FP8](../../../terms/fp8.md)/FP4). Its key novelty is combining compression *and* sparsity in a hybrid, interleaved architecture — CSA layers compress lightly and select sparsely, while HCA layers compress aggressively and attend densely.
 
 ## The Core Idea
 

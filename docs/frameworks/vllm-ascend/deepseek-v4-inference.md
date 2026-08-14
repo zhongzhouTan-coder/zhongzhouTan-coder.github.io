@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-06
+updated: 2026-08-14
 ---
 
 # DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend
@@ -253,7 +253,7 @@ The Ascend port does not translate kernels one-for-one; it re-architects the Dee
 
 **Why it matters:** The output projection is where the attention result re-enters the residual stream; its TP handling (A5 quantized path, OTP [all-to-all](../../terms/all-to-all.md), olora TP) differs per hardware and config.
 
-**How it works:** <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/dsa_v1.py#L1652" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="1652" data-code-end-line="1760"><code>_forward_o_proj</code></a> first applies inverse partial rotary (`inplace_partial_rotary_mul` with `-sin`), then reshapes into groups. On A5 it uses an FP8 MX-quantized batch [matmul](../../terms/gemm.md) path; with `oproj_tp_enable()` it does a static-buffer `all_to_all_single` + batch matmul + `reduce_scatter_tensor`; with `olora_tp_enable()` it uses `wo_a`/`wo_b`; otherwise a plain `npu_transpose_batchmatmul` + `wo_b`.
+**How it works:** <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/attention/dsa_v1.py#L1652" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/attention/dsa_v1.py" data-code-line="1652" data-code-end-line="1760"><code>_forward_o_proj</code></a> first applies inverse partial rotary (`inplace_partial_rotary_mul` with `-sin`), then reshapes into groups. On A5 it uses an [FP8](../../terms/fp8.md) MX-quantized batch [matmul](../../terms/gemm.md) path; with `oproj_tp_enable()` it does a static-buffer `all_to_all_single` + batch matmul + `reduce_scatter_tensor`; with `olora_tp_enable()` it uses `wo_a`/`wo_b`; otherwise a plain `npu_transpose_batchmatmul` + `wo_b`.
 
 **The intuition:** The output projection is a grouped low-rank matmul (`wo_a` then `wo_b`); on multi-rank setups it becomes an all-to-all across output-tensor-parallel groups.
 
