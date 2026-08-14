@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf
   - derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md
-updated: 2026-07-24
+updated: 2026-08-14
 ---
 
 # FlashAttention: IO-Aware Exact Attention
@@ -147,6 +147,57 @@ The final division $O / \ell$ happens once at the end, yielding the exact softma
 
 **Intuition:** Think of it as voting with adjustable weights. You tally votes as they arrive. If a much more popular candidate appears later, you **deflate** all previous vote counts proportionally. The final normalization preserves the exact proportions.
 
+#### The Log-Sum-Exp View
+
+The rescaling form above carries a running **max** `m` and a running **sum** `l`, then divides `O / l` at the very end. The same tiling can be expressed in **log space**, and that is the form most implementations actually persist.
+
+**One scalar per row.** Because `l` is accumulated with the max already subtracted, the max factors back out exactly:
+
+$$L_i = \log\sum_j \exp(S_{ij}) = m_i + \log l_i$$
+
+The left side is the **log-sum-exp (LSE)** of row `i`; the right side shows the two running statistics collapsing into it. Computing `m + log(l)` once at the end costs one log per row and yields a number that stays tame no matter how large the raw sum `l` grows.
+
+**What changes in the process.** Nothing about the output — attention still needs the ratio `O / l`, and that division still happens. The change is bookkeeping: instead of discarding the denominator, the kernel records `L = m + log(l)` as one scalar per row. This is precisely what the implementation's final `m += log(l)` step computes before storing the result.
+
+**Why only the denominator skips the rescale.** The log function turns multiplication by a rescale into addition — $\log(\ell \cdot e^x) = \log \ell + x$ — so the denominator absorbs the max update for free; that is why `L` needs no `alpha`. The numerator $O = \sum_j e^{S_j - m} V_j$ is a *vector* sum with no log equivalent, so it cannot be made absolute: whenever the max (or the LSE) moves, `O` must be re-expressed. The correction never disappears — it only changes form:
+
+- **In-loop (max-rescale):** `O <- O * alpha`, the same `alpha = exp(m_old - m_new)` applied to `l`.
+- **At-merge (log-space):** each block's locally normalized output is weighted by `exp(l_b - L_global)`, its share of the global denominator.
+
+**Why log space.**
+
+- **Overflow safety.** `l` is a sum of up to `N` exponentials and can overflow in fixed precision; its logarithm cannot.
+- **The backward pass wants `L`, not `l`.** The softmax gradient is expressible through the probabilities and `L`, so a backward kernel recomputes `P` on chip and needs only `O` and `L` — never the huge raw denominator.
+
+**Equivalent update rule.** You can also maintain `L` directly across blocks. For a new block with local log-sum-exp `l_b = log(sum_j exp(S_j - m_b)) + m_b`:
+
+$$L_{new} = \max(L_{old}, l_b) + \log\left(1 + \exp(-|L_{old} - l_b|)\right)$$
+
+**Where the `max` comes from.** The merge starts from the exact definition $L_{new} = \log(e^{L_{old}} + e^{l_b})$, but evaluating $e^{L_{old}}$ directly overflows once the LSEs grow large. So factor out the larger of the two, $M = \max(L_{old}, l_b)$:
+
+$$e^{L_{old}} + e^{l_b} = e^M\left(e^{L_{old}-M} + e^{l_b-M}\right)$$
+
+Taking logs gives $L_{new} = M + \log(e^{L_{old}-M} + e^{l_b-M})$. Because $M$ is the max, one of the two exponents is now $0$ and the other is $-|L_{old}-l_b|$, so the bracket collapses to $1 + e^{-d}$. The `max(...)` term is the dominant answer, and $\log(1 + e^{-d})$ is a correction bounded in $[0, \log 2)$ that shrinks to $0$ as the gap between the two LSEs grows.
+
+**Merge trace.** Block 1's local LSE is $L_{old} = 5 + \log(1.0498) \approx 5.049$; block 2's local LSE is $l_b = 8 + \log(1.0009) \approx 8.001$. Merging them:
+
+$$\log(e^{5.049} + e^{8.001}) = 8.001 + \log(e^{-2.952} + 1) = 8.001 + \log(1.0522) \approx 8.052$$
+
+matching the running $L$ after block 2 in the example below. This is the same tally re-expressed as the numerically stable `logaddexp` (`max` + `log1p`); it produces identical output to the max-rescale form, and the only difference is which statistics travel between blocks.
+
+**The same example.** Scores `[2, 5, 1, 8]` in two blocks:
+
+- Block 1: `m = 5`, `l ≈ 1.05` → `L = 5 + log(1.05) ≈ 5.05`
+- Block 2: `m = 8`, `l ≈ 1.052` → `L = 8 + log(1.052) ≈ 8.05`
+
+Direct check: `log(e^2 + e^5 + e^1 + e^8) = 8 + log(1 + e^{-3} + e^{-6} + e^{-7}) ≈ 8.05`. The output `O / l` is unchanged — `L` is just the denominator's logarithm, kept for reuse.
+
+**Intuition:** Max-rescale and log-sum-exp are **the same tally in two number systems** — one tracks the count, the other tracks its logarithm. The output needs the count (`O / l`); the backward pass prefers the logarithm (`L`), which is why kernels write `m + log(l)`.
+
+> **Important:** `L = m + log(l)` is exact only because `l` was accumulated with the max subtracted. A naive raw sum without the max would overflow and break the identity.
+
+This same `L` is what context-parallel and multi-device attention use to merge partial softmax results — see [vLLM DCP attention](../../frameworks/vllm/dcp-attention/index.md).
+
 ### Recomputation in Backward
 
 Standard training stores `S` or `P` for backward, which costs quadratic memory. FlashAttention instead stores:
@@ -154,6 +205,8 @@ Standard training stores `S` or `P` for backward, which costs quadratic memory. 
 - output `O`;
 - softmax row max `m`;
 - softmax normalizer `l`.
+
+Equivalently, the two statistics `m` and `l` collapse into one per-row log-sum-exp $L = m + \log l$ (see the Log-Sum-Exp View above) — the single scalar a backward pass actually needs.
 
 During backward, it reloads blocks of `Q`, `K`, and `V`, recomputes local attention probabilities on chip, and uses them to compute `dQ`, `dK`, and `dV`. This increases FLOPs, but reduces HBM traffic enough that backward is faster in practice.
 

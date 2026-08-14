@@ -305,3 +305,6 @@ updated: 2026-08-14
 
 - Reviewed and resolved all 56 remaining term-link warnings: added 47 meaningful glossary links across FP8, grouped-query attention, context/ring attention, KV cache, and tensor/pipeline parallelism; navigation-only labels are now recognized as existing links rather than glossary gaps.
 - Optimized glossary maintenance by making `appears_in` a curated teaching set, generating exhaustive consumer backlinks in `terms.json`, separating structural lint from explicit path-scoped mention review, and adding per-term `mention_lint` modes for common versus high-value concepts.
+- Expanded [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) with a Log-Sum-Exp view of online softmax: the `L = m + log(l)` identity, the stable `logaddexp` merge rule, why log space avoids overflow and is what the backward pass needs, and a cross-link to vLLM DCP attention.
+- Clarified in the same page why only the denominator `L` escapes the rescale (log turns ×rescale into +) while the numerator `O` always needs correction — as `alpha` in the in-loop max-rescale form or as `exp(l_b - L)` in the at-merge log-space form.
+- Added a derivation of the `logaddexp` merge form to the same page — why factoring out `max(L_old, l_b)` leaves a correction `log(1 + e^{-d})` bounded in `[0, log 2)` — plus a worked merge trace.
