@@ -8,7 +8,7 @@ sources:
   - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
   - derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md
   - derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md
-updated: 2026-08-06
+updated: 2026-08-13
 ---
 
 # Megatron-LM: GPU-Cluster Training Parallelism
@@ -189,7 +189,7 @@ During decode, each GPU appends $K_i, V_i$ to its **local [KV cache](../../../te
 
 ### Paper 1: BERT LayerNorm Rearrangement
 
-**What it does:** Moves LayerNorm and the residual connection so that LayerNorm is applied to the *input* of each sublayer, not the output — the "Pre-LN" pattern now standard in most Transformer implementations.
+**What it does:** Moves [LayerNorm](../../../terms/layer-normalization.md) and the residual connection so that normalization is applied to the *input* of each sublayer, not the output — the "Pre-LN" pattern now standard in most Transformer implementations.
 
 **Why it matters:** The original BERT architecture (Post-LN, Figure 7a in the paper) causes training instability as model size increases beyond BERT-Large (336M). Prior work (ALBERT) resorted to parameter sharing to work around this. Megatron-LM showed the architecture itself was the problem.
 

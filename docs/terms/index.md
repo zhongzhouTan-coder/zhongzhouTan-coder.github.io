@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-10
+updated: 2026-08-13
 ---
 
 # Terms Glossary
@@ -41,6 +41,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [Lightning Indexer](lightning-indexer.md) — A learned top-k block selector in compressed sparse attention that scores compressed KV blocks against the query and returns the indices of the most relevant blocks for core attention.
 - [Kronecker Product](kronecker-product.md) — The block-structured matrix product A⊗B that builds a large matrix from two smaller ones by scaling copies of B by the entries of A.
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
+- [Layer Normalization](layer-normalization.md) — Standardizes each example or token across its feature dimensions, independently of other batch members.
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Outer Product](outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.

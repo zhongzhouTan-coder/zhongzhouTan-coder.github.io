@@ -8,7 +8,7 @@ code_evidence: strict
 sources:
   - raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md
   - derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/important-files.md
-updated: 2026-08-10
+updated: 2026-08-13
 ---
 
 # vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM
@@ -230,7 +230,7 @@ An extensive set of custom Ascend ops replace standard PyTorch ops:
 | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/linear.py#L53" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/linear.py" data-code-line="53"><code>ops/linear.py</code></a> | Fractal-format linear layers |
 | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/rotary_embedding.py#L63" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/rotary_embedding.py" data-code-line="63"><code>ops/rotary_embedding.py</code></a> | RoPE with DeepSeek scaling |
 | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/rope_dsv4.py#L12" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/rope_dsv4.py" data-code-line="12"><code>ops/rope_dsv4.py</code></a> | Complex exponential RoPE for V4 |
-| <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/layernorm.py#L28" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/layernorm.py" data-code-line="28"><code>ops/layernorm.py</code></a> | Custom RMSNorm |
+| <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/layernorm.py#L28" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/layernorm.py" data-code-line="28"><code>ops/layernorm.py</code></a> | Custom RMSNorm in the [LayerNorm](../../terms/layer-normalization.md) operator family |
 | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/activation.py#L29" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/activation.py" data-code-line="29"><code>ops/activation.py</code></a> | AscendQuickGELU, AscendSiluAndMul |
 | `ops/fused_moe/` | Fused MoE with Ascend optimizations |
 | <a class="code-link" href="../../../external-repos/vllm-ascend/vllm_ascend/ops/vocab_parallel_embedding.py#L45" data-code-repo="vllm-ascend-32a59d4e349c" data-code-path="vllm_ascend/ops/vocab_parallel_embedding.py" data-code-line="45"><code>ops/vocab_parallel_embedding.py</code></a> | Ascend-optimized embedding |

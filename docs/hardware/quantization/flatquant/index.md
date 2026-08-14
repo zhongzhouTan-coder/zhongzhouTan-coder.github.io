@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf
   - derived/pdf-markdown/hardware/flatquant-fast-learnable-affine-quantization.md
-updated: 2026-08-04
+updated: 2026-08-13
 ---
 
 # FlatQuant: Fast Learnable Affine Quantization
@@ -152,7 +152,7 @@ where `×_i` contracts the i-th axis of the reshaped tensors. Memory drops by up
 
 **Why it matters:** The ablation shows each contributes: scaling alone adds 0.55 PPL improvement and clipping adds 0.84 on top of the transform.
 
-**How it works:** `diag(c)` is learned before the transform and merged pairwise into the preceding LayerNorm or linear weights, so it costs nothing online. Clipping thresholds live in `(0,1)` after a sigmoid and are trained jointly with P and c. Critically, clipping must come *after* the transformation: the transform redistributes outliers across channels, and only then can clipping remove the residual extremes without destroying information (the inverse transform recovers scale later). Clipping before transformation (RTN-style) gives marginal gains — consistent with prior findings that early activation clipping fails against severe outliers.
+**How it works:** `diag(c)` is learned before the transform and merged pairwise into the preceding [LayerNorm](../../../terms/layer-normalization.md) or linear weights, so it costs nothing online. Clipping thresholds live in `(0,1)` after a sigmoid and are trained jointly with P and c. Critically, clipping must come *after* the transformation: the transform redistributes outliers across channels, and only then can clipping remove the residual extremes without destroying information (the inverse transform recovers scale later). Clipping before transformation (RTN-style) gives marginal gains — consistent with prior findings that early activation clipping fails against severe outliers.
 
 **The intuition:** Transform first to spread the outliers, then clip the leftovers — order matters.
 

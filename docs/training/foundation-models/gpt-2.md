@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf
   - derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md
-updated: 2026-07-25
+updated: 2026-08-13
 ---
 
 # GPT-2: Language Models are Unsupervised Multitask Learners
@@ -89,7 +89,7 @@ GPT-2 is a scaled-up GPT-1 with several improvements:
 
 | Change | GPT-1 | GPT-2 | Why |
 |---|---|---|---|
-| **Layer normalization** | Post-norm (add then norm) | **Pre-norm** (norm then add) | Better training stability in deep networks |
+| **[Layer normalization](../../terms/layer-normalization.md)** | Post-norm (add then norm) | **Pre-norm** (norm then add) | Better training stability in deep networks |
 | **Extra LayerNorm** | None | Added after final self-attention block | Stabilizes final representations |
 | **Weight initialization** | $N(0, 0.02)$ | Scaled by $1/\sqrt{N}$ (N = residual layers) | Prevents activation growth with depth |
 | **Context window** | 512 | **1024** | Longer documents |

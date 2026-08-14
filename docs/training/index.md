@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-29
+updated: 2026-08-13
 ---
 
 # Training
@@ -13,7 +13,7 @@ updated: 2026-07-29
 ## Training Parallelism
 
 - [Training Parallelism](parallelism/index.md) — Category hub for data, tensor, pipeline, and [sequence parallelism](../terms/sequence-parallelism.md) techniques.
-- [Megatron-LM: GPU-Cluster Training Parallelism](parallelism/megatron-lm/index.md) — Covers both Megatron-LM papers: intra-layer tensor model parallelism with `f`/`g` conjugate operators and BERT LayerNorm rearrangement (2019, 8.3B GPT on 512 V100), and the PTD-P recipe composing tensor, pipeline, and data parallelism with interleaved 1F1B and [scatter/gather](../terms/scatter-gather.md) (2021, 1T GPT on 3072 A100).
+- [Megatron-LM: GPU-Cluster Training Parallelism](parallelism/megatron-lm/index.md) — Covers both Megatron-LM papers: intra-layer tensor model parallelism with `f`/`g` conjugate operators and BERT [LayerNorm](../terms/layer-normalization.md) rearrangement (2019, 8.3B GPT on 512 V100), and the PTD-P recipe composing tensor, pipeline, and data parallelism with interleaved 1F1B and [scatter/gather](../terms/scatter-gather.md) (2021, 1T GPT on 3072 A100).
 - [GPipe: Micro-Batch Pipeline Parallelism](parallelism/gpipe/index.md) — Introduces synchronous [micro-batch](../terms/microbatch.md) pipeline parallelism with activation recomputation, achieving near-linear speedup when training models across multiple accelerators.
 - [Sequence Parallelism: Splitting Sequences Across GPUs](parallelism/sequence-parallelism/index.md) — Distributes input sequence chunks across GPUs with Ring Self-Attention (RSA), achieving 13.7× larger batch size and 3.0× longer sequences than tensor parallelism.
 

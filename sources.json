@@ -1295,5 +1295,24 @@
       ],
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:penpenf28.github.io/transformer-layernorm@2026-08-13-a67f03dab584",
+      "title": "Batch Normalization和Layer Normalization",
+      "slug": "transformer-layernorm",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://penpenf28.github.io/2023/10/25/Batch-Normalization%E5%92%8CLayer-Normalization/index.html",
+      "final_url": "https://penpenf28.github.io/2023/10/25/Batch-Normalization%E5%92%8CLayer-Normalization/index.html",
+      "captured_at": "2026-08-13T15:39:51.648Z",
+      "revision": "a67f03dab584fca9a9af3149feb78c898f25e9275edd130f62532251e181abd0",
+      "raw_paths": [
+        "raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.html",
+        "raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.md",
+      "docs_path": "docs/algorithms/foundations/layer-normalization/index.md",
+      "status": "ingested"
+    }
   ]
 }

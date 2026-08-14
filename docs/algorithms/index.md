@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-10
+updated: 2026-08-13
 ---
 
 # Algorithms
@@ -14,6 +14,7 @@ updated: 2026-08-10
 
 - [Foundations](foundations/index.md) — Category hub for foundational sequence-modeling concepts.
 - [The Transformer: Attention Is All You Need](foundations/transformer.md) — The foundational architecture that replaces recurrence with multi-head self-attention: scaled dot-product attention, multi-head parallelism, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that birthed modern LLMs.
+- [Layer Normalization in Transformers](foundations/layer-normalization/index.md) ([term](../terms/layer-normalization.md)) — Token-local normalization across hidden features, contrasted with BatchNorm through equations, source diagrams, runtime behavior, and implementation pitfalls.
 - [The Softmax Function: Properties, Motivation, and Interpretation](foundations/softmax.md) — Comprehensive tutorial on the softmax function: score-difference semantics, α parameter interpretation, three conceptual justifications (Gumbel noise, maximum entropy, exploration-exploitation), IO vs. IM model taxonomy, and complete mathematical properties with proofs.
 - [Recurrent Neural Networks: From RNN to LSTM](foundations/recurrent-neural-networks/index.md) — Beginner-oriented path from sequence order and shared recurrent weights to hidden-state memory, long-term dependency failures, LSTM gates, and [linear attention](../terms/linear-attention.md)'s RNN execution mode.
 

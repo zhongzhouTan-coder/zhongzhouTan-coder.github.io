@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf
   - derived/pdf-markdown/algorithms/attention-is-all-you-need.md
-updated: 2026-07-25
+updated: 2026-08-13
 ---
 
 # The Transformer: Attention Is All You Need
@@ -345,7 +345,7 @@ $$PE_{(pos, 2i+1)} = \cos(pos / 10000^{2i/d_{\text{model}}})$$
 
 ### Residual Connections and Layer Normalization
 
-**What it does:** Wraps every sub-layer (attention and FFN) with $\operatorname{LayerNorm}(x + \operatorname{Sublayer}(x))$.
+**What it does:** Wraps every sub-layer (attention and FFN) with [LayerNorm](../../terms/layer-normalization.md): $\operatorname{LayerNorm}(x + \operatorname{Sublayer}(x))$.
 
 **Why it matters:** Without residual connections, deep transformers are impossible to train. The residuals create "gradient highways" that let training signal flow directly from the output back to the input, bypassing the sub-layer. LayerNorm stabilizes activations.
 
