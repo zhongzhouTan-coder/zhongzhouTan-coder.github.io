@@ -1291,7 +1291,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/vllm/2d24355eb87b716fc1169e66731dc0386ed1a3a2/",
       "docs_paths": [
-        "docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md"
+        "docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md",
+        "docs/frameworks/vllm/vllm-mha-code-path.md"
       ],
       "status": "ingested"
     }

@@ -308,3 +308,7 @@ updated: 2026-08-14
 - Expanded [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) with a Log-Sum-Exp view of online softmax: the `L = m + log(l)` identity, the stable `logaddexp` merge rule, why log space avoids overflow and is what the backward pass needs, and a cross-link to vLLM DCP attention.
 - Clarified in the same page why only the denominator `L` escapes the rescale (log turns ×rescale into +) while the numerator `O` always needs correction — as `alpha` in the in-loop max-rescale form or as `exp(l_b - L)` in the at-merge log-space form.
 - Added a derivation of the `logaddexp` merge form to the same page — why factoring out `max(L_old, l_b)` leaves a correction `log(1 + e^{-d})` bounded in `[0, log 2)` — plus a worked merge trace.
+
+## 2026-08-16
+
+- Added [vLLM MHA Code Path: From QKV to Paged KV Cache](../frameworks/vllm/vllm-mha-code-path.md), a medium-confidence `code_links: strict` / `code_evidence: strict` reading of decoder MHA/GQA/MQA at pinned vLLM revision `2d24355eb87b716fc1169e66731dc0386ed1a3a2`. The page separates model-side QKV/RoPE/output projection, generic attention dispatch, per-iteration block/slot metadata, paged KV-cache writes, and backend kernel execution; includes one decode-token trace and 20 declared evidence findings. A scoped freshness check returned `decision: defer` because relevant upstream changes are not eligible for a new immutable snapshot until 2026-08-27.
