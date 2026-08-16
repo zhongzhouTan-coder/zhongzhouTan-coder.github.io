@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-15
+updated: 2026-08-16
 ---
 
 # Hardware and Numerics
@@ -17,5 +17,6 @@ updated: 2026-07-15
 ## Quantization
 
 - [Quantization](quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
+- [GPTQ: Second-Order Weight Quantization at LLM Scale](quantization/gptq/index.md)
 - [FlatQuant: Fast Learnable Affine Quantization](quantization/flatquant/index.md)
 - [NVFP4: Blackwell 4-Bit Floating Point](quantization/nvfp4.md)

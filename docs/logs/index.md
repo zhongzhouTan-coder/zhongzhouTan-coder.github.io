@@ -129,6 +129,7 @@ updated: 2026-08-16
 - [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — OCP MX v1.0 block contract, concrete FP4/FP6/FP8/INT8 encodings, conversion and dot-product semantics, implementation-defined boundaries, and FPGA/MSFP context.
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
+- [GPTQ: Second-Order Weight Quantization at LLM Scale](../hardware/quantization/gptq/index.md) — Shared column ordering, lazy block updates, Cholesky-stabilized error compensation, 175B-scale calibration, 3–4-bit accuracy, and packed-weight decode results.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — NVIDIA Blackwell NVFP4 format with two-level hierarchical FP8/FP32 scaling, fractional E4M3 vs. power-of-two E8M0 comparison, 16-element micro-block quantization, Random Hadamard Transform, stochastic rounding, 2D weight scaling, GEMM layout constraints, distributed training behavior, and deployment ecosystem.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
@@ -136,6 +137,8 @@ updated: 2026-08-16
 ## Terms
 
 - [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
+- [GPTQ](../terms/gptq.md) — Second-order post-training weight quantization with activation-derived error compensation and scalable block updates.
+- [Post-Training Quantization](../terms/post-training-quantization.md) — Quantization applied to a trained model using calibration data or weight statistics instead of full retraining.
 - [Continuous Batching](../terms/continuous-batching.md) — Iteration-level LLM-serving scheduler that rebuilds active work every model step.
 - [Block Table](../terms/block-table.md) — The per-request logical-to-physical mapping that tells paged attention kernels which physical KV block holds each logical block of a sequence.
 - [PagedAttention](../terms/pagedattention.md) — Attention algorithm storing KV cache in fixed-size non-contiguous blocks addressed through a per-request block table.

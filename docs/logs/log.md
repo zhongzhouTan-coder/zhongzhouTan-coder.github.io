@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-14
+updated: 2026-08-16
 ---
 
 # Wiki Log
@@ -312,3 +312,4 @@ updated: 2026-08-14
 ## 2026-08-16
 
 - Added [vLLM MHA Code Path: From QKV to Paged KV Cache](../frameworks/vllm/vllm-mha-code-path.md), a medium-confidence `code_links: strict` / `code_evidence: strict` reading of decoder MHA/GQA/MQA at pinned vLLM revision `2d24355eb87b716fc1169e66731dc0386ed1a3a2`. The page separates model-side QKV/RoPE/output projection, generic attention dispatch, per-iteration block/slot metadata, paged KV-cache writes, and backend kernel execution; includes one decode-token trace and 20 declared evidence findings. A scoped freshness check returned `decision: defer` because relevant upstream changes are not eligible for a new immutable snapshot until 2026-08-27.
+- Ingested `raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf` into [GPTQ: Second-Order Weight Quantization at LLM Scale](../hardware/quantization/gptq/index.md) with a MinerU precise extraction, the paper's original procedure figure, 175B-scale accuracy and latency evidence, and high confidence. Added glossary pages for [GPTQ](../terms/gptq.md) and [Post-Training Quantization](../terms/post-training-quantization.md), plus a focused FlatQuant cross-link.

@@ -1,0 +1,16 @@
+flowchart TD
+    QAT["Quantization-aware training<br/>accurate, but retraining-heavy"]
+    PTQ["Post-training quantization<br/>one-shot calibration"]
+    RTN["Round-to-nearest<br/>scalable, weak at 3–4 bits"]
+    OBS["Optimal Brain Surgeon<br/>second-order pruning"]
+    OBQ["Optimal Brain Quantization<br/>error-compensated rounding"]
+    GPTQ["GPTQ<br/>shared order + block updates + Cholesky"]
+    TF["Transformation-based PTQ<br/>SmoothQuant / QuaRot / FlatQuant"]
+
+    QAT -. "different cost regime" .-> PTQ
+    PTQ --> RTN
+    OBS --> OBQ
+    PTQ --> OBQ
+    OBQ --> GPTQ
+    PTQ --> TF
+    GPTQ -. "weight-rounding solver / baseline" .-> TF

@@ -1314,6 +1314,19 @@
       "derived_path": "derived/web-markdown/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.md",
       "docs_path": "docs/algorithms/foundations/layer-normalization/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2210.17323v2",
+      "title": "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers",
+      "slug": "gptq-accurate-post-training-quantization",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/hardware/gptq-accurate-post-training-quantization.md",
+      "docs_path": "docs/hardware/quantization/gptq/index.md",
+      "status": "ingested"
     }
   ]
 }

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf
   - derived/pdf-markdown/hardware/flatquant-fast-learnable-affine-quantization.md
-updated: 2026-08-14
+updated: 2026-08-16
 ---
 
 # FlatQuant: Fast Learnable Affine Quantization
@@ -15,11 +15,11 @@ updated: 2026-08-14
 **Authors:** Yuxuan Sun, Ruikang Liu, Haoli Bai, Han Bao, Kang Zhao, Yuening Li, Jiaxin Hu, Xianzhi Yu, Lu Hou, Chun Yuan, Xin Jiang, Wulong Liu, Jun Yao
 **arXiv:** [2410.09426v4 (10 Aug 2025)](https://arxiv.org/abs/2410.09426) · Code: [github.com/ruikangliu/FlatQuant](https://github.com/ruikangliu/FlatQuant)
 
-**Related pages:** [Quantization hub](../index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [MiniMax M2 GQA W4A4 Quantization Path](../../../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) · [vLLM Ascend Architecture](../../../frameworks/vllm-ascend/architecture.md)
+**Related pages:** [Quantization hub](../index.md) · [GPTQ](../gptq/index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [MiniMax M2 GQA W4A4 Quantization Path](../../../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) · [vLLM Ascend Architecture](../../../frameworks/vllm-ascend/architecture.md)
 
 ## TL;DR
 
-**What:** FlatQuant is a post-training quantization method that learns a fast, per-layer affine transformation to flatten weight and activation distributions before low-bit quantization.
+**What:** FlatQuant is a [post-training quantization](../../../terms/post-training-quantization.md) method that learns a fast, per-layer affine transformation to flatten weight and activation distributions before low-bit quantization.
 **How:** It factors the transformation as a [Kronecker product](../../../terms/kronecker-product.md) of two small matrices, adds per-channel scaling and learnable clipping, calibrates with a block-wise MSE objective, and fuses transform + quantization into a single Triton kernel feeding an INT4 CUTLASS GEMM.
 **The number:** W4A4 with plain round-to-nearest drops less than 1% accuracy on LLaMA-3-70B (0.94% on six zero-shot QA tasks), with up to 2.3× prefill and 1.7× decoding speedup over FP16.
 
@@ -172,7 +172,7 @@ where `×_i` contracts the i-th axis of the reshaped tensors. Memory drops by up
 
 **A concrete example:** LLaMA-3-8B calibrates in 0.9 h; LLaMA-3-70B in 5.94 h. Weight-only calibration is even shorter (0.70 h for 3-8B) because fewer transforms are involved.
 
-**Remember:** The paper's headline RTN results need no GPTQ — calibration cost is measured in hours on one GPU.
+**Remember:** The paper's headline RTN results need no [GPTQ](../../../terms/gptq.md) — calibration cost is measured in hours on one GPU.
 
 ### Transformer integration
 
