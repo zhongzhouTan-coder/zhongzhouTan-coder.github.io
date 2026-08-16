@@ -216,6 +216,29 @@ The prefix-cache index deliberately does not de-duplicate: two requests with ide
 
 **Remember:** `slot_mapping` + `block_table` are the two tensors that make paged attention read arbitrary physical blocks in constant time.
 
+### 8. `slot_mapping`: token → physical slot
+
+**What it does:** Flattens the per-request block table into a per-token int64 mapping, `slot_mapping[t] = block_number * block_size + offset`, telling the kernel exactly which physical cache slot holds token `t`'s KV.
+
+**Why it matters:** The attention kernel does not read the block table row-by-row — it receives one flat tensor of slots and writes or reads each token's KV by that index. This is the step that turns "logical token position" into a concrete slot index the paged-cache ops can consume.
+
+**How it works:** Each <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L48" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="48"><code>BlockTable</code></a> pre-allocates a 1-D <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/utils.py#L110" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/utils.py" data-code-line="110"><code>CpuGpuBuffer</code></a> of <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L110" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="110"><code>slot_mapping</code></a> (`torch.int64`, shape `[max_num_batched_tokens]`, pinned CPU + GPU + numpy view) next to its 2-D int32 <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L106" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="106"><code>block_table</code></a>. <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/gpu_model_runner.py#L2196" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/gpu_model_runner.py" data-code-line="2196"><code>_prepare_inputs()</code></a> calls <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L182" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="182"><code>compute_slot_mapping()</code></a>, which launches the Triton <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L380" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="380"><code>_compute_slot_mapping_kernel</code></a> with `query_start_loc`, `positions`, and the block table; the kernel writes `block_number * block_size + slot_offset` per token and stores <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/attention/backends/utils.py#L45" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/attention/backends/utils.py" data-code-line="45"><code>PAD_SLOT_ID</code></a> (`-1`) for padding and for tokens that live on another context-parallel rank.
+
+| Step | Input | Operation | Output |
+|---|---|---|---|
+| 1. Allocate | `max_num_batched_tokens` | one int64 CPU(pinned)+GPU buffer per KV group | `slot_mapping` buffer |
+| 2. Materialize | per-request block IDs | `add_row()` fills the int32 block table | `block_table.gpu` |
+| 3. Map | `query_start_loc`, `positions`, `block_table.gpu` | Triton kernel, one program per request | `slot_mapping[t] = block * block_size + offset` |
+| 4. Pad | `num_tokens_unpadded .. num_tokens_padded` | fill with `-1` | CUDA-graph-safe slots |
+
+The runner then re-packages the same buffer in <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/gpu_model_runner.py#L4081" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/gpu_model_runner.py" data-code-line="4081"><code>_get_slot_mappings()</code></a> into two shapes for two consumers: `slot_mappings_by_gid` (one per KV-cache group) feeds <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/gpu_model_runner.py#L2283" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/gpu_model_runner.py" data-code-line="2283"><code>_build_attention_metadata()</code></a>, and `slot_mappings_by_layer` (one per layer name) is passed through `set_forward_context` so each model layer sees its group's mapping. Encoder-only groups get zeros; the tail beyond `num_tokens_unpadded` is filled with `-1`.
+
+**The intuition:** The block table answers "which blocks does this request own?"; `slot_mapping` answers "which slot does this *token* write to?" — it is the block table pre-expanded per token so the kernel never has to do that arithmetic itself.
+
+**A concrete example:** With `block_size = 16` and the 7-token request owning physical blocks `[7, 1]`, the kernel writes `slot_mapping[0] = 7*16 + 0 = 112` through `slot_mapping[15] = 127`, then `slot_mapping[16] = 1*16 + 0 = 16` for the token at position 16. Each later decode token lands in the next free slot of block 1, then block 3 — so the kernel stores every new token's KV at exactly the slot the block table says to.
+
+**Remember:** `block_table` is `[req, block]` int32; `slot_mapping` is `[token]` int64 with `-1` padding — one maps requests to blocks, the other maps tokens to slots.
+
 ## Putting It Together
 
 Watch two requests share the pool across one scheduler loop at `dd11df04f3b7`:
