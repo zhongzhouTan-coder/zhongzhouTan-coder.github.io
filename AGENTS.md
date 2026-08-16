@@ -71,6 +71,19 @@ This repository is a markdown knowledge base.
   Ask for clarification only when the task cannot be completed safely under
   that interpretation.
 
+## Question-Driven Documentation Updates
+
+- When answering a question in this workspace, assess whether the answer
+  reveals missing, outdated, contradictory, or reusable knowledge in the
+  maintained docs.
+- If a documentation update would provide durable value, identify the specific
+  related pages, briefly explain the proposed change, and ask whether the user
+  wants those docs updated. Do not change the docs until the user confirms.
+- Do not suggest an update for trivial answers, unsupported speculation, or
+  information that the existing docs already cover adequately.
+- If the user already requested documentation or knowledge-base maintenance,
+  proceed without asking for confirmation again.
+
 ## Ingest Workflow Triggers
 
 The triggers below apply only after the request has passed the intent gate and
@@ -94,7 +107,10 @@ has been classified as source ingest.
 - When adding a new paper or docs page, inspect existing related pages from `docs/logs/index.md` and the target topic folder. Update those pages when the new material changes the landscape, supersedes an older claim, adds a needed comparison, or should be linked as related context.
 - Do not rewrite related pages just because a new page exists. Keep related-page edits scoped to factual corrections, changed confidence, cross-links, short comparison notes, or synthesis that improves retrieval.
 - If MinerU API conversion is unavailable, rate-limited, blocked by SSL/network issues, or clearly incomplete, record that limitation in the resulting docs page and use a fallback extractor only after checking for generated Markdown.
-- When answering knowledge-base questions: read `docs/logs/index.md` first, inspect the relevant `docs/` pages, synthesize from the docs, and save valuable reusable answers as docs pages.
+- When answering knowledge-base questions: read `docs/logs/index.md` first,
+  inspect the relevant `docs/` pages, synthesize from the docs, and follow the
+  question-driven documentation update policy above for valuable reusable
+  answers.
 - Prefer updating existing pages over creating duplicates.
 - Use internal links when related pages already exist.
 - If a docs page references sibling assets such as images or Draw.io files, prefer a folder-backed page at `topic/index.md`.
