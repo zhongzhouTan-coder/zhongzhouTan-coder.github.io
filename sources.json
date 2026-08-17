@@ -1277,6 +1277,45 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2401.15077v3",
+      "title": "EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty",
+      "slug": "eagle-speculative-sampling-feature-uncertainty",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/eagle-speculative-sampling-feature-uncertainty/eagle-speculative-sampling-feature-uncertainty.md",
+      "docs_path": "docs/frameworks/eagle/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2406.16858v2",
+      "title": "EAGLE-2: Faster Inference of Language Models with Dynamic Draft Trees",
+      "slug": "eagle-2-dynamic-draft-trees",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/eagle-2-dynamic-draft-trees/eagle-2-dynamic-draft-trees.md",
+      "docs_path": "docs/frameworks/eagle-2/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2503.01840v3",
+      "title": "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test",
+      "slug": "eagle-3-scaling-inference-acceleration",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/eagle-3-scaling-inference-acceleration--arxiv-2503.01840v3.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/eagle-3-scaling-inference-acceleration/eagle-3-scaling-inference-acceleration.md",
+      "docs_path": "docs/frameworks/eagle-3/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "github:vllm-project/vllm@2d24355eb87b716fc1169e66731dc0386ed1a3a2",
       "title": "vllm Codebase",
       "slug": "vllm-codebase",
@@ -1326,6 +1365,19 @@
       ],
       "derived_path": "derived/pdf-markdown/hardware/gptq-accurate-post-training-quantization.md",
       "docs_path": "docs/hardware/quantization/gptq/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2602.06036v2",
+      "title": "DFlash: Block Diffusion for Flash Speculative Decoding",
+      "slug": "dflash-block-diffusion-flash-speculative-decoding",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/dflash-block-diffusion-flash-speculative-decoding/dflash-block-diffusion-flash-speculative-decoding.md",
+      "docs_path": "docs/frameworks/dflash/index.md",
       "status": "ingested"
     }
   ]

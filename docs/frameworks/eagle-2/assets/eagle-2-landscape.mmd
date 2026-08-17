@@ -1,0 +1,9 @@
+flowchart LR
+  SS["Lossless speculative sampling"] --> CHAIN["Chain drafts"]
+  SS --> STATIC["Static draft trees"]
+  STATIC --> EAGLE["EAGLE: feature-level drafter"]
+  STATIC --> SEQUOIA["Sequoia: position-based tree optimization"]
+  EAGLE --> OBS["Context changes acceptance"]
+  OBS --> CAL["Draft confidence approximates acceptance"]
+  CAL --> EAGLE2["EAGLE-2: expand and rerank by path value"]
+  EAGLE2 --> EAGLE3["EAGLE-3: stronger self-conditioned drafter"]

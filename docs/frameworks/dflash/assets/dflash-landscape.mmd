@@ -1,0 +1,11 @@
+flowchart LR
+  AR[Autoregressive decoding] --> SD[Lossless speculative decoding]
+  AR --> DLLM[Diffusion language models]
+  SD --> EAGLE[EAGLE-3]
+  SD --> PAR[Parallel draft generation]
+  DLLM --> BD[Block diffusion]
+  PAR --> DFLASH[DFlash]
+  BD --> DFLASH
+  EAGLE --> DFLASH
+  DFLASH --> DSPARK[DSpark: semi-autoregressive draft and scheduling]
+  DFLASH --> SERVE[SGLang and vLLM serving]

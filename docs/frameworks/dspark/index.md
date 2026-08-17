@@ -21,7 +21,7 @@ updated: 2026-08-14
 
 ## TL;DR
 
-**What:** DSpark is a speculative decoding framework that improves both the draft block and the target-model verification decision.
+**What:** DSpark is a [speculative decoding](../../terms/speculative-decoding.md) framework that improves both the draft block and the target-model verification decision.
 **How:** A parallel backbone proposes the block, a lightweight sequential head restores prefix dependence, and a calibrated scheduler allocates verification capacity using the engine's measured throughput curve.
 **The number:** In DeepSeek-V4 live serving, DSpark improves matched-capacity per-user generation speed by 60%-85% on V4-Flash and 57%-78% on V4-Pro over the MTP-1 baseline.
 
@@ -309,7 +309,7 @@ DSpark's durable frame is **speculative decoding as causal batch-capacity alloca
 ## Go Deeper
 
 - **Read:** [DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation](https://arxiv.org/abs/2607.05147) and the local [raw PDF](../../../raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf).
-- **Build on:** [DFlash](https://arxiv.org/abs/2602.06036), [EAGLE-3](https://openreview.net/forum?id=4exx1hUffq), and MTP-1, the production baseline used by the paper.
+- **Build on:** [DFlash: Block Diffusion for Flash Speculative Decoding](../dflash/index.md), [EAGLE-3](../eagle-3/index.md), and MTP-1, the production baseline used by the paper.
 - **Understand the serving context:** [DeepSeek-V4 Inference on Ascend](../vllm-ascend/deepseek-v4-inference.md), [vLLM Continuous Batching](../vllm/vllm-continuous-batching/index.md), [PagedAttention](../../terms/pagedattention.md), and [Mixture of Experts](../../terms/mixture-of-experts.md).
 - **Reuse the visual:** [dspark-landscape.mmd](./assets/dspark-landscape.mmd) is the editable synthesis of the paper's related-work relationships.
 - **Reproduce:** The paper announces DSpark checkpoints and the DeepSpec training repository; no corresponding local code source is registered in this knowledge base.

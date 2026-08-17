@@ -1,0 +1,9 @@
+flowchart LR
+  AR["Autoregressive decoding"] --> SS["Lossless speculative sampling"]
+  SS --> SMALL["Small token-level draft model"]
+  SS --> MEDUSA["Medusa: parallel token heads"]
+  SMALL --> COST["Draft overhead or model mismatch"]
+  MEDUSA --> UNCERTAIN["Unconditioned future-token uncertainty"]
+  SS --> EAGLE["EAGLE: shifted-token feature autoregression"]
+  EAGLE --> EAGLE2["EAGLE-2: context-aware draft trees"]
+  EAGLE2 --> EAGLE3["EAGLE-3: training-time test"]

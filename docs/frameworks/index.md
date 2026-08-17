@@ -67,6 +67,10 @@ updated: 2026-08-17
 
 ## Other Frameworks
 
+- [DFlash: Block Diffusion for Flash Speculative Decoding](dflash/index.md) — Target-conditioned block-diffusion drafting, per-layer K/V injection, sparse masked-block training, and serving results across SGLang and vLLM.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](sarathi/index.md) — Chunked-prefill and decode-maximal batching that reuses prefill weight loads for decode tokens and reduces pipeline bubbles.
+- [EAGLE: Feature-Level Speculative Sampling](eagle/index.md) — Shifted-token-conditioned feature autoregression, lightweight draft training, tree verification, and lossless 2.7x-3.5x reported LLaMA2-Chat 70B latency speedup.
+- [EAGLE-2: Context-Aware Dynamic Draft Trees](eagle-2/index.md) — Calibrated draft confidence, prefix path values, expand-and-rerank tree construction, and 20%-40% reported speedup over EAGLE.
+- [EAGLE-3: Training-Time Test for Speculative Decoding](eagle-3/index.md) — Direct token prediction, multi-layer target-feature fusion, self-conditioned training, dynamic draft trees, and 3.0x-6.5x reported speedup.
 - [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md) — Source-backed re-insight of DeepSeek's semi-autoregressive drafter, calibrated prefix survival estimates, causal two-step-delayed scheduling, and production DeepSeek-V4 throughput frontier.
 - [Harbor: Agent Evaluation Framework (Code Reading)](harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.
