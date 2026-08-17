@@ -2,7 +2,7 @@ flowchart LR
     Config["ParallelConfig<br/>TP x PCP x DCP"] --> Groups["TP / DCP / PCP<br/>process groups"]
     Groups --> Runner["GPUModelRunner<br/>one V1 step"]
     Runner --> PCP["PCPManager<br/>mirror prefill chunks<br/>replicate decodes"]
-    Runner --> DCP["DCP metadata<br/>local KV lengths<br/>interleave ownership"]
+    Runner --> DCP["DCP metadata<br/>local KV context<br/>interleaved ownership"]
     PCP --> Cache["MLA KV-cache update<br/>gather prefill inputs"]
     DCP --> Attention["Attention backend<br/>local KV attention"]
     Cache --> Attention

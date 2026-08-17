@@ -1,6 +1,6 @@
 ---
 title: "vLLM DCP and PCP: Decode and Prefill Context Parallelism"
-summary: "A code-reading map of vLLM V1 decode context parallelism (DCP) and prefill context parallelism (PCP), from process groups and KV ownership to exact attention merging and batch restoration."
+summary: "A code-reading map of how vLLM V1 composes PCP query partitioning with DCP KV-context partitioning, from process groups and cache writes to exact attention and batch restoration."
 layout: default
 confidence: medium
 code_links: strict
@@ -9,7 +9,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/context-parallelism.md
-updated: 2026-08-11
+updated: 2026-08-17
 ---
 
 # vLLM DCP and PCP: Decode and Prefill Context Parallelism
@@ -27,11 +27,11 @@ updated: 2026-08-11
 
 ## TL;DR
 
-**What:** vLLM separates context parallelism into DCP, which shards persistent decode KV state, and PCP, which partitions transient prefill computation.
+**What:** vLLM exposes two composable ownership schemes: PCP partitions prefill query rows, while DCP partitions the KV context those queries read.
 
-**How:** DCP localizes KV lengths and reconstructs exact attention with LSE-aware collectives; PCP rewrites each worker's batch into rank-local chunks, gathers the needed cache inputs, and restores global hidden-state order before sampling.
+**How:** PCP rewrites a global batch into rank-local prefill chunks but replicates decode rows; DCP interleaves KV ownership, computes rank-local attention, and reconstructs exact output with log-sum-exp-aware collectives.
 
-**The number:** The decisive size rule is that PCP expands the process world, while DCP does not; DCP instead reuses [tensor-parallel](../../terms/tensor-parallelism.md) TP/PCP ranks and multiplies attention KV block size by the DCP world size.
+**The number:** `PCP` multiplies the process world; `DCP` does not. For DCP size `N` and interleave `I`, KV ownership repeats every `N × I` tokens, while the cache manager scales its attention block size by `N`.
 
 ## The Big Picture
 
@@ -40,7 +40,7 @@ flowchart LR
     Config["ParallelConfig<br/>TP x PCP x DCP"] --> Groups["TP / DCP / PCP<br/>process groups"]
     Groups --> Runner["GPUModelRunner<br/>one V1 step"]
     Runner --> PCP["PCPManager<br/>mirror prefill chunks<br/>replicate decodes"]
-    Runner --> DCP["DCP metadata<br/>local KV lengths<br/>interleave ownership"]
+    Runner --> DCP["DCP metadata<br/>local KV context<br/>interleaved ownership"]
     PCP --> Cache["MLA KV-cache update<br/>gather prefill inputs"]
     DCP --> Attention["Attention backend<br/>local KV attention"]
     Cache --> Attention
@@ -49,15 +49,15 @@ flowchart LR
     Restore --> Sample["Sampling / postprocess"]
 ```
 
-*Synthesized implementation flow, not an upstream vLLM figure. ① Startup creates TP, DCP, and PCP groups. ② The worker partitions prefill work and localizes decode KV metadata. ③ Attention merges exact partial results. ④ PCP restores global hidden-state order before sampling. Editable source: [dcp-pcp-runtime.mmd](assets/dcp-pcp-runtime.mmd).*
+*Synthesized implementation flow, not an upstream vLLM figure. ① Startup creates TP, DCP, and PCP groups. ② PCP chooses which query rows a rank computes, while DCP determines which KV rows it can read locally. ③ Attention merges exact partial results. ④ PCP restores global hidden-state order before sampling. Editable source: [dcp-pcp-runtime.mmd](assets/dcp-pcp-runtime.mmd).*
 
-**The key distinction is ownership.** PCP owns the layout of the current prefill batch; DCP owns where persistent decode KV blocks live. They can be enabled together, but they do not perform the same split or use the same final collective.
+**The key distinction is which side of attention is partitioned.** PCP owns the current query/token layout; DCP owns the persistent KV-context layout. They can be enabled together because those are orthogonal responsibilities, but their restoration points differ.
 
 ## Why This Exists
 
 Imagine serving one 128K-token prompt followed by a long decode stream in a [continuous batching](../../terms/continuous-batching.md) scheduler on a TP8 deployment. Prefill has enough tokens to benefit from splitting the sequence, but decode repeatedly touches a growing [KV cache](../../terms/kv-cache.md) and needs every query to see the full context. A single undifferentiated context-parallel switch would either duplicate cache writes during prefill or force every decode rank to hold and process the same KV history.
 
-vLLM addresses the two phases separately. PCP gives each rank two mirrored prefill chunks, keeps decode requests replicated, and reconstructs the global hidden-state batch. DCP gives each rank an interleaved shard of the decode KV cache, sends the minimum attention metadata needed to each backend, and combines partial attention outputs with numerically stable log-sum-exp statistics.
+vLLM addresses the two pressure points separately. PCP gives each rank two mirrored prefill chunks, keeps decode rows replicated, and reconstructs the global hidden-state batch. DCP gives each rank an interleaved shard of the KV context, sends rank-local lengths to attention backends, and combines partial attention outputs with numerically stable log-sum-exp statistics.
 
 **The reusable example for this page is a mixed batch:** request A is a long fresh prefill, request B is already decoding. PCP must split A but keep B's sampled token visible to every rank; DCP must let B's query attend across all KV shards without making every rank own every block.
 
@@ -81,7 +81,18 @@ flowchart TB
 
 ## The Core Idea
 
-[Context parallelism](../../terms/context-parallelism.md) is not one operation in vLLM. **PCP partitions the work that creates or updates prefill state; DCP partitions the state that decode attention reads.** PCP therefore ends with a batch-wide hidden-state all-gather, while DCP ends with an attention-output merge. Treating them as two ownership protocols makes the rest of the code much easier to follow.
+[Context parallelism](../../terms/context-parallelism.md) is not one operation in vLLM. **PCP answers “which query rows does this rank compute?”; DCP answers “which KV rows does this rank own?”** PCP therefore needs to restore global token order, while DCP needs to restore the global softmax result. Their names describe the workload each dimension primarily targets, not a rule that DCP can never participate in prefill: the pinned FlashInfer path contains a DCP prefill wrapper.
+
+| Reader question | PCP | DCP |
+|---|---|---|
+| What is partitioned? | Prefill query/token rows in the current step | Persistent KV rows and their local causal lengths |
+| Which view remains global? | The scheduler's batch identity | Full-attention semantics across every KV shard |
+| What prevents duplicate cache writes? | Only rank 0 contributes replicated decode slots | Interleaved slot ownership makes each KV row local to one rank |
+| What must be reconstructed? | Global hidden-state/token order | Exact globally normalized attention output |
+| Where is the main communication? | Prefill cache-input and hidden-state all-gathers | Per-layer LSE plus output collectives |
+| Does it add workers? | Yes, PCP expands the process world | No, DCP is a group view over existing TP/PCP ranks |
+
+> **Important:** “Prefill” and “decode” identify the optimization targets. The implementation boundary is more precise: PCP partitions query work, while DCP partitions KV context and can therefore appear in both decode and prefill attention paths.
 
 ## Symbol Map
 
@@ -105,7 +116,7 @@ The code uses `PCP` for prefill context parallelism and `DCP` for decode context
 
 ## Deep Dive
 
-### 1. Configuration creates two different parallel dimensions
+### 1. PCP adds ranks; DCP reuses them
 
 **What it does:** `ParallelConfig` declares the PCP and DCP sizes and rejects topologies the runtime cannot represent.
 
@@ -129,7 +140,7 @@ The code uses `PCP` for prefill context parallelism and `DCP` for decode context
 
 **Remember:** Read the topology constraints before reading an attention kernel; they explain which collective shapes are legal.
 
-### 2. Startup builds TP, DCP, and PCP groups from one rank tensor
+### 2. One rank mesh becomes three communication views
 
 **What it does:** `initialize_model_parallel()` turns the global rank layout into separate `GroupCoordinator` objects.
 
@@ -170,13 +181,13 @@ The reason vLLM creates separate groups is that each collective needs a precise 
 
 **Remember:** Group membership is a load-time contract, not something an attention layer decides per request.
 
-### 3. PCP partitions prefills and replicates decodes
+### 3. PCP splits prefill queries and replicates decode queries
 
 **What it does:** `PCPManager` rewrites the global scheduled batch into a rank-local batch that attention backends can execute.
 
 **Why it matters:** In the mixed batch example, a fresh prefill needs sequence partitioning, but a decode token must remain visible on every PCP rank so sampling and cache updates stay synchronized.
 
-**How it works:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L37" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="37" data-code-end-line="123"><code>PCPManager</code></a> builds two chunks per rank for each prefill: an early chunk and a mirrored late chunk. Its <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L195" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="195" data-code-end-line="250"><code>_get_rank_segments</code></a> leaves decode requests replicated, then <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L252" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="252" data-code-end-line="317"><code>_build_batch_layout</code></a> computes padded gather indices, a hidden-state restore index, and a one-writer KV mask. <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1092" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1092"><code>GPUModelRunner._get_padded_input_ids</code></a> applies the partition before the forward pass.
+**How it works:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L476" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="476" data-code-end-line="485"><code>GPUModelRunner</code></a> creates PCP state at initialization. <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L37" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="37" data-code-end-line="123"><code>PCPManager</code></a> then builds two chunks per rank for each prefill: an early chunk and a mirrored late chunk. Its <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L195" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="195" data-code-end-line="250"><code>_get_rank_segments</code></a> leaves decode requests replicated, then <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L252" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="252" data-code-end-line="317"><code>_build_batch_layout</code></a> computes padded gather indices, a hidden-state restore index, and a one-writer KV mask. <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1092" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1092"><code>GPUModelRunner._get_padded_input_ids</code></a> applies the partition before the forward pass.
 
 The manager validates that MRV2 PCP is currently MLA-only and rejects [pipeline parallelism](../../terms/pipeline-parallelism.md), encoder-decoder models, multimodal inputs, LoRA, speculative decoding, and full CUDA graphs in <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L125" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="125" data-code-end-line="180"><code>PCPManager.validate_config</code></a>.
 
@@ -186,7 +197,7 @@ The manager validates that MRV2 PCP is currently MLA-only and rejects [pipeline 
 
 **Remember:** PCP's unit of partitioning is the scheduled batch and its token rows, not the model weights.
 
-### 4. PCP gathers cache inputs but writes decode state once
+### 4. PCP gathers prefill writes but commits replicated decode once
 
 **What it does:** The MLA cache path gathers the prefill KV inputs across PCP ranks and keeps the replicated decode write local to one rank.
 
@@ -200,7 +211,7 @@ The manager validates that MRV2 PCP is currently MLA-only and rejects [pipeline 
 
 **Remember:** PCP's all-gather is selective: it does not blindly duplicate every cache write.
 
-### 5. DCP scales local KV blocks and computes interleaved local lengths
+### 5. DCP virtual blocks encode interleaved KV ownership
 
 **What it does:** DCP changes the cache manager's logical block size and gives each attention backend the local sequence length for its rank's KV shard.
 
@@ -216,7 +227,7 @@ The cache manager explicitly rejects DCP/PCP for <a class="code-link" href="../.
 
 **Remember:** DCP is visible in both the block allocator and the attention metadata; changing only one side would be incorrect.
 
-### 6. DCP reconstructs exact attention with two communication families
+### 6. LSE restores global attention; the collective chooses placement
 
 **What it does:** Each DCP rank computes attention over its local KV shard, then combines partial outputs so the result matches attention over the global context.
 
@@ -275,22 +286,24 @@ The logical `O` does not necessarily appear in full on every GPU. AG+RS reduce-s
 
 ## Putting It Together
 
-For the mixed batch from "Why This Exists":
+The same mixed batch—request A prefilling and request B decoding—crosses two independent ownership transformations:
 
-1. **Start the workers:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu_worker.py#L1380" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu_worker.py" data-code-line="1380" data-code-end-line="1385"><code>GPUWorker</code></a> initializes TP, DCP, and PCP groups from `ParallelConfig`.
-2. **Build cache ownership:** DCP-aware cache managers multiply attention block size, while PCP leaves the KV shard count unchanged.
-3. **Schedule globally:** The engine produces one global `InputBatch` and block-table view for request A's prefill and request B's decode.
-4. **Partition locally:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L476" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="476" data-code-end-line="485"><code>GPUModelRunner</code></a> creates PCP state; its per-step path calls <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1092" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1092" data-code-end-line="1098"><code>maybe_partition_pcp_batch</code></a>. Request A becomes two mirrored chunks per rank; request B remains replicated.
-5. **Prepare attention:** The runner gathers local block tables and slot mappings, while `get_dcp_local_seq_lens` provides DCP-local causal bounds.
-6. **Update KV state:** PCP gathers A's prefill cache inputs and writes B's replicated decode KV once.
-7. **Compute and merge:** Each rank runs local attention; MLA or FlashInfer chooses AG+RS, AG+AR, or A2A to reconstruct exact output.
-8. **Restore and sample:** <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1472" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1472" data-code-end-line="1474"><code>maybe_restore_pcp_for_sampling</code></a> all-gathers hidden states and returns the global batch view before sampling and postprocessing.
+| Step | Actor | Input state | Action | Output state |
+|---:|---|---|---|---|
+| 1 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu_worker.py#L1380" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu_worker.py" data-code-line="1380" data-code-end-line="1385"><code>GPUWorker</code></a> | TP/PCP/DCP sizes | Initializes the three group views | Every rank knows its TP, PCP, and DCP peers |
+| 2 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/core/single_type_kv_cache_manager.py#L36" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/core/single_type_kv_cache_manager.py" data-code-line="36" data-code-end-line="84"><code>SingleTypeKVCacheManager</code></a> | Physical attention block size | Multiplies it by DCP world size for scheduler-visible allocation | One virtual block represents a full round of distributed KV ownership |
+| 3 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/pcp_manager.py#L37" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/pcp_manager.py" data-code-line="37" data-code-end-line="123"><code>PCPManager</code></a> | Global batch containing A and B | Retains the global view and prepares rank-local buffers | The batch has both a global identity and a local execution layout |
+| 4 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1092" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1092" data-code-end-line="1098"><code>maybe_partition_pcp_batch</code></a> | A's prefill rows and B's decode row | Assigns two mirrored A chunks per PCP rank and replicates B | Rank-local query rows with restore indices back to global order |
+| 5 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/attention/backends/utils.py#L887" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/attention/backends/utils.py" data-code-line="887" data-code-end-line="920"><code>get_dcp_local_seq_lens</code></a> | Global sequence lengths plus DCP rank/interleave | Computes local causal lengths | Each attention backend sees only its valid KV prefix |
+| 6 | <a class="code-link" href="../../../external-repos/vllm/vllm/model_executor/layers/attention/pcp.py#L11" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/model_executor/layers/attention/pcp.py" data-code-line="11" data-code-end-line="45"><code>_gather_prefill_cache_inputs</code></a> | Partitioned A cache inputs and replicated B cache input | Gathers A from every PCP rank but selects B's slot from rank 0 | Complete A writes without duplicate B writes |
+| 7 | <a class="code-link" href="../../../external-repos/vllm/vllm/model_executor/layers/attention/mla_attention.py#L898" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/model_executor/layers/attention/mla_attention.py" data-code-line="898" data-code-end-line="921"><code>MLAImpl.forward_impl</code></a> | Local attention outputs and LSE values | Selects AG+RS, AG+AR, or A2A and merges exactly | Globally normalized attention with the required head placement |
+| 8 | <a class="code-link" href="../../../external-repos/vllm/vllm/v1/worker/gpu/model_runner.py#L1472" data-code-repo="vllm-a0c092ee72c0" data-code-path="vllm/v1/worker/gpu/model_runner.py" data-code-line="1472" data-code-end-line="1474"><code>maybe_restore_pcp_for_sampling</code></a> | Rank-local hidden states plus restore indices | All-gathers and reindexes hidden states | Global A/B batch order is ready for sampling and postprocessing |
 
 ## What This Buys You
 
 ### The headline claim
 
-**vLLM gets two phase-specific scaling knobs without changing the model's mathematical attention result.** PCP parallelizes long prefills; DCP distributes decode KV capacity and attention work.
+**vLLM gets separate scaling knobs for query work and KV-context ownership without changing the mathematical attention result.** PCP primarily parallelizes long prefills; DCP distributes persistent KV capacity and local attention work.
 
 ### How we know: source and test coverage
 
@@ -301,7 +314,7 @@ For the mixed batch from "Why This Exists":
 | <a class="code-link" href="../../../external-repos/vllm/tests/v1/attention/test_indexer_dcp_localize.py#L1" data-code-repo="vllm-a0c092ee72c0" data-code-path="tests/v1/attention/test_indexer_dcp_localize.py" data-code-line="1"><code>test_indexer_dcp_localize.py</code></a> | Interleave-aware local lengths, candidate localization, and exact sparse-DCP reference comparisons | CUDA/CuteDSL sections are hardware gated |
 | <a class="code-link" href="../../../external-repos/vllm/tests/distributed/test_context_parallel.py#L1" data-code-repo="vllm-a0c092ee72c0" data-code-path="tests/distributed/test_context_parallel.py" data-code-line="1"><code>test_context_parallel.py</code></a> | Multi-process context-parallel serving and accuracy checks | Requires the model, distributed runtime, and supported hardware |
 
-The implementation's payoff is architectural: prefill work can be split without pretending that decode state is replicated, and decode can be sharded without asking the scheduler to rebuild the entire global sequence on every rank.
+The implementation's payoff is architectural: prefill query work can be split without multiplying decode cache writes, and KV context can be sharded without reducing attention to an inexact sum of local softmax outputs.
 
 ### The mechanism behind the result
 
@@ -325,11 +338,11 @@ These are code-level capability claims, not throughput numbers. The pinned check
 
 ## One Thing to Remember
 
-**PCP slices the current prefill and then restores the batch; DCP slices persistent decode KV and then restores attention.** They share process-group infrastructure and exact LSE mathematics, but PCP's final contract is global hidden-state order while DCP's final contract is a globally normalized attention output.
+**PCP partitions the query side and restores token order; DCP partitions the KV side and restores softmax normalization.** Their names point to the workloads they optimize, but the durable mental model is ownership: current-step rows for PCP, persistent context rows for DCP.
 
 ## Verification Boundary and Limits
 
-This page is a static reading of the clean vLLM checkout at commit `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`, captured on 2026-07-29 and reused because the scoped freshness check deferred a new revision until 2026-08-12. The local repository contains CPU-only reference tests and GPU/distributed tests named above; they were not executed here. Hardware-specific backend behavior, communication overlap, and throughput remain unverified in this workspace.
+This page remains a static reading of the clean vLLM checkout at commit `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`; the context-parallel evidence was inspected on 2026-08-10. On 2026-08-17, a scoped comparison from the newest registered vLLM snapshot found relevant upstream changes, but repository policy deferred a new immutable revision until 2026-08-27. Therefore every implementation claim and code link here describes the pinned commit, not current `main`. The local repository contains the CPU reference and GPU/distributed tests named above, but they were not executed; hardware behavior, communication overlap, and throughput remain unverified.
 
 ## Go Deeper
 

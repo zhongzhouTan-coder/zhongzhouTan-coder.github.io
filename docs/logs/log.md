@@ -318,3 +318,4 @@ updated: 2026-08-17
 ## 2026-08-17
 
 - Removed vLLM Code Learning Path and Request Flow from `docs/frameworks/vllm/vllm-code-learning-path.md` and cleaned up its inbound links across the vLLM hub, category index, wiki index, and four glossary term pages.
+- Re-insighted [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) around the compositional ownership model: PCP partitions current-step query rows and restores token order, while DCP partitions persistent KV rows and restores exact softmax normalization. Added an ownership comparison and an evidence-linked mixed-batch state trace; a scoped freshness check deferred a new immutable vLLM revision until 2026-08-27.
