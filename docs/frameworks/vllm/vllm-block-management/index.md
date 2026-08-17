@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-dd11df04f3b7.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/important-files.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/block-management.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack
@@ -22,7 +22,6 @@ updated: 2026-08-14
 
 **Related pages:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md),
 [vLLM Continuous Batching](../vllm-continuous-batching/index.md),
-[vLLM Code Learning Path](../vllm-code-learning-path.md),
 [KV Cache](../../../terms/kv-cache.md), [PagedAttention](../../../terms/pagedattention.md),
 [Block Table](../../../terms/block-table.md)
 

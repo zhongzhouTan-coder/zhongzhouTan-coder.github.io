@@ -9,14 +9,14 @@ sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/kimi-k3-code-reading.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # vLLM Kimi K3 Code Reading Map
 
 **Repository:** [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b` (main, clean)
 
-**Related pages:** [Kimi K3](../../training/kimi/kimi-k3/index.md), [Kimi Delta Attention](../../terms/kimi-delta-attention.md), [Mixture of Experts](../../terms/mixture-of-experts.md), [vLLM-Ascend Kimi K3 MoE Forward Path](../vllm-ascend/kimi-k3-moe-forward.md), [vLLM Code Learning Path](vllm-code-learning-path.md)
+**Related pages:** [Kimi K3](../../training/kimi/kimi-k3/index.md), [Kimi Delta Attention](../../terms/kimi-delta-attention.md), [Mixture of Experts](../../terms/mixture-of-experts.md), [vLLM-Ascend Kimi K3 MoE Forward Path](../vllm-ascend/kimi-k3-moe-forward.md)
 
 ## TL;DR
 

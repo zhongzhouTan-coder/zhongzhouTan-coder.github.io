@@ -23,12 +23,11 @@ appears_in:
   - docs/frameworks/triton/triton-in-vllm.md
   - docs/frameworks/vllm/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm/vllm-code-learning-path.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-framework.md
   - docs/frameworks/vllm/vllm-overview.md
   - docs/training/deepseek/deepseek-v4/index.md
-updated: 2026-08-03
+updated: 2026-08-17
 ---
 
 # PagedAttention
@@ -72,8 +71,7 @@ Block size trades kernel parallelism against fragmentation: larger blocks read m
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
 - [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
-- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
-- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, continuous batching, and Kimi K3 code.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
 

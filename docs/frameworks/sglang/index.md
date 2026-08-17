@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf
-updated: 2026-07-15
+updated: 2026-08-17
 ---
 
 # SGLang: Structured Language Model Programs
@@ -164,7 +164,6 @@ SGLang's key insight is that **LLM applications are structured programs, not iso
 - **Read:** [SGLang paper (arXiv:2312.07104)](https://arxiv.org/abs/2312.07104)
 - **Build on:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [DSpark: Confidence-Scheduled Speculative Decoding](../dspark/index.md)
 - **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
-- **Understand the context:** [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
 - **Reproduce:** [Official implementation at github.com/sgl-project/sglang](https://github.com/sgl-project/sglang)
 
 ## Key Takeaways

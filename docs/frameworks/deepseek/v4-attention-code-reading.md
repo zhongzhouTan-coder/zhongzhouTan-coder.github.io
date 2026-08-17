@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
   - derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/deepseek-v4-attention.md
   - derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/deepseek-v4-attention.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # DeepSeek V4 Attention: Code Reading Map
@@ -20,7 +20,7 @@ updated: 2026-08-14
 - [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `d18ed2304a2703e3211fc384a58607e754f5b723` (main, clean)
 - [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `8645122088f5cad1701205310573c5ee05c809f5` (main, clean)
 
-**Related pages:** [DeepSeek-V4 Paper](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V2 MLA](../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM-Ascend Lightning Indexer C8 Quantization](../vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../vllm-ascend/deepseek-v4-inference.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
+**Related pages:** [DeepSeek-V4 Paper](../../training/deepseek/deepseek-v4/index.md), [DeepSeek-V2 MLA](../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM-Ascend Lightning Indexer C8 Quantization](../vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../vllm-ascend/deepseek-v4-inference.md)
 
 ## TL;DR
 
@@ -535,6 +535,5 @@ For a first-time reader, follow this order:
 ## Go Deeper
 
 - **Read the paper:** [DeepSeek-V4 Technical Report](../../training/deepseek/deepseek-v4/index.md)
-- **Build on:** [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md) — understand the broader vLLM serving framework
 - **Understand the context:** [DeepSeek-V2 MLA](../../algorithms/attention-variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../algorithms/deepseek-v3.2/index.md), [MiniMax Sparse Attention](../../training/efficient-attention/minimax-sparse-attention/index.md)
 - **Reproduce:** Both checkouts are clean at the pinned commits; the code is self-contained under `vllm/models/deepseek_v4/` and `vllm_ascend/`

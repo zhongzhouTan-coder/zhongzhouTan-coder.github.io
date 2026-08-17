@@ -9,7 +9,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-a0c092ee72c0.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/important-files.md
   - derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/overview-module-map.md
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # vLLM Architecture and Code Organization Overview
@@ -18,8 +18,7 @@ updated: 2026-08-16
 **Inspected commit:** `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b` (main, 2026-07-29)
 **Checkout state:** clean, static reading on 2026-08-05
 
-**Related pages:** [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md),
-[vLLM Continuous Batching](vllm-continuous-batching/index.md),
+**Related pages:** [vLLM Continuous Batching](vllm-continuous-batching/index.md),
 [vLLM Block Table Management](vllm-block-management/index.md),
 [vLLM: PagedAttention Serving Framework](vllm-framework.md),
 [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md),
@@ -348,7 +347,6 @@ vLLM is a **three-process pipeline with a single heartbeat**: the API process tr
 ## Go Deeper
 
 - **The decoder attention handoff:** [vLLM MHA Code Path](vllm-mha-code-path.md)
-- **The serving path, step by step:** [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md)
 - **The iteration loop in detail:** [vLLM Continuous Batching](vllm-continuous-batching/index.md)
 - **The KV cache stack:** [vLLM Block Table Management](vllm-block-management/index.md)
 - **The original paper:** [vLLM: PagedAttention Serving Framework](vllm-framework.md)

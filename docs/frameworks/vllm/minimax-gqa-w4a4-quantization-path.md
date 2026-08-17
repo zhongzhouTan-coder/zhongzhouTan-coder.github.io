@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-61221e9add8c.md
   - derived/repo-analysis/frameworks/vllm/72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0/important-files.md
   - derived/repo-analysis/frameworks/vllm-ascend/61221e9add8c717b304005bd9d48d6215d035be7/important-files.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)
@@ -20,7 +20,7 @@ updated: 2026-08-14
 - [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0` (main, clean)
 - [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `61221e9add8c717b304005bd9d48d6215d035be7` (main, clean)
 
-**Related pages:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md), [vLLM Code Learning Path](vllm-code-learning-path.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant: Fast Learnable Affine Quantization](../../hardware/quantization/flatquant/index.md), [Quantization](../../hardware/quantization/index.md)
+**Related pages:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Kimi K3 Code Reading Map](vllm-kimi-k3-code-reading.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant: Fast Learnable Affine Quantization](../../hardware/quantization/flatquant/index.md), [Quantization](../../hardware/quantization/index.md)
 
 ## TL;DR
 
@@ -335,5 +335,5 @@ matching kernel or operator can perform a true W4A4 GEMM.
 ## Go Deeper
 
 - **Related quantization pages:** [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md), [FlatQuant](../../hardware/quantization/flatquant/index.md), [Quantization hub](../../hardware/quantization/index.md)
-- **Serving framework context:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Code Learning Path](vllm-code-learning-path.md), [vLLM Ascend Kimi K3 MoE Forward](../vllm-ascend/kimi-k3-moe-forward.md)
+- **Serving framework context:** [vLLM Ascend Architecture](../vllm-ascend/architecture.md), [vLLM Ascend Kimi K3 MoE Forward](../vllm-ascend/kimi-k3-moe-forward.md)
 - **Reproduce:** Both checkouts are clean at the pinned commits. GPU evidence is under `vllm/model_executor/layers/quantization/` and in the MiniMax M2 model module; NPU evidence is under `vllm_ascend/quantization/` and `vllm_ascend/patch/platform/`.

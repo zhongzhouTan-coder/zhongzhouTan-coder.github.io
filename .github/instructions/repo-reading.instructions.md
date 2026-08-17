@@ -109,7 +109,7 @@ For every important finding, record:
 - stable finding ID;
 - repository-relative file and symbol;
 - smallest useful start and optional end line;
-- its position in the end-to-end runtime flow, when applicable.
+- its position and direction in the end-to-end runtime flow, when applicable.
 
 The evidence table is the handoff between code reading and prose drafting. Add
 rows while investigating, not as a retrospective inventory. The code-link
@@ -153,12 +153,44 @@ source as a local `.mmd` asset and link it from the page. Prefer one reader
 question per visual; keep a symbol-heavy implementation map separate from the
 first conceptual visual. Omit any diagram that only restates nearby prose.
 
-For a worked runtime trace, follow one concrete request, token, tensor, cache
-block, or message. Name the actor, input state, operation, and output state at
-each step, and link every non-obvious step to revision-aware evidence. Use
-portable Markdown callouts labeled `Evidence` and `Inference` when the reader
-could otherwise confuse direct code behavior with repository-level synthesis;
-do not hide required reasoning inside callouts.
+### Trace Request Round Trips
+
+When runtime request handling is part of the page's central question, include a
+code-evidenced **request round trip**. Follow one concrete request, token,
+tensor, cache block, or message from its boundary entry down to the deepest
+meaningful operation and back to the externally visible result. Do not present
+an entry-to-backend call chain as an end-to-end flow when the return path is
+missing.
+
+Cover the applicable stages:
+
+1. Boundary entry, parsing, or admission.
+2. Routing, scheduling, or coordination.
+3. Worker, model, storage, or backend handoff.
+4. Core state transition or computation.
+5. First material result and its propagation back to the caller.
+6. Result transformation, aggregation, or response assembly.
+7. Response emission plus cleanup, release, or important failure return.
+
+For each non-trivial step, name the actor, input state, operation, output or
+return value, and a revision-aware code link to the exact file, symbol, and
+smallest useful line range. A component name or unlinked symbol is orientation,
+not code evidence. Evidence only at the deepest callee is also insufficient
+when a caller transforms, aggregates, serializes, or conditionally discards the
+returned value; link that caller-side behavior separately. Omit trivial helper
+returns that do not change state, ownership, control flow, or representation.
+
+Use a Mermaid sequence diagram when calls and returns cross three or more
+components, processes, services, or devices. Show both call and return arrows,
+mark asynchronous handoffs and important branches, and keep the editable
+`.mmd` source beside the page. The diagram is the orientation layer, not a
+substitute for evidence: follow it with a numbered trace or compact table whose
+meaningful steps link to the pinned implementation and map to finding IDs in
+the derived evidence note.
+
+Use portable Markdown callouts labeled `Evidence` and `Inference` when the
+reader could otherwise confuse direct code behavior with repository-level
+synthesis; do not hide required reasoning inside callouts.
 
 ## Draft Repository-Backed Docs
 

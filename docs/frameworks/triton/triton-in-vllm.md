@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md
   - derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/important-files.md
   - derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/important-files.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # Triton in Practice: How vLLM and vllm-ascend Use Triton
@@ -18,7 +18,7 @@ updated: 2026-08-14
 **Inspected commits:** vLLM `d18ed2304a2703e3211fc384a58607e754f5b723`;
 vllm-ascend `8645122088f5cad1701205310573c5ee05c809f5`.
 
-**Related pages:** [Triton Language Theory](index.md), [CUDA Programming Model](../cuda/index.md), [vLLM Framework](../vllm/vllm-framework.md), [vLLM Code Learning Path](../vllm/vllm-code-learning-path.md)
+**Related pages:** [Triton Language Theory](index.md), [CUDA Programming Model](../cuda/index.md), [vLLM Framework](../vllm/vllm-framework.md)
 
 ## TL;DR
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
   - derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # vLLM: PagedAttention Serving Framework
@@ -214,7 +214,7 @@ vLLM's core contribution is **treating KV cache as virtual memory** — PagedAtt
 
 - **Read:** [vLLM paper (arXiv:2309.06180)](https://arxiv.org/abs/2309.06180)
 - **Build on:** [SGLang: Structured Language Model Programs](../sglang/index.md), [DSpark: Confidence-Scheduled Speculative Decoding](../dspark/index.md)
-- **Understand the context:** [vLLM Code Learning Path](vllm-code-learning-path.md), [FlashAttention](../../algorithms/flashattention/flashattention.md)
+- **Understand the context:** [FlashAttention](../../algorithms/flashattention/flashattention.md)
 - **Reproduce:** [Official implementation at github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
 
 ## Key Takeaways

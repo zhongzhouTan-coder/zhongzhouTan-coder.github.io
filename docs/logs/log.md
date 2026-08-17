@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # Wiki Log
@@ -54,7 +54,7 @@ updated: 2026-08-16
 
 - Added [DeepSWE: Long-Horizon Software Engineering Benchmark](../benchmarks/agent-eval/deepswe/index.md) to `docs/benchmarks/agent-eval/deepswe/index.md`, sourced from `raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md`. Covers benchmark motivation against contamination and verifier mismatch, corpus scope (113 tasks, 91 repositories, 5 languages), behavioral-verifier methodology, shared `mini-swe-agent` harness, the publication leaderboard snapshot dated 2026-05-26, qualitative failure patterns across model families, and stated limitations.
 - Added [DeepSWE v1.1: Execution and Scoring Changes](../benchmarks/agent-eval/deepswe-v1-1/index.md) to `docs/benchmarks/agent-eval/deepswe-v1-1/index.md`, sourced from `raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md`. Covers the v1.1 execution-and-grading update for the same 113 tasks: committed-diff isolated verification, CTRF per-test reporting, the cleaner `main`-branch git environment, updated July 1, 2026 leaderboard snapshot, removal of wall-clock reporting, and the reported similarity between v1 and v1.1 results.
-- Added [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) to `docs/frameworks/vllm/vllm-code-learning-path.md`, sourced from the current `vllm` codebase entrypoint, engine, scheduler, KV-cache, executor, and worker files. Covers the current request path from `/v1/chat/completions` through `AsyncLLM`, `EngineCore`, `Scheduler`, `KVCacheManager`, `Executor`, `GPUWorker`, `GPUModelRunner`, output processing, and an achievement-driven staged plan to build a mini vLLM.
+- Added vLLM Code Learning Path and Request Flow to `docs/frameworks/vllm/vllm-code-learning-path.md`, sourced from the current `vllm` codebase entrypoint, engine, scheduler, KV-cache, executor, and worker files. Covers the current request path from `/v1/chat/completions` through `AsyncLLM`, `EngineCore`, `Scheduler`, `KVCacheManager`, `Executor`, `GPUWorker`, `GPUModelRunner`, output processing, and an achievement-driven staged plan to build a mini vLLM.
 - Updated [Frameworks](../frameworks/index.md) and [Wiki Index](../logs/index.md) to include the new code-oriented vLLM learning page alongside the existing paper-oriented framework notes.
 
 ## 2026-07-09
@@ -314,3 +314,7 @@ updated: 2026-08-16
 - Added [vLLM MHA Code Path: From QKV to Paged KV Cache](../frameworks/vllm/vllm-mha-code-path.md), a medium-confidence `code_links: strict` / `code_evidence: strict` reading of decoder MHA/GQA/MQA at pinned vLLM revision `2d24355eb87b716fc1169e66731dc0386ed1a3a2`. The page separates model-side QKV/RoPE/output projection, generic attention dispatch, per-iteration block/slot metadata, paged KV-cache writes, and backend kernel execution; includes one decode-token trace and 20 declared evidence findings. A scoped freshness check returned `decision: defer` because relevant upstream changes are not eligible for a new immutable snapshot until 2026-08-27.
 - Ingested `raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf` into [GPTQ: Second-Order Weight Quantization at LLM Scale](../hardware/quantization/gptq/index.md) with a MinerU precise extraction, the paper's original procedure figure, 175B-scale accuracy and latency evidence, and high confidence. Added glossary pages for [GPTQ](../terms/gptq.md) and [Post-Training Quantization](../terms/post-training-quantization.md), plus a focused FlatQuant cross-link.
 - Added a `slot_mapping` deep-dive subsection to [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md): the per-token int64 slot buffer, `CpuGpuBuffer` CPU/GPU/numpy layout, the Triton slot-computation kernel and `slot = block * block_size + offset` formula, the two distribution formats (`slot_mappings_by_gid` / `slot_mappings_by_layer`), and `-1` padding — pinned to the existing vLLM revision `dd11df04f3b7`.
+
+## 2026-08-17
+
+- Removed vLLM Code Learning Path and Request Flow from `docs/frameworks/vllm/vllm-code-learning-path.md` and cleaned up its inbound links across the vLLM hub, category index, wiki index, and four glossary term pages.

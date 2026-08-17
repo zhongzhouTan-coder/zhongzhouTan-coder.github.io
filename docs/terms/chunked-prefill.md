@@ -15,11 +15,10 @@ appears_in:
   - docs/frameworks/sarathi/index.md
   - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
   - docs/frameworks/vllm/index.md
-  - docs/frameworks/vllm/vllm-code-learning-path.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-overview.md
   - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
-updated: 2026-08-13
+updated: 2026-08-17
 ---
 
 # Chunked Prefill
@@ -48,7 +47,6 @@ The chunk size is a tradeoff: smaller chunks provide more opportunities to inter
 - [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) - implements prompt chunks under a token-budget scheduler in a modern serving engine.
 - [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) - follows the prompt-chunk cursor from vLLM scheduling into Ascend mixed FIA execution.
 - [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
-- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
-- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, continuous batching, and Kimi K3 code.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md) — Contrasts prompt chunking inside one mixed scheduler with isolating prefill and decode in separate engine pools.

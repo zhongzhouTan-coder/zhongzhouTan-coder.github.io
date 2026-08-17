@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # vLLM
@@ -13,7 +13,6 @@ updated: 2026-08-16
 - [vLLM Architecture and Code Organization Overview](vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm-mha-code-path.md) — Decoder self-attention from tensor-parallel QKV projection and RoPE through per-step metadata, slot-mapped KV writes, paged backend execution, and the output projection.
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md) — LLM serving framework design, [PagedAttention](../../terms/pagedattention.md) KV-cache paging, [block tables](../../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
-- [vLLM Code Learning Path and Request Flow](vllm-code-learning-path.md) — Current vLLM codebase map, request lifecycle from OpenAI API entrypoint to worker execution, and an achievement-driven path to build a mini vLLM.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](prefill-decode-disaggregated-deployment/index.md) — Deployment-oriented request trace across the router, prefill pool, NIXL KV-transfer plane, and decode pool, with pull/push modes, independent scaling, compatibility gates, and failure policy.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group [KV cache](../../terms/kv-cache.md) managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.

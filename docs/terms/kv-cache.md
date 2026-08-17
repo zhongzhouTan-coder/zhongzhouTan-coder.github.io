@@ -38,7 +38,6 @@ appears_in:
   - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
   - docs/frameworks/vllm/index.md
   - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm/vllm-code-learning-path.md
   - docs/frameworks/vllm/vllm-continuous-batching/index.md
   - docs/frameworks/vllm/vllm-framework.md
   - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
@@ -54,7 +53,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
   - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-14
+updated: 2026-08-17
 ---
 
 # KV Cache
@@ -100,8 +99,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
 - [Triton Ascend Operator Mechanisms: Vector, Cube, and CV Fusion](../frameworks/triton-ascend/operator-mechanisms.md) — A practical learning path for Triton Ascend Vector, Cube, and CV fusion operators, grounded in AI Core compute units, on-chip.
-- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
-- [vLLM Code Learning Path and Request Flow](../frameworks/vllm/vllm-code-learning-path.md) — A code-oriented map of the current vLLM serving stack, the request lifecycle, and an achievement-driven path to build a mini.
+- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, continuous batching, and Kimi K3 code.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — vLLM framework design, PagedAttention memory management, scheduling, decoding support, and serving performance results.
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.

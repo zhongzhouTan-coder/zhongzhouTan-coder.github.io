@@ -17,7 +17,7 @@ sources:
   - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html
   - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json
   - derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md
-updated: 2026-08-06
+updated: 2026-08-17
 ---
 
 # vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow
@@ -27,7 +27,6 @@ updated: 2026-08-06
 **Checkout state:** clean, static reading on 2026-08-02
 
 **Related pages:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md),
-[vLLM Code Learning Path](../vllm-code-learning-path.md),
 [SGLang](../../sglang/index.md), [KV Cache](../../../terms/kv-cache.md)
 
 ## TL;DR
