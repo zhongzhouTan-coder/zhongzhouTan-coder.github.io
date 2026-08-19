@@ -88,5 +88,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm",
     "revision": "2d24355eb87b716fc1169e66731dc0386ed1a3a2"
+  },
+  "vllm-5c9ff5366b03": {
+    "local_checkout": "external-repos/vllm-5c9ff5366b03",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "5c9ff5366b039a69b344773bdfead8466ed9a097"
   }
 }

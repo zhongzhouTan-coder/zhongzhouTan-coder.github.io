@@ -1,0 +1,44 @@
+sequenceDiagram
+    autonumber
+    actor Client
+    participant API as OpenAI chat server
+    participant Async as AsyncLLM / output processor
+    participant Core as EngineCore / scheduler
+    participant Runner as NPUModelRunner
+    participant Model as GlmMoeDsa model
+    participant SFA as Ascend SFA backend
+    participant NPU as Indexer + sparse attention + MoE ops
+
+    Client->>API: POST /v1/chat/completions
+    API->>API: render chat, tokenize, build sampling params
+    API->>Async: generate(engine_input, params, request_id)
+    Async-->>Core: enqueue EngineCoreRequest
+    loop Prefill and decode iterations
+        Core->>Core: schedule token budget and KV blocks
+        Core-->>Runner: SchedulerOutput
+        Runner->>Runner: update persistent batch and build SFA metadata
+        Runner->>Model: input_ids / positions / paged-cache context
+        loop Decoder layers
+            Model->>SFA: normalized hidden state
+            SFA->>NPU: project q/KV and write paged cache
+            alt Indexer-owning layer
+                SFA->>NPU: score top-k token indices
+                NPU-->>SFA: top-k indices
+            else GLM-5.2 shared-indexer layer
+                SFA->>SFA: reuse cached top-k indices
+            end
+            SFA->>NPU: sparse attention over selected tokens
+            NPU-->>SFA: attention output
+            SFA-->>Model: value-up + output projection
+            Model->>NPU: route tokens, expert MLPs, collective finalize
+            NPU-->>Model: MoE output
+        end
+        Model-->>Runner: final hidden states
+        Runner->>Runner: LM head, target sampling, optional MTP draft
+        Runner-->>Core: ModelRunnerOutput with token IDs
+        Core->>Core: update request state and free finished KV blocks
+        Core-->>Async: EngineCoreOutputs
+        Async->>Async: detokenize and finish/stop handling
+        Async-->>API: RequestOutput
+        API-->>Client: SSE delta or full JSON response
+    end

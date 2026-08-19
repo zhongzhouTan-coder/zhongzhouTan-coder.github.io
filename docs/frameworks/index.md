@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-17
+updated: 2026-08-18
 ---
 
 # Frameworks
@@ -20,6 +20,7 @@ updated: 2026-08-17
 
 - [vLLM](vllm/index.md) — Category hub for vLLM serving framework pages.
 - [vLLM Architecture and Code Organization Overview](vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
+- [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](vllm/glm-5.2-inference-path.md) — Upstream request trace through V1 scheduling, the CUDA runner, shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, and response cleanup.
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm/vllm-mha-code-path.md) — How decoder MHA/GQA/MQA moves from tensor-parallel QKV projection through runtime cache metadata, slot-mapped paged KV writes, backend dispatch, and output projection.
 - [vLLM: PagedAttention Serving Framework](vllm/vllm-framework.md) — LLM serving framework design, [PagedAttention](../terms/pagedattention.md) KV-cache paging, [block tables](../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
@@ -32,6 +33,7 @@ updated: 2026-08-17
 
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](vllm-ascend/qwen3.5-mtp.md) — Beginner-oriented MTP trace: Qwen3.5 proposes tokens from target hidden states, while vLLM verifies them from target logits with greedy equality or probability-ratio rejection sampling.
 - [vLLM Ascend](vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
+- [GLM-5.2 on vLLM Ascend: Request-to-Backend Inference Path](vllm-ascend/glm-5.2-inference-path.md) — Ascend NPU companion to the upstream GPU trace, covering SFA shared-indexer execution, sparse attention, MoE, sampling, detokenization, and cleanup.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 [Lightning Indexer](../terms/lightning-indexer.md) runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, [FP8](../terms/fp8.md) e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](vllm-ascend/deepseek-v4-inference.md) — End-to-end DeepSeek-V4 serving on Ascend NPUs: the model override with mHC [hyper-connections](../terms/hyper-connections.md), hybrid c4/c128 compressor layers, the AscendDSA prefill/decode flow, the five-type heterogeneous [KV cache](../terms/kv-cache.md), the sparse-attention custom operator, and the MTP draft model.

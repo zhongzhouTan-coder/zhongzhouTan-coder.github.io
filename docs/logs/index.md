@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-17
+updated: 2026-08-18
 ---
 
 # Wiki Index
@@ -43,6 +43,7 @@ updated: 2026-08-17
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Chunked prefills and decode-maximal batching improve decode utilization and reduce pipeline bubbles.
 - [vLLM](../frameworks/vllm/index.md) — Category hub for vLLM serving framework pages.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
+- [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](../frameworks/vllm/glm-5.2-inference-path.md) — Upstream request trace through OpenAI admission, V1 scheduling, the CUDA runner, shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, detokenization, response emission, and cleanup.
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](../frameworks/vllm/vllm-mha-code-path.md) — Code-reading trace of decoder MHA/GQA/MQA across model projection, serving metadata, paged KV cache updates, backend kernel dispatch, and output projection.
 - [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — LLM serving framework design, PagedAttention KV-cache paging, block tables, copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
@@ -54,6 +55,7 @@ updated: 2026-08-17
 - [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — Beginner-oriented explanation of what W4A4 quantizes, when offline/load/runtime work happens, how GPU and NPU paths differ, and which hardware fallbacks prevent true W4A4 execution.
 - [vLLM Ascend](../frameworks/vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — Five integration mechanisms (plugin registration, NPUPlatform, ModelRegistry, monkey-patches, custom backends), the attention backend selection rule (FIA / MLA / SFA / DSA), end-to-end execution flow, ACL graph capture, HCCL communication, and what upstream vLLM code is reused as-is.
+- [GLM-5.2 on vLLM Ascend: Request-to-Backend Inference Path](../frameworks/vllm-ascend/glm-5.2-inference-path.md) — Ascend NPU companion covering the SFA shared-indexer and sparse-attention backend, routed/shared MoE, sampling, detokenization, response emission, and cleanup.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 Lightning Indexer runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, FP8 e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../frameworks/vllm-ascend/deepseek-v4-inference.md) — End-to-end DeepSeek-V4 serving on Ascend NPUs: the model override with mHC hyper-connections, hybrid c4/c128 compressor layers, the AscendDSA prefill/decode flow, the five-type heterogeneous KV cache, the sparse-attention custom operator, and the MTP draft model.

@@ -1,0 +1,44 @@
+sequenceDiagram
+    autonumber
+    actor Client
+    participant API as OpenAI chat server
+    participant Async as AsyncLLM / output processor
+    participant Core as EngineCore / scheduler
+    participant Runner as GPUModelRunner
+    participant Model as GlmMoeDsa model
+    participant Indexer as Sparse indexer
+    participant Attn as CUDA sparse MLA
+    participant MoE as Fused MoE
+
+    Client->>API: POST /v1/chat/completions
+    API->>API: render chat, tokenize, build sampling params
+    API->>Async: generate(engine_input, params, request_id)
+    Async-->>Core: enqueue EngineCoreRequest
+    loop Prefill and decode iterations
+        Core->>Core: assign token budget and paged KV blocks
+        Core-->>Runner: SchedulerOutput
+        Runner->>Runner: update batch, slots, and attention metadata
+        Runner->>Model: input IDs / positions / forward context
+        loop Decoder layers
+            Model->>Model: RMSNorm and latent Q/KV projections
+            alt Indexer-owning layer
+                Model->>Indexer: indexer Q, paged indexer K, score weights
+                Indexer-->>Model: shared top-k history positions
+            else Shared-index layer
+                Model->>Model: retain preceding top-k buffer
+            end
+            Model->>Attn: latent Q, paged MLA KV, top-k positions
+            Attn-->>Model: sparse attention output
+            Model->>MoE: normalized rows and router input
+            MoE-->>Model: routed + shared expert output
+        end
+        Model-->>Runner: final hidden states
+        Runner->>Runner: LM head and target sampling
+        Runner-->>Core: ModelRunnerOutput with token IDs
+        Core->>Core: update request and free finished KV blocks
+        Core-->>Async: EngineCoreOutputs
+        Async->>Async: detokenize and stop-check
+        Async-->>API: RequestOutput
+        API-->>Client: SSE delta or complete JSON
+    end
+    API-->>Client: [DONE] / terminal response

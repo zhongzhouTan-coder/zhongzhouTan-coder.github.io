@@ -427,7 +427,8 @@
       "docs_paths": [
         "docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md",
         "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
-        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md"
+        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
+        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md"
       ],
       "status": "ingested"
     },
@@ -740,7 +741,8 @@
         "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
         "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
         "docs/frameworks/vllm/vllm-context-parallelism.md",
-        "docs/frameworks/vllm/dcp-attention/index.md"
+        "docs/frameworks/vllm/dcp-attention/index.md",
+        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md"
       ],
       "status": "ingested"
     },
@@ -1378,6 +1380,25 @@
       ],
       "derived_path": "derived/pdf-markdown/frameworks/dflash-block-diffusion-flash-speculative-decoding/dflash-block-diffusion-flash-speculative-decoding.md",
       "docs_path": "docs/frameworks/dflash/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@5c9ff5366b039a69b344773bdfead8466ed9a097",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "5c9ff5366b039a69b344773bdfead8466ed9a097",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-5c9ff5366b03.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/5c9ff5366b039a69b344773bdfead8466ed9a097/",
+      "docs_paths": [
+        "docs/frameworks/vllm/glm-5.2-inference-path.md"
+      ],
       "status": "ingested"
     }
   ]

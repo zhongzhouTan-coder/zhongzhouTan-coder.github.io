@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-17
+updated: 2026-08-18
 ---
 
 # Wiki Log
@@ -323,3 +323,8 @@ updated: 2026-08-17
 - Added [EAGLE-3: Training-Time Test for Speculative Decoding](../frameworks/eagle-3/index.md), the [Speculative Decoding](../terms/speculative-decoding.md) glossary term, manifest provenance, navigation links, and an editable Landscape Mermaid source. The page covers direct token prediction, multi-layer feature fusion, training-time test, dynamic draft trees, SGLang/vLLM results, and source-reported limitations.
 - Ingested `raw/frameworks/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf` with MinerU precise mode into `derived/pdf-markdown/frameworks/dflash-block-diffusion-flash-speculative-decoding/` and added [DFlash: Block Diffusion for Flash Speculative Decoding](../frameworks/dflash/index.md) at high confidence. The page explains target-layer feature fusion, per-layer K/V injection, parallel masked-block drafting, sparse training masks, loss weighting, SGLang/vLLM results, and source-backed limitations; preserved four original figures and an editable Landscape Mermaid source, and linked the paper from DSpark and the Speculative Decoding glossary.
 - Ingested the EAGLE and EAGLE-2 PDFs with MinerU precise mode into normalized folder-backed extractions and added high-confidence [EAGLE](../frameworks/eagle/index.md) and [EAGLE-2](../frameworks/eagle-2/index.md) insight pages. Preserved their mechanism, mask, and result figures locally; added editable Landscape sources, manifest provenance, family cross-links, and the [Tree Attention](../terms/tree-attention.md) glossary entry.
+
+## 2026-08-18
+
+- Added [GLM-5.2 on vLLM Ascend: Request-to-Backend Inference Path](../frameworks/vllm-ascend/glm-5.2-inference-path.md), a medium-confidence request round trip backed by vLLM `a0c092ee72c0` and vllm-ascend `9a52ca5fc36c`. The page follows OpenAI chat admission, V1 scheduling and KV allocation, the reused `GlmMoeDsaForCausalLM` model shell, Ascend SFA metadata and paged-cache writes, GLM-5.2 checkpoint-shared indexers, 2,048-token sparse selection, routed/shared MoE, target sampling and optional MTP, detokenization, response emission, and cleanup. Added 25 declared evidence findings, an editable sequence diagram, manifest mappings, and hub/index links. A scoped vllm-ascend freshness check found relevant changes but deferred a new immutable revision until 2026-08-20.
+- Added [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](../frameworks/vllm/glm-5.2-inference-path.md) as the primary upstream analysis at new pinned vLLM revision `5c9ff5366b039a69b344773bdfead8466ed9a097`. The page traces OpenAI admission, V1 scheduling and paged-cache allocation, CUDA runner metadata, the thin `GlmMoeDsaForCausalLM` model alias, shared sparse indexers, conditional Hopper/Blackwell sparse-MLA backends, routed/shared MoE, target sampling, detokenization, SSE emission, and cleanup. Added 35 declared evidence findings and an editable round-trip diagram; retained the vllm-ascend page as an explicitly labeled NPU companion.
