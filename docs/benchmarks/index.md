@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-07-17
+updated: 2026-08-19
 ---
 
 # Benchmarks
@@ -20,6 +20,7 @@ updated: 2026-07-17
 - [τ²-Bench: Mechanism and Design](agent-eval/tau2-bench-mechanism.md)
 - [τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains](agent-eval/tau-voice.md)
 - [AutoJudger: Agent-Driven Efficient MLLM Benchmarking](agent-eval/autojudger.md)
+- [EssenceBench: LLM Evaluation with 200x Less Data](agent-eval/essencebench/index.md)
 
 ## Serving Performance
 

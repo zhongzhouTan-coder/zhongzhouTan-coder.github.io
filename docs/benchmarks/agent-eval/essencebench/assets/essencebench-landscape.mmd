@@ -1,0 +1,11 @@
+flowchart LR
+    FULL[Full benchmark evaluation] --> STATIC[Static item selection]
+    FULL --> ADAPT[Adaptive testing]
+    STATIC --> HEUR[Random, perplexity, and GraNd]
+    STATIC --> IRT[TinyBenchmarks and MetaBench]
+    ADAPT --> AUTO[AutoJudger<br/>model-specific next question]
+    DEDUP[Semantic and behavioral deduplication] --> ESS[EssenceBench]
+    IRT --> ESS
+    GA[Genetic subset search] --> ESS
+    ESS --> FIXED[Reusable fixed coreset<br/>score and rank reconstruction]
+

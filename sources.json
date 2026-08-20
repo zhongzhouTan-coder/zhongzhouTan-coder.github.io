@@ -195,6 +195,19 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2510.10457v1",
+      "title": "Rethinking LLM Evaluation: Can We Evaluate LLMs with 200x Less Data?",
+      "slug": "rethinking-llm-evaluation-200x-less-data",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/benchmarks/rethinking-llm-evaluation-200x-less-data/rethinking-llm-evaluation-200x-less-data.md",
+      "docs_path": "docs/benchmarks/agent-eval/essencebench/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2606.28279v1",
       "title": "Agentic Hardware Design as Repository-Level Code Evolution",
       "slug": "agentic-hardware-design-repository-code-evolution",

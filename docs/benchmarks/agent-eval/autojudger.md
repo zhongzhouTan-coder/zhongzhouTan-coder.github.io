@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
   - derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md
-updated: 2026-08-03
+updated: 2026-08-19
 ---
 
 # AutoJudger: Agent-Driven Efficient MLLM Benchmarking
@@ -14,7 +14,7 @@ updated: 2026-08-03
 **Paper:** AutoJudger: An Agent-Driven Framework for Efficient Benchmarking of MLLMs
 **Authors:** Xuanwen Ding, Chengjun Pan, Zejun Li, Jiwen Zhang, Siyuan Wang, Zhongyu Wei (Fudan University, USC)
 **arXiv:** [2505.21389](https://arxiv.org/abs/2505.21389), May 2025
-**Related pages:** [benchmarks index](..), [MMMU](..), [SEED-Bench](..)
+**Related pages:** [benchmarks index](..) · [EssenceBench](essencebench/index.md) · [MMMU](..) · [SEED-Bench](..)
 
 ## TL;DR
 
@@ -78,6 +78,8 @@ flowchart TD
 ```
 
 Multimodal benchmarks add three challenges that text-only methods don't address: (i) most multimodal benchmarks lack explicit difficulty labels, (ii) each image-question pair carries rich cross-modal semantics that coarse category labels miss, and (iii) performance variance across MLLMs is far wider than across text-only LLMs, making personalized question selection more impactful.
+
+[EssenceBench](essencebench/index.md) provides the clearest static contrast: its [benchmark compression](../../terms/benchmark-compression.md) procedure learns one fixed coreset from a historical model-by-item response matrix, while AutoJudger chooses a different next question online for each evaluated model. The former maximizes repeatable cross-model comparability; the latter spends its budget on model-specific information.
 
 ## The Core Idea
 

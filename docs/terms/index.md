@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-16
+updated: 2026-08-19
 ---
 
 # Terms Glossary
@@ -69,4 +69,4 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Benchmarks
 
-_No terms yet._
+- [Benchmark Compression](benchmark-compression.md) — Selects a small evaluation coreset that preserves the full benchmark's scores, rankings, or other target statistics.

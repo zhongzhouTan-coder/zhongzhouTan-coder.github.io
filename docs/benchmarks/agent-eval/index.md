@@ -1,11 +1,11 @@
 ---
 title: "Agent Evaluation Benchmarks"
-summary: "Benchmarks and harnesses for evaluating coding agents and tool-use agents: DeepSWE, Pier, τ-bench family, and AutoJudger."
+summary: "Benchmarks and harnesses for evaluating coding agents, tool-use agents, and efficient model evaluation, including DeepSWE, the τ-bench family, AutoJudger, and EssenceBench."
 layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-03
+updated: 2026-08-19
 ---
 
 # Agent Evaluation Benchmarks
@@ -17,4 +17,5 @@ updated: 2026-08-03
 - [τ²-Bench: Mechanism and Design](tau2-bench-mechanism.md) — Dec-POMDP formalism, dual-control domain, task generation, and evaluation methodology.
 - [τ-Voice: Full-Duplex Voice Agent Benchmark](tau-voice.md) — Extends τ²-bench to voice: tick-based orchestrator, controllable voice user simulator, 278 tasks, empirical results, and error analysis.
 - [AutoJudger: Agent-Driven Efficient MLLM Benchmarking](autojudger.md) — Agent-driven framework for adaptive MLLM evaluation using IRT difficulty estimation and semantic-aware retrieval.
+- [EssenceBench: LLM Evaluation with 200x Less Data](essencebench/index.md) — Fixed benchmark coresets learned through semantic and behavioral redundancy filtering, genetic subset search, and attribution-guided refinement; includes a correction to the paper's ambiguous 200x HellaSwag ranking claim.
 - [HORIZON: Agentic Hardware Design as Repository-Level Code Evolution](agentic-hardware-design/index.md) — Git-traced RTL self-evolution from Markdown harness to executable evaluator, with 100% best-so-far completion but large convergence-cost and reward-hacking caveats.
