@@ -5,10 +5,15 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-16
+updated: 2026-08-22
 ---
 
 # Hardware and Numerics
+
+## NVIDIA GPU Evolution
+
+- [NVIDIA GPU Evolution](nvidia/index.md) — Topic hub for learning NVIDIA architecture generations and the expanding technology surface around them.
+- [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](nvidia/gpu-evolution-path.md) — A medium-confidence detailed comparison of Volta, Turing, Ampere, Hopper, Ada Lovelace, and Blackwell, plus the expanding technology surface around them.
 
 ## Kernels and Dataflow
 

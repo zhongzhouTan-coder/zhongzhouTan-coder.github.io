@@ -1,0 +1,23 @@
+flowchart TD
+    Early["Early architecture timeline\nCelsius -> Tesla\n1999-2006"] --> ComputeEra["Compute-oriented study era\nFermi -> Pascal\n2010-2016"]
+    ComputeEra --> Recent["Recent architecture line\nVolta -> Ampere\n2017-2020"]
+    Recent --> Ada["Ada Lovelace\n2022"]
+    Recent --> Hopper["Hopper\n2022"]
+    Ada --> Blackwell["Blackwell\n2024"]
+    Hopper --> Blackwell
+
+    Early --> Visual["Visual computing and graphics"]
+    ComputeEra --> CUDA["Accelerated computing and CUDA"]
+    Recent --> RTX["RTX, ray tracing, and rasterization"]
+    Ada --> Efficiency["Performance and energy efficiency"]
+    Hopper --> Scale["Data-center performance, scale, security"]
+    Blackwell --> AI["Accelerated computing and generative AI"]
+
+    Visual --> Domain["Domain SDKs\nIndeX, Iray, OptiX, PhysX, MDL"]
+    CUDA --> Domain
+    RTX --> Gaming["Gaming technologies\nDLSS, G-SYNC, GPUBoost"]
+    Scale --> Fabric["Multi-GPU, NVLink, vGPU"]
+    Domain --> Workloads["Application workloads\nAI, rendering, visualization, industry"]
+    Gaming --> Workloads
+    Fabric --> Workloads
+    AI --> Workloads

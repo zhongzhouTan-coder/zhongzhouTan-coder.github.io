@@ -1482,5 +1482,176 @@
       "docs_path": "docs/frameworks/opentelemetry/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-technologies@2026-08-22-bfd1eecedea1",
+      "title": "NVIDIA Technologies & Architectures",
+      "slug": "nvidia-technologies",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/technologies/",
+      "final_url": "https://www.nvidia.com/en-us/technologies/",
+      "captured_at": "2026-08-22T08:51:47.426Z",
+      "revision": "bfd1eecedea125358385fe73ac8528291d9b5b421ef45fb42b52bfc9ddab8689",
+      "raw_paths": [
+        "raw/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.html",
+        "raw/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-blackwell-architecture@2026-08-22-b064f05f1533",
+      "title": "NVIDIA Blackwell Architecture",
+      "slug": "nvidia-blackwell-architecture",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/",
+      "final_url": "https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/",
+      "captured_at": "2026-08-22T10:03:46.135Z",
+      "revision": "b064f05f1533fecfe618292d38bdab63db1c79bbe7e2281175ddef49a34f463f",
+      "raw_paths": [
+        "raw/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.html",
+        "raw/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-hopper-ai-computing@2026-08-22-bc6bb3040d9c",
+      "title": "NVIDIA: About Us",
+      "slug": "nvidia-hopper-ai-computing",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/about-nvidia/ai-computing/",
+      "final_url": "https://www.nvidia.com/en-us/about-nvidia/",
+      "captured_at": "2026-08-22T10:03:54.947Z",
+      "revision": "bc6bb3040d9c4bb00f9215aed3fa066cafb821d35a4a9683fa0f300718ea7370",
+      "raw_paths": [
+        "raw/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.html",
+        "raw/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-ada-lovelace-architecture@2026-08-22-7cf2d2cad874",
+      "title": "NVIDIA Ada Lovelace for Professional Visualization",
+      "slug": "nvidia-ada-lovelace-architecture",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/technologies/ada-architecture/",
+      "final_url": "https://www.nvidia.com/en-us/technologies/ada-architecture/",
+      "captured_at": "2026-08-22T10:04:03.722Z",
+      "revision": "7cf2d2cad874f8d4e5eba8c22118f3b85755d555736573acfdd5b6a75bbf8e1d",
+      "raw_paths": [
+        "raw/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.html",
+        "raw/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-ampere-architecture@2026-08-22-857b33b60a28",
+      "title": "NVIDIA Ampere Architecture: The Heart of the Modern Data Center",
+      "slug": "nvidia-ampere-architecture",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/data-center/ampere-architecture/",
+      "final_url": "https://www.nvidia.com/en-us/data-center/ampere-architecture/",
+      "captured_at": "2026-08-22T10:04:12.019Z",
+      "revision": "857b33b60a286ee113c160d66e2470ddb307e8489f49170d6da54849499e5e9b",
+      "raw_paths": [
+        "raw/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.html",
+        "raw/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-turing-architecture@2026-08-22-1cf743be0457",
+      "title": "NVIDIA RTX PRO Platform",
+      "slug": "nvidia-turing-architecture",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/design-visualization/technologies/turing-architecture/",
+      "final_url": "https://www.nvidia.com/en-us/products/workstations/",
+      "captured_at": "2026-08-22T10:04:20.920Z",
+      "revision": "1cf743be045791b7beed824edbd057544b93c0d4df812890f3611bfcfc9742bc",
+      "raw_paths": [
+        "raw/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.html",
+        "raw/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:www.nvidia.com/nvidia-volta-architecture@2026-08-22-fad4883f17ca",
+      "title": "NVIDIA Volta AI Architecture",
+      "slug": "nvidia-volta-architecture",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/",
+      "final_url": "https://www.nvidia.com/en-us/data-center/volta-gpu-architecture/",
+      "captured_at": "2026-08-22T10:04:35.173Z",
+      "revision": "fad4883f17ca26c07af44303c24297593cda81e454c9890195d9cc3e47b3cccb",
+      "raw_paths": [
+        "raw/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.html",
+        "raw/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:developer.nvidia.com/nvidia-hopper-architecture-in-depth@2026-08-22-a5c3f80d5822",
+      "title": "NVIDIA Hopper Architecture In-Depth | NVIDIA Technical Blog",
+      "slug": "nvidia-hopper-architecture-in-depth",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/",
+      "final_url": "https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/",
+      "captured_at": "2026-08-22T10:05:38.846Z",
+      "revision": "a5c3f80d582287a72ef8acf297180e837d61fb94782cf8f235d578caf9d9407e",
+      "raw_paths": [
+        "raw/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.html",
+        "raw/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:developer.nvidia.com/nvidia-turing-architecture-in-depth@2026-08-22-9b92004c5735",
+      "title": "NVIDIA Turing Architecture In-Depth | NVIDIA Technical Blog",
+      "slug": "nvidia-turing-architecture-in-depth",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://developer.nvidia.com/blog/nvidia-turing-architecture-in-depth/",
+      "final_url": "https://developer.nvidia.com/blog/nvidia-turing-architecture-in-depth/",
+      "captured_at": "2026-08-22T10:05:47.662Z",
+      "revision": "9b92004c573524ff9c0c26c519894889a1cd6e61815335cb853545a0b937d9ca",
+      "raw_paths": [
+        "raw/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.html",
+        "raw/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.md",
+      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
+      "status": "ingested"
+    }
   ]
 }

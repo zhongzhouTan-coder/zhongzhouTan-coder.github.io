@@ -136,6 +136,8 @@ updated: 2026-08-22
 
 - [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — OCP MX v1.0 block contract, concrete FP4/FP6/FP8/INT8 encodings, conversion and dot-product semantics, implementation-defined boundaries, and FPGA/MSFP context.
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
+- [NVIDIA GPU Evolution](../hardware/nvidia/index.md) — Topic hub for learning NVIDIA architecture generations and the expanding compute, graphics, AI, scaling, and developer capabilities around them.
+- [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](../hardware/nvidia/gpu-evolution-path.md) — A detailed source-backed comparison of Volta, Turing, Ampere, Hopper, Ada Lovelace, and Blackwell, from Tensor Cores and ray tracing through FP8, FP4, and rack-scale AI.
 - [Quantization](../hardware/quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
 - [GPTQ: Second-Order Weight Quantization at LLM Scale](../hardware/quantization/gptq/index.md) — Shared column ordering, lazy block updates, Cholesky-stabilized error compensation, 175B-scale calibration, 3–4-bit accuracy, and packed-weight decode results.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.

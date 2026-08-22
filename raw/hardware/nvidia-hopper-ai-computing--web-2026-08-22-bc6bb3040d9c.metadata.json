@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://www.nvidia.com/en-us/about-nvidia/ai-computing/",
+  "final_url": "https://www.nvidia.com/en-us/about-nvidia/",
+  "canonical_url": "https://www.nvidia.com/en-us/about-nvidia/",
+  "title": "NVIDIA: About Us",
+  "author": "NVIDIA",
+  "published_at": null,
+  "captured_at": "2026-08-22T10:03:54.947Z",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "renderer": "http",
+  "content_sha256": "bc6bb3040d9c4bb00f9215aed3fa066cafb821d35a4a9683fa0f300718ea7370",
+  "raw_html_bytes": 485129,
+  "extracted_markdown_characters": 2794,
+  "extracted_assets": [
+    {
+      "path": "derived/web-markdown/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.assets/inline-01-576d089438da.svg",
+      "media_type": "image/svg+xml",
+      "sha256": "576d089438daf53909fc8dc41a19a5e8e0e5a2d9357c5c58bc42beb2513b1766"
+    }
+  ],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {
+    "accept-ranges": "bytes",
+    "access-control-allow-origin": "*",
+    "ak_ec_type": "LOCALE_ERD_POLICY",
+    "akamai-cache-status": "Hit from child",
+    "connection": "keep-alive, Transfer-Encoding",
+    "content-encoding": "gzip",
+    "content-security-policy": "frame-ancestors 'self' *.awsapps.nvidia.com *.nvidia.com https://widget.stackla.com https://app-sj14.marketo.com https://www.youtube.com https://www.quadro-selector.com http://player.youku.com https://player.youku.com https://live.nvidia-china.com https://www.google.com *.nvidia.cn https://events.rainfocus.com https://www.twitch.tv https://store.nvidia.ru https://store.nvidia.in *.geforcenow.com https://salespro.hpe.com https://hpe.seismic.com https://cms.nvidia-docs-uat.lower.k3.m1.brightspot.cloud https://cms.nvidia-docs-qa3.lower.k3.m1.brightspot.cloud https://events.rainfocus.com https://docs.nvidia-docs-uat.lower.k3.m1.brightspot.cloud https://docs.nvidia-docs-qa3.lower.k3.m1.brightspot.cloud https://nvfile;",
+    "content-type": "text/html; charset=UTF-8",
+    "date": "Sat, 22 Aug 2026 10:03:58 GMT",
+    "edge-cache-tag": "/en-us/about-nvidia/this/,/en-us/about-nvidia/,/en-us/",
+    "etag": "\"76597-65943479d16b1\"",
+    "last-modified": "Mon, 17 Aug 2026 19:35:59 GMT",
+    "nv-defunct-locale-redirection": "executed",
+    "server": "Apache",
+    "serverid": "prod-web04",
+    "transfer-encoding": "chunked",
+    "vary": "Accept-Encoding",
+    "x-accept": "*/*",
+    "x-akamai-transformed": "0 - 0 -",
+    "x-cdn": "akam",
+    "x-cdn-version": "v439",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "1; mode=block"
+  },
+  "limitations": []
+}
