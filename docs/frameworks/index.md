@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-18
+updated: 2026-08-22
 ---
 
 # Frameworks
@@ -69,6 +69,7 @@ updated: 2026-08-18
 
 ## Other Frameworks
 
+- [OpenTelemetry: Vendor-Neutral Observability Framework](opentelemetry/index.md) — Open-source observability framework and toolkit for generating, collecting, and exporting portable traces, metrics, and logs while leaving storage and visualization to external backends.
 - [DFlash: Block Diffusion for Flash Speculative Decoding](dflash/index.md) — Target-conditioned block-diffusion drafting, per-layer K/V injection, sparse masked-block training, and serving results across SGLang and vLLM.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](sarathi/index.md) — Chunked-prefill and decode-maximal batching that reuses prefill weight loads for decode tokens and reduces pipeline bubbles.
 - [EAGLE: Feature-Level Speculative Sampling](eagle/index.md) — Shifted-token-conditioned feature autoregression, lightweight draft training, tree verification, and lossless 2.7x-3.5x reported LLaMA2-Chat 70B latency speedup.

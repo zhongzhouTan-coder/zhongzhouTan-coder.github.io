@@ -1,0 +1,19 @@
+flowchart LR
+    Legacy["Vendor-specific instrumentation"]
+    OpenTracing["OpenTracing"]
+    OpenCensus["OpenCensus"]
+    OpenTelemetry["OpenTelemetry"]
+    Fragmented["Fragmented APIs and backend choices"]
+    Standards["Specification, APIs, semantic conventions, OTLP"]
+    Collector["OpenTelemetry Collector"]
+    Backends["External observability backends"]
+
+    Legacy --> OpenTracing
+    Legacy --> OpenCensus
+    OpenTracing --> OpenTelemetry
+    OpenCensus --> OpenTelemetry
+    OpenTracing -.-> Fragmented
+    OpenCensus -.-> Fragmented
+    OpenTelemetry --> Standards
+    OpenTelemetry --> Collector
+    Collector --> Backends

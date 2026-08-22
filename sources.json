@@ -1463,5 +1463,24 @@
       "docs_path": "docs/algorithms/foundations/perplexity.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:opentelemetry.io/opentelemetry@2026-08-22-c0e01c8e3d66",
+      "title": "What is OpenTelemetry?",
+      "slug": "opentelemetry",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://opentelemetry.io/docs/what-is-opentelemetry/",
+      "final_url": "https://opentelemetry.io/docs/what-is-opentelemetry/",
+      "captured_at": "2026-08-22T03:59:42.898Z",
+      "revision": "c0e01c8e3d664144eb72f62eae1456e80989587bd1f6f979581d8331a633671b",
+      "raw_paths": [
+        "raw/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.html",
+        "raw/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.md",
+      "docs_path": "docs/frameworks/opentelemetry/index.md",
+      "status": "ingested"
+    }
   ]
 }

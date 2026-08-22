@@ -41,6 +41,7 @@ updated: 2026-08-22
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
+- [OpenTelemetry: Vendor-Neutral Observability Framework](../frameworks/opentelemetry/index.md) — Open-source observability framework and toolkit for portable telemetry generation, collection, and export; storage and visualization remain external backend concerns.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Chunked prefills and decode-maximal batching improve decode utilization and reduce pipeline bubbles.
 - [vLLM](../frameworks/vllm/index.md) — Category hub for vLLM serving framework pages.
 - [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
