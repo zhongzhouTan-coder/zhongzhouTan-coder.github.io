@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf
   - derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md
-updated: 2026-08-13
+updated: 2026-08-22
 ---
 
 # GPT-2: Language Models are Unsupervised Multitask Learners
@@ -135,7 +135,7 @@ GPT-2 is **not fine-tuned** on any downstream task. All results below are from p
 
 ### The Scaling Trend: Bigger Is Better, Smoothly
 
-Across all tasks, performance improves **log-linearly** with model size — double the parameters, get a consistent accuracy gain. GPT-2 still **underfits** WebText (held-out perplexity keeps improving with more training). This suggested that even bigger models on even more data would continue improving — a prediction confirmed by GPT-3.
+Across all tasks, performance improves **log-linearly** with model size — double the parameters, get a consistent accuracy gain. GPT-2 still **underfits** WebText (held-out [perplexity](../../terms/perplexity.md) keeps improving with more training). This suggested that even bigger models on even more data would continue improving — a prediction confirmed by GPT-3.
 
 ### Data Contamination Analysis
 

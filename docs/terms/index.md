@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-19
+updated: 2026-08-22
 ---
 
 # Terms Glossary
@@ -46,6 +46,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Outer Product](outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
+- [Perplexity](perplexity.md) — The exponential of a causal language model's average next-token negative log likelihood on a specified tokenized corpus.
 - [Ring Attention](ring-attention.md) — Circulates query or KV blocks around a rank ring and merges partial softmax results into exact attention.
 
 ## Hardware

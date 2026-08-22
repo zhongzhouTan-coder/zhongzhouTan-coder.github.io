@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://huggingface.co/docs/transformers/perplexity",
+  "final_url": "https://huggingface.co/docs/transformers/perplexity",
+  "canonical_url": "https://huggingface.co/docs/transformers/perplexity",
+  "title": "Perplexity of fixed-length models",
+  "author": "Hugging Face Transformers documentation",
+  "published_at": null,
+  "captured_at": "2026-08-22T03:35:00.000Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "manual-evidence-excerpt",
+  "content_sha256": "32174cdba6b96df1695c9686968196466e5a8ec1b077c2c18281c8958cc1c516",
+  "raw_html_bytes": 1305,
+  "extracted_markdown_characters": 835,
+  "extracted_assets": [],
+  "extractor": "browser-readable web retrieval, locally preserved excerpt",
+  "upstream_reference": "repository web-ingest workflow; direct HTTP/Chromium capture unavailable in this environment",
+  "response_headers": {},
+  "limitations": [
+    "This is a concise browser-readable evidence excerpt, not a complete HTML export.",
+    "The repository HTTP and Chromium capture paths could not reach the source because the workspace network was unavailable."
+  ]
+}

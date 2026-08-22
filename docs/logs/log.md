@@ -336,3 +336,8 @@ updated: 2026-08-18
 ## 2026-08-21
 
 - Ingested `raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf` (moved from `raw/algorithms/2404.00456v2.pdf` to the hardware category) with MinerU precise mode and added [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/quantization/quarot/index.md) at high confidence. The page covers fused Hadamard rotations via computational invariance, online FFN and attention rotations, Post-RoPE key caching, GPTQ/per-token/asymmetric quantization stages, end-to-end W4A4KV4 accuracy and performance evidence, and failure modes; preserved four original paper figures and an editable Landscape Mermaid source. Added the [Hadamard Transform](../terms/hadamard-transform.md) glossary term and cross-linked QuaRot from FlatQuant, NVFP4, Kronecker Product, and the GPTQ/PTQ term pages.
+
+## 2026-08-22
+
+- Added [Perplexity (PPL): From Next-Token Loss to Reliable Evaluation](../algorithms/foundations/perplexity.md) from the requested Zhihu article's topic, using local browser-readable excerpts of the linked PyTorch explanation and Hugging Face's official fixed-length perplexity guide after direct Zhihu capture returned HTTP 403/access-check JSON. The medium-confidence insight derives PPL from token NLL, corrects the linked companion's missing-negative-sign shorthand, works through a three-token example, explains strided sliding-window evaluation, and records tokenizer/protocol limitations.
+- Added the [Perplexity](../terms/perplexity.md) glossary term and linked it from the PPL, GPT-1, and GPT-2 pages; registered the two corroborating web sources in `sources.json` and updated algorithm/term navigation.

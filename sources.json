@@ -1426,6 +1426,42 @@
         "docs/frameworks/vllm/glm-5.2-inference-path.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "web:geek-docs.com/perplexity-pytorch-calculation@2026-08-22-1786b54fa0c7",
+      "title": "Pytorch 中计算 perplexity 的方法",
+      "slug": "perplexity-pytorch-calculation",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html",
+      "final_url": "https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html",
+      "captured_at": "2026-08-22T03:35:00.000Z",
+      "revision": "1786b54fa0c7ccd3984b938f575aceb5f991f976e5ece79a42abdc3ed24b5c20",
+      "raw_paths": [
+        "raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html",
+        "raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md",
+      "docs_path": "docs/algorithms/foundations/perplexity.md",
+      "status": "ingested"
+    },
+    {
+      "id": "web:huggingface.co/perplexity-fixed-length-models@2026-08-22-32174cdba6b9",
+      "title": "Perplexity of fixed-length models",
+      "slug": "perplexity-fixed-length-models",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://huggingface.co/docs/transformers/perplexity",
+      "final_url": "https://huggingface.co/docs/transformers/perplexity",
+      "captured_at": "2026-08-22T03:35:00.000Z",
+      "revision": "32174cdba6b96df1695c9686968196466e5a8ec1b077c2c18281c8958cc1c516",
+      "raw_paths": [
+        "raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html",
+        "raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md",
+      "docs_path": "docs/algorithms/foundations/perplexity.md",
+      "status": "ingested"
     }
   ]
 }

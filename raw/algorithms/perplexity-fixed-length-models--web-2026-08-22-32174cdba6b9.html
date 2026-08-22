@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Perplexity of fixed-length models</title>
+  <link rel="canonical" href="https://huggingface.co/docs/transformers/perplexity">
+</head>
+<body>
+  <main>
+    <h1>Perplexity of fixed-length models</h1>
+    <p>Perplexity is the exponentiated average negative log-likelihood of a token sequence. For an autoregressive language model, <code>PPL(X) = exp(-1/t * sum(log p_theta(x_i | x_&lt;i;)))</code>.</p>
+    <p>The tokenization procedure directly affects perplexity, so scores should be compared only when tokenization and evaluation data are aligned. The metric is specific to causal/autoregressive language models and is not well defined for masked language models such as BERT.</p>
+    <h2>Fixed-length evaluation</h2>
+    <p>Disjoint chunks waste context and usually produce a worse score. A sliding-window or strided sliding-window evaluation gives each target token more preceding context. The targets used only as context must be masked from the loss.</p>
+    <pre><code>avg_nll = nll_sum / n_tokens
+ppl = torch.exp(avg_nll)</code></pre>
+    <p>The guide reports GPT-2 evaluation at 19.44 PPL with stride 1024 and 16.44 with stride 512, illustrating that the evaluation protocol changes the number.</p>
+  </main>
+</body>
+</html>

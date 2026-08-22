@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html",
+  "final_url": "https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html",
+  "canonical_url": "https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html",
+  "title": "Pytorch 中计算 perplexity 的方法",
+  "author": "",
+  "published_at": null,
+  "captured_at": "2026-08-22T03:35:00.000Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "manual-evidence-excerpt",
+  "content_sha256": "1786b54fa0c7ccd3984b938f575aceb5f991f976e5ece79a42abdc3ed24b5c20",
+  "raw_html_bytes": 1201,
+  "extracted_markdown_characters": 624,
+  "extracted_assets": [],
+  "extractor": "browser-readable web retrieval, locally preserved excerpt",
+  "upstream_reference": "repository web-ingest workflow; direct HTTP/Chromium capture unavailable in this environment",
+  "response_headers": {},
+  "limitations": [
+    "This is a concise browser-readable evidence excerpt, not a complete HTML export.",
+    "The repository HTTP and Chromium capture paths could not reach the source because the workspace network was unavailable."
+  ]
+}

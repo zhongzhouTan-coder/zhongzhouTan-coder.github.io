@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/gpt-1-improving-language-understanding--paper.pdf
   - derived/pdf-markdown/training/gpt-1-improving-language-understanding.md
-updated: 2026-07-25
+updated: 2026-08-22
 ---
 
 # GPT-1: Improving Language Understanding by Generative Pre-Training
@@ -106,7 +106,7 @@ BooksCorpus was chosen deliberately: it contains **long stretches of contiguous 
 | Epochs | 100 |
 | Batch size | 64 sequences of 512 tokens |
 | Regularization | Dropout 0.1, modified L2 (w=0.01) |
-| Perplexity on BooksCorpus | 18.4 |
+| [Perplexity](../../terms/perplexity.md) on BooksCorpus | 18.4 |
 
 ### Stage 2: Task-Specific Input Transformations
 

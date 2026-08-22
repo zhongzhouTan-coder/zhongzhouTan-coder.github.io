@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Pytorch 中计算 perplexity 的方法</title>
+  <link rel="canonical" href="https://geek-docs.com/pytorch/pytorch-questions/35_pytorch_calculate_perplexity_in_pytorch.html">
+</head>
+<body>
+  <main>
+    <h1>Pytorch 中计算 perplexity 的方法</h1>
+    <p>本文把 perplexity（困惑度）介绍为衡量语言模型在测试集合上预测句子能力的指标，并说明它由对数似然计算得到。</p>
+    <h2>什么是 perplexity</h2>
+    <p>语言模型根据之前的输入序列预测下一个词。困惑度用于衡量这种预测的困难程度；在相同评估条件下，困惑度越低，预测能力通常越好。</p>
+    <h2>如何计算 perplexity</h2>
+    <ol>
+      <li>准备测试集。</li>
+      <li>加载语言模型并在测试集上得到每个目标 token 的对数似然。</li>
+      <li>计算平均负对数似然并取指数，得到 perplexity。</li>
+    </ol>
+    <p>页面给出的简写为 <code>perplexity = exp(平均对数似然)</code>；对数概率通常不为正，因此实现时应使用平均负对数似然，或明确使用负号。</p>
+  </main>
+</body>
+</html>

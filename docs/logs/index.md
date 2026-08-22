@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-19
+updated: 2026-08-22
 ---
 
 # Wiki Index
@@ -86,6 +86,7 @@ updated: 2026-08-19
 - [The Transformer: Attention Is All You Need](../algorithms/foundations/transformer.md) — The foundational architecture: scaled dot-product attention, multi-head self-attention, sinusoidal positional encoding, encoder-decoder stacks, and the training recipe that launched modern LLMs.
 - [Layer Normalization in Transformers](../algorithms/foundations/layer-normalization/index.md) — Why Transformers normalize each token across hidden features, not across batch members, with axis diagrams and a worked computation.
 - [The Softmax Function: Properties, Motivation, and Interpretation](../algorithms/foundations/softmax.md) — Tutorial covering score-difference semantics, α parameter interpretation, three conceptual justifications (Gumbel noise, maximum entropy, exploration-exploitation), IO vs. IM model taxonomy, and complete mathematical properties.
+- [Perplexity (PPL): From Next-Token Loss to Reliable Evaluation](../algorithms/foundations/perplexity.md) — Explains exponentiated average next-token negative log likelihood, a worked example, fixed-length sliding-window evaluation, and tokenizer/protocol comparison caveats.
 - [Recurrent Neural Networks: From RNN to LSTM](../algorithms/foundations/recurrent-neural-networks/index.md) — Sequence processing through shared recurrent weights and hidden state, the long-term dependency problem, LSTM gating, and the conceptual bridge to linear attention's RNN mode.
 - [Kronecker Product](../algorithms/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker factorization trick behind FlatQuant's learnable affine transforms.
 - [FlashAttention](../algorithms/flashattention/index.md) — Category hub for the FlashAttention algorithm and kernel family.
@@ -160,6 +161,7 @@ updated: 2026-08-19
 - [Matrix Tiling](../terms/matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Memory Banking](../terms/memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
 - [Outer Product](../terms/outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
+- [Perplexity](../terms/perplexity.md) — The exponential of a causal language model's average next-token negative log likelihood on a specified tokenized corpus.
 - [Systolic Array](../terms/systolic-array.md) — A regular grid of processing elements where data flows rhythmically between neighbors so each weight is reused across many multiply-accumulates without re-fetching.
 
 ## Sources
