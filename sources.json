@@ -459,6 +459,19 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2404.00456v2",
+      "title": "QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs",
+      "slug": "quarot-outlier-free-4bit-inference-rotated-llms",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/hardware/quarot-outlier-free-4bit-inference-rotated-llms.md",
+      "docs_path": "docs/hardware/quantization/quarot/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "paper:gpt-1",
       "title": "GPT-1: Improving Language Understanding by Generative Pre-Training",
       "slug": "gpt-1-improving-language-understanding",

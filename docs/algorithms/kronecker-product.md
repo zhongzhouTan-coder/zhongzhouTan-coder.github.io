@@ -14,7 +14,7 @@ updated: 2026-08-04
 
 **Source:** [Kronecker Product — from Wolfram MathWorld](https://mathworld.wolfram.com/KroneckerProduct.html)
 
-**Related pages:** [Kronecker Product (term)](../terms/kronecker-product.md) · [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) · [Quantization hub](../hardware/quantization/index.md)
+**Related pages:** [Kronecker Product (term)](../terms/kronecker-product.md) · [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) · [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/quantization/quarot/index.md) · [Quantization hub](../hardware/quantization/index.md)
 
 ## TL;DR
 
@@ -45,6 +45,8 @@ FlatQuant ([insight page](../hardware/quantization/flatquant/index.md)) needs a 
 $$\operatorname{vec}(V)\,(P_1 \otimes P_2) = \operatorname{vec}(P_1^{\top} V P_2)$$
 
 to apply the transform as two small matrix multiplications on a reshaped tensor — `P1ᵀ ×1 X̃ ×2 P2` — instead of one large one. Storage drops by up to `n/2` and compute by up to `√n/2` when `n1 = n2 = √n`. For hidden size 8192, the optimal factors are `(64, 128)`; on LLaMA-2-7B all online transforms together cost only ~2.61% of the FP16 model's FLOPs and ~3.41 MB of parameters. This identity is exactly the mechanism documented in the [FlatQuant paper page](../hardware/quantization/flatquant/index.md)'s Kronecker factorization deep dive.
+
+QuaRot uses the same product structure to compose large [Hadamard transforms](../terms/hadamard-transform.md) from smaller head-wise factors, making its rotations cheap to apply.
 
 ## Implementation Notes
 

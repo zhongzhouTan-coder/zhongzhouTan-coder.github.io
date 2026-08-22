@@ -22,7 +22,7 @@ updated: 2026-08-14
 ## TL;DR
 
 **What:** NVFP4 is NVIDIA's Blackwell-generation 4-bit floating-point format for inference and training, with a hierarchical two-level scaling scheme — [FP8](../../terms/fp8.md) E4M3 block scales per 16 elements plus an FP32 global tensor scale.
-**How:** NVFP4 encodes each micro-block with fractional E4M3 scales (non-power-of-two), cuts block size from 32 to 16 versus MXFP4, and adds training-stability mechanisms: 2D weight scaling, stochastic rounding (hardware-accelerated on Blackwell), and Random Hadamard Transform for outlier smoothing.
+**How:** NVFP4 encodes each micro-block with fractional E4M3 scales (non-power-of-two), cuts block size from 32 to 16 versus MXFP4, and adds training-stability mechanisms: 2D weight scaling, stochastic rounding (hardware-accelerated on Blackwell), and [Random Hadamard Transform](../../terms/hadamard-transform.md) for outlier smoothing.
 **The number:** 3.5× smaller than FP16 and 1.8× smaller than FP8 in memory footprint, with 1 percentage point or less accuracy degradation versus FP8 on DeepSeek-R1-0528 evaluations (AIME 2024 improved by 2pp).
 
 ## The Big Picture
@@ -311,7 +311,7 @@ The DeepSeek-R1-0528 results are from post-training quantization (PTQ), not quan
 - **Read:** [NVFP4 paper](https://arxiv.org/abs/2509.25149) for the full derivation and experimental results
 - **Read:** [Transformer Engine NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html) for the latest API and recipe options
 - **Read:** [NVIDIA blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) for the inference narrative and deployment ecosystem
-- **Understand related formats:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md)
+- **Understand related formats:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md) · [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](quarot/index.md)
 - **Understand the hardware context:** [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
 - **Deploy:** TensorRT Model Optimizer, LLM Compressor, TensorRT-LLM, vLLM (early NVFP4 support), SGLang (upcoming), Hugging Face prequantized checkpoints
 

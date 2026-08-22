@@ -19,4 +19,5 @@ updated: 2026-08-16
 - [Quantization](quantization/index.md) — Category hub for post-training quantization methods and low-precision numeric formats.
 - [GPTQ: Second-Order Weight Quantization at LLM Scale](quantization/gptq/index.md)
 - [FlatQuant: Fast Learnable Affine Quantization](quantization/flatquant/index.md)
+- [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](quantization/quarot/index.md)
 - [NVFP4: Blackwell 4-Bit Floating Point](quantization/nvfp4.md)

@@ -332,3 +332,7 @@ updated: 2026-08-18
 ## 2026-08-19
 
 - Ingested `raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf` with MinerU precise mode and added [EssenceBench: LLM Evaluation with 200x Less Data](../benchmarks/agent-eval/essencebench/index.md) at medium confidence. The page explains dual redundancy filtering, genetic subset search, attribution-guided refinement, HellaSwag ranking preservation, model-shift limitations, and the abstract-versus-table discrepancy in the 200x claim; added the [Benchmark Compression](../terms/benchmark-compression.md) glossary entry and an AutoJudger comparison.
+
+## 2026-08-21
+
+- Ingested `raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf` (moved from `raw/algorithms/2404.00456v2.pdf` to the hardware category) with MinerU precise mode and added [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/quantization/quarot/index.md) at high confidence. The page covers fused Hadamard rotations via computational invariance, online FFN and attention rotations, Post-RoPE key caching, GPTQ/per-token/asymmetric quantization stages, end-to-end W4A4KV4 accuracy and performance evidence, and failure modes; preserved four original paper figures and an editable Landscape Mermaid source. Added the [Hadamard Transform](../terms/hadamard-transform.md) glossary term and cross-linked QuaRot from FlatQuant, NVFP4, Kronecker Product, and the GPTQ/PTQ term pages.

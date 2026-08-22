@@ -15,7 +15,7 @@ updated: 2026-08-16
 **Authors:** Yuxuan Sun, Ruikang Liu, Haoli Bai, Han Bao, Kang Zhao, Yuening Li, Jiaxin Hu, Xianzhi Yu, Lu Hou, Chun Yuan, Xin Jiang, Wulong Liu, Jun Yao
 **arXiv:** [2410.09426v4 (10 Aug 2025)](https://arxiv.org/abs/2410.09426) · Code: [github.com/ruikangliu/FlatQuant](https://github.com/ruikangliu/FlatQuant)
 
-**Related pages:** [Quantization hub](../index.md) · [GPTQ](../gptq/index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [MiniMax M2 GQA W4A4 Quantization Path](../../../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) · [vLLM Ascend Architecture](../../../frameworks/vllm-ascend/architecture.md)
+**Related pages:** [Quantization hub](../index.md) · [GPTQ](../gptq/index.md) · [QuaRot](../quarot/index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [MiniMax M2 GQA W4A4 Quantization Path](../../../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) · [vLLM Ascend Architecture](../../../frameworks/vllm-ascend/architecture.md)
 
 ## TL;DR
 
@@ -36,7 +36,7 @@ Imagine quantizing LLaMA-3-8B to W4A4 with plain round-to-nearest (RTN). WikiTex
 Existing pre-quantization transforms only partially fix this:
 
 - **Per-channel scaling** (SmoothQuant) balances outliers between weights and activations, but it *steepens the weight envelope* — at W4A4 it still fails (210.19 PPL on LLaMA-3-8B).
-- **Hadamard rotation** (QuaRot) redistributes outliers across channels, but it uses the *same fixed transform for every layer*, so residual outliers remain and error still compounds.
+- **[Hadamard rotation](../../../terms/hadamard-transform.md)** (QuaRot) redistributes outliers across channels, but it uses the *same fixed transform for every layer*, so residual outliers remain and error still compounds.
 
 FlatQuant's bet: **let each layer learn its own affine transformation that actually flattens the distribution**, instead of applying a fixed recipe.
 

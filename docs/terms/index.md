@@ -39,6 +39,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [Inner Product](inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
 - [Kimi Delta Attention](kimi-delta-attention.md) — Extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
 - [Lightning Indexer](lightning-indexer.md) — A learned top-k block selector in compressed sparse attention that scores compressed KV blocks against the query and returns the indices of the most relevant blocks for core attention.
+- [Hadamard Transform](hadamard-transform.md) — An orthogonal ±1 rotation that spreads a tensor's outlier mass across all coordinates, enabling accurate low-bit LLM quantization.
 - [Kronecker Product](kronecker-product.md) — The block-structured matrix product A⊗B that builds a large matrix from two smaller ones by scaling copies of B by the entries of A.
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
 - [Layer Normalization](layer-normalization.md) — Standardizes each example or token across its feature dimensions, independently of other batch members.

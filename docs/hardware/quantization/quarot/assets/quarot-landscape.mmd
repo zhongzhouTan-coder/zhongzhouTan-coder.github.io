@@ -1,0 +1,32 @@
+flowchart TD
+    GPTQ["GPTQ<br/>second-order weight-only 4-bit"]
+    QUIP["QuIP<br/>random rotation + incoherence<br/>(weight-only, 2-bit)"]
+    QUIP2["QuIP#<br/>Hadamard incoherence<br/>+ lattice codebooks"]
+    SLICE["SliceGPT<br/>computational invariance<br/>(structured pruning)"]
+    LLMINT8["LLM.int8()<br/>keep outlier channels in 16-bit"]
+    SMOOTH["SmoothQuant<br/>per-channel scaling"]
+    OMNI["OmniQuant<br/>learnable scale + shift"]
+    ATOM["Atom<br/>keep outlier features high-precision"]
+    QUIK["QUIK<br/>down-projection stays 8-bit"]
+    SHENG["KV cache 4-bit group-wise<br/>(Sheng et al., FlexGen)"]
+    KVQ["KVQuant<br/>3-bit KV cache"]
+    KIVI["KIVI<br/>2-bit KV cache"]
+    QUAROT["QuaRot<br/>Hadamard rotations<br/>→ W4A4KV4 end-to-end"]
+    SPIN["SpinQuant<br/>learned orthogonal rotation"]
+    AFFINE["AffineQuant<br/>learned full-size affine"]
+    FLAT["FlatQuant<br/>fast learnable affine<br/>(Kronecker + fused kernel)"]
+
+    GPTQ --> QUIK
+    QUIP --> QUIP2
+    LLMINT8 --> SMOOTH
+    SMOOTH --> OMNI
+    QUIP2 --> QUAROT
+    SLICE --> QUAROT
+    GPTQ --> QUAROT
+    SHENG --> KVQ
+    KVQ --> KIVI
+    QUAROT --> SPIN
+    QUAROT --> AFFINE
+    SPIN --> FLAT
+    AFFINE --> FLAT
+    QUAROT --> FLAT

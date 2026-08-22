@@ -15,7 +15,8 @@ mention_lint: canonical
 appears_in:
   - docs/hardware/quantization/gptq/index.md
   - docs/hardware/quantization/flatquant/index.md
-updated: 2026-08-16
+  - docs/hardware/quantization/quarot/index.md
+updated: 2026-08-21
 ---
 
 # Post-Training Quantization
@@ -46,6 +47,7 @@ PTQ is inexpensive relative to retraining, yet it has less freedom to recover fr
 
 - [GPTQ](../hardware/quantization/gptq/index.md) — Uses activation-derived second-order correction to make 3–4-bit weight-only PTQ practical at 175B scale.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Learns affine transformations, scaling, and clipping for accurate weight-and-activation PTQ.
+- [QuaRot](../hardware/quantization/quarot/index.md) — Rotates activations to remove outliers so plain 4-bit weight-and-activation PTQ works end to end.
 
 ## Related Terms
 
