@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-18
+updated: 2026-08-23
 ---
 
 # Wiki Log
@@ -99,6 +99,10 @@ updated: 2026-08-18
 - Added [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/fine-tuning/socratic-swe/index.md) to `docs/training/fine-tuning/socratic-swe/index.md`, sourced from `raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf` (arXiv:2606.07412v1, Jun 2026). Covers the closed-loop self-evolution framework: Agent Skill Registry (trace collection → skill extraction → deduplication), skill-guided task Generator with four-stage Verifier Gate (format/grounding/execution/semantics), gradient-aligned Generator reward ($R_G = \cos(g_\tau, G_v)$), GDPO-normalized three-component Solver reward, role-specific GRPO+GDPO training with shared weights, evolutionary landscape from static pipelines through self-play to skill-guided methods, benchmark results (50.40% SWE-bench Verified, 52.33% Lite, 47.20% Pro, 35.60% Terminal-Bench 2.0), Generator reward ablation, and an editable Draw.io big-picture diagram.
 
 - Expanded [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) with a new Deep Dive subsection **QKV Column-Parallel Splitting in Detail**. Covers the fused $d \times 3d$ QKV weight matrix, head-interleaved weight layout (why naive column split would break Q/K/V pairing), forward pass step-by-step walkthrough, and inference-time behavior (prefill vs. decode, KV cache distribution as the key decode win).
+
+## 2026-08-23
+
+- Re-insighted [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) and [FlashAttention-4](../algorithms/flashattention/flashattention-4.md) from their complete derived paper extractions. Reordered both pages into the required paper-insight structure, added source figures and editable landscape diagrams under `docs/algorithms/flashattention/assets/`, sharpened worked runtime traces and symbol maps, reconciled benchmark conditions and failure modes, and recorded the FlashAttention-4 B200/B100 hardware-name caveat.
 
 ## 2026-07-24
 

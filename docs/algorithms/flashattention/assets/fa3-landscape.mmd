@@ -1,0 +1,11 @@
+flowchart TD
+    FA1["FlashAttention v1<br/>IO-aware exact attention"] --> FA2["FlashAttention-2<br/>parallelism and work partitioning"]
+    FA2 --> H["Hopper H100<br/>TMA + asynchronous WGMMA"]
+    H --> P["FA3 producer-consumer pipeline"]
+    H --> S["FA3 GEMM-softmax overlap"]
+    H --> F["FA3 FP8 forward path"]
+    P --> R["TMA loads overlap with consumers"]
+    S --> R
+    F --> R
+    R --> OUT["Reported: 740 TFLOPs FP16<br/>close to 1.2 PFLOPs FP8"]
+    R --> FA4["FlashAttention-4<br/>Blackwell co-design"]

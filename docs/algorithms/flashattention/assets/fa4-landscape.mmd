@@ -1,0 +1,17 @@
+flowchart TD
+    FA1["FlashAttention v1<br/>IO-aware exact attention"] --> FA2["FlashAttention-2<br/>parallelism and work partitioning"]
+    FA2 --> FA3["FlashAttention-3<br/>Hopper asynchrony"]
+    FA3 --> BW["Blackwell B200 / GB200<br/>asymmetric scaling"]
+    BW --> MMA["Tensor-core MMA doubles"]
+    BW --> NON["Exponential and SMEM<br/>scale slowly or stay fixed"]
+    BW --> TMEM["New TMEM + fully async MMA"]
+    MMA --> SHIFT["Bottleneck shifts to non-MMA work"]
+    NON --> SHIFT
+    TMEM --> RESP["FA4 co-design"]
+    SHIFT --> RESP
+    RESP --> FW["Forward: overlap, exp emulation,<br/>conditional rescaling"]
+    RESP --> BWD["Backward: TMEM, 2-CTA MMA,<br/>less SMEM traffic and dQ atomics"]
+    RESP --> SCHED["Scheduling: LPT and deterministic order"]
+    FW --> OUT["Reported: 1613 TFLOPs<br/>71% B200 theoretical max"]
+    BWD --> OUT
+    SCHED --> OUT
