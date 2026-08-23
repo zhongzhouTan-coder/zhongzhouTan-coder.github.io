@@ -1,0 +1,13 @@
+flowchart TD
+    H["GPU memory hierarchy"] --> IO["IO-aware algorithm design"]
+    OS["Online softmax"] --> IO
+    KF["Kernel fusion"] --> IO
+    RC["Selective recomputation"] --> IO
+    APP["Approximate attention"] --> LONG["Long-sequence attention"]
+    IO --> LONG
+    SP["Sparse / low-rank / kernel methods"] --> APP
+    LONG --> FA1["FlashAttention"]
+    FA1 --> BS["Block-sparse FlashAttention"]
+    FA1 --> FA2["FlashAttention-2"]
+    FA2 --> FA3["FlashAttention-3"]
+    FA3 --> FA4["FlashAttention-4"]

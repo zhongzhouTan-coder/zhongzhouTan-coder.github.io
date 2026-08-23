@@ -1,0 +1,13 @@
+flowchart TD
+    FA1["FlashAttention v1<br/>IO-aware exact attention"] --> GAP["Utilization gap"]
+    GAP --> NM["Non-matmul overhead"]
+    GAP --> OCC["Low occupancy on long sequences"]
+    GAP --> RED["Inter-warp reductions"]
+    TRITON["Triton implementation"] --> LOOP["Q-outer loop and sequence split"]
+    NM --> FA2["FlashAttention-2"]
+    OCC --> FA2
+    RED --> FA2
+    LOOP --> FA2
+    FA2 --> FA3["FlashAttention-3<br/>Hopper asynchrony"]
+    FA3 --> FA4["FlashAttention-4<br/>Blackwell co-design"]
+    XF["xFormers / optimized attention"] -. "contemporary comparisons" .-> FA2

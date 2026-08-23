@@ -4,9 +4,9 @@ summary: "Original FlashAttention algorithm: tiled exact attention, online softm
 layout: default
 confidence: high
 sources:
-  - raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf
-  - derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md
-updated: 2026-08-14
+    - raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf
+    - derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md
+updated: 2026-08-23
 ---
 
 # FlashAttention: IO-Aware Exact Attention
@@ -15,277 +15,255 @@ updated: 2026-08-14
 **Authors:** Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, Christopher Ré
 **arXiv:** 2205.14135v2 - 23 Jun 2022
 
-**Related pages:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
+**Related pages:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [The Transformer](../foundations/transformer.md), [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
 
 ## TL;DR
 
-**What:** FlashAttention is an exact attention algorithm that avoids materializing the $N \times N$ attention matrix in GPU [HBM](../../terms/global-memory.md).
-**How:** It tiles Q, K, V into SRAM-sized blocks, uses online softmax to compute exact attention block-by-block, and recomputes intermediates during backward instead of storing them.
-**The number:** Up to 3× faster than standard attention, with up to 20× less memory — training speed records for BERT-large and GPT-2.
-
-## The Core Idea
-
-The central insight is **IO-awareness**: optimize reads and writes between slow GPU HBM and fast on-chip SRAM, not just FLOPs. Standard attention is memory-bound — masking, softmax, dropout, and intermediate reads/writes dominate wall-clock time. By keeping computation in SRAM and only writing final results to HBM, FlashAttention turns a memory-bound operation into a compute-bound one.
+**What:** FlashAttention computes the same softmax attention as the standard formula without materializing the $N \times N$ attention intermediates in GPU [HBM](../../terms/global-memory.md).
+**How:** It combines [matrix tiling](../../terms/matrix-tiling.md), online softmax, and selective backward recomputation so score and probability tiles stay on chip.
+**The number:** The paper reports up to 3x faster attention, up to 20x lower attention memory, 15% faster BERT-large training, and 3x faster GPT-2 training than its baselines.
 
 ## The Big Picture
 
-```mermaid
-flowchart LR
-    K["Load K block"] --> S["Compute Q block x K block"]
-    V["Load V block"] --> O["Update output block"]
-    S --> M["Update row max and sum"]
-    M --> O
-    O --> H["Write O, m, l to HBM"]
-```
+![FlashAttention Figure 1: HBM and SRAM hierarchy, tiled QK and PV computation, and GPT-2 attention speedup](./assets/flashattention-io-aware-overview.jpg)
 
-*① Load K and V blocks from HBM into SRAM. ② Compute local Q×K scores. ③ Update running softmax statistics (row max and sum). ④ Rescale and accumulate output. ⑤ Write only final O and statistics back to HBM — the N×N attention matrix never leaves SRAM.*
+*Source: [FlashAttention, Figure 1](https://arxiv.org/abs/2205.14135). ① The kernel loads K and V tiles from HBM into faster on-chip SRAM. ② It computes a local QK product and softmax update without writing the full score or probability matrix to HBM. ③ It writes the output after the tile loop, trading repeated on-chip work for much less slow-memory traffic.*
 
-## The Landscape
-
-FlashAttention sits at the intersection of three lines of work:
-
-```mermaid
-flowchart TD
-    A["GPU Memory Hierarchy"] --> B["IO-Aware Algorithms"]
-    C["Online Softmax"] --> B
-    D["Approximate Attention"] --> E["Exact Attention Problem"]
-    B --> F["FlashAttention"]
-    E --> F
-    G["Kernel Fusion"] --> F
-    H["Gradient Checkpointing"] --> F
-
-    D --> D1["Sparse (Sparse Transformer)"]
-    D --> D2["Low-Rank (Linformer)"]
-    D --> D3["Kernel-Based (Performer)"]
-
-    F --> I["Block-Sparse FlashAttention"]
-    F --> J["FlashAttention-2"]
-    F --> K["FlashAttention-3"]
-    F --> L["FlashAttention-4"]
-```
-
-**Parents:** IO-aware algorithms (database joins, image processing), online softmax (Milakov & Gimelshein 2018; Rabe & Staats 2021), kernel fusion compilers.
-
-**Siblings (approximate attention):** Sparse Transformer, Reformer, Linformer, Performer, Big Bird — all reduce FLOPs but often fail to deliver wall-clock speedup because they ignore memory access costs.
-
-**What FlashAttention uniquely does:** It combines online softmax [tiling](../../terms/matrix-tiling.md) with recomputation-based backward to compute *exact* attention with dramatically fewer HBM accesses. It proved that the right optimization target is memory bandwidth, not FLOP count.
+The paper's central hardware observation is visible on the left: the A100 example has about 1.5 TB/s HBM bandwidth versus an estimated 19 TB/s SRAM bandwidth. The center and right explain why a fused tiled kernel can be faster even when it performs extra recomputation.
 
 ## Why This Exists
 
-For one attention head:
+Consider one GPT-2 attention head with sequence length `N = 1024` and head dimension `d = 64`:
 
 ```text
-S = Q K^T
-P = softmax(S)
-O = P V
+S = Q K^T       # N x N scores
+P = softmax(S)  # N x N probabilities
+O = P V         # N x d output
 ```
 
-With sequence length `N` and head dimension `d`, standard attention uses $O(N^2)$ memory for intermediate matrices. This is expensive because many attention operations are memory-bound: masking, softmax, dropout, and intermediate reads/writes dominate wall-clock time even when FLOPs are not reduced.
+The two `N x N` intermediates are large enough that standard attention writes them to HBM between matrix multiplication, masking, softmax, dropout, and the final `P V` multiplication. Those elementwise and reduction steps are often memory-bound, so lower theoretical FLOPs from an approximate method do not automatically produce lower wall-clock time. This compute concern is separate from [PagedAttention](../../terms/pagedattention.md), which manages KV-cache storage for serving.
 
-Approximate attention methods reduce theoretical compute, but the paper argues many fail to produce practical speedups because they do not reduce memory movement enough.
+FlashAttention asks a different question: can each score tile be consumed before it is written out? The answer requires two pieces that must work together: a blockwise exact softmax merge and a backward pass that recomputes the discarded score and probability tiles.
 
-### Tiling and Online Softmax
+## The Landscape
 
-FlashAttention splits inputs into blocks sized to fit in SRAM:
-
-- `K_j` and `V_j` blocks are loaded from HBM into SRAM.
-- For each query block `Q_i`, the kernel computes a local score block `S_ij = Q_i K_j^T`.
-- It computes local row maxima and exponent sums.
-- It updates each output block `O_i` using online softmax rescaling.
-- It writes only the running output block and per-row softmax statistics back to HBM.
-
-The algorithm keeps running per-row statistics:
-
-```text
-m_i = running row max
-l_i = running exponential sum
-O_i = running output block
-```
-
-When a new score block changes the row max, prior output is rescaled so the final result is exactly the same as full softmax over all keys.
+The lineage is a convergence of memory-hierarchy thinking and numerically stable streaming reductions, with approximate-attention methods as a contrast rather than a direct parent.
 
 ```mermaid
-flowchart LR
-    K["Load K block"] --> S["Compute Q block x K block"]
-    V["Load V block"] --> O["Update output block"]
-    S --> M["Update row max and sum"]
-    M --> O
-    O --> H["Write O, m, l to HBM"]
+flowchart TD
+        H["GPU memory hierarchy"] --> IO["IO-aware algorithm design"]
+        OS["Online softmax"] --> IO
+        KF["Kernel fusion"] --> IO
+        RC["Selective recomputation"] --> IO
+        APP["Approximate attention"] --> LONG["Long-sequence attention"]
+        IO --> LONG
+        SP["Sparse / low-rank / kernel methods"] --> APP
+        LONG --> FA1["FlashAttention"]
+        FA1 --> BS["Block-sparse FlashAttention"]
+        FA1 --> FA2["FlashAttention-2"]
+        FA2 --> FA3["FlashAttention-3"]
+        FA3 --> FA4["FlashAttention-4"]
 ```
 
-#### How Online Softmax Works
+Editable source: [FA-1 landscape diagram](./assets/fa1-landscape.mmd).
 
-The key question: how can you compute softmax — which normally needs *all* scores at once — in blocks?
+**Parents:** IO-complexity analysis, GPU memory hierarchy, online normalizer calculation, kernel fusion, and gradient recomputation.
 
-**The answer: maintain two running statistics ($m$, $\ell$) and rescale when the max changes.**
+**Contrast:** Sparse, low-rank, and kernel-based attention reduce mathematical work, but the paper emphasizes that their wall-clock behavior also depends on memory access and kernel efficiency.
 
-Say you've processed block 1 and have $(m^{(1)}, \ell^{(1)}, O^{(1)})$. Now block 2 arrives.
+**What this paper establishes:** Exact attention can be reorganized around the fast-memory working set. That becomes the foundation for FA-2's work partitioning and the hardware-specific schedules in FA-3 and FA-4.
 
-**Step 1 — Check if the max changes:**
+## The Core Idea
 
-$$m_{new} = \max(m^{(1)}, \max(S^{(2)}))$$
+FlashAttention changes the unit of execution from a sequence-wide attention matrix to SRAM-sized tiles. It keeps a query tile resident while key/value tiles stream past it, merges each tile's softmax contribution with running row statistics, and writes only the final output and small per-row metadata. The backward pass reloads inputs and recreates the missing tiles instead of asking HBM to store a quadratic activation.
 
-**Step 2 — Rescale old statistics if needed.** If $m_{new} > m^{(1)}$, the old exponentials were computed relative to a smaller max, so multiply by a correction factor $\exp(m^{(1)} - m_{new})$:
+## Symbol Map
 
-$$\ell_{new} = \underbrace{\ell^{(1)} \cdot \exp(m^{(1)} - m_{new})}_{\text{rescaled old sum}} + \underbrace{\sum_{j \in \text{block 2}} \exp(S_j^{(2)} - m_{new})}_{\text{new contributions}}$$
+The subscript `i` identifies a query-row tile and `j` identifies a key/value-column tile. A tilde marks statistics or matrices computed for the current tile before they are merged into the running state.
 
-$$O_{new} = \underbrace{O^{(1)} \cdot \exp(m^{(1)} - m_{new})}_{\text{rescaled old output}} + \underbrace{\sum_{j \in \text{block 2}} P_j^{(2)} V_j^{(2)}}_{\text{new contributions}}$$
+| Symbol | Human name | Shape or scope | Plain meaning |
+|---|---|---|---|
+| $Q$, $K$, $V$ | query, key, value | $N \times d$ per head | Inputs to one attention head. |
+| $S$ | score matrix | $N \times N$ | All pairwise query-key dot products. |
+| $P$ | probability matrix | $N \times N$ | Row-wise softmax of the scores. |
+| $O$ | attention output | $N \times d$ | Weighted sum of values for each query row. |
+| $N$ | sequence length | per head | Number of query and key positions. |
+| $d$ | head dimension | per head | Width of each query, key, and value vector. |
+| $B_r$, $B_c$ | row and column tile sizes | SRAM-sized | Number of query rows and key/value rows processed together. |
+| $m_i$ | running row maximum | one value per query row | Max score seen so far for row block $i$. |
+| $\ell_i$ | max-shifted normalizer | one value per query row | Sum of exponentials after subtracting the running maximum. |
+| $M$ | SRAM capacity | per SM | Fast on-chip memory available to the tile working set. |
 
-If $m_{new} = m^{(1)}$ (max unchanged), no rescaling needed — just add.
+| State | Stored or recomputed | Why |
+|---|---|---|
+| $O$, $m$, $\ell$ | Stored after forward | Enough to finalize output and reconstruct probabilities in backward. |
+| $S$, $P$ | Recomputed tile by tile | Avoids writing quadratic intermediates to HBM. |
 
-**Why $O$ is stored unnormalized and divided by $\ell$ only at the end.** The running output $O$ accumulates $\sum \exp(S_j - m) \cdot V_j$ **without** dividing by $\ell$. This is deliberate: if you tried to maintain the already-normalized $O/\ell$ incrementally, rescaling when the max changes becomes messy — both numerator and denominator shift. By keeping $O$ and $\ell$ separate, you rescale both by the *same factor* and the ratio stays correct:
+## Deep Dive
 
-$$\frac{O_{old} \cdot \exp(m_{old} - m_{new})}{\ell_{old} \cdot \exp(m_{old} - m_{new})} = \frac{O_{old}}{\ell_{old}}$$
+### Tiling and kernel fusion
 
-The final division $O / \ell$ happens once at the end, yielding the exact softmax attention output with zero approximation error.
+**What it does:** It arranges the computation so a small score tile and its softmax work fit in SRAM.
 
-**Concrete example.** Scores `[2, 5, 1, 8]` processed in two blocks:
+**Why it matters:** Standard attention repeatedly moves `N x N` data through HBM between otherwise related operations.
 
-*Block 1 `[2, 5]`:* $m^{(1)} = 5, \ell^{(1)} = e^{-3} + 1 \approx 1.05$
+**How it works:**
 
-*Block 2 `[1, 8]`:* $m_{new} = 8$ (max ↑). Rescale old by $e^{5-8} = e^{-3} \approx 0.05$. New $\ell = 1.05 \cdot 0.05 + e^{-7} + 1 \approx 1.052$. Final output $O / \ell$ matches computing softmax over all 4 scores at once.
+1. Choose row and column tile sizes from the SRAM capacity and head dimension.
+2. Load one `K_j, V_j` pair into SRAM, then stream query tiles `Q_i` through it in the original FA-1 loop order.
+3. Compute `S_ij = Q_i K_j^T`, softmax statistics, and the value update while the tile is on chip.
+4. Fuse matrix multiplication, softmax, masking, and optional dropout in one CUDA kernel, then write only the output and row statistics.
 
-**Intuition:** Think of it as voting with adjustable weights. You tally votes as they arrive. If a much more popular candidate appears later, you **deflate** all previous vote counts proportionally. The final normalization preserves the exact proportions.
+**The intuition:** Keep a reusable working set in the fast memory and pay for HBM only when a result must survive the kernel.
 
-#### The Log-Sum-Exp View
+**A concrete example:** For the `N = 1024, d = 64` head, no `1024 x 1024` score tile is ever written to HBM; each local tile is consumed before the next key/value tile arrives.
 
-The rescaling form above carries a running **max** `m` and a running **sum** `l`, then divides `O / l` at the very end. The same tiling can be expressed in **log space**, and that is the form most implementations actually persist.
+**Remember:** Tiling reduces IO by controlling where intermediates live, not by changing the attention function.
 
-**One scalar per row.** Because `l` is accumulated with the max already subtracted, the max factors back out exactly:
+### Online softmax merge
 
-$$L_i = \log\sum_j \exp(S_{ij}) = m_i + \log l_i$$
+**What it does:** It computes one exact row-wise softmax across many score tiles using a running maximum and normalizer.
 
-The left side is the **log-sum-exp (LSE)** of row `i`; the right side shows the two running statistics collapsing into it. Computing `m + log(l)` once at the end costs one log per row and yields a number that stays tame no matter how large the raw sum `l` grows.
+**Why it matters:** Softmax normally couples every key position in a row, which appears to require the whole score row at once.
 
-**What changes in the process.** Nothing about the output — attention still needs the ratio `O / l`, and that division still happens. The change is bookkeeping: instead of discarding the denominator, the kernel records `L = m + log(l)` as one scalar per row. This is precisely what the implementation's final `m += log(l)` step computes before storing the result.
+**How it works:** For a query tile `i` and current key/value tile `j`, let `m_local` be the local row maximum, `P_tilde` the exponentiated scores after subtracting it, and `ell_tilde` its row sum. Merge those local statistics with the prior state:
 
-**Why only the denominator skips the rescale.** The log function turns multiplication by a rescale into addition — $\log(\ell \cdot e^x) = \log \ell + x$ — so the denominator absorbs the max update for free; that is why `L` needs no `alpha`. The numerator $O = \sum_j e^{S_j - m} V_j$ is a *vector* sum with no log equivalent, so it cannot be made absolute: whenever the max (or the LSE) moves, `O` must be re-expressed. The correction never disappears — it only changes form:
+$$m_i^{new} = \max(m_i, \widetilde{m}_{ij})$$
 
-- **In-loop (max-rescale):** `O <- O * alpha`, the same `alpha = exp(m_old - m_new)` applied to `l`.
-- **At-merge (log-space):** each block's locally normalized output is weighted by `exp(l_b - L_global)`, its share of the global denominator.
+$$\ell_i^{new} = e^{m_i-m_i^{new}}\ell_i + e^{\widetilde{m}_{ij}-m_i^{new}}\widetilde{\ell}_{ij}$$
 
-**Why log space.**
+If $O_i$ is the already-normalized output for processed keys, the exact update is:
 
-- **Overflow safety.** `l` is a sum of up to `N` exponentials and can overflow in fixed precision; its logarithm cannot.
-- **The backward pass wants `L`, not `l`.** The softmax gradient is expressible through the probabilities and `L`, so a backward kernel recomputes `P` on chip and needs only `O` and `L` — never the huge raw denominator.
+$$O_i^{new} = (\ell_i^{new})^{-1}\left(e^{m_i-m_i^{new}}\ell_i O_i + e^{\widetilde{m}_{ij}-m_i^{new}}\widetilde{P}_{ij}V_j\right)$$
 
-**Equivalent update rule.** You can also maintain `L` directly across blocks. For a new block with local log-sum-exp `l_b = log(sum_j exp(S_j - m_b)) + m_b`:
+Equivalently, the kernel can carry the numerator $U_i = \ell_i O_i$ and divide once after the last tile. For scores `[2, 5, 1, 8]` in two blocks, the second block raises the maximum from 5 to 8, so the first block's contribution is multiplied by $e^{-3}$; the final ratio is the same as a four-score softmax.
 
-$$L_{new} = \max(L_{old}, l_b) + \log\left(1 + \exp(-|L_{old} - l_b|)\right)$$
+**The intuition:** A later larger score changes the reference point, so every earlier contribution is deflated by the same factor before the new contribution is added.
 
-**Where the `max` comes from.** The merge starts from the exact definition $L_{new} = \log(e^{L_{old}} + e^{l_b})$, but evaluating $e^{L_{old}}$ directly overflows once the LSEs grow large. So factor out the larger of the two, $M = \max(L_{old}, l_b)$:
+**A concrete example:** In the `N = 1024, d = 64` head, each query row sees only the current `K_j` tile, yet its running $(m_i, \ell_i, O_i)$ state represents all keys processed so far.
 
-$$e^{L_{old}} + e^{l_b} = e^M\left(e^{L_{old}-M} + e^{l_b-M}\right)$$
+**Remember:** The rescaling is what makes blockwise softmax exact; omitting it changes the attention distribution.
 
-Taking logs gives $L_{new} = M + \log(e^{L_{old}-M} + e^{l_b-M})$. Because $M$ is the max, one of the two exponents is now $0$ and the other is $-|L_{old}-l_b|$, so the bracket collapses to $1 + e^{-d}$. The `max(...)` term is the dominant answer, and $\log(1 + e^{-d})$ is a correction bounded in $[0, \log 2)$ that shrinks to $0$ as the gap between the two LSEs grows.
+### Recomputation in backward
 
-**Merge trace.** Block 1's local LSE is $L_{old} = 5 + \log(1.0498) \approx 5.049$; block 2's local LSE is $l_b = 8 + \log(1.0009) \approx 8.001$. Merging them:
+**What it does:** It trades extra arithmetic for a linear-size saved state.
 
-$$\log(e^{5.049} + e^{8.001}) = 8.001 + \log(e^{-2.952} + 1) = 8.001 + \log(1.0522) \approx 8.052$$
+**Why it matters:** Saving `S` or `P` for backpropagation would restore the quadratic activation memory that tiling was meant to remove.
 
-matching the running $L$ after block 2 in the example below. This is the same tally re-expressed as the numerically stable `logaddexp` (`max` + `log1p`); it produces identical output to the max-rescale form, and the only difference is which statistics travel between blocks.
+**How it works:**
 
-**The same example.** Scores `[2, 5, 1, 8]` in two blocks:
+1. Save the output `O` and the per-row softmax statistics `m` and `ell` from forward.
+2. During backward, reload `Q`, `K`, and `V` in compatible tiles.
+3. Recompute the local scores and probabilities in SRAM, then form `dQ`, `dK`, and `dV` from the usual attention derivatives.
+4. Keep the recomputed matrices on chip and write only gradient tiles to HBM.
 
-- Block 1: `m = 5`, `l ≈ 1.05` → `L = 5 + log(1.05) ≈ 5.05`
-- Block 2: `m = 8`, `l ≈ 1.052` → `L = 8 + log(1.052) ≈ 8.05`
+The backward pass has five matrix multiplications per inner iteration rather than the two forward multiplications, but it avoids reading a stored `N x N` probability matrix.
 
-Direct check: `log(e^2 + e^5 + e^1 + e^8) = 8 + log(1 + e^{-3} + e^{-6} + e^{-7}) ≈ 8.05`. The output `O / l` is unchanged — `L` is just the denominator's logarithm, kept for reuse.
+**The intuition:** Recalculate a cheap local fact when needed instead of carrying every fact through the whole training run.
 
-**Intuition:** Max-rescale and log-sum-exp are **the same tally in two number systems** — one tracks the count, the other tracks its logarithm. The output needs the count (`O / l`); the backward pass prefers the logarithm (`L`), which is why kernels write `m + log(l)`.
+**A concrete example:** For the `N = 1024` head, backward reconstructs each `S_ij` and `P_ij` from the same Q/K/V tiles instead of loading a million-entry probability matrix from HBM.
 
-> **Important:** `L = m + log(l)` is exact only because `l` was accumulated with the max subtracted. A naive raw sum without the max would overflow and break the identity.
+**Remember:** FlashAttention's memory saving comes from discarding quadratic intermediates and making backward regenerate them.
 
-This same `L` is what context-parallel and multi-device attention use to merge partial softmax results — see [vLLM DCP attention](../../frameworks/vllm/dcp-attention/index.md).
+### IO complexity and the lower bound
 
-### Recomputation in Backward
+**What it does:** It turns the memory-hierarchy intuition into an asymptotic HBM-access bound.
 
-Standard training stores `S` or `P` for backward, which costs quadratic memory. FlashAttention instead stores:
+**Why it matters:** A kernel can perform more FLOPs and still finish sooner if it makes substantially fewer slow-memory transfers.
 
-- output `O`;
-- softmax row max `m`;
-- softmax normalizer `l`.
-
-Equivalently, the two statistics `m` and `l` collapse into one per-row log-sum-exp $L = m + \log l$ (see the Log-Sum-Exp View above) — the single scalar a backward pass actually needs.
-
-During backward, it reloads blocks of `Q`, `K`, and `V`, recomputes local attention probabilities on chip, and uses them to compute `dQ`, `dK`, and `dV`. This increases FLOPs, but reduces HBM traffic enough that backward is faster in practice.
-
-The paper frames this as selective gradient checkpointing that saves memory without the usual speed penalty.
-
-### IO Complexity
-
-For SRAM size `M`, sequence length `N`, and head dimension `d`, with `d <= M <= Nd`:
+**How it works:** With SRAM capacity $M$ and $d \leq M \leq Nd$, the paper gives:
 
 | Method | HBM accesses |
-|---|---|
-| Standard attention | `Theta(Nd + N^2)` |
-| FlashAttention | `Theta(N^2 d^2 / M)` |
+|---|---:|
+| Standard attention | $\Theta(Nd + N^2)$ |
+| FlashAttention | $\Theta(N^2d^2/M)$ |
 
-For typical GPU SRAM sizes and head dimensions such as `d = 64` or `128`, FlashAttention makes far fewer HBM accesses. The paper also gives a lower-bound argument that no exact attention algorithm can asymptotically improve on this bound for all SRAM sizes in the stated range.
+The outer key/value tiles cause repeated passes over query blocks, while the working set stays bounded by SRAM. The paper also proves that no exact attention algorithm can be asymptotically better than the FlashAttention term for all SRAM sizes in this range.
 
-The paper reports a GPT-2 medium example where forward plus backward attention has higher FLOPs with FlashAttention but much lower HBM traffic:
+**The intuition:** Once the fast-memory working set is fixed, the number of times the large matrices must cross the HBM boundary becomes the real cost model.
 
-| Metric | Standard attention | FlashAttention |
-|---|---:|---:|
-| GFLOPs | 66.6 | 75.2 |
-| HBM read/write | 40.3 GB | 4.4 GB |
-| Runtime | 41.7 ms | 7.3 ms |
+**A concrete example:** In the paper's GPT-2 medium benchmark, FlashAttention uses 4.4 GB of HBM reads and writes versus 40.3 GB for standard attention, despite using 75.2 rather than 66.6 GFLOPs.
 
-### Block-Sparse FlashAttention
+**Remember:** The theorem is an HBM-access result under stated size assumptions, not a guarantee of a fixed speedup on every GPU or sequence length.
 
-The paper extends FlashAttention to block-sparse attention by skipping zero blocks under a predefined block sparsity mask. The algorithm is otherwise the same tiled exact-attention procedure over nonzero blocks.
+### Block-sparse extension
 
-If `s` is the fraction of nonzero blocks, block-sparse FlashAttention has HBM accesses:
+**What it does:** It skips predefined zero blocks while retaining the same on-chip softmax merge for the blocks that remain.
 
-```text
-Theta(Nd + N^2 d^2 s / M)
-```
+**Why it matters:** Exact dense attention still has quadratic work for very long sequences; structured sparsity can remove selected interactions before they reach the kernel.
 
-The paper uses a fixed butterfly sparsity pattern in downstream experiments and reports block-sparse FlashAttention is 2-4x faster than dense FlashAttention for long sparse workloads.
+**How it works:**
+
+1. Require a block-form mask so an entire `B_r x B_c` tile is either selected or skipped.
+2. Visit only the nonzero blocks and merge their contributions with online softmax.
+3. If `s` is the fraction of nonzero blocks, the HBM bound becomes $\Theta(Nd + N^2d^2s/M)$.
+4. Use the fixed butterfly pattern in the paper's experiments; this extension is approximate because the mask removes attention entries.
+
+**The intuition:** The dense algorithm makes each selected tile cheap to move; block sparsity makes the number of selected tiles smaller.
+
+**A concrete example:** For a 64K-token Path-256 input, the block-sparse variant lets the model run at a length where dense attention would not fit, but its fixed pattern is no longer the exact dense attention operator.
+
+**Remember:** Block-sparse FlashAttention is a sparse approximation built on the exact tiled primitive, not a claim that arbitrary learned sparsity is free.
+
+## Putting It Together
+
+The trace follows one `N = 1024, d = 64` query head through forward and backward:
+
+| Step | Actor | Input state | Action | Output state |
+|---:|---|---|---|---|
+| 1 | Tile scheduler | Q, K, V in HBM | Splits Q into row tiles and K/V into column tiles sized for SRAM. | Tile indices `i, j` and a bounded working set. |
+| 2 | Fused forward kernel | `Q_i` plus `K_j, V_j` in HBM | Loads the current tiles into SRAM and computes `S_ij`. | Local score tile, local max, and local exponential sum. |
+| 3 | Online softmax state | Prior `m_i, ell_i, O_i` plus local statistics | Merges the new maximum and normalizer, rescaling the prior contribution when needed. | Exact state for all keys through block `j`. |
+| 4 | Fused forward kernel | Updated state and next `K_j, V_j` | Repeats the tile update without materializing `S` or `P` in HBM. | Final normalized `O_i` and saved `m_i, ell_i`. |
+| 5 | Backward kernel | Q, K, V, O, gradients, and saved row statistics | Reloads tiles, reconstructs `S_ij` and `P_ij`, and accumulates `dQ, dK, dV`. | Gradient tiles with no quadratic saved activation. |
+| 6 | HBM writeback | Final output and gradients | Writes only O, dQ, dK, dV, and small per-row metadata. | Linear additional memory in sequence length. |
 
 ## What This Buys You
 
-### Empirical Results
+### The headline claim
 
-Key reported results:
+FlashAttention makes exact attention practical at longer context by reducing HBM movement and activation storage, not by approximating the dense attention formula.
 
-| Setting | Result |
-|---|---|
-| BERT-large sequence length 512 | 15% faster than the MLPerf 1.1 training speed record |
-| GPT-2 sequence length 1K | Up to 3x faster than HuggingFace and 1.7x faster than Megatron-LM |
-| Long Range Arena | 2.4x speedup for FlashAttention; 2.8x for block-sparse FlashAttention |
-| GPT-2 small with 4K context | Still 30% faster than Megatron-LM with 1K context, with 0.7 better perplexity |
-| Long-document classification | Longer sequence lengths improve micro-F1 by 4.3 points on MIMIC-III and 8.5 points on ECtHR |
-| Path-X | First reported Transformer above random performance: 61.4% accuracy |
-| Path-256 | Block-sparse FlashAttention reaches 63.1% accuracy |
-| Attention runtime benchmark | Up to 3x faster than PyTorch exact attention |
-| Memory footprint | Linear in sequence length and up to 20x more memory-efficient than exact attention baselines |
+### How we know: training and attention benchmarks
+
+![FlashAttention Figure 3: attention runtime and memory footprint across sequence lengths](./assets/flashattention-io-aware-results.jpg)
+
+*Source: [FlashAttention, Figure 3](https://arxiv.org/abs/2205.14135). ① Runtime remains quadratic in sequence length, but FlashAttention is below the standard exact-attention baselines in the tested range. ② Its attention memory grows linearly, with up to 20x savings against exact baselines. ③ Approximate methods can cross over for runtime, while block-sparse FlashAttention remains competitive across the plotted lengths.*
+
+| Evidence | Reported result | What it shows |
+|---|---:|---|
+| BERT-large, 8 x A100 | 17.4 +/- 1.4 minutes vs 20.0 +/- 1.5 | 15% faster to the MLPerf target accuracy. |
+| GPT-2 medium, 8 x A100 | 6.9 days vs 21.0 days for HuggingFace | 3x end-to-end training speedup at comparable perplexity. |
+| Long Range Arena | 2.4x FlashAttention; 2.8x block-sparse | IO-aware kernels improve both dense and structured sparse attention. |
+| Attention benchmark | Up to 3x vs PyTorch exact attention | Fused tiling wins for common sequence lengths up to 2K. |
+| Long-context quality | 61.4% Path-X; 63.1% Path-256 with block sparsity | Lower memory enables sequence lengths of 16K and 64K in the reported tasks. |
+
+### The mechanism behind the numbers
+
+The speed and memory results share one cause: local score and probability tiles are consumed in SRAM, so the kernel avoids the repeated HBM traffic that dominates standard attention. Recomputation adds FLOPs in backward, but it removes the much larger quadratic activation transfer. At longer sequences, that trade makes memory capacity and bandwidth the limiting resource rather than the nominal attention formula alone.
+
+### How to read these numbers
+
+> **Warning:** The 20x figure is attention memory, not a 20x reduction in total model memory. The speedups also depend on sequence length, head dimension, masking, dropout, GPU, and baseline implementation. Block-sparse quality and speed use a fixed approximate mask and should not be compared as if they were dense exact attention.
 
 ## Where It Breaks
 
 | Failure mode | When it happens | Impact |
 |---|---|---|
-| Kernel engineering overhead | Writing new IO-aware CUDA kernels per architecture | High maintenance cost; implementations don't transfer cleanly across GPU generations |
-| Single-GPU focus | Multi-GPU attention with cross-device communication | Adds another communication layer not addressed by this work |
-| Small SRAM or short sequences | When head dimension $d$ exceeds SRAM size or $N$ is very small | Tiling benefits diminish; standard attention may be competitive |
-| Fixed sparsity patterns only | Block-sparse variant uses predefined butterfly mask | Dynamic or learned sparsity not supported |
+| Kernel engineering cost | A new attention variant or GPU architecture needs an IO-aware CUDA implementation. | Porting and maintenance require low-level device expertise. |
+| Cross-device communication | Attention is partitioned across multiple GPUs. | The single-GPU HBM analysis does not account for inter-GPU traffic. |
+| Small or unfavorable tiles | The head dimension is too large for the stated SRAM regime, or the sequence is too short for HBM traffic to dominate. | Tiling and fusion may provide little advantage over a simpler kernel. |
+| Block-mask quality | The block-sparse extension uses a predefined butterfly pattern. | Dynamic sparsity and arbitrary masks are outside the demonstrated method, and approximation can change quality. |
+| Other work becomes dominant | Larger tiles reduce HBM traffic until arithmetic or other kernel costs take over. | Further tile-size increases no longer improve runtime. |
 
 ## One Thing to Remember
 
-FlashAttention achieves its speedup **by reducing HBM traffic, not by approximating attention** — it's exact attention made faster through IO-awareness. The algorithm never writes the $N \times N$ attention matrix to HBM.
+**FlashAttention is exact attention reorganized around the memory hierarchy.** Keep only SRAM-sized tiles in flight, merge softmax statistics so the result stays exact, and recompute discarded tiles during backward; the decisive saving is avoiding the quadratic HBM traffic.
 
 ## Go Deeper
 
 - **Read:** [FlashAttention paper (arXiv:2205.14135)](https://arxiv.org/abs/2205.14135)
-- **Build on:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
-- **Understand the context:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md), [NVFP4: Blackwell 4-Bit Floating Point](../../hardware/quantization/nvfp4.md)
-- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
-- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
-
-## Key Takeaways
-
-- FlashAttention is exact attention; its speedup comes from memory traffic reduction, not approximation.
-- It avoids materializing `N x N` attention matrices in HBM.
-- Online softmax statistics make blockwise exact softmax possible.
-- Recomputation in backward trades extra FLOPs for much less HBM traffic.
-- The algorithm established IO-awareness as a core design principle for later FlashAttention versions.
+- **Build on:** [FlashAttention-2](flashattention-2.md), [FlashAttention-3](flashattention-3.md), and [FlashAttention-4](flashattention-4.md)
+- **Understand the context:** [Matrix Tiling](../../terms/matrix-tiling.md), [Global Memory](../../terms/global-memory.md), and [The Transformer](../foundations/transformer.md)
+- **Compare serving concerns:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
+- **Reproduce:** [Official implementation at Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)

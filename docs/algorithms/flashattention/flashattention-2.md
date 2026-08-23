@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf
   - derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md
-updated: 2026-08-14
+updated: 2026-08-23
 ---
 
 # FlashAttention-2: Better Parallelism and Work Partitioning
@@ -15,279 +15,293 @@ updated: 2026-08-14
 **Author:** Tri Dao
 **arXiv:** 2307.08691v1 - 17 Jul 2023
 
-**Related pages:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
+**Related pages:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md), [General Matrix Multiply (GEMM)](../../terms/gemm.md), [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
 
 ## TL;DR
 
-**What:** FlashAttention-2 keeps the exact, IO-aware attention algorithm but reorganizes GPU work for higher utilization.
-**How:** It reduces non-matmul operations, adds sequence-level parallelism for long contexts, and re-partitions work across warps to avoid inter-warp reductions.
-**The number:** About 2× faster than FlashAttention, reaching 50-73% of theoretical peak FLOPs/s on A100 and up to 225 TFLOPs/s for end-to-end GPT training.
-
-## The Core Idea
-
-FlashAttention already avoids the $N \times N$ [HBM](../../terms/global-memory.md) bottleneck, but on A100 it only reaches 25-40% of peak FLOPs/s. The remaining gap comes from non-matmul work (softmax, reductions, masking) which is much slower than tensor-core matmul. FA2 reorganizes parallelism and work partitioning to close this gap without changing the attention algorithm itself.
+**What:** FlashAttention-2 preserves exact IO-aware attention while reorganizing work across thread blocks and warps.
+**How:** It removes avoidable non-matmul work, parallelizes over sequence tiles, and gives each warp an independent query slice instead of reducing split-key partials.
+**The number:** The paper reports 1.7-3.0x speedup over FlashAttention, up to 230 TFLOPs/s or 73% of A100 peak for forward attention, and up to 225 TFLOPs/s per GPU in GPT-style training.
 
 ## The Big Picture
 
-```mermaid
-flowchart TD
-    subgraph FA1["FlashAttention v1"]
-        O1["Outer: K,V blocks"]
-        I1["Inner: Q blocks"]
-        W1["Warps: split K,V"]
-        M1["Store: m, l"]
-    end
+![FlashAttention-2 Figure 3: FlashAttention split-K warp layout compared with FlashAttention-2 query-split layout](./assets/flashattention-2-warp-partitioning.jpg)
 
-    subgraph FA2["FlashAttention-2"]
-        O2["Outer: Q blocks"]
-        I2["Inner: K,V blocks"]
-        W2["Warps: split Q"]
-        M2["Store: L (logsumexp)"]
-        P2["+ Sequence parallelism"]
-    end
+*Source: [FlashAttention-2, Figure 3](https://arxiv.org/abs/2307.08691). ① FlashAttention splits K and V across warps, so partial outputs must pass through shared memory and be reduced. ② FA-2 makes Q the split dimension while K and V remain available to all warps. ③ Each warp can finish its own output rows without an inter-warp reduction.*
 
-    FA1 -->|"2× speedup"| FA2
-```
-
-*① FA2 swaps the loop order: outer over Q blocks (not K,V) so different query rows can be parallelized independently. ② Warps split Q instead of K,V — each warp owns its own output slice, eliminating inter-warp reductions. ③ Stores a single logsumexp value L instead of two statistics (m and l). ④ Adds sequence-level parallelism for long-context, small-batch regimes.*
-
-## The Landscape
-
-FlashAttention-2 addresses a specific gap left by FlashAttention v1:
-
-```mermaid
-flowchart TD
-    A["FlashAttention v1"] --> B["Problem: 25-40% GPU utilization"]
-    B --> C1["Non-matmul bottleneck"]
-    B --> C2["Low occupancy on long seqs"]
-    B --> C3["Inter-warp reduction overhead"]
-
-    C1 --> D1["FA2: Reduce rescaling ops"]
-    C2 --> D2["FA2: Sequence parallelism"]
-    C3 --> D3["FA2: Q-split warps"]
-
-    D1 --> E["50-73% utilization on A100"]
-    D2 --> E
-    D3 --> E
-
-    E --> F["FA3: Hopper asynchrony"]
-    E --> G["FA4: Blackwell co-design"]
-```
-
-**Parent:** FlashAttention v1 — FA2 preserves the exact same attention output and IO-aware tiling foundation but restructures GPU work partitioning.
-
-**Siblings (contemporary):** xFormers memory-efficient attention, Triton attention kernels — all targeting similar utilization gaps but with different partitioning strategies.
-
-**What FA2 uniquely does:** It identifies that *how* you parallelize attention matters as much as *what* you compute. By swapping loop order and warp assignments, it doubles throughput without changing the attention formula.
+The figure captures FA-2's central change in ownership. The same paper also changes the loop order, adds sequence-level parallelism, and stores a cheaper backward state; all three changes target utilization rather than the mathematical attention result.
 
 ## Why This Exists
 
-FlashAttention avoids materializing the full attention matrix in HBM, but attention still contains operations that tensor cores do not accelerate well:
+FlashAttention already avoids writing the full `N x N` score and probability matrices to [HBM](../../terms/global-memory.md), but its A100 implementation reaches only about 25-40% of theoretical peak throughput. The remaining work includes softmax exponentials, row reductions, masking, rescaling, and gradient elementwise operations that do not run on the tensor-core [GEMM](../../terms/gemm.md) path.
 
-- softmax exponentials;
-- row-wise max and sum reductions;
-- output rescaling for online softmax;
-- masking;
-- dropout and elementwise gradient work.
+The paper gives an A100 example of 312 TFLOPs/s for FP16/BF16 matmul versus 19.5 TFLOPs/s for FP32 non-matmul work. A non-matmul operation can therefore consume much more time than its FLOP count suggests. Long-context training creates a second problem: when batch size and number of heads are small, one thread block per head leaves many streaming multiprocessors without work.
 
-On A100, FP16/BF16 tensor-core [matmul](../../terms/gemm.md) peak is far higher than FP32 non-matmul throughput. The paper gives 312 TFLOPs/s for FP16/BF16 matmul versus 19.5 TFLOPs/s for FP32 scalar work, so a non-matmul FLOP can be much more expensive than a tensor-core FLOP. FA2 therefore optimizes the parts around the matmuls instead of treating FLOPs uniformly.
+FA-2 exists for the combination of these pains. It keeps the exact tiled algorithm, but asks three scheduling questions: can non-matmul work be reduced, can one long head be split across thread blocks, and can each warp finish its own output without a reduction?
 
-## Algorithm Changes
+## The Landscape
 
-FA2 makes two specific algorithmic tweaks to FlashAttention's online softmax that reduce non-matmul FLOPs while producing the exact same output.
-
-### Tweak 1: Unscaled Output Accumulator
-
-FlashAttention v1 rescales the output at every step by dividing by the running normalizer $\ell$. FA2 defers the division to the very end by maintaining an **unscaled** accumulator $\tilde{O}$:
-
-**FlashAttention v1** (rescales both terms at each step):
-
-$$O^{(2)} = \text{diag}(\ell^{(1)} / \ell^{(2)})^{-1} \, O^{(1)} + \text{diag}(\ell^{(2)})^{-1} \, e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
-
-**FlashAttention-2** (keeps unscaled accumulator, divides once at the end):
-
-$$\tilde{O}^{(2)} = \text{diag}(e^{m^{(1)} - m^{(2)}})^{-1} \, \tilde{O}^{(1)} + e^{S^{(2)} - m^{(2)}} \, V^{(2)}$$
-
-Only at the very end: $O = \text{diag}(\ell^{(\text{last})})^{-1} \, \tilde{O}^{(\text{last})}$
-
-This eliminates one elementwise division per block per row — each of which is a non-matmul FLOP running at 1/16th the speed of tensor-core matmul on A100.
-
-### Tweak 2: Logsumexp Instead of Separate m and ℓ
-
-FlashAttention v1 stores both the row max $m$ and the exponential sum $\ell$ for the backward pass. FA2 stores a single scalar per row:
-
-$$L = m + \log(\ell)$$
-
-During backward, the softmax probabilities are recomputed directly from $L$:
-
-$$P_{ij} = \exp(S_{ij} - L_i)$$
-
-This saves memory bandwidth (one scalar per row instead of two) and simplifies the backward pass — the softmax gradient computation no longer needs to track two separate statistics.
-
-### Forward Pass in Detail
-
-![FlashAttention-2 forward pass algorithm](../assets/flash-attention-2.jpg)
-
-The full FA2 forward pass (Algorithm 1 from the paper) works as follows:
-
-```text
-1. Divide Q into T_r row blocks, K and V into T_c column blocks.
-2. For each row block i (1 to T_r):
-   a. Load Q_i into SRAM.
-   b. Initialize Õ_i = 0, ℓ_i = 0, m_i = -∞ on chip.
-   c. For each column block j (1 to T_c):
-      - Load K_j, V_j into SRAM.
-      - Compute S_i^{(j)} = Q_i K_j^T           ← matmul (fast)
-      - Update m_i = max(m_i, rowmax(S_i^{(j)}))
-      - Compute P̃_i^{(j)} = exp(S_i^{(j)} - m_i)
-      - Update ℓ_i = e^{m_i_old - m_i} · ℓ_i + rowsum(P̃_i^{(j)})
-      - Update Õ_i = diag(e^{m_i_old - m_i})^{-1} · Õ_i + P̃_i^{(j)} V_j   ← matmul (fast)
-   d. Finalize: O_i = diag(ℓ_i)^{-1} · Õ_i     ← one division at the end
-   e. Compute L_i = m_i + log(ℓ_i)              ← store one scalar per row
-   f. Write O_i and L_i to HBM.
-```
-
-The key insight: steps (c) spend the vast majority of time in two matmul operations ($Q_i K_j^T$ and $\tilde{P}_i^{(j)} V_j$), which run at full tensor-core speed. The rescaling operations are kept minimal.
-
-### Backward Pass
-
-The backward pass in FA2 is similar to FlashAttention v1 but uses $L$ to recompute probabilities:
-
-```text
-For each column block j:
-  Load K_j, V_j into SRAM.
-  For each row block i:
-    Load Q_i, O_i, dO_i, L_i from HBM.
-    Recompute S_i^{(j)} = Q_i K_j^T
-    Recompute P_i^{(j)} = exp(S_i^{(j)} - L_i)   ← using logsumexp, not separate m,ℓ
-    Compute dV_j += (P_i^{(j)})^T dO_i
-    Compute dP_i^{(j)} = dO_i V_j^T
-    Compute dS_i^{(j)} = P_i^{(j)} ∘ (dP_i^{(j)} - D_i)   ← D = rowsum(dO ∘ O)
-    Update dQ_i += dS_i^{(j)} K_j   (with atomic adds across thread blocks)
-    Update dK_j += (dS_i^{(j)})^T Q_i
-  Write dK_j, dV_j to HBM.
-```
-
-The backward pass performs **5 matmuls** per inner iteration (vs 2 in forward), which is why it's harder to optimize. FA2's sequence-level parallelism and Q-split warp partitioning are especially important here.
-
-### Multi-Query and Grouped-Query Attention
-
-FA2 natively supports MQA and GQA — where multiple query heads share the same KV head. Instead of duplicating K and V in memory, FA2 manipulates head indices to implicitly share them. In the backward pass, gradients dK and dV are summed across the heads that share them.
-
-### Causal Mask Optimization
-
-For causal (autoregressive) attention, FA2 exploits the block structure:
-
-- **Block skip:** Any block where all column indices exceed all row indices is entirely masked out — skip it completely. For large $N$, this skips approximately half the blocks, yielding 1.7-1.8× speedup.
-- **Partial mask:** Only the diagonal block needs actual masking; all blocks with row indices guaranteed $<$ column indices need no mask at all.
-
-## Sequence-Level Parallelism
-
-The first FlashAttention implementation parallelizes mainly over batch and attention heads: one thread block processes one attention head. That works well when `batch_size * num_heads` is large, but long-context training often has small batch size, leaving GPU multiprocessors underused.
-
-FA2 also parallelizes over sequence blocks:
-
-- In the forward pass, each thread block owns a block of query rows.
-- Different row blocks do not communicate, so this increases occupancy cleanly.
-- In the backward pass, each thread block owns a block of columns.
-- Backward uses atomic adds where different thread blocks contribute to the same `dQ`.
+FA-2 is the utilization-focused successor to FA-1, between IO-aware tiling and later GPU-generation-specific scheduling.
 
 ```mermaid
-flowchart LR
-    Q["Query row blocks"] --> F["Forward thread blocks"]
-    F --> O["Independent output rows"]
-    K["Key column blocks"] --> B["Backward thread blocks"]
-    B --> A["Atomic accumulation into dQ"]
+flowchart TD
+    FA1["FlashAttention v1<br/>IO-aware exact attention"] --> GAP["Utilization gap"]
+    GAP --> NM["Non-matmul overhead"]
+    GAP --> OCC["Low occupancy on long sequences"]
+    GAP --> RED["Inter-warp reductions"]
+    TRITON["Triton implementation"] --> LOOP["Q-outer loop and sequence split"]
+    NM --> FA2["FlashAttention-2"]
+    OCC --> FA2
+    RED --> FA2
+    LOOP --> FA2
+    FA2 --> FA3["FlashAttention-3<br/>Hopper asynchrony"]
+    FA3 --> FA4["FlashAttention-4<br/>Blackwell co-design"]
+    XF["xFormers / optimized attention"] -. "contemporary comparisons" .-> FA2
 ```
 
-This scheduling is especially important for long sequences, where sequence length is large but batch size and number of heads may be small.
+Editable source: [FA-2 landscape diagram](./assets/fa2-landscape.mmd).
 
-## Warp-Level Work Partitioning
+**Parent:** [FlashAttention](flashattention.md) supplies exact online-softmax tiling and recomputation.
 
-FA2 also changes how work is split across warps inside a thread block.
+**Implementation neighbor:** The paper credits the Triton implementation with first suggesting and implementing the Q-outer loop and sequence-level split that FA-2 adopts in its CUDA implementation.
 
-In FlashAttention's forward pass, warps split `K` and `V` while sharing `Q`. This split-K style requires warps to write intermediate output slices to shared memory, synchronize, and reduce partial results.
+**What changes here:** The optimization target moves from avoiding HBM traffic to using the GPU's tensor cores, warps, shared memory, and streaming multiprocessors more evenly. FA-3 and FA-4 later continue that progression for Hopper and Blackwell, including an [FP8](../../terms/fp8.md) forward path in FA-3.
 
-FA2 instead splits `Q` across warps while keeping `K` and `V` available to all warps:
+## The Core Idea
 
-- each warp computes its own slice of `Q K^T`;
-- each warp multiplies by the shared `V` tile;
-- each warp produces its own output slice;
-- no inter-warp reduction is needed in forward.
+FA-2 does not make attention sparser or approximate. It keeps the same exact score, softmax, and value computation, then changes the ownership of tiles: query rows become independent work units, warps own query slices, and only one final normalization is performed. The result is more tensor-core work per unit of overhead and more active GPU resources when the sequence is long.
 
-The backward pass uses a similar principle: choose partitions that avoid split-K style communication where possible, reducing shared-memory reads/writes and synchronization.
+## Symbol Map
 
-## Block-Size Tuning
+The subscript `i` denotes a query-row tile and `j` a key/value-column tile. A superscript `(j)` means the state after processing tile `j`; `dX` means the gradient of `X`.
 
-FA2 tunes block sizes around the tradeoff between shared-memory traffic and register pressure. Larger blocks reduce shared-memory loads and stores, but they can require too many registers or too much shared memory. The paper says typical choices are `{64, 128} x {64, 128}` depending on head dimension and device shared memory.
+| Symbol | Human name | Shape or scope | Plain meaning |
+|---|---|---|---|
+| $Q$, $K$, $V$ | query, key, value | $N \times d$ per head | Inputs to exact attention. |
+| $S$, $P$, $O$ | scores, probabilities, output | $N \times N$, $N \times N$, $N \times d$ | The attention intermediates and result. |
+| $N$ | sequence length | per head | Number of query and key positions. |
+| $d$ | head dimension | per head | Width of each query, key, and value vector. |
+| $B_r$, $B_c$ | row and column tile sizes | per thread block | Query rows and key/value rows processed together. |
+| $m_i$ | running row maximum | one value per query row | Maximum score seen while scanning key tiles. |
+| $\ell_i$ | max-shifted normalizer | one value per query row | Running sum of exponentials after max subtraction. |
+| $\widetilde{O}_i$ | unnormalized output numerator | $B_r \times d$ | Accumulator kept relative to the current row maximum. |
+| $L_i$ | log-sum-exp | one value per query row | $m_i + \log(\ell_i)$, saved for backward probability reconstruction. |
+| $dQ$, $dK$, $dV$ | input gradients | same logical scope as Q, K, V | Backward-pass gradient outputs. |
+| $D_i$ | softmax-gradient row scalar | one value per query row | Row-wise $dO \cdot O$ term used in $dS$. |
 
-The paper manually tunes these few choices by head dimension and notes that autotuning could remove that manual work.
-
-## Empirical Results
-
-The paper benchmarks attention on A100 80GB SXM4 with sequence lengths from 512 to 16k, total tokens fixed at 16k, hidden dimension 2048, and head dimensions 64 or 128.
-
-Main reported attention-kernel results:
-
-| Comparison | Result |
+| GPU scope | FA-2 ownership |
 |---|---|
-| Versus FlashAttention | 1.7-3.0x faster |
-| Versus FlashAttention in Triton | 1.3-2.5x faster |
-| Versus standard PyTorch attention | 3-10x faster |
-| Forward peak on A100 | Up to 230 TFLOPs/s, 73% of theoretical max |
-| Forward plus backward | Around 2x faster than FlashAttention |
-| H100, same implementation without Hopper-specific instructions | Up to 335 TFLOPs/s |
+| Thread block | A query-row tile in forward, or a key-column tile in backward. |
+| Warp | A query slice in forward; a communication-minimizing partition in backward. |
+| HBM | Inputs, final outputs, gradients, and saved $O,L$ state. |
+| Shared memory | Tile staging and any remaining intra-block communication. |
 
-End-to-end GPT-style training on 8 x A100 80GB reports:
+## Deep Dive
+
+### Unscaled accumulator and log-sum-exp state
+
+**What it does:** It removes repeated output normalization from the inner key-tile loop while retaining the exact softmax result.
+
+**Why it matters:** A division or rescale for every row and every key tile is non-matmul work on the slow path, even though the two surrounding GEMMs are tensor-core work.
+
+**How it works:** For row tile `i` and key/value tile `j`, FA-2 computes:
+
+$$m_i^{(j)} = \max\left(m_i^{(j-1)}, \operatorname{rowmax}(S_i^{(j)})\right)$$
+
+$$\widetilde{P}_i^{(j)} = \exp\left(S_i^{(j)} - m_i^{(j)}\right)$$
+
+$$\ell_i^{(j)} = e^{m_i^{(j-1)}-m_i^{(j)}}\ell_i^{(j-1)} + \operatorname{rowsum}\left(\widetilde{P}_i^{(j)}\right)$$
+
+The unnormalized numerator uses the same max correction:
+
+$$\widetilde{O}_i^{(j)} = e^{m_i^{(j-1)}-m_i^{(j)}}\widetilde{O}_i^{(j-1)} + \widetilde{P}_i^{(j)}V_j$$
+
+After the last key tile, FA-2 performs the only output division:
+
+$$O_i = \left(\ell_i^{(T_c)}\right)^{-1}\widetilde{O}_i^{(T_c)}, \qquad L_i = m_i^{(T_c)} + \log\left(\ell_i^{(T_c)}\right)$$
+
+The factor is $e^{m_{old}-m_{new}}$, not its inverse: an increase in the running maximum deflates the old numerator. During backward, the saved $L_i$ reconstructs probabilities directly as $P_i^{(j)} = \exp(S_i^{(j)} - L_i)$.
+
+**The intuition:** Carry the numerator in the current max's units, postpone normalization, and use one scalar log-sum-exp record to recover the global denominator later.
+
+**A concrete example:** With scores `[2, 5]` followed by `[1, 8]`, the old numerator is multiplied by $e^{5-8}=e^{-3}$ before the second block is added; the final division by `ell` gives the same four-score softmax as FA-1.
+
+**Remember:** FA-2 changes the bookkeeping around softmax, not the attention probabilities.
+
+### Sequence-level parallelism
+
+**What it does:** It turns independent sequence tiles into separate thread blocks in addition to batch and head parallelism.
+
+**Why it matters:** One block per attention head underfills the GPU when a long-context batch has too few heads or sequences to occupy all streaming multiprocessors.
+
+**How it works:**
+
+1. In forward, make the query-row tile the outer work unit; each block loads one `Q_i`, scans all `K_j,V_j`, and writes independent output rows.
+2. In backward, make the key-column tile the outer work unit; each block accumulates its local `dK_j` and `dV_j` while contributing to `dQ`.
+3. Different forward row workers do not communicate. Backward workers use atomic adds when their `dS K` contributions target the same `dQ` rows.
+
+![FlashAttention-2 Figure 2 forward workers operating on query-row blocks](./assets/flashattention-2-sequence-workers.jpg)
+
+*Source: [FlashAttention-2, Figure 2](https://arxiv.org/abs/2307.08691). The forward panel shows each worker owning a different block of attention rows; the paper uses the analogous column ownership for backward.*
+
+**The intuition:** When a single head is too large for one worker to be enough, cut it along rows or columns so more workers can run at once.
+
+**A concrete example:** In a long sequence with small batch size, several query-row blocks from the same head can occupy different SMs instead of leaving one SM responsible for the whole head.
+
+**Remember:** Sequence parallelism improves occupancy only when the workload has too few batch-head work units; it does not change the attention result.
+
+### Warp-level query partitioning
+
+**What it does:** It assigns different query rows to different warps inside one thread block.
+
+**Why it matters:** FA-1 splits K and V across warps, forcing partial outputs through shared memory, synchronization, and an inter-warp reduction.
+
+**How it works:**
+
+1. Keep `K_j` and `V_j` accessible to every warp in the block.
+2. Give each warp a slice of `Q_i` and the matching output rows.
+3. Each warp computes its score slice, applies online softmax to its rows, and multiplies by the shared value tile.
+4. Because output ownership is disjoint by query rows, the forward path needs no split-K reduction.
+
+The backward path still has dependencies among `Q`, `K`, `V`, outputs, and gradients, so it cannot remove every synchronization. It nevertheless avoids the worst split-K communication pattern.
+
+**The intuition:** Reduce across rows that never need to meet, rather than splitting keys and later rebuilding one output from partial answers.
+
+**A concrete example:** For four warps processing one `Q_i`, warp 1 can finish its query rows and output slice while warp 2 works on different rows; neither writes a partial result that the other must add.
+
+**Remember:** FA-2's warp win is less shared-memory traffic and less reduction, not fewer attention interactions.
+
+### Backward column workers
+
+**What it does:** It partitions the five-matmul backward computation by key/value columns and accumulates the shared `dQ` result atomically.
+
+**Why it matters:** Backward recomputes probabilities and has more dependencies than forward, so a naive split can trade low occupancy for excessive gradient communication.
+
+**How it works:** Each column worker loads `K_j,V_j`, scans query tiles, reconstructs $P_i^{(j)}$ from $L_i$, and accumulates `dK_j` and `dV_j` locally. Its `dS_i^{(j)}K_j` contribution is atomically added to the corresponding `dQ_i`; the worker then writes its completed key/value gradients.
+
+**The intuition:** Give each worker a gradient it can finish locally, and make the unavoidable shared gradient update explicit rather than hiding it behind a serial loop.
+
+**A concrete example:** Several column workers can all contribute to the same `dQ_i` for the `N = 1024, d = 64` head, so each worker owns a distinct `dK_j,dV_j` tile while atomic adds combine the row-gradient pieces.
+
+**Remember:** Forward sequence parallelism is embarrassingly parallel; backward gains occupancy but pays for atomic `dQ` accumulation.
+
+### Causal block skipping
+
+**What it does:** It uses the block geometry of a causal mask to skip fully invalid tiles and mask only the diagonal tile.
+
+**Why it matters:** Autoregressive attention spends no useful work on keys to the right of the current query position.
+
+**How it works:**
+
+1. Skip a block when every key column is greater than every query row in that block.
+2. Process a block without per-element masking when all its keys are valid.
+3. Apply the causal mask only where the query and key ranges overlap, typically the diagonal block for square tiles.
+
+The paper reports approximately 1.7-1.8x speedup from this structure compared with the corresponding unmasked attention configuration.
+
+**The intuition:** A tile that is entirely above the causal diagonal contains no possible contribution, so its GEMMs should never launch.
+
+**A concrete example:** In a lower-triangular 1024-token score matrix, a worker processing query rows 0-63 skips key columns 64-1023 and masks only the tile that crosses the diagonal.
+
+**Remember:** Block skipping saves work for a known structured mask; it is not a general sparse-attention algorithm.
+
+### MQA and GQA head sharing
+
+**What it does:** It supports multiple query heads reading one shared key/value head without physically duplicating K and V.
+
+**Why it matters:** MQA and GQA reduce KV-cache size for inference, but a kernel still needs to map many query heads to the same K/V data.
+
+**How it works:** FA-2 reuses the K/V head index while computing each query head. During backward, gradients for all query heads that share a K/V head are summed into that shared `dK` and `dV`.
+
+**The intuition:** Several readers can point to one stored K/V tile, but their gradient contributions must return to the same owner.
+
+**A concrete example:** If eight query heads share one K/V head, forward reads one logical K/V stream for those heads and backward reduces the eight resulting gradient streams into one `dK,dV`.
+
+**Remember:** Head sharing changes data ownership and gradient accumulation, not the exact per-query attention calculation.
+
+### Block-size tuning
+
+**What it does:** It chooses tile dimensions that balance shared-memory reuse against register and shared-memory capacity.
+
+**Why it matters:** Larger tiles reduce staging traffic, but they can reduce occupancy, spill registers, or make the kernel impossible to launch.
+
+**How it works:** The paper typically chooses row and column sizes from `{64, 128}` based on head dimension and device shared memory, then manually tunes the small set of combinations. Automatic tuning is left as future work.
+
+**The intuition:** A tile is useful only when its reuse pays for the resources it occupies.
+
+**A concrete example:** For the same long head, increasing a tile beyond the useful range may reduce shared-memory loads but add enough registers to spill, making the whole kernel slower.
+
+**Remember:** FA-2's partitioning is hardware-aware and still depends on per-head-dimension block choices.
+
+## Putting It Together
+
+The trace follows one long `N = 1024, d = 64` attention head through the FA-2 forward and backward schedules:
+
+| Step | Actor | Input state | Action | Output state |
+|---:|---|---|---|---|
+| 1 | Forward scheduler | Q, K, V in HBM; few batch-head work units | Splits Q into row tiles and assigns each row tile to a thread block. | Multiple independent forward workers. |
+| 2 | Forward worker | `Q_i` plus `K_j,V_j` tiles | Computes `S_i^(j)` and updates `m_i, ell_i` and the max-shifted `O_tilde_i`. | Exact partial state after key tile `j`. |
+| 3 | Tensor-core and warp owners | One query tile inside a block | Splits Q rows across warps, so each warp writes only its own output slice. | No forward split-K reduction. |
+| 4 | Forward epilogue | Final `O_tilde_i, ell_i, m_i` | Divides once to form `O_i`, computes `L_i = m_i + log(ell_i)`, and writes `O_i,L_i`. | Normalized output and one backward scalar per row. |
+| 5 | Backward scheduler | K/V column tiles and upstream `dO` | Assigns one column tile to each worker, which reloads Q/K/V and reconstructs `P_i^(j) = exp(S_i^(j) - L_i)`. | Local `dK_j,dV_j` accumulators and `dQ` contributions. |
+| 6 | Gradient writers | Several workers target the same `dQ_i` | Atomically adds each `dS_i^(j)K_j` contribution, then writes completed gradients. | Exact `dQ,dK,dV` with higher occupancy and explicit contention. |
+
+## What This Buys You
+
+### The headline claim
+
+FA-2 roughly doubles FlashAttention's attention throughput in the paper's A100 tests by spending less time on scalar overhead and exposing more independent work, while preserving exact attention.
+
+### How we know: A100 attention and training benchmarks
+
+![FlashAttention-2 attention forward and backward performance on A100](./assets/flashattention-2-performance.jpg)
+
+*Source: [FlashAttention-2, Figure 4](https://arxiv.org/abs/2307.08691). This extracted panel shows forward-plus-backward throughput across sequence lengths for one A100 configuration; the paper reports separate causal and head-dimension settings as well.*
+
+| Evidence | Reported result | What it shows |
+|---|---:|---|
+| A100 attention vs FlashAttention | 1.7-3.0x faster | Work partitioning improves the established IO-aware kernel. |
+| A100 attention vs Triton FlashAttention | 1.3-2.5x faster | The CUDA implementation's partitioning beats the compared Triton kernels in tested settings. |
+| A100 attention vs PyTorch | 3-10x faster | Exact fused attention remains far ahead of the standard materializing path. |
+| A100 forward / backward peak | 230 TFLOPs/s forward, 73% peak; up to 63% peak backward | The two passes have different utilization ceilings. |
+| H100, same code without Hopper-specific instructions | Up to 335 TFLOPs/s | Hardware helps, but this is not a Hopper-optimized FA-3 result. |
+
+End-to-end GPT-style training on 8 x A100 GPUs reports:
 
 | Model setting | Without FlashAttention | FlashAttention | FlashAttention-2 |
 |---|---:|---:|---:|
-| GPT3-1.3B, 2k context | 142 TFLOPs/s | 189 TFLOPs/s | 196 TFLOPs/s |
-| GPT3-1.3B, 8k context | 72 TFLOPs/s | 170 TFLOPs/s | 220 TFLOPs/s |
-| GPT3-2.7B, 2k context | 149 TFLOPs/s | 189 TFLOPs/s | 205 TFLOPs/s |
-| GPT3-2.7B, 8k context | 80 TFLOPs/s | 175 TFLOPs/s | 225 TFLOPs/s |
+| GPT3-1.3B, 2K context | 142 TFLOPs/s | 189 TFLOPs/s | 196 TFLOPs/s |
+| GPT3-1.3B, 8K context | 72 TFLOPs/s | 170 TFLOPs/s | 220 TFLOPs/s |
+| GPT3-2.7B, 2K context | 149 TFLOPs/s | 189 TFLOPs/s | 205 TFLOPs/s |
+| GPT3-2.7B, 8K context | 80 TFLOPs/s | 175 TFLOPs/s | 225 TFLOPs/s |
 
-The strongest gains appear when attention is a larger share of the workload, such as longer context lengths.
+### The mechanism behind the numbers
 
-## Relationship to Other Attention Work
+The gains stack by regime. The unscaled accumulator removes repeated normalization from every tile; query-row workers raise occupancy when batch-head parallelism is scarce; query-split warps remove forward shared-memory reductions; and causal skipping removes invalid blocks. That is why the largest end-to-end improvements appear at 8K context, where attention occupies more of the workload and the original parallelism leaves more resources exposed.
 
-FA2 sits between the original IO-aware algorithm and later architecture-specific kernels:
+### How to read these numbers
 
-- [FlashAttention](flashattention.md) establishes exact tiled attention with online softmax and recomputation.
-- FlashAttention-2 keeps the same exact-attention semantics but improves GPU occupancy and work partitioning.
-- [FlashAttention-3](flashattention-3.md) targets Hopper with TMA/WGMMA asynchrony, warp specialization, and [FP8](../../terms/fp8.md) forward attention.
-- [FlashAttention-4](flashattention-4.md) targets Blackwell with TMEM, larger MMA tiles, exponential emulation, 2-CTA backward, and load-balanced scheduling.
-
-Compared with [vLLM](../../frameworks/vllm/vllm-framework.md), FA2 is a kernel-level attention optimization. vLLM manages serving-time KV-cache memory and scheduling, while FA2 makes exact attention kernels faster for training, finetuning, and inference.
+> **Warning:** These are kernel throughput and selected end-to-end training results on A100, not a device-independent speed guarantee. The reported TFLOPs/s convention counts attention FLOPs according to the paper's comparison formula, and the H100 number comes from running the same implementation without Hopper-specific instructions. FA-2 remains quadratic in attention computation as sequence length grows; its improvement is utilization and linear extra memory, not a linear-time attention algorithm.
 
 ## Where It Breaks
 
 | Failure mode | When it happens | Impact |
 |---|---|---|
-| Architecture lock-in | Implementation tied to NVIDIA A100/H100 CUDA; AMD or other GPUs | Requires separate porting effort |
-| Small batch sizes with short sequences | When $N$ is short and batch size is already large | [Sequence parallelism](../../terms/sequence-parallelism.md) adds no benefit; overhead dominates |
-| Compiler dependency | Manual tuning of block sizes per head dimension | Fragile across models; autotuning not yet available |
-| Non-matmul bottleneck persists | FP32 softmax still limits throughput on newer architectures | Future GPUs (H100, B200) shift bottleneck; motivates FA3 and FA4 |
-
-These boundaries directly motivate the later FlashAttention-3 (Hopper asynchrony) and FlashAttention-4 (Blackwell co-design) papers.
+| Too many existing work units | Batch size and head count already provide enough thread blocks, or the sequence is short. | Sequence-level parallelism adds little occupancy and can add scheduling overhead. |
+| Atomic gradient contention | Many backward column workers contribute to the same `dQ` tile. | Atomic updates can serialize or vary in order, limiting backward scaling and reproducibility. |
+| Tile resource pressure | A larger `{64, 128}` tile exceeds register or shared-memory capacity. | Register spills, lower occupancy, or an unlaunchable kernel erase the expected gain. |
+| Architecture-specific tuning | The target is not the A100-style NVIDIA CUDA path, or a newer GPU exposes different bottlenecks. | Block choices and instructions need a separate implementation; FA-3 and FA-4 address newer generations. |
+| Non-matmul work remains scarce | Softmax and reductions do not scale with tensor-core throughput. | FA-2 cannot hide all scalar work; later asynchronous pipelines target this gap directly. |
+| Exact long-context scaling | Sequence length becomes very large without structured sparsity. | Attention arithmetic is still quadratic even though the saved activation state is linear. |
 
 ## One Thing to Remember
 
-FlashAttention-2's speedup comes **not from a better algorithm but from better GPU work organization** — it reaches 2× the throughput of FlashAttention by reducing non-matmul overhead and increasing parallelism, while computing exactly the same attention.
+**FA-2 is a better schedule for the same exact attention.** FA-1 solved the HBM problem; FA-2 fills the GPU by reducing scalar overhead, splitting long sequences across thread blocks, and assigning query rows so warps do not need to rebuild one output through shared memory.
 
 ## Go Deeper
 
 - **Read:** [FlashAttention-2 paper (arXiv:2307.08691)](https://arxiv.org/abs/2307.08691)
-- **Build on:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), [FlashAttention-4](flashattention-4.md)
-- **Understand the context:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
-- **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
-- **Reproduce:** [Official implementation at github.com/Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
-
-## Key Takeaways
-
-- FA2 is exact attention, not an approximation.
-- The main improvement over FlashAttention is better GPU work organization.
-- Reducing non-matmul FLOPs matters because scalar FP32 work is much slower than tensor-core matmul on A100.
-- Sequence-parallel thread blocks improve occupancy for long-context, small-batch regimes.
-- Splitting `Q` across warps avoids forward-pass inter-warp reductions and shared-memory traffic.
-- FA2 becomes the practical baseline that FA3 and FA4 optimize against on newer GPU architectures.
+- **Build on:** [FlashAttention](flashattention.md), [FlashAttention-3](flashattention-3.md), and [FlashAttention-4](flashattention-4.md)
+- **Understand the context:** [Sequence Parallelism](../../terms/sequence-parallelism.md), [GEMM](../../terms/gemm.md), [Global Memory](../../terms/global-memory.md), and [PagedAttention](../../terms/pagedattention.md)
+- **Compare serving concerns:** [vLLM: PagedAttention Serving Framework](../../frameworks/vllm/vllm-framework.md)
+- **Reproduce:** [Official implementation at Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention)
