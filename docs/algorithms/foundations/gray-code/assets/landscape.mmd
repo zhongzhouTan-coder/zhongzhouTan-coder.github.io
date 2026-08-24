@@ -1,0 +1,9 @@
+flowchart LR
+    Binary["Ordinary binary counting"] --> Stibitz["Reflected binary idea\nStibitz, 1941"]
+    Stibitz --> Gray["Reflected binary code / BRGC\nGray, 1947"]
+    Gray --> Construct["Reflect-and-prefix\nG(n) = n XOR (n >> 1)"]
+    Gray --> Encoders["Position encoders\nOne-track transition"]
+    Gray --> CDC["Clock-domain counters\nFIFO pointers"]
+    Gray --> QAM["QAM constellation labels\nNearest-neighbor bit locality"]
+    Gray --> Karnaugh["Karnaugh maps\nAdjacent Boolean cells"]
+    Gray --> Variants["Balanced, n-ary,\npartial and specialized codes"]

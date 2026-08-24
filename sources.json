@@ -1667,5 +1667,24 @@
       "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:handwiki.org/gray-code@2026-08-24-614922af9d5c",
+      "title": "Gray code",
+      "slug": "gray-code",
+      "category": "algorithms",
+      "kind": "web",
+      "source_url": "https://handwiki.org/wiki/Gray_code",
+      "final_url": "https://handwiki.org/wiki/Gray_code",
+      "captured_at": "2026-08-24T12:15:49.199Z",
+      "revision": "614922af9d5ca6f8ddb516e033431e03b095577e5e151b82ee9a8ab074285cc8",
+      "raw_paths": [
+        "raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.html",
+        "raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/algorithms/gray-code--web-2026-08-24-614922af9d5c.md",
+      "docs_path": "docs/algorithms/foundations/gray-code/index.md",
+      "status": "ingested"
+    }
   ]
 }

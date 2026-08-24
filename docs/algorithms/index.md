@@ -17,6 +17,7 @@ updated: 2026-08-22
 - [Layer Normalization in Transformers](foundations/layer-normalization/index.md) ([term](../terms/layer-normalization.md)) — Token-local normalization across hidden features, contrasted with BatchNorm through equations, source diagrams, runtime behavior, and implementation pitfalls.
 - [The Softmax Function: Properties, Motivation, and Interpretation](foundations/softmax.md) — Comprehensive tutorial on the softmax function: score-difference semantics, α parameter interpretation, three conceptual justifications (Gumbel noise, maximum entropy, exploration-exploitation), IO vs. IM model taxonomy, and complete mathematical properties with proofs.
 - [Perplexity (PPL): From Next-Token Loss to Reliable Evaluation](foundations/perplexity.md) — Explains exponentiated average next-token negative log likelihood, a worked example, fixed-length sliding-window evaluation, and tokenizer/protocol comparison caveats.
+- [Gray Code: One-Bit Transitions for Safe State Changes](foundations/gray-code/index.md) — Binary-reflected Gray code, reflect-and-prefix construction, shift/XOR conversion, cyclic adjacency, and transition-safe uses in encoders, clock-domain counters, FIFO pointers, QAM, and Karnaugh maps.
 - [Recurrent Neural Networks: From RNN to LSTM](foundations/recurrent-neural-networks/index.md) — Beginner-oriented path from sequence order and shared recurrent weights to hidden-state memory, long-term dependency failures, LSTM gates, and [linear attention](../terms/linear-attention.md)'s RNN execution mode.
 
 ## Linear Algebra Foundations
