@@ -14,6 +14,7 @@ updated: 2026-08-22
 
 - [NVIDIA GPU Evolution](nvidia/index.md) — Topic hub for learning NVIDIA architecture generations and the expanding technology surface around them.
 - [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](nvidia/gpu-evolution-path.md) — A medium-confidence detailed comparison of Volta, Turing, Ampere, Hopper, Ada Lovelace, and Blackwell, plus the expanding technology surface around them.
+- [NVIDIA Ada Lovelace Professional GPU Architecture](nvidia/ada-lovelace-professional-gpu-architecture/index.md) — AD102 hierarchy, cache, ray-tracing geometry engines, shader scheduling, neural graphics, FP8 Tensor Cores, and AV1 video.
 
 ## Kernels and Dataflow
 

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-23
+updated: 2026-08-24
 ---
 
 # Wiki Log
@@ -352,3 +352,5 @@ updated: 2026-08-23
 ## 2026-08-24
 
 - Added [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](../frameworks/vllm/mamba2-linear-attention-prefix-cache/index.md), a medium-confidence static trace at pinned vLLM revision `5c9ff5366b039a69b344773bdfead8466ed9a097`. The page follows recurrent-state checkpoints from prefix-hash publication and its same-step visibility gate through hybrid-group hit reconciliation, align-mode allocation and state migration, Mamba2 or linear-attention suffix execution, and publication of the next checkpoint; added 20 declared evidence findings and an editable sequence diagram. A scoped freshness check returned `decision: defer` until 2026-09-01.
+- Ingested `raw/hardware/nvidia-ada-lovelace-professional-gpu-architecture--nvidia.pdf` and its existing MinerU extraction into [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](../hardware/nvidia/gpu-evolution-path.md), adding source-backed AD102 hierarchy, cache, RT Core, and professional-GPU details.
+- Added the dedicated [NVIDIA Ada Lovelace Professional GPU Architecture](../hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md) insight from the precise MinerU extraction, preserving nine selected source figures, an editable landscape, full-chip versus RTX 6000 product scopes, and the FP8 cross-link.

@@ -1,0 +1,18 @@
+flowchart TD
+    Turing["Turing\nfirst RT and Tensor Cores"] --> Ampere["Ampere\nsecond-generation RT Core\nreworked SM and OFA"]
+    Ampere --> Ada["Ada Lovelace\nAD102 and professional RTX 6000"]
+
+    Turing --> Raster["Raster graphics"]
+    Ampere --> OFA["Standalone optical flow"]
+    Ada --> RT["Third-generation RT Core"]
+    Ada --> SER["Shader Execution Reordering"]
+    Ada --> Neural["DLSS 3 and FP8 Tensor Cores"]
+    Ada --> Video["AV1 NVENC and NVDEC"]
+
+    RT --> Opacity["Opacity Micromap Engine"]
+    RT --> MicroMesh["Displaced Micro-Mesh Engine"]
+    RT --> ComplexScenes["Detailed, real-time ray-traced scenes"]
+    SER --> ComplexScenes
+    Neural --> ComplexScenes
+    Video --> Professional["Professional visualization workflow"]
+    ComplexScenes --> Professional

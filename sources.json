@@ -1542,6 +1542,19 @@
     }
   ,
     {
+      "id": "nvidia:ada-lovelace-professional-gpu-architecture",
+      "title": "NVIDIA Ada Lovelace Professional GPU Architecture",
+      "slug": "nvidia-ada-lovelace-professional-gpu-architecture",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/hardware/nvidia-ada-lovelace-professional-gpu-architecture--nvidia.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/hardware/nvidia-ada-lovelace-professional-gpu-architecture/nvidia-ada-lovelace-professional-gpu-architecture.md",
+      "docs_path": "docs/hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "web:www.nvidia.com/nvidia-ada-lovelace-architecture@2026-08-22-7cf2d2cad874",
       "title": "NVIDIA Ada Lovelace for Professional Visualization",
       "slug": "nvidia-ada-lovelace-architecture",
