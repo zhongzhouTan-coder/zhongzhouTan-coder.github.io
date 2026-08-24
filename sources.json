@@ -1423,7 +1423,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/vllm/5c9ff5366b039a69b344773bdfead8466ed9a097/",
       "docs_paths": [
-        "docs/frameworks/vllm/glm-5.2-inference-path.md"
+        "docs/frameworks/vllm/glm-5.2-inference-path.md",
+        "docs/frameworks/vllm/mamba2-linear-attention-prefix-cache/index.md"
       ],
       "status": "ingested"
     },

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-22
+updated: 2026-08-24
 ---
 
 # Wiki Index
@@ -51,6 +51,7 @@ updated: 2026-08-22
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](../frameworks/vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop, token and sequence budgets, running/waiting admission, chunked prefill, paged KV-slot allocation, persistent worker batches, completion, and preemption.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](../frameworks/vllm/prefill-decode-disaggregated-deployment/index.md) — Deployment trace across the router, prefill pool, NIXL KV-transfer plane, and decode pool, with pull/push modes, scaling, compatibility gates, and failure handling.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/vllm/vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group KV cache managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
+- [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](../frameworks/vllm/mamba2-linear-attention-prefix-cache/index.md) — Recurrent checkpoint lifecycle from prefix hash lookup and hybrid-group reconciliation through align-mode state migration, Mamba2/linear-attention suffix execution, and republishing the next checkpoint.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — How PCP partitions current-step query rows and restores token order while DCP partitions persistent KV rows and restores exact softmax normalization.
 - [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Focused derivation of the DCP local-attention, LSE-correction, and AG+RS/AG+AR reduction path.
 - [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid KDA/MLA attention, latent MoE, DeepGEMM MegaMoE, MTP, and K3-specific kernels.

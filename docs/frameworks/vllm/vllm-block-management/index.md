@@ -10,7 +10,7 @@ sources:
   - raw/frameworks/vllm-codebase--github-dd11df04f3b7.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/important-files.md
   - derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/block-management.md
-updated: 2026-08-17
+updated: 2026-08-24
 ---
 
 # vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack
@@ -22,6 +22,7 @@ updated: 2026-08-17
 
 **Related pages:** [vLLM: PagedAttention Serving Framework](../vllm-framework.md),
 [vLLM Continuous Batching](../vllm-continuous-batching/index.md),
+[Mamba2 and Linear-Attention Prefix-Cache Path](../mamba2-linear-attention-prefix-cache/index.md),
 [KV Cache](../../../terms/kv-cache.md), [PagedAttention](../../../terms/pagedattention.md),
 [Block Table](../../../terms/block-table.md)
 
@@ -291,4 +292,5 @@ These are 2023 single-GPU OPT-13B benchmarks. Do **not** treat "2-4×" as a univ
 - **Read:** [PagedAttention paper (arXiv:2309.06180)](https://arxiv.org/abs/2309.06180); the MinerU extraction with all figures is at derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md.
 - **Build on:** [vLLM Continuous Batching](../vllm-continuous-batching/index.md) for the scheduler loop that calls `allocate_slots`; [SGLang](../../sglang/index.md) for the RadixAttention sibling approach; [DeepSeek-V2 MLA](../../../algorithms/attention-variants/deepseek-v2-mla.md) for a cache-shrinking alternative.
 - **Understand the context:** [KV Cache](../../../terms/kv-cache.md), [PagedAttention](../../../terms/pagedattention.md), [Block Table](../../../terms/block-table.md), [Continuous Batching](../../../terms/continuous-batching.md).
+- **Trace recurrent prefix reuse:** [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](../mamba2-linear-attention-prefix-cache/index.md) follows one state checkpoint from hash publication through a consumer's suffix-only recurrence.
 - **Reproduce:** the whole block stack is in `vllm/v1/core/` — start at <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/core/kv_cache_manager.py#L344" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/core/kv_cache_manager.py" data-code-line="344"><code>KVCacheManager.allocate_slots</code></a>, then `BlockPool`, then <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L270" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="270"><code>MultiGroupBlockTable</code></a> in <a class="code-link" href="../../../../external-repos/vllm-dd11df04f3b7/vllm/v1/worker/block_table.py#L270" data-code-repo="vllm-dd11df04f3b7" data-code-path="vllm/v1/worker/block_table.py" data-code-line="270"><code>vllm/v1/worker/block_table.py</code></a>.

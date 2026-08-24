@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant A as Producer request A
+    participant S as V1 scheduler
+    participant C as Mamba cache manager
+    participant W as GPU model runner
+    participant L as Mamba2 / linear layer
+    participant B as Consumer request B
+
+    A->>S: Prompt prefix P
+    S->>C: Allocate page and pre-register hash(P)
+    Note over S,C: Same-step cache entry means consumers wait
+    S->>W: Schedule P with the fresh state page
+    W->>L: Tokens P plus zero initial state
+    L-->>W: Output rows plus recurrent checkpoint h(P)
+    W-->>S: Step completion
+    Note over C: hash(P) now addresses a filled checkpoint
+    S->>C: Release A's reference
+    Note over C: Hashed block remains an evictable checkpoint
+
+    B->>S: Prompt P plus suffix Q
+    S->>C: Look up chained hash(P)
+    C-->>S: Hit length, checkpoint block h(P)
+    S->>C: Touch hit and allocate writable running block
+    S->>W: Block IDs plus num_computed_tokens = len(P)
+    W->>W: In align mode, migrate h(P) when the running slot changes
+    W->>L: Initial state h(P) plus suffix Q
+    L-->>W: Output rows plus h(P,Q)
+    W-->>S: Step completion
+    S->>C: Publish hash(P,Q) to the new checkpoint

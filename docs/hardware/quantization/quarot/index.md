@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf
   - derived/pdf-markdown/hardware/quarot-outlier-free-4bit-inference-rotated-llms.md
-updated: 2026-08-21
+updated: 2026-08-24
 ---
 
 # QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs
@@ -20,7 +20,7 @@ updated: 2026-08-21
 ## TL;DR
 
 **What:** QuaRot is a [post-training quantization](../../../terms/post-training-quantization.md) scheme that for the first time quantizes **all** weights, activations, and the [KV cache](../../../terms/kv-cache.md) of an LLM to 4 bits end-to-end — with no channels held back in higher precision.
-**How:** It uses the computational-invariance trick from SliceGPT to fuse randomized [Hadamard transforms](../../../terms/hadamard-transform.md) into the weight matrices offline (free at runtime), plus a handful of cheap online Hadamard rotations inside the FFN and attention blocks, so outlier features disappear without changing the model's output.
+**How:** It uses the computational-invariance trick from SliceGPT to fuse randomized [Hadamard transforms](../../../terms/hadamard-transform.md) into the weight matrices offline (free at runtime), first folding the pretrained RMSNorm gain into adjacent weights, plus a handful of cheap online Hadamard rotations inside the FFN and attention blocks, so outlier features disappear without changing the model's output.
 **The number:** A 4-bit LLAMA2-70B keeps 99% of zero-shot accuracy (≤ 0.47 WikiText-2 perplexity loss), with up to 3.33× prefill speedup and 3.89× decode memory saving on an RTX 3090.
 
 ## The Big Picture
@@ -82,18 +82,20 @@ flowchart TD
 
 ## The Core Idea
 
-**Rotate the model so outliers vanish, then quantize everything with plain grids.** Orthogonal rotations never change what a transformer computes — they can be absorbed into the weights for free — but they completely change how the numbers are distributed: outlier mass spreads evenly across all coordinates. QuaRot applies exactly the rotations needed to make every weight matrix, every activation, and every cached key/value easy to quantize, using just 1½ online Hadamard transforms per transformer layer.
+**Rotate the model so outliers vanish, then quantize everything with plain grids.** Orthogonal rotations never change what a transformer computes — they can be absorbed into the weights for free — but they completely change how the numbers are distributed: outlier mass spreads evenly across all coordinates. At each pre-norm boundary, QuaRot folds the learned per-channel gain into neighboring weights, keeps the data-dependent normalization in the forward pass, and carries the hidden state in rotated coordinates. This makes every weight matrix, activation, and cached key/value easier to quantize, using just 1½ online Hadamard transforms per transformer layer.
 
 ## Symbol Map
 
-QuaRot's notation: `H` always denotes a [Hadamard matrix](../../../terms/hadamard-transform.md) (entries $\pm 1$, scaled to be orthogonal); `Q` is the global randomized Hadamard applied to the hidden state; `Pos` is positional encoding (RoPE); `diag(α)` is the RMSNorm scale vector. Rotations are "fused" into a weight matrix when they are multiplied into the weight offline, versus "online" when applied to activations during the forward pass.
+QuaRot's notation: `H` always denotes a [Hadamard matrix](../../../terms/hadamard-transform.md) (entries $\pm 1$, scaled to be orthogonal); `Q` is the global randomized Hadamard applied to the hidden state; `Pos` is positional encoding (RoPE); and $\boldsymbol{\alpha}$ is the learned RMSNorm gain. The page separates RMSNorm into scale-free row normalization $N(\mathbf{X})$ and this gain: the gain is learned during pretraining and folded into adjacent weights, while $N(\mathbf{X})$ remains a runtime operation. Rotations are "fused" into a weight matrix when they are multiplied into the weight offline, versus "online" when applied to activations during the forward pass.
 
 | Symbol | Human name | Shape / scope | Plain meaning |
 |---|---|---|---|
 | $\mathbf{Q}$ | global rotation | hidden-dim × hidden-dim | Randomized Hadamard fused around each block so inter-block activations are rotated. |
 | $\mathbf{H}$, $\mathbf{H}_{d_h}$ | Hadamard matrix | head-dim or hidden-dim | Norm-preserving $\pm 1$ rotation used online or fused into weights. |
 | $\tilde{\mathbf{H}} = \mathbf{H}\operatorname{diag}(s)$ | randomized Hadamard | hidden-dim | Hadamard with random sign flips; still orthogonal. |
-| $\operatorname{diag}(\boldsymbol{\alpha})$ | RMSNorm scale | hidden-dim diagonal | Absorbed into adjacent weights so rotations commute through normalization. |
+| $N(\mathbf{X})$ | scale-free RMS normalization | one scalar per row | Divides each row by its RMS; this data-dependent normalization remains in the forward pass. |
+| $\boldsymbol{\alpha}$ | pretrained RMSNorm gain | hidden-dim vector | Learned during pretraining, fixed during QuaRot, and folded into adjacent weights. |
+| $\operatorname{diag}(\boldsymbol{\alpha})$ | diagonal gain matrix | hidden-dim × hidden-dim | Matrix form of the gain that is absorbed before the rotation is fused. |
 | $\mathbf{W}_ {up},\mathbf{W}_ {gate},\mathbf{W}_ {down}$ | FFN projections | hidden × 4·hidden, 4·hidden × hidden | Gated FFN weight matrices (LLAMA-style). |
 | $\mathbf{W}_ q,\mathbf{W}_ k,\mathbf{W}_ v,\mathbf{W}_ {out}$ | attention projections | per-head | Query/key/value/output projection matrices. |
 | $\mathbf{I} \otimes \mathbf{H}_{d_h}$ | head-wise rotation | Kronecker-structured | Rotates each head independently via one Kronecker multiply. |
@@ -108,13 +110,44 @@ QuaRot's notation: `H` always denotes a [Hadamard matrix](../../../terms/hadamar
 
 **Why it matters:** This is what makes QuaRot cheaper than QuIP/QuIP#, which require two online Hadamard transforms per weight matrix. QuaRot needs just **1½ online transforms per layer** because most rotations are baked into the weights.
 
-**How it works:** The computational-invariance theorem (from [SliceGPT](https://arxiv.org/abs/2401.15024)) says: if a weight matrix appears on the input side of a block (e.g. $\mathbf{W}_ {gate}$, $\mathbf{W}_ {up}$, $\mathbf{W}_ q,\mathbf{W}_ k,\mathbf{W}_ v$), multiply it on the left by $\mathbf{Q}$, and cancel this by multiplying the block's output matrix ($\mathbf{W}_ {down}$, $\mathbf{W}_ {out}$) on the right by $\mathbf{Q}^\top$. This works because RMSNorm commutes with rotations:
+**How it works:** First separate the RMSNorm gain from the normalization itself. For a row of hidden states $\mathbf{x}$, write the full operation as $\operatorname{RMSNorm}_{\boldsymbol{\alpha}}(\mathbf{x}) = N(\mathbf{x})\operatorname{diag}(\boldsymbol{\alpha})$. The gain $\boldsymbol{\alpha}$ is a pretrained parameter, not a new quantity learned by QuaRot. QuaRot folds this gain into the following projection weights before applying the rotation.
+
+The computational-invariance theorem (from [SliceGPT](https://arxiv.org/abs/2401.15024)) then propagates a consistent change of coordinates through the pre-norm block. Input-side projections ($\mathbf{W}_ {gate}$, $\mathbf{W}_ {up}$, $\mathbf{W}_ q$, $\mathbf{W}_ k$, and $\mathbf{W}_ v$) receive one side of the orthogonal factor, while output-side projections ($\mathbf{W}_ {down}$ and $\mathbf{W}_ {out}$) receive the compensating factor. In the paper's weight convention, for example, the key projection combines them as
 
 $$
-\operatorname{RMSNorm}(\mathbf{X}) = \operatorname{RMSNorm}(\mathbf{X}\mathbf{Q}^\top)\mathbf{Q}.
+\mathbf{W}_k \leftarrow \mathbf{Q}^{\top}\operatorname{diag}(\boldsymbol{\alpha})\mathbf{W}_k.
 $$
 
-So the RMSNorm scale $\operatorname{diag}(\alpha)$ is first absorbed into the adjacent weights; then $\mathbf{W}_k \leftarrow \mathbf{Q}^\top \operatorname{diag}(\alpha)\mathbf{W}_k$ (and similarly for the other input-side matrices). The modified weights are less incoherent — the same effect QuIP# achieves — but with no runtime processing.
+The exact side on which $\mathbf{Q}$ or $\mathbf{Q}^{\top}$ is written depends on whether a projection is represented as $\mathbf{X}\mathbf{W}$ or $\mathbf{W}\mathbf{x}$; the invariant is the same: fold the gain first, then use matched orthogonal factors on the two sides of the block.
+
+Why can the remaining normalization pass the rotation through? For an orthogonal $\mathbf{Q}$ and one row $\mathbf{x}$, its RMS denominator is unchanged:
+
+$$
+r(\mathbf{x}\mathbf{Q})
+= \sqrt{\frac{1}{d}\lVert\mathbf{x}\mathbf{Q}\rVert_2^2 + \epsilon}
+= \sqrt{\frac{1}{d}\mathbf{x}\mathbf{Q}\mathbf{Q}^{\top}\mathbf{x}^{\top} + \epsilon}
+= r(\mathbf{x}).
+$$
+
+Therefore,
+
+$$
+N(\mathbf{x}\mathbf{Q})
+= \frac{\mathbf{x}\mathbf{Q}}{r(\mathbf{x}\mathbf{Q})}
+= \frac{\mathbf{x}}{r(\mathbf{x})}\mathbf{Q}
+= N(\mathbf{x})\mathbf{Q}.
+$$
+
+Equivalently, $N(\mathbf{X}) = N(\mathbf{X}\mathbf{Q}^{\top})\mathbf{Q}$, which is the paper's form of the commutation property. The full, gain-bearing RMSNorm does not generally satisfy the same identity:
+
+$$
+\operatorname{RMSNorm}_{\boldsymbol{\alpha}}(\mathbf{X}\mathbf{Q})
+= N(\mathbf{X})\mathbf{Q}\operatorname{diag}(\boldsymbol{\alpha})
+\ne N(\mathbf{X})\operatorname{diag}(\boldsymbol{\alpha})\mathbf{Q}
+= \operatorname{RMSNorm}_{\boldsymbol{\alpha}}(\mathbf{X})\mathbf{Q}.
+$$
+
+The diagonal gain and a dense rotation commute only in special cases, such as when every gain value is identical. Absorbing $\operatorname{diag}(\boldsymbol{\alpha})$ is therefore what makes the remaining normalization rotation-equivariant. The norm is not removed: its data-dependent division still executes, while its fixed learned gain has moved into the weights. The modified weights are less incoherent — the same effect QuIP# achieves — but with no runtime processing for the global rotation.
 
 **The intuition:** Sliding a rotation "through" a transformer block is like changing the coordinate system of every tensor at once — the math is identical, only the numbers look different.
 
@@ -206,7 +239,7 @@ One LLAMA2-7B transformer layer, one token, full pipeline:
 
 | Step | Actor | Input state | Action | Output state |
 |---:|---|---|---|---|
-| 1 | RMSNorm | hidden $\mathbf{X}$ (already rotated by global $\mathbf{Q}$) | normalize, scale $\alpha$ absorbed into weights | normalized $\mathbf{X}$ |
+| 1 | RMSNorm | hidden $\mathbf{X}$ (already rotated by global $\mathbf{Q}$) | apply scale-free normalization $N(\mathbf{X})$; the pretrained gain $\boldsymbol{\alpha}$ was absorbed into adjacent weights | normalized hidden state, still in rotated coordinates |
 | 2 | $\mathbf{W}_ {gate}$, $\mathbf{W}_ {up}$ | FP16 $\mathbf{X}$ | quantize per-token → INT4, INT4 GEMM (fused $\mathbf{Q}^\top$ weights) | FP16 gate/up signals, outlier-free |
 | 3 | activation (SiLU) | gate × up | elementwise gate | FP16 activation |
 | 4 | online Hadamard $\mathbf{H}$ | wide activation | fast Walsh-Hadamard | rotated activation |
@@ -260,7 +293,7 @@ The perplexity gaps trace directly to outlier handling. SmoothQuant and OmniQuan
 |---|---|---|
 | Head count or head dim not a power of two | Models where $n_ h$ or $d_ h \neq 2^n$ | The cross-head identity $\mathbf{H}_ {n_ h\times d_ h} = (\mathbf{I}\otimes\mathbf{H}_ {d_ h})(\mathbf{H}_ {n_ h}\otimes\mathbf{I})$ no longer holds; the full attention rotation can't be composed as designed. |
 | Hidden dim without a Hadamard matrix | $d \neq 2^n$ and no known Hadamard of size $m$ exists | Must fall back to $H_d = H_{2^n}\otimes H_m$ with a known $m$, costing $O(d(m+n))$ instead of $O(d\log d)$. |
-| RMSNorm re-scaling not absorbed | Non-gated MLPs or norms with hard-coded scale | The commutation `RMSNorm(X) = RMSNorm(XQᵀ)Q` breaks; QuaRot assumes scales are absorbable into adjacent weights. |
+| RMSNorm gain cannot be absorbed | A channel-dependent gain has no matching adjacent projection, or the normalization graph prevents weight absorption | The gain matrix does not generally commute with $\mathbf{Q}$, so the scale-free rotation identity cannot be used for the full norm. |
 | Small-batch decode | Batch size ≤ 8 | 4-bit KV cache is slower than FP16; the I/O reduction is outweighed by quantization overhead. |
 | Fixed, data-independent rotation | Any model where a fixed Hadamard leaves residual outliers | Later methods (SpinQuant, AffineQuant, FlatQuant) learn the rotation/affine per layer and beat QuaRot's accuracy at the same bit width. |
 | Residual stream and embeddings | QuaRot quantizes block inputs/outputs but not the residual path or embeddings | Residuals still run in FP16; a follow-up direction the paper itself flags. |
@@ -269,7 +302,7 @@ The perplexity gaps trace directly to outlier handling. SmoothQuant and OmniQuan
 
 ## One Thing to Remember
 
-**Rotate first, then quantize.** QuaRot's entire trick is that a rotation never changes what a transformer computes — it only changes how the numbers look — so fusing a randomized Hadamard into the weights and applying a couple of cheap online transforms makes every activation, key, and value outlier-free. Once the outliers are gone, a plain uniform 4-bit grid is all you need, which is why QuaRot was the first method to quantize weights, activations, and KV cache to 4 bits end-to-end without holding anything back.
+**Separate the gain from the normalization.** QuaRot folds the pretrained RMSNorm gain $\boldsymbol{\alpha}$ into adjacent weights, leaves the data-dependent normalization $N(\mathbf{X})$ in the forward pass, and uses the norm-preserving property of orthogonal rotations to carry $\mathbf{Q}$ through it. The rotated weights and activations then have fewer outliers, so a plain uniform 4-bit grid can cover weights, activations, and KV cache without changing the model's computation.
 
 ## Go Deeper
 
