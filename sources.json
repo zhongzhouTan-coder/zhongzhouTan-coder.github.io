@@ -1686,5 +1686,43 @@
       "docs_path": "docs/algorithms/foundations/gray-code/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.vllm.ai/vllm-data-parallel-deployment@2026-08-25-f34f79a6585f",
+      "title": "Data Parallel Deployment - vLLM",
+      "slug": "vllm-data-parallel-deployment",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.vllm.ai/en/latest/serving/data_parallel_deployment/",
+      "final_url": "https://docs.vllm.ai/en/latest/serving/data_parallel_deployment/",
+      "captured_at": "2026-08-25T03:29:57.151Z",
+      "revision": "f34f79a6585f09dac6c9406a493f5da0530600f06a6e993d7eef5d00f2b3aea9",
+      "raw_paths": [
+        "raw/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.html",
+        "raw/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.md",
+      "docs_path": "docs/frameworks/vllm/data-parallel-deployment/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@8fe9317f2e401aff6e13044098ac7f59e95dce97",
+      "title": "vLLM Data Parallel Deployment Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "8fe9317f2e401aff6e13044098ac7f59e95dce97",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-8fe9317f2e40.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/8fe9317f2e401aff6e13044098ac7f59e95dce97/",
+      "docs_paths": [
+        "docs/frameworks/vllm/data-parallel-deployment/index.md"
+      ],
+      "status": "ingested"
+    }
   ]
 }

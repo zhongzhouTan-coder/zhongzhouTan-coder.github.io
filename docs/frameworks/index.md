@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # Frameworks
@@ -24,6 +24,7 @@ updated: 2026-08-24
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm/vllm-mha-code-path.md) — How decoder MHA/GQA/MQA moves from tensor-parallel QKV projection through runtime cache metadata, slot-mapped paged KV writes, backend dispatch, and output projection.
 - [vLLM: PagedAttention Serving Framework](vllm/vllm-framework.md) — LLM serving framework design, [PagedAttention](../terms/pagedattention.md) KV-cache paging, [block tables](../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
+- [vLLM Data-Parallel Deployment: Internal and External Load Balancing](vllm/data-parallel-deployment/index.md) — Deployment strategy for internal, hybrid, per-rank external, and multi-port external load balancing, including MoE synchronization and launch topologies.
 - [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](vllm/mamba2-linear-attention-prefix-cache/index.md) — Recurrent-state prefix reuse from chained hash lookup and hybrid-group reconciliation through worker state migration, suffix-only execution, and checkpoint publication.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](vllm/prefill-decode-disaggregated-deployment/index.md) — How one request crosses a router, prefill pool, NIXL KV-transfer plane, and decode pool, including pull/push coordination, scaling, compatibility, and failure behavior.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](vllm/vllm-context-parallelism.md) — How PCP partitions current-step query rows and restores token order while DCP partitions persistent KV rows and restores exact softmax normalization.

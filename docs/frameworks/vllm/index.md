@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # vLLM
@@ -15,6 +15,7 @@ updated: 2026-08-24
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm-mha-code-path.md) — Decoder self-attention from tensor-parallel QKV projection and RoPE through per-step metadata, slot-mapped KV writes, paged backend execution, and the output projection.
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md) — LLM serving framework design, [PagedAttention](../../terms/pagedattention.md) KV-cache paging, [block tables](../../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
+- [vLLM Data-Parallel Deployment: Internal and External Load Balancing](data-parallel-deployment/index.md) — Deployment strategy for internal, hybrid, per-rank external, and multi-port external load balancing, including MoE synchronization and launch topologies.
 - [vLLM Prefill/Decode Disaggregated Deployment Path](prefill-decode-disaggregated-deployment/index.md) — Deployment-oriented request trace across the router, prefill pool, NIXL KV-transfer plane, and decode pool, with pull/push modes, independent scaling, compatibility gates, and failure policy.
 - [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](vllm-block-management/index.md) — Deep dive into the V1 block pool, per-group [KV cache](../../terms/kv-cache.md) managers, hash-based prefix caching, refcount/copy-on-write sharing, block recycling, and the worker-side block table tensors consumed by PagedAttention kernels.
 - [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](mamba2-linear-attention-prefix-cache/index.md) — How repeated token prefixes become recurrent-state checkpoints, how hybrid cache groups agree on one resume boundary, and how Mamba2/GDN/linear-attention layers reuse the state through shared `MambaSpec` plumbing.

@@ -1,0 +1,14 @@
+flowchart LR
+    Client["Client traffic"] --> Route{"Where does routing live?"}
+    Route -->|"One endpoint; API sees all ranks"| Internal["Internal LB"]
+    Route -->|"One endpoint per node"| Hybrid["Hybrid LB"]
+    Route -->|"One endpoint per rank"| External["External LB"]
+    Route -->|"One launch per node; child ports"| Supervisor["Multi-port external LB"]
+    Internal --> IEng["Head API / DP coordinator<br/>all DP core engines"]
+    Hybrid --> HIngress["Ingress / upstream LB"] --> HNode["Node API"] --> HLocal["local DP engines"]
+    External --> EIngress["Router telemetry"] --> ERank["rank API"] --> ECore["one DP engine"]
+    Supervisor --> SIngress["Router"] --> SHealth["supervisor health"] --> SChildren["per-rank API children"]
+    IEng --> MoE["MoE DP group<br/>aligned forward + dummy passes"]
+    HLocal --> MoE
+    ECore --> MoE
+    SChildren --> MoE
