@@ -1723,6 +1723,19 @@
         "docs/frameworks/vllm/data-parallel-deployment/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2602.11287v1",
+      "title": "HiFloat4 Format for Language Model Inference",
+      "slug": "hif4-format-for-language-model-inference",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/hardware/hif4-format-for-language-model-inference/hif4-format-for-language-model-inference.md",
+      "docs_path": "docs/hardware/quantization/hif4/index.md",
+      "status": "ingested"
     }
   ]
 }

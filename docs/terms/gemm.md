@@ -9,6 +9,7 @@ sources:
   - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
   - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
   - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - GEMM
   - general matrix multiplication
@@ -41,13 +42,14 @@ appears_in:
   - docs/hardware/quantization/index.md
   - docs/hardware/quantization/microscaling-mx-formats/index.md
   - docs/hardware/quantization/nvfp4.md
+  - docs/hardware/quantization/hif4/index.md
   - docs/hardware/spatial-gemm.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-14
+updated: 2026-08-25
 ---
 
 # General Matrix Multiply (GEMM)
@@ -89,6 +91,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Quantizes activations to INT4 inside a fused affine-transform kernel, then multiplies by pre-transformed INT4 weights with a CUTLASS GEMM.
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
+- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Designs a 64-length dot-product flow that keeps local scaling as shifts and delays shared floating-point scale work.
 - [Megatron-LM](../training/parallelism/megatron-lm/index.md) — Splits transformer GEMMs column- and row-wise across GPUs for tensor parallelism.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.

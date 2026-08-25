@@ -10,14 +10,15 @@ sources:
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
   - derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md
-updated: 2026-08-14
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+updated: 2026-08-25
 ---
 
 # NVFP4: Blackwell 4-Bit Floating Point
 
 **Sources:** [Transformer Engine 2.19.0.dev0 NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html), [NVIDIA Technical Blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) (Eduardo Alvarez, 2025-06-24), and the [NVFP4 paper](https://arxiv.org/abs/2509.25149).
 
-**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [OCP MX Formats](microscaling-mx-formats/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
+**Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [OCP MX Formats](microscaling-mx-formats/index.md), [HiFloat4 (HiF4)](hif4/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
 
 ## TL;DR
 
@@ -77,7 +78,9 @@ flowchart TD
     MXFP4 --> NVFP4_NEXT["This page"]
 ```
 
-NVFP4 is the first 4-bit recipe in Transformer Engine. It inherits the microscaling concept from MXFP formats (grouped elements sharing a scale) but makes three improvements: (1) block size halved from 32 to 16, (2) block scale upgraded from power-of-two E8M0 to fractional E4M3, and (3) a second-level FP32 global scale to keep the E4M3 block scales in a usable range.
+[NVFP4](../../terms/nvfp4.md) is the first 4-bit recipe in Transformer Engine. It inherits the microscaling concept from MXFP formats (grouped elements sharing a scale) but makes three improvements: (1) block size halved from 32 to 16, (2) block scale upgraded from power-of-two E8M0 to fractional E4M3, and (3) a second-level FP32 global scale to keep the E4M3 block scales in a usable range.
+
+> **Comparison boundary:** The [HiF4 paper](hif4/index.md) compares against an NVFP4 abstraction whose Table II labels E4M3 as the global base scale and separately evaluates a per-tensor-scaling (PTS) path. This page follows NVIDIA's public recipe, which documents E4M3 micro-block scales plus a separate FP32 tensor scale; use the paper's HiF4-versus-NVFP4 numbers within its stated comparison model.
 
 ## The Core Idea
 
@@ -308,6 +311,7 @@ The DeepSeek-R1-0528 results are from post-training quantization (PTQ), not quan
 ## Go Deeper
 
 - **Understand the predecessor:** [Microscaling (MX) Formats](microscaling-mx-formats/index.md) for the 32-element E8M0 block-floating-point family that NVFP4 refines with smaller blocks and fractional scales
+- **Compare the alternative:** [HiFloat4 (HiF4)](hif4/index.md) for a 64-element S1P2 format with shared E6M2 and one-bit micro-exponents
 - **Read:** [NVFP4 paper](https://arxiv.org/abs/2509.25149) for the full derivation and experimental results
 - **Read:** [Transformer Engine NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html) for the latest API and recipe options
 - **Read:** [NVIDIA blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) for the inference narrative and deployment ecosystem

@@ -37,7 +37,7 @@ appears_in:
   - docs/hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # FP8
@@ -93,4 +93,4 @@ FP8 is a numerical optimization, not a context-parallel algorithm. Scale selecti
 ## Related Terms
 
 - [Microscaling](microscaling.md) - A block-level scaling family for low-precision formats.
-- [NVFP4](../hardware/quantization/nvfp4.md) - A four-bit floating-point deployment format.
+- [NVFP4](nvfp4.md) - A four-bit floating-point deployment format.

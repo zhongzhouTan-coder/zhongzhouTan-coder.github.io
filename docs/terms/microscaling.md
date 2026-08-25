@@ -7,12 +7,14 @@ confidence: high
 category: hardware
 sources:
   - raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 appears_in:
   - docs/hardware/quantization/microscaling-mx-formats/index.md
   - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
   - docs/hardware/quantization/index.md
   - docs/hardware/quantization/nvfp4.md
-updated: 2026-08-09
+  - docs/hardware/quantization/hif4/index.md
+updated: 2026-08-25
 ---
 
 # Microscaling
@@ -35,6 +37,7 @@ The shared scale must cover the whole block. An outlier can therefore reduce the
 
 - **Microscaling vs. scalar FP4:** Microscaling describes the shared-scale block, not merely the bit width of each private element.
 - **OCP MX vs. shared-microexponent MX:** The OCP MX Alliance formats use one E8M0 scale plus private elements; the ISCA 2023 BDR work uses a related but distinct hierarchy of shared microexponents.
+- **OCP MX vs. HiF4:** OCP MX uses a 32-element E8M0 block contract; HiF4 uses 64 S1P2 values with an E6M2 base scale and two shared micro-exponent levels.
 
 ## Where It Appears
 
@@ -42,8 +45,11 @@ The shared scale must cover the whole block. An outlier can therefore reduce the
 - [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) - Uses MXFP4 as one of the hardware-backed W4A4 paths.
 - [Quantization](../hardware/quantization/index.md) - Groups MX with other low-precision numeric formats.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) - Contrasts NVFP4's fractional, 16-element scaling with OCP MX's power-of-two, 32-element blocks.
+- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) - Uses a larger 64-value block and two levels of shared micro-exponents to keep a richer four-bit payload and integer-heavy dot products.
 
 ## Related Terms
 
 - [GEMM](gemm.md)
 - [Inner Product](inner-product.md) - Scalar reduction used by MX dot products.
+- [Block Floating Point](block-floating-point.md)
+- [NVFP4](nvfp4.md)

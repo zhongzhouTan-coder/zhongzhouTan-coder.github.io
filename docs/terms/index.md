@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-22
+updated: 2026-08-25
 ---
 
 # Terms Glossary
@@ -51,11 +51,14 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Hardware
 
+- [Block Floating Point](block-floating-point.md) — A shared-scale numeric representation that amortizes exponent metadata and alignment work across narrow element payloads.
 - [FP8](fp8.md) — An 8-bit floating-point family used to reduce model and activation memory traffic at a controlled numerical cost.
 - [Global Memory](global-memory.md) — The off-chip device memory on an accelerator (GPU HBM or Ascend GM) that holds full tensors; kernels move tiles from it into on-chip storage to compute.
 - [GPTQ](gptq.md) — A second-order post-training weight-quantization algorithm that compensates rounding errors and scales through shared column ordering and block updates.
+- [HiFloat4 (HiF4)](hif4.md) — A 4.5-bit-per-value 64-element block-floating format with E6M2 base scaling, shared micro-exponents, and an integer-heavy dot-product path.
 - [Memory Banking](memory-banking.md) — Partitioning on-chip SRAM into banks so parallel accesses to different addresses hit different banks in the same cycle, avoiding bank conflicts.
 - [Microscaling](microscaling.md) — A block-floating-point representation that shares one scale across a small group of narrow elements.
+- [NVFP4](nvfp4.md) — NVIDIA's four-bit floating-point format with E2M1 payloads, FP8 E4M3 micro-block scales, and a tensor-level scale in the public Blackwell recipe.
 - [Post-Training Quantization](post-training-quantization.md) — Applies quantization to an already-trained model using calibration data or weight statistics instead of full retraining.
 - [Systolic Array](systolic-array.md) — A regular grid of processing elements where data flows rhythmically between neighbors so each weight is reused across many multiply-accumulates without re-fetching.
 

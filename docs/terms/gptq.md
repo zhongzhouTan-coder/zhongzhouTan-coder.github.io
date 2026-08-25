@@ -7,6 +7,7 @@ confidence: high
 category: hardware
 sources:
   - raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - Accurate Post-Training Quantization for Generative Pre-trained Transformers
 mention_lint: canonical
@@ -14,7 +15,8 @@ appears_in:
   - docs/hardware/quantization/gptq/index.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/hardware/quantization/quarot/index.md
-updated: 2026-08-21
+  - docs/hardware/quantization/hif4/index.md
+updated: 2026-08-25
 ---
 
 # GPTQ
@@ -46,6 +48,7 @@ GPTQ needs calibration data and an offline quantization pass. Its original form 
 - [GPTQ: Second-Order Weight Quantization at LLM Scale](../hardware/quantization/gptq/index.md) — Source-defining explanation of the algorithm, deployment kernel, and OPT/BLOOM results.
 - [FlatQuant](../hardware/quantization/flatquant/index.md) — Uses GPTQ as a weight-rounding solver and comparison baseline, while showing that learned flattening can make RTN competitive.
 - [QuaRot](../hardware/quantization/quarot/index.md) — Uses GPTQ as its default 4-bit weight quantizer after rotating away activation outliers.
+- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Adapts GPTQ-style rounding to the HiF4 hierarchy as HiGPTQ.
 
 ## Related Terms
 

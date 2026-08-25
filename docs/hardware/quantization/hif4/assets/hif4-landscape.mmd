@@ -1,0 +1,9 @@
+flowchart LR
+    FP16["FP16 / BF16<br/>16-bit baseline"] --> FP8["FP8<br/>8-bit floating point"]
+    FP8 --> BFP["Block floating point<br/>shared scale + narrow payload"]
+    BFP --> MX4["MX4<br/>16 values + shared micro-exponents"]
+    BFP --> MXFP4["MXFP4<br/>32 values + E8M0 + E2M1"]
+    BFP --> NVFP4["NVFP4<br/>16 values + E4M3 + E2M1"]
+    MX4 -. "micro-exponent idea" .-> HIF4["HiF4 (this work)<br/>64 values + E6M2 + E1 flags"]
+    MXFP4 -. "trade-off baseline" .-> HIF4
+    NVFP4 -. "accuracy / hardware baseline" .-> HIF4

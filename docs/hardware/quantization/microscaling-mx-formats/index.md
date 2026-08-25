@@ -9,7 +9,8 @@ sources:
   - raw/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.metadata.json
   - derived/pdf-markdown/hardware/microscaling-mx-formats.md
   - derived/web-markdown/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.md
-updated: 2026-08-14
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+updated: 2026-08-25
 ---
 
 # Microscaling (MX) Formats: Block Floating Point for AI Hardware
@@ -18,7 +19,7 @@ updated: 2026-08-14
 **Authors:** OCP MX consortium contributors from AMD, Arm, Intel, Meta, Microsoft, NVIDIA, and Qualcomm
 **Version:** 1.0 (2023-09-07)
 
-**Related pages:** [Microscaling](../../../terms/microscaling.md) · [Quantization](../index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [Spatial GEMM](../../spatial-gemm.md)
+**Related pages:** [Microscaling](../../../terms/microscaling.md) · [Quantization](../index.md) · [HiFloat4 (HiF4)](../hif4/index.md) · [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md) · [Spatial GEMM](../../spatial-gemm.md)
 
 ## TL;DR
 
@@ -32,7 +33,7 @@ updated: 2026-08-14
 
 *Source: Section 5.1 of the [OCP Microscaling Formats specification](https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf). 1. One scale `X` is shared by 2. `k` same-type scalar elements `P_i`; 3. the encoded block occupies `(w + k*d)` bits, while the specification leaves its physical memory layout open.*
 
-The important boundary is visible in the figure: MX is a vector data type assembled from a scale encoding, a private element encoding, and a block size. It is not simply "FP4" or "FP8" applied independently to every value.
+The important boundary is visible in the figure: MX is a [block floating point](../../../terms/block-floating-point.md) vector data type assembled from a scale encoding, a private element encoding, and a block size. It is not simply "FP4" or "FP8" applied independently to every value.
 
 ## Why This Exists
 
@@ -323,6 +324,7 @@ The specification itself is not a benchmark paper. The historical results are so
 - **Read the specification:** [OCP Microscaling Formats (MX) Specification v1.0](https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf)
 - **Read the evaluation:** [Microscaling Data Formats for Deep Learning](https://arxiv.org/abs/2310.10537)
 - **Read the related design space:** [With Shared Microexponents, A Little Shifting Goes a Long Way](https://arxiv.org/abs/2302.08007)
-- **Understand the newer format comparison:** [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md)
+- **Understand the newer format comparison:** [NVFP4](../../../terms/nvfp4.md) via [NVFP4: Blackwell 4-Bit Floating Point](../nvfp4.md)
+- **Compare another shared-scale design:** [HiFloat4 (HiF4)](../hif4/index.md) uses 64 S1P2 values, an E6M2 base scale, and two levels of shared micro-exponents rather than OCP MX's 32-value E8M0 block.
 - **Understand the hardware context:** [Spatial GEMM](../../spatial-gemm.md)
 - **Reproduce:** No local reproduction; this page records the captured article and its cited results.

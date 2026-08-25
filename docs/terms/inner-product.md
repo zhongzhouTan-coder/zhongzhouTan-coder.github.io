@@ -9,6 +9,7 @@ sources:
   - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
   - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
   - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - dot product
   - scalar product
@@ -19,10 +20,11 @@ appears_in:
   - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
   - docs/hardware/spatial-gemm.md
   - docs/hardware/quantization/microscaling-mx-formats/index.md
+  - docs/hardware/quantization/hif4/index.md
   - docs/training/efficient-attention/swat-sliding-window-attention/index.md
   - docs/training/fine-tuning/socratic-swe/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-09
+updated: 2026-08-25
 ---
 
 # Inner Product
@@ -58,6 +60,7 @@ The reduction over $k$ is the "inner" dimension — the one shared by both matri
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Mentions inner-product GEMM as the alternative to the outer-product version it builds (linked from the companion Inner Product tutorial).
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Frames inner-product accumulation as one of the GEMM decomposition choices.
 - [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Uses narrow MX elements in block-level dot products and explains why shared scaling changes the reduction hardware.
+- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Shows how shared micro-exponents can be absorbed into a 64-length integer-heavy dot product.
 - [Transformer Foundations](../algorithms/foundations/transformer.md) — Scaled dot-product attention: compatibility between query and key, with $\sqrt{d_k}$ scaling.
 - [Linear Attention](../algorithms/linear-attention/index.md) — Query–key similarity is an ordinary dot product in feature space.
 - [Sequence Parallelism](../training/parallelism/sequence-parallelism/index.md) — Each GPU computes dot products between its query chunk and every other rank's keys.
