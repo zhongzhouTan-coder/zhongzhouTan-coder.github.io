@@ -71,6 +71,7 @@ updated: 2026-08-25
 
 ## Other Frameworks
 
+- [AgentX / InferenceX v3: Does the CUDA Moat Hold?](agentx-inferencexv3-cuda-moat/index.md) - Agentic inference benchmark insight covering long-context trace replay, prefix-cache and offload behavior, routing, disaggregation, software maturity, and date-scoped NVIDIA/AMD comparisons.
 - [OpenTelemetry: Vendor-Neutral Observability Framework](opentelemetry/index.md) — Open-source observability framework and toolkit for generating, collecting, and exporting portable traces, metrics, and logs while leaving storage and visualization to external backends.
 - [DFlash: Block Diffusion for Flash Speculative Decoding](dflash/index.md) — Target-conditioned block-diffusion drafting, per-layer K/V injection, sparse masked-block training, and serving results across SGLang and vLLM.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](sarathi/index.md) — Chunked-prefill and decode-maximal batching that reuses prefill weight loads for decode tokens and reduces pipeline bubbles.

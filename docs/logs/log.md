@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-24
+updated: 2026-08-25
 ---
 
 # Wiki Log
@@ -358,5 +358,6 @@ updated: 2026-08-24
 
 ## 2026-08-25
 
+- Ingested the captured SemiAnalysis [AgentX / InferenceX v3: Does the CUDA Moat Hold?](../frameworks/agentx-inferencexv3-cuda-moat/index.md) page. Added a source-backed insight on long-context multi-turn trace replay, anonymized DAGs, KV-cache residency and routing, disaggregation, software-driven hardware comparisons, selected source figures, and an editable landscape; classified the synthesis as medium confidence because the corpus, metrics, and leaderboard are date- and workload-dependent.
 - Ingested the captured vLLM Data Parallel Deployment page and pinned vLLM revision `8fe9317f2e401aff6e13044098ac7f59e95dce97` into [vLLM Data-Parallel Deployment: Internal and External Load Balancing](../frameworks/vllm/data-parallel-deployment/index.md). Added internal, hybrid, per-rank external, and multi-port external deployment strategies, current queue/KV-aware routing behavior, MoE dummy-pass synchronization, launch recipes, local source figures, and strict repository evidence.
 - Ingested `raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf` with MinerU precise extraction into [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/quantization/hif4/index.md). Added the original format, dot-product, and MSE figures, an editable Landscape Mermaid source, comparisons with MXFP4/NVFP4, the HiGPTQ/PTQ path, and glossary coverage for HiF4, block floating point, and NVFP4; classified the synthesis as medium confidence because training and native-kernel evidence remain open.

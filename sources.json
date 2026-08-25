@@ -1737,5 +1737,24 @@
       "docs_path": "docs/hardware/quantization/hif4/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:newsletter.semianalysis.com/agentx-inferencexv3-does-cuda-moat@2026-08-25-94378a52aae4",
+      "title": "AgentX - InferenceXv3: Does CUDA Moat Hold up in Agentic Inferencing?",
+      "slug": "agentx-inferencexv3-does-cuda-moat",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://newsletter.semianalysis.com/p/agentx-inferencexv3-does-cuda-moat",
+      "final_url": "https://newsletter.semianalysis.com/p/agentx-inferencexv3-does-cuda-moat",
+      "captured_at": "2026-08-25T11:32:19.132Z",
+      "revision": "94378a52aae4bdedeb8d41844cdef8537cf1f8367ece24b4d71984c9d401bf6d",
+      "raw_paths": [
+        "raw/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.html",
+        "raw/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.md",
+      "docs_path": "docs/frameworks/agentx-inferencexv3-cuda-moat/index.md",
+      "status": "ingested"
+    }
   ]
 }

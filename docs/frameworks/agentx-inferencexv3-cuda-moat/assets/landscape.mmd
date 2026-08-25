@@ -1,0 +1,18 @@
+flowchart LR
+    Fixed["Fixed sequence tests\n8k1k / 1k1k / 1k8k"] --> Baseline["Mostly chip and\nkernel baseline"]
+    Production["Production agent traffic\nlong context + tool delays"] --> AgentX["AgentX / InferenceX v3\nDAG replay + cache-aware state"]
+    Traces["Captured coding traces\nanonymized + synthetic tokens"] --> AgentX
+
+    AgentX --> Cache["KV lifecycle\nprefix reuse + offload"]
+    AgentX --> Route["Routing affinity\nprefix placement"]
+    AgentX --> Transfer["Disaggregation\nprefill/decode transfer"]
+    AgentX --> Engine["Engine and scheduler\ncontinuous batching"]
+    AgentX --> Frontend["Frontend overhead\ntokenization + serialization"]
+    AgentX --> Kernels["Kernels and parallelism\nDCP/PCP + attention"]
+
+    Cache --> Stack["Measured result\nhardware x software x workload"]
+    Route --> Stack
+    Transfer --> Stack
+    Engine --> Stack
+    Frontend --> Stack
+    Kernels --> Stack

@@ -36,6 +36,7 @@ updated: 2026-08-25
 
 ## Inference Systems and Frameworks
 
+- [AgentX / InferenceX v3: Does the CUDA Moat Hold?](../frameworks/agentx-inferencexv3-cuda-moat/index.md) - Agentic inference benchmark insight covering long-context trace replay, prefix-cache and offload behavior, routing, disaggregation, software maturity, and date-scoped NVIDIA/AMD comparisons.
 - [CUDA Graphs in PyTorch: Capture Once, Replay Many](../frameworks/cuda/cuda-graphs/index.md) — How stream capture bundles repeated GPU work, why replay needs static shapes and stable addresses, and when PyTorch graphing removes CPU launch overhead.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
