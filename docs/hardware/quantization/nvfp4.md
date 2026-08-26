@@ -4,6 +4,9 @@ summary: "NVIDIA NVFP4 format with hierarchical FP8/FP32 scaling, micro-block qu
 layout: default
 confidence: high
 sources:
+  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.html
+  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json
+  - derived/web-markdown/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.md
   - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.html
   - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json
   - derived/web-markdown/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.md
@@ -11,12 +14,14 @@ sources:
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
   - derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md
   - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # NVFP4: Blackwell 4-Bit Floating Point
 
-**Sources:** [Transformer Engine 2.19.0.dev0 NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html), [NVIDIA Technical Blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) (Eduardo Alvarez, 2025-06-24), and the [NVFP4 paper](https://arxiv.org/abs/2509.25149).
+**Sources:** [Transformer Engine 2.18.0 NVFP4 documentation](https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/features/low_precision_training/nvfp4/nvfp4.html), the earlier [Transformer Engine 2.19.0.dev0 capture](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html), [NVIDIA Technical Blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) (Eduardo Alvarez, 2025-06-24), and the [NVFP4 paper](https://arxiv.org/abs/2509.25149).
+
+> **Evidence note:** The user-supplied public page was captured on 2026-08-25 and identifies itself as Transformer Engine 2.18.0; the older GitHub-hosted snapshot identifies 2.19.0.dev0. Their NVFP4 data-format sections are materially identical, so the format contract below is stable across these two documentation revisions while both captures remain preserved.
 
 **Related pages:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md), [OCP MX Formats](microscaling-mx-formats/index.md), [HiFloat4 (HiF4)](hif4/index.md), [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)
 
@@ -85,6 +90,26 @@ flowchart TD
 ## The Core Idea
 
 NVFP4 is not "FP4 storage." It is **FP4 values plus FP8 block scales plus an FP32 global scale** — a three-factor reconstruction that lets the 4-bit element encoding capture only the local shape of each 16-value block, while the FP8 scale handles the block's magnitude and the FP32 scale aligns the entire tensor to the representable range. The FP8 scale is the key innovation: it is fractional (non-power-of-two), so it can fit the block's actual distribution rather than snapping to the nearest $2^n$.
+
+## The Data Format Contract
+
+Read an NVFP4 tensor as three coupled arrays, not as a standalone four-bit scalar:
+
+| Component | Stored representation | Sharing granularity | Role |
+|---|---|---|---|
+| `x_e2m1` | 4-bit E2M1 payload | Every element | Stores sign, two exponent bits, and one mantissa bit; maximum magnitude is 6 |
+| `s_block` | FP8 E4M3 scale | One scale per 16 consecutive values; 16×16 blocks for default weight scaling | Fits each local block with fractional, non-power-of-two scaling |
+| `s_global` | FP32 scale | One scale per tensor | Keeps the FP8 block scales inside their usable range across the tensor |
+
+The reconstructed value is:
+
+$$x = x_{e2m1} \times s_{block} \times s_{global}$$
+
+For the common 1D layout, the payload contributes 4 bits/value and the FP8 metadata contributes 8 bits per 16 values, or about 4.5 bits/value before alignment padding and the negligible per-tensor FP32 scale. The 2D weight path shares one FP8 scale across each 16×16 block, reducing scale traffic while keeping rowwise and columnwise weight views numerically equivalent. This is why “NVFP4” names a **hierarchical storage-and-compute recipe**, not merely an E2M1 encoding.
+
+![Animated illustration of NVFP4 hierarchical scaling: E2M1 payload values grouped into 16-value blocks with an E4M3 scale for each block and one FP32 scale for the tensor](assets/nvfp4-two-level-scaling.gif)
+
+*Original figure: NVIDIA’s animated explanation of NVFP4 two-level scaling in [Introducing NVFP4 for Efficient and Accurate Low-Precision Inference](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/). The local copy is preserved as [`nvfp4-two-level-scaling.gif`](assets/nvfp4-two-level-scaling.gif).*
 
 ## Symbol Map
 
@@ -285,7 +310,7 @@ NVIDIA reports up to 50× better energy efficiency (Joules per token) for Blackw
 
 ### The mechanism behind the numbers
 
-NVFP4's accuracy retention comes from three factors working together: (1) fractional E4M3 scales reduce per-block quantization error, (2) 16-element blocks halve the chance of an outlier dominating a block, and (3) the FP32 global scale prevents E4M3's limited range from clipping the tensor. The AIME 2024 improvement is interesting — it suggests that NVFP4's post-training quantization may act as a mild regularizer, slightly improving certain reasoning tasks.
+NVFP4's accuracy retention comes from three factors working together: (1) fractional E4M3 scales reduce per-block quantization error, (2) 16-element blocks halve the chance of an outlier dominating a block, and (3) the FP32 global scale prevents E4M3's limited range from clipping the tensor. The AIME 2024 improvement is interesting — it suggests that NVFP4's [post-training quantization](../../terms/post-training-quantization.md) may act as a mild regularizer, slightly improving certain reasoning tasks.
 
 ### ⚠️ How to read these numbers
 
@@ -313,7 +338,7 @@ The DeepSeek-R1-0528 results are from post-training quantization (PTQ), not quan
 - **Understand the predecessor:** [Microscaling (MX) Formats](microscaling-mx-formats/index.md) for the 32-element E8M0 block-floating-point family that NVFP4 refines with smaller blocks and fractional scales
 - **Compare the alternative:** [HiFloat4 (HiF4)](hif4/index.md) for a 64-element S1P2 format with shared E6M2 and one-bit micro-exponents
 - **Read:** [NVFP4 paper](https://arxiv.org/abs/2509.25149) for the full derivation and experimental results
-- **Read:** [Transformer Engine NVFP4 documentation](https://nvidia.github.io/TransformerEngine/features/low_precision_training/nvfp4/nvfp4.html) for the latest API and recipe options
+- **Read:** [Transformer Engine NVFP4 documentation](https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/features/low_precision_training/nvfp4/nvfp4.html) for the public API and recipe options
 - **Read:** [NVIDIA blog: Introducing NVFP4](https://developer.nvidia.com/blog/introducing-nvfp4-for-efficient-and-accurate-low-precision-inference/) for the inference narrative and deployment ecosystem
 - **Understand related formats:** [FlatQuant: Fast Learnable Affine Quantization](flatquant/index.md) · [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](quarot/index.md)
 - **Understand the hardware context:** [FlashAttention-4: Blackwell Attention Kernel Co-Design](../../algorithms/flashattention/flashattention-4.md)

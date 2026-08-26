@@ -1756,5 +1756,24 @@
       "docs_path": "docs/frameworks/agentx-inferencexv3-cuda-moat/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.nvidia.com/nvfp4-te@2026-08-25-d98d1efd9b89",
+      "title": "NVFP4 — Transformer Engine 2.18.0 documentation",
+      "slug": "nvfp4-te",
+      "category": "hardware",
+      "kind": "web",
+      "source_url": "https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/features/low_precision_training/nvfp4/nvfp4.html",
+      "final_url": "https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/features/low_precision_training/nvfp4/nvfp4.html",
+      "captured_at": "2026-08-25T15:11:50.190Z",
+      "revision": "d98d1efd9b8996020e8ae2f32afeec5c1e149d69457b181cd9bd8e416c9c3828",
+      "raw_paths": [
+        "raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.html",
+        "raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.md",
+      "docs_path": "docs/hardware/quantization/nvfp4.md",
+      "status": "ingested"
+    }
   ]
 }

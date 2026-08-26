@@ -6,6 +6,8 @@ layout: default
 confidence: high
 category: hardware
 sources:
+  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.html
+  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json
   - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.html
   - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json
   - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
