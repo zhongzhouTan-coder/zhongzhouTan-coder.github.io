@@ -33,6 +33,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/hardware/quantization/nvfp4.md
+  - docs/hardware/deepgemm/index.md
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/deepseek/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
@@ -42,7 +43,7 @@ appears_in:
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/mhc/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
-updated: 2026-08-14
+updated: 2026-08-26
 ---
 
 # Mixture of Experts
@@ -89,6 +90,7 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 - [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md) — A code-reading tour of the shared qwen3_5-family inference path: Qwen3.5-27B / Qwen3.6-27B (dense hybrid Mamba-Transformer.
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — FlatQuant flattens outlier-heavy weights and activations with per-layer learnable affine transformations (Kronecker-factorized.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — NVIDIA NVFP4 format with hierarchical FP8/FP32 scaling, micro-block quantization, Random Hadamard Transform, and Transformer.
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) — Shows how expert-parallel dispatch, persistent ring scheduling, fused expert MLP compute, and top-k combine overlap inside a Blackwell-oriented kernel.
 - [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
 - [MiniMax Sparse Attention (MSA)](../training/efficient-attention/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: a lightweight Index Branch selects top-k KV blocks per group, Main Branch.
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.

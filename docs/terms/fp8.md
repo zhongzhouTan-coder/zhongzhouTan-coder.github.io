@@ -34,10 +34,11 @@ appears_in:
   - docs/hardware/quantization/index.md
   - docs/hardware/quantization/microscaling-mx-formats/index.md
   - docs/hardware/quantization/nvfp4.md
+  - docs/hardware/deepgemm/index.md
   - docs/hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # FP8
@@ -86,6 +87,7 @@ FP8 is a numerical optimization, not a context-parallel algorithm. Scale selecti
 - [Quantization](../hardware/quantization/index.md)
 - [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md)
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md)
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) - Uses FP8 activations, FP8 scale factors, and packed FP4 expert weights in an SM100 block-scaled MoE path.
 - [NVIDIA Ada Lovelace Professional GPU Architecture](../hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md) - Describes FP8 as a fourth-generation Tensor Core capability in a professional GPU.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md)
 - [MiniMax Sparse Attention (MSA)](../training/efficient-attention/minimax-sparse-attention/index.md)

@@ -44,12 +44,13 @@ appears_in:
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/quantization/hif4/index.md
   - docs/hardware/spatial-gemm.md
+  - docs/hardware/deepgemm/index.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # General Matrix Multiply (GEMM)
@@ -92,6 +93,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
 - [NVFP4](../hardware/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
 - [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Designs a 64-length dot-product flow that keeps local scaling as shifts and delays shared floating-point scale work.
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) — Uses two block-scaled expert GEMMs, SwiGLU, and SM100 tensor-memory staging inside a communication-overlapped MoE kernel.
 - [Megatron-LM](../training/parallelism/megatron-lm/index.md) — Splits transformer GEMMs column- and row-wise across GPUs for tensor parallelism.
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.

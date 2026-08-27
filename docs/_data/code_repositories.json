@@ -100,5 +100,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm",
     "revision": "8fe9317f2e401aff6e13044098ac7f59e95dce97"
+  },
+  "deepgemm-559d79fb6994": {
+    "local_checkout": "external-repos/DeepGEMM",
+    "provider": "github",
+    "repository_url": "https://github.com/deepseek-ai/DeepGEMM",
+    "revision": "559d79fb6994a58b8a15b4b93bf13ccc16edf247"
   }
 }

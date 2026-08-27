@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-25
+updated: 2026-08-26
 ---
 
 # Wiki Index
@@ -149,6 +149,7 @@ updated: 2026-08-25
 - [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Post-training LLM quantization method: learnable affine transformations, Kronecker factorization, per-channel scaling, learnable clipping, fused kernels, W4A4 accuracy, and inference latency results.
 - [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/quantization/quarot/index.md) — Fused Hadamard rotations that remove activation and KV-cache outliers, enabling end-to-end 4-bit weights, activations, and KV cache without higher-precision outlier features.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — NVIDIA Blackwell NVFP4 data-format contract: E2M1 payloads, fractional FP8 E4M3 micro-block scales, FP32 tensor scaling, 16-element/16×16 layouts, plus training and GEMM constraints.
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) — Beginner-oriented code reading of the FP8xFP4 fused MoE path: symmetric-memory dispatch, bounded ring scheduling, SM100 tensor-core execution, SwiGLU, and top-k combine.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Blocked outer-product GEMM in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional SRAM banking.
 
 ## Terms

@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant Host as Python caller on each rank
+    participant API as C++ validation and JIT
+    participant K as persistent SM100 MegaMoE kernel
+    participant NVL as symmetric memory and NVLink
+    participant MMA as TMA / UMMA / tensor memory
+
+    Host->>API: allocate SymmBuffer and transform weights
+    API-->>Host: rank-invariant tensor views
+    Host->>API: fp8_fp4_mega_moe(y, weights, buffer)
+    API->>API: validate FP8xFP4 layouts and choose config
+    API->>K: JIT-build and launch one persistent grid per rank
+    par dispatch warps
+        K->>K: count top-k routes and claim expert slots
+        K->>NVL: publish source metadata and receive counts
+        NVL-->>K: cross-rank counts become visible
+        K->>NVL: pull x and scale factors into L1 ring
+    and compute warps
+        K->>MMA: TMA-load tiles and scales
+        MMA-->>K: L1 GEMM and L2 GEMM accumulators
+        K->>K: SwiGLU, route weighting, and FP8 re-quantization
+    end
+    K->>NVL: write BF16 L2 contributions to source slots
+    NVL-->>K: cross-rank combine barrier completes
+    K->>NVL: load top-k and optional shared-expert contributions
+    NVL-->>K: contribution chunks
+    K->>K: accumulate in float registers and cast to BF16
+    K-->>Host: TMA-store y and recycle workspace counters

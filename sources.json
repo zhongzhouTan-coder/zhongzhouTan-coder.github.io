@@ -1774,6 +1774,25 @@
       "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.md",
       "docs_path": "docs/hardware/quantization/nvfp4.md",
       "status": "ingested"
+    },
+    {
+      "id": "github:deepseek-ai/DeepGEMM@559d79fb6994a58b8a15b4b93bf13ccc16edf247",
+      "title": "DeepGEMM Codebase (MegaMoE)",
+      "slug": "deepgemm-codebase",
+      "repo_slug": "deepgemm",
+      "revision": "559d79fb6994a58b8a15b4b93bf13ccc16edf247",
+      "category": "hardware",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/deepseek-ai/DeepGEMM",
+      "raw_paths": [
+        "raw/hardware/deepgemm-codebase--github-559d79fb6994.md"
+      ],
+      "derived_path": "derived/repo-analysis/hardware/deepgemm/559d79fb6994a58b8a15b4b93bf13ccc16edf247/",
+      "docs_paths": [
+        "docs/hardware/deepgemm/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-22
+updated: 2026-08-26
 ---
 
 # Hardware and Numerics
@@ -18,6 +18,7 @@ updated: 2026-08-22
 
 ## Kernels and Dataflow
 
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](deepgemm/index.md) — Beginner-oriented code reading of the FP8xFP4 fused MoE path: symmetric-memory dispatch, bounded ring scheduling, SM100 tensor-core execution, SwiGLU, and top-k combine.
 - [Spatial GEMM: Blocked Outer-Product Matrix Multiply](spatial-gemm.md) — Blocked outer-product [GEMM](../terms/gemm.md) in the Spatial DSL: output tiling, MemFold/MemReduce pipelining, triple buffering, and multi-dimensional [SRAM banking](../terms/memory-banking.md).
 
 ## Quantization
