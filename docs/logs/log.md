@@ -366,3 +366,7 @@ updated: 2026-08-25
 ## 2026-08-26
 
 - Added [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md), backed by the clean pinned `deepseek-ai/DeepGEMM` checkout at revision `559d79fb6994a58b8a15b4b93bf13ccc16edf247`. The beginner-oriented insight traces symmetric-buffer preparation, conservative ring capacity, expert-parallel dispatch, remote token pulls, shape-specialized SM100 JIT, fused FP8xFP4 L1/L2 GEMMs with SwiGLU, optional shared experts, and top-k combine; it includes an editable Mermaid sequence diagram and strict revision-aware code evidence. Runtime behavior and performance remain static code-derived claims because no compatible GPU or multi-process CUDA run was available.
+
+## 2026-08-27
+
+- Added [Qwen3.8-FP8 on Ascend 950: Why Weights Become MXFP8 at Load Time](../frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md), backed by clean pinned vllm-ascend revision `7702ccd7d8dea6b4dabdacb0118adb522dedbec7` and vLLM revision `ca90b9e7d4e3ec670143e4b1822bb856ab0260cc`. The medium-confidence static insight explains source block-scale resolution, Ascend 950 E4M3/E8M0 MXFP8 re-quantization, kernel layout repacking, runtime activation quantization, MoE handling, and non-950 fallbacks.

@@ -1793,6 +1793,44 @@
         "docs/hardware/deepgemm/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@7702ccd7d8dea6b4dabdacb0118adb522dedbec7",
+      "title": "vLLM Ascend Codebase (Qwen3.8-27B FP8 to MXFP8 on Ascend 950)",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "7702ccd7d8dea6b4dabdacb0118adb522dedbec7",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/vllm-ascend-codebase--github-7702ccd7d8de.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/7702ccd7d8dea6b4dabdacb0118adb522dedbec7/",
+      "docs_paths": [
+        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@ca90b9e7d4e3ec670143e4b1822bb856ab0260cc",
+      "title": "vLLM Codebase (weight-loading lifecycle for Qwen3.8 FP8 to MXFP8)",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "ca90b9e7d4e3ec670143e4b1822bb856ab0260cc",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/vllm-codebase--github-ca90b9e7d4e3.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/vllm/ca90b9e7d4e3ec670143e4b1822bb856ab0260cc/",
+      "docs_paths": [
+        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

@@ -1,0 +1,15 @@
+flowchart LR
+    CKPT["Qwen/Qwen3.8-27B-FP8\nE4M3 payload + float32\nblock-wise weight_scale_inv"]
+    LOADER["Generic vLLM loader\nload weights, then post-load hook"]
+    RESOLVE["vllm-ascend\nresolve_block_scales\nsource tiles -> dense model dtype"]
+    DEVICE{"is_950()?"}
+    MX["Ascend 950\nnpu_dynamic_mx_quant\nE4M3 + E8M0 per 32 K values"]
+    PACK["MXFP8 kernel layout\ntranspose and reshape scales"]
+    RUN["Runtime\ndynamic activation MX quant\n+ npu_quant_matmul"]
+    DENSE["Other Ascend generations\nmodel-dtype weight\nordinary unquantized GEMM"]
+    DIRECT["Already-MXFP8 checkpoint\n'mxfp8' / 'modelopt_mxfp8'"]
+
+    CKPT --> LOADER --> RESOLVE --> DEVICE
+    DEVICE -->|yes| MX --> PACK --> RUN
+    DEVICE -->|no| DENSE
+    DIRECT --> PACK

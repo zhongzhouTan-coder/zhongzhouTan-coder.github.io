@@ -106,5 +106,17 @@
     "provider": "github",
     "repository_url": "https://github.com/deepseek-ai/DeepGEMM",
     "revision": "559d79fb6994a58b8a15b4b93bf13ccc16edf247"
+  },
+  "vllm-ascend-7702ccd7d8de": {
+    "local_checkout": "external-repos/vllm-ascend-7702ccd7d8de",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "7702ccd7d8dea6b4dabdacb0118adb522dedbec7"
+  },
+  "vllm-ca90b9e7d4e3": {
+    "local_checkout": "external-repos/vllm-ca90b9e7d4e3",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "ca90b9e7d4e3ec670143e4b1822bb856ab0260cc"
   }
 }
