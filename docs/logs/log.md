@@ -370,3 +370,7 @@ updated: 2026-08-25
 ## 2026-08-27
 
 - Added [Qwen3.8-FP8 on Ascend 950: Why Weights Become MXFP8 at Load Time](../frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md), backed by clean pinned vllm-ascend revision `7702ccd7d8dea6b4dabdacb0118adb522dedbec7` and vLLM revision `ca90b9e7d4e3ec670143e4b1822bb856ab0260cc`. The medium-confidence static insight explains source block-scale resolution, Ascend 950 E4M3/E8M0 MXFP8 re-quantization, kernel layout repacking, runtime activation quantization, MoE handling, and non-950 fallbacks.
+
+## 2026-08-28
+
+- Added [Firecracker: MicroVM Sandboxes for AI Agents](../frameworks/firecracker/index.md), backed by clean pinned revision `f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a`. The medium-confidence code-reading insight explains KVM and Jailer containment, per-thread seccomp, VirtIO block/network/vsock boundaries, the API-to-boot round trip, and the outer agent-policy responsibilities Firecracker does not implement.

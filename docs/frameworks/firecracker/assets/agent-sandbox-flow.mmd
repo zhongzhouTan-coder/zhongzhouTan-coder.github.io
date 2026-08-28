@@ -1,0 +1,16 @@
+flowchart LR
+    ORCH["Agent orchestrator<br/>policy, lifecycle, tools"]
+    JAIL["Jailer<br/>chroot, namespaces,<br/>cgroups, uid/gid, rlimits"]
+    FC["Firecracker process<br/>API + VMM + vCPU threads"]
+    GUEST["Guest Linux microVM<br/>agent runner / command service"]
+    BROKER["Host vsock broker<br/>auth, exec, files, telemetry"]
+    TAP["TAP + host firewall<br/>or network namespace"]
+    ROOTFS["Host-backed kernel,<br/>initrd, and rootfs files"]
+
+    ORCH -->|"configure + InstanceStart"| JAIL
+    JAIL -->|"exec as constrained process"| FC
+    FC -->|"KVM virtualization"| GUEST
+    FC <-->|"VirtIO-vsock ↔ AF_UNIX"| BROKER
+    ORCH -->|"command policy + result"| BROKER
+    FC -->|"VirtIO net"| TAP
+    FC -->|"VirtIO block"| ROOTFS

@@ -118,5 +118,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm",
     "revision": "ca90b9e7d4e3ec670143e4b1822bb856ab0260cc"
+  },
+  "firecracker-f3f65a3425f6": {
+    "local_checkout": "external-repos/firecracker",
+    "provider": "github",
+    "repository_url": "https://github.com/firecracker-microvm/firecracker",
+    "revision": "f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a"
   }
 }

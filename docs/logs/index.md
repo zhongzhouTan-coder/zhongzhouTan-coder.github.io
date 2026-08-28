@@ -82,6 +82,7 @@ updated: 2026-08-26
 - [EAGLE-3: Training-Time Test for Speculative Decoding](../frameworks/eagle-3/index.md) — Direct token prediction, multi-layer feature fusion, self-conditioned training, dynamic draft trees, and 3.0x-6.5x reported speedup.
 - [DFlash: Block Diffusion for Flash Speculative Decoding](../frameworks/dflash/index.md) — Target-conditioned block-diffusion drafting, per-layer K/V injection, sparse masked-block training, and serving results across SGLang and vLLM.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/dspark/index.md) — PDF-extraction-backed re-insight of semi-autoregressive drafting, calibrated prefix survival, causal two-step-delayed scheduling, and the DeepSeek-V4 production throughput frontier.
+- [Firecracker: MicroVM Sandboxes for AI Agents](../frameworks/firecracker/index.md) — Repository-backed guide to KVM isolation, Jailer process containment, per-thread seccomp, VirtIO I/O boundaries, vsock command transport, and the outer policy layer an agent platform must provide.
 - [Harbor: Agent Evaluation Framework (Code Reading)](../frameworks/harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.
 
 ## Algorithms

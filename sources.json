@@ -1831,6 +1831,25 @@
         "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "github:firecracker-microvm/firecracker@f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a",
+      "title": "firecracker Codebase",
+      "slug": "firecracker-codebase",
+      "repo_slug": "firecracker",
+      "revision": "f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/firecracker-microvm/firecracker",
+      "raw_paths": [
+        "raw/frameworks/firecracker-codebase--github-f3f65a3425f6.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/firecracker/f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a/",
+      "docs_paths": [
+        "docs/frameworks/firecracker/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }
