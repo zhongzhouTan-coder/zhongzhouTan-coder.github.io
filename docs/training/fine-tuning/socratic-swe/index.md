@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf
   - derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md
-updated: 2026-07-23
+updated: 2026-08-29
 ---
 
 # Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills
@@ -21,7 +21,7 @@ updated: 2026-07-23
 
 **What:** A closed-loop self-play framework where a single SWE agent alternates between generating repair tasks and solving them, with the curriculum adapting to the agent's own weaknesses across iterations.
 
-**How:** Historical solving traces are distilled into an Agent Skill Registry — structured documents that capture recurring failures and repair patterns. These skills guide a Generator to create targeted tasks; tasks are filtered through a four-stage verifier gate and scored by gradient alignment with a held-out validation set.
+**How:** Historical solving traces are distilled into an [Agent Skill](../../../terms/agent-skill.md) Registry — structured documents that capture recurring failures and repair patterns. These skills guide a Generator to create targeted tasks; tasks are filtered through a four-stage verifier gate and scored by gradient alignment with a held-out validation set.
 
 **The number:** 50.40% on SWE-bench Verified after 3 iterations (12k validated instances each), outperforming five self-evolving baselines (SPIRAL, R-Zero, Absolute-Zero, Socratic-Zero, SSR) under identical compute budgets.
 

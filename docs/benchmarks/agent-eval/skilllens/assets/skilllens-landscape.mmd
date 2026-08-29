@@ -1,0 +1,25 @@
+flowchart LR
+    HAND[Hand-authored skills and platform instructions]
+    EXTRACT[Trajectory-to-skill extraction]
+    CONSUME[Consumption-only benchmarks]
+    COMPOSE[Executable skill composition]
+    EVOLVE[Self-evolving skill systems]
+    PLAUS[Surface plausibility rubrics]
+    DEAD[Fluent but weak utility predictor]
+    LENS[SkillLens<br/>full lifecycle + utility grounding]
+    META[Validated failure-aware meta-skill]
+    FUTURE[Larger libraries, retrieval, composition]
+
+    HAND --> EXTRACT
+    EXTRACT --> TRACE[Trace2Skill, AutoRefine,<br/>PRAXIS, MemP]
+    TRACE --> LENS
+    CONSUME --> SB[SkillsBench, SWE-Skills-Bench,<br/>Skills-in-the-Wild]
+    SB --> LENS
+    COMPOSE --> SC[SkillCraft<br/>function composition]
+    SC --> LENS
+    EVOLVE --> CE[CoEvoSkills, EvolveR,<br/>SkillRL-style systems]
+    CE --> LENS
+    PLAUS --> DEAD
+    DEAD -. rejected as a standalone signal .-> LENS
+    LENS --> META
+    LENS -. open direction .-> FUTURE

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-25
+updated: 2026-08-29
 ---
 
 # Terms Glossary
@@ -15,6 +15,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## General
 
+- [Agent Skill](agent-skill.md) — A reusable, structured procedural artifact that guides an AI agent on a class of tasks without retraining the underlying model.
 - [Monkey-Patching](monkey-patching.md) — Runtime replacement, deletion, or redirection of functions, attributes, modules, or environment lookups so code runs against controlled behavior without editing the original source.
 
 ## Training

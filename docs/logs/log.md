@@ -374,3 +374,8 @@ updated: 2026-08-25
 ## 2026-08-28
 
 - Added [Firecracker: MicroVM Sandboxes for AI Agents](../frameworks/firecracker/index.md), backed by clean pinned revision `f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a`. The medium-confidence code-reading insight explains KVM and Jailer containment, per-thread seccomp, VirtIO block/network/vsock boundaries, the API-to-boot round trip, and the outer agent-policy responsibilities Firecracker does not implement.
+
+## 2026-08-29
+
+- Ingested `raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf` with MinerU precise mode into `derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/` and added [From Raw Experience to Skill Consumption: Model-Generated Agent Skills](../benchmarks/agent-eval/skilllens/index.md) at medium confidence. The page covers the three-stage lifecycle, EE/TE metrics, success/failure experience composition, extractor-target asymmetry, surface-form and pairwise-judge controls, cross-model transfer, the validated failure-aware meta-skill, negative-transfer failure modes, five local source figures, and an editable Landscape Mermaid diagram; it records the paper’s prose-versus-Figure-3 guided-accuracy inconsistency.
+- Added the [Agent Skill](../terms/agent-skill.md) glossary page and linked it from the new SkillLens insight and [Socratic-SWE](../training/fine-tuning/socratic-swe/index.md) as a cross-paper concept.
