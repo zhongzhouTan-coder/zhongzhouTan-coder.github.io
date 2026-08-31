@@ -1809,7 +1809,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/7702ccd7d8dea6b4dabdacb0118adb522dedbec7/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
+        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md",
+        "docs/frameworks/vllm-ascend/glm-5.1-c8-950.md"
       ],
       "status": "ingested"
     },

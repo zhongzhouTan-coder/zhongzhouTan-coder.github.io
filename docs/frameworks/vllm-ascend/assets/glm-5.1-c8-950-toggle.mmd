@@ -1,0 +1,14 @@
+flowchart LR
+    CLI["additional_config\nSFA C8 + LI C8"] --> CFG["AscendConfig\nmodel_uses_sfa_sparse gate"]
+    CFG --> SFA["AscendSFAImpl"]
+    CFG --> SPEC["V1/V2 KV-cache specs"]
+    SFA --> SFA_GATE{"enable_sparse_sfa_c8?"}
+    SFA_GATE -->|yes| MAIN["Packed main KV\nA5: FP8 E4M3 + FP32 scales"]
+    SFA_GATE -->|no| SPLIT["Ordinary split k/v cache"]
+    SFA --> LI_GATE{"LI C8 + eligible layer?"}
+    LI_GATE -->|yes| INDEX["Indexer key + scale cache\nA5: FP8 E4M3 + FP32 scales"]
+    LI_GATE -->|no| INDEX_PLAIN["Ordinary indexer key cache"]
+    MAIN --> SCATTER["A5 fused KV compression/scatter"]
+    INDEX --> SCATTER
+    SCATTER --> TOPK["Quantized Lightning Indexer top-k"]
+    TOPK --> ATT["Sparse attention over selected tokens"]
