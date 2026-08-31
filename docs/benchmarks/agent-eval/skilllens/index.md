@@ -272,7 +272,7 @@ The paper’s prose reports that validated rubric guidance raises the pairwise j
 ## Go Deeper
 
 - **Read:** [From Raw Experience to Skill Consumption](https://arxiv.org/abs/2605.23899)
-- **Build on:** [Socratic-SWE’s trace-derived skills](../../../training/fine-tuning/socratic-swe/index.md) · [Trace2Skill](https://arxiv.org/abs/2603.25158) · [SkillsBench](https://arxiv.org/abs/2602.12670)
+- **Build on:** [SkillOpt’s validation-gated skill optimization](../skillopt/index.md) · [Socratic-SWE’s trace-derived skills](../../../training/fine-tuning/socratic-swe/index.md) · [Trace2Skill](https://arxiv.org/abs/2603.25158) · [SkillsBench](https://arxiv.org/abs/2602.12670)
 - **Understand the context:** [Agent Evaluation Benchmarks](../index.md) · [EssenceBench’s fixed benchmark compression](../essencebench/index.md) · [Pier’s agent evaluation harness](../pier/index.md) · [Harbor’s evaluation framework](../../../frameworks/harbor/index.md)
 - **Reproduce:** [SkillLens code](https://aka.ms/SkillLens); expect provider API access, benchmark-specific environments, and the paper’s single-skill prompt protocol.
 - **Source extraction:** [MinerU Markdown](../../../../derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md)

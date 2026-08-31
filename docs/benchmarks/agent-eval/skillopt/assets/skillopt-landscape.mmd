@@ -1,0 +1,24 @@
+flowchart TB
+    ROOT[External language as the adaptation layer]
+    STATIC[Hand-authored or one-shot skills]
+    DISTILL[Trajectory-to-skill distillation<br/>Trace2Skill, SkillLens]
+    PROMPT[Reflective prompt optimization<br/>TextGrad, GEPA]
+    EVOLVE[Self-evolving skill systems<br/>EvoSkill, SkillRL]
+    COMPOSE[Skill libraries and composition]
+    SKILLOPT[SkillOpt<br/>one skill + bounded edits + validation]
+    ARTIFACT[Portable best_skill.md]
+    TRANSFER[Cross-model, cross-harness,<br/>and nearby-benchmark reuse]
+    FUTURE[Skill libraries, preference gates,<br/>and eventual weight adaptation]
+
+    ROOT --> STATIC
+    ROOT --> DISTILL
+    ROOT --> PROMPT
+    ROOT --> EVOLVE
+    STATIC --> SKILLOPT
+    DISTILL --> SKILLOPT
+    PROMPT --> SKILLOPT
+    EVOLVE --> SKILLOPT
+    COMPOSE -. adjacent direction .-> SKILLOPT
+    SKILLOPT --> ARTIFACT
+    ARTIFACT --> TRANSFER
+    SKILLOPT -. open direction .-> FUTURE

@@ -1863,6 +1863,19 @@
       "derived_path": "derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md",
       "docs_path": "docs/benchmarks/agent-eval/skilllens/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2605.23904v2",
+      "title": "SkillOpt: Executive Strategy for Self-Evolving Agent Skills",
+      "slug": "skillopt-executive-strategy-for-self-evolving-agent-skills",
+      "category": "benchmarks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md",
+      "docs_path": "docs/benchmarks/agent-eval/skillopt/index.md",
+      "status": "ingested"
     }
   ]
 }
