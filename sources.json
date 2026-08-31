@@ -1877,6 +1877,19 @@
       "derived_path": "derived/pdf-markdown/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md",
       "docs_path": "docs/benchmarks/agent-eval/skillopt/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "paper:ascend-950-npu-architecture-white-paper",
+      "title": "昇腾 950 NPU 架构白皮书",
+      "slug": "ascend-950-npu-architecture-white-paper",
+      "category": "hardware",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/hardware/ascend-950-npu-architecture-white-paper/ascend-950-npu-architecture-white-paper.md",
+      "docs_path": "docs/hardware/ascend/ascend-950/index.md",
+      "status": "ingested"
     }
   ]
 }

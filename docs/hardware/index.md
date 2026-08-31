@@ -16,6 +16,11 @@ updated: 2026-08-26
 - [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](nvidia/gpu-evolution-path.md) — A medium-confidence detailed comparison of Volta, Turing, Ampere, Hopper, Ada Lovelace, and Blackwell, plus the expanding technology surface around them.
 - [NVIDIA Ada Lovelace Professional GPU Architecture](nvidia/ada-lovelace-professional-gpu-architecture/index.md) — AD102 hierarchy, cache, ray-tracing geometry engines, shader scheduling, neural graphics, FP8 Tensor Cores, and AV1 video.
 
+## Ascend NPU
+
+- [Ascend NPU](ascend/index.md) — Topic hub for Ascend NPU architecture, AI Core execution, memory hierarchy, and scale-up interconnects.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](ascend/ascend-950/index.md) — Third-generation DaVinci Cube/Vector compute, HiF8 and MX formats, chiplet UMA memory, NDDMA, STARS2.0, Unified Bus/URMA/CCU, DVPP, and 8,192-card supernodes.
+
 ## Kernels and Dataflow
 
 - [DeepGEMM MegaMoE: Fused Communication and Expert Compute](deepgemm/index.md) — Beginner-oriented code reading of the FP8xFP4 fused MoE path: symmetric-memory dispatch, bounded ring scheduling, SM100 tensor-core execution, SwiGLU, and top-k combine.

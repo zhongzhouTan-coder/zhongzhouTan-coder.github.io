@@ -1,0 +1,26 @@
+flowchart TD
+    HOST["Host-centric accelerator execution\nCPU-mediated copies and collectives"] -. "bandwidth / latency pressure" .-> CO_DESIGN["Compute + movement co-design"]
+    DA_VINCI["DaVinci NPU line\nCube + Vector + local SRAM"] --> CO_DESIGN
+    CO_DESIGN --> A950["Ascend 950\n3rd-generation DaVinci + chiplet UMA"]
+
+    FP16["FP16 / BF16 baseline"] --> LOWP["Low-precision AI formats\nFP8, block-scaled FP4"]
+    LOWP --> A950
+    SIMDV["SIMD\nlane-level parallelism"] --> MIXED["SIMD/SIMT hybrid\nSIMD-first, SIMT for irregular work"]
+    SIMT["SIMT\nthread-level parallelism"] --> MIXED
+    MIXED --> A950
+
+    MOVEMENT["Explicit data movement\nlayout changes + copies"] --> NDDMA["NDDMA\nup to five-dimensional copy + reorder"]
+    NDDMA --> A950
+    INTERCONNECT["Scale-up / scale-out interconnects"] --> UB["Unified Bus 2.0\nURMA + UB Memory + UBoE"]
+    UB --> CCU["CCU\ndevice-side collective offload"]
+    CCU --> A950
+    SCHED["Host task submission"] --> STARS["STARS2.0\ndevice-side scheduling and resource slicing"]
+    STARS --> A950
+
+    A950 --> PR["950PR\n128 GB, 1.6 TB/s\nrecommendation + prefill focus"]
+    A950 --> DT["950DT\n144 GB, 4 TB/s\ntraining + full inference lifecycle"]
+
+    classDef current fill:#cfe8ff,stroke:#1f5b99,stroke-width:2px;
+    classDef branch fill:#e8f5e9,stroke:#3d7a4b;
+    class A950 current;
+    class PR,DT branch;

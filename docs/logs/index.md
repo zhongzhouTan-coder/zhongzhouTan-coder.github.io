@@ -145,6 +145,8 @@ updated: 2026-08-29
 
 - [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — OCP MX v1.0 block contract, concrete FP4/FP6/FP8/INT8 encodings, conversion and dot-product semantics, implementation-defined boundaries, and FPGA/MSFP context.
 - [Hardware and Numerics](../hardware/index.md) — Category overview for hardware and numerics pages.
+- [Ascend NPU](../hardware/ascend/index.md) — Topic hub for Ascend NPU architecture, AI Core execution, memory hierarchy, and scale-up interconnects.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Third-generation DaVinci Cube/Vector compute, HiF8 and MX formats, chiplet UMA memory, NDDMA, STARS2.0, Unified Bus/URMA/CCU, DVPP, and 8,192-card supernodes.
 - [NVIDIA GPU Evolution](../hardware/nvidia/index.md) — Topic hub for learning NVIDIA architecture generations and the expanding compute, graphics, AI, scaling, and developer capabilities around them.
 - [NVIDIA GPU Evolution: From Graphics to Accelerated Computing](../hardware/nvidia/gpu-evolution-path.md) — A detailed source-backed comparison of Volta, Turing, Ampere, Hopper, Ada Lovelace, and Blackwell, from Tensor Cores and ray tracing through FP8, FP4, and rack-scale AI.
 - [NVIDIA Ada Lovelace Professional GPU Architecture](../hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md) — AD102 hierarchy, cache, third-generation RT Core, opacity micromaps, displaced micro-meshes, SER, DLSS 3, FP8 Tensor Cores, and AV1 video.
