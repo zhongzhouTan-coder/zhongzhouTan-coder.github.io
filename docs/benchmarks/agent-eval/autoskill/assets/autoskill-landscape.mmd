@@ -1,0 +1,17 @@
+flowchart LR
+    PARAM[Parameter adaptation<br/>fine-tuning and self-training]
+    MEMORY[Long-term agent memory<br/>facts, episodes, reflections]
+    TRAJECTORY[Trajectory-to-skill extraction<br/>SkillLens-style lifecycle]
+    LIBRARY[Composable skill libraries<br/>Voyager and agent skills]
+    AUTOSKILL[AutoSkill<br/>query-only extraction + versioned SkillBank]
+    SKILLOPT[Validation-gated skill optimization<br/>SkillOpt]
+    LIFELONG[Longitudinal personalized agent]
+    RISK[Unvalidated accumulation<br/>retrieval error and negative transfer]
+
+    PARAM --> LIFELONG
+    MEMORY --> AUTOSKILL
+    TRAJECTORY --> AUTOSKILL
+    LIBRARY --> AUTOSKILL
+    AUTOSKILL --> LIFELONG
+    AUTOSKILL -. needs outcome validation .-> SKILLOPT
+    AUTOSKILL -. open risk .-> RISK

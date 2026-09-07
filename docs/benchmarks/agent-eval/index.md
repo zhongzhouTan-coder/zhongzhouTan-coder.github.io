@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-29
+updated: 2026-08-31
 ---
 
 # Agent Evaluation Benchmarks
@@ -20,4 +20,5 @@ updated: 2026-08-29
 - [EssenceBench: LLM Evaluation with 200x Less Data](essencebench/index.md) — Fixed benchmark coresets learned through semantic and behavioral redundancy filtering, genetic subset search, and attribution-guided refinement; includes a correction to the paper's ambiguous 200x HellaSwag ranking claim.
 - [From Raw Experience to Skill Consumption: Model-Generated Agent Skills](skilllens/index.md) — SkillLens studies the full trajectory-to-skill lifecycle across five domains, identifies negative transfer and extractor-target asymmetry, and turns utility-grounded findings into a validated meta-skill.
 - [SkillOpt: Executive Strategy for Self-Evolving Agent Skills](skillopt/index.md) — Treats one portable skill as the trainable state of a frozen agent, using bounded text edits, strict validation gating, rejected-edit feedback, and epoch-wise slow/meta updates.
+- [AutoSkill: Experience-Driven Lifelong Learning](autoskill/index.md) — Turns recurring user requests into retrieved, versioned `SKILL.md` artifacts through coupled response-generation and background skill-evolution loops; its WildChat study demonstrates extraction scale rather than downstream utility.
 - [HORIZON: Agentic Hardware Design as Repository-Level Code Evolution](agentic-hardware-design/index.md) — Git-traced RTL self-evolution from Markdown harness to executable evaluator, with 100% best-so-far completion but large convergence-cost and reward-hacking caveats.

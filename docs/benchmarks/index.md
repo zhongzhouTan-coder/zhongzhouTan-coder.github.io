@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-29
+updated: 2026-08-31
 ---
 
 # Benchmarks
@@ -23,6 +23,7 @@ updated: 2026-08-29
 - [EssenceBench: LLM Evaluation with 200x Less Data](agent-eval/essencebench/index.md)
 - [From Raw Experience to Skill Consumption: Model-Generated Agent Skills](agent-eval/skilllens/index.md)
 - [SkillOpt: Executive Strategy for Self-Evolving Agent Skills](agent-eval/skillopt/index.md)
+- [AutoSkill: Experience-Driven Lifelong Learning](agent-eval/autoskill/index.md)
 
 ## Serving Performance
 

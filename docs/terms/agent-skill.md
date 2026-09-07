@@ -9,6 +9,7 @@ sources:
   - raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf
   - raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf
   - raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf
+  - raw/benchmarks/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf
 aliases:
   - agent skills
   - model-generated skill
@@ -18,7 +19,8 @@ appears_in:
   - docs/benchmarks/agent-eval/skilllens/index.md
   - docs/benchmarks/agent-eval/skillopt/index.md
   - docs/training/fine-tuning/socratic-swe/index.md
-updated: 2026-08-29
+  - docs/benchmarks/agent-eval/autoskill/index.md
+updated: 2026-08-31
 ---
 
 # Agent Skill
@@ -50,3 +52,4 @@ Skills reduce repeated reasoning and enable fast adaptation, but they can transf
 - [From Raw Experience to Skill Consumption](../benchmarks/agent-eval/skilllens/index.md) — Studies the complete experience-generation, extraction, and consumption lifecycle and validates a failure-aware extraction rubric against downstream utility.
 - [SkillOpt: Executive Strategy for Self-Evolving Agent Skills](../benchmarks/agent-eval/skillopt/index.md) — Treats one skill document as the trainable state of a frozen agent and validates bounded text edits on held-out tasks.
 - [Socratic-SWE](../training/fine-tuning/socratic-swe/index.md) — Distills coding-agent traces into a registry that guides targeted task generation in a self-evolution loop.
+- [AutoSkill: Experience-Driven Lifelong Learning](../benchmarks/agent-eval/autoskill/index.md) — Extracts user-side behavioral rules into versioned `SKILL.md` artifacts and retrieves them for later requests without updating model weights.
