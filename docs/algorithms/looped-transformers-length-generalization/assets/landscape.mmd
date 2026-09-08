@@ -1,0 +1,11 @@
+flowchart LR
+    FIXED["Fixed-depth decoder Transformer"] --> RASP["RASP-L<br/>straight-line, length-generalizable steps"]
+    RASP --> LIMIT["Some tasks need<br/>repeated state updates"]
+
+    RECURRENT["Recurrent and Universal Transformers<br/>adaptive computation"] --> LOOPED["Looped Transformer"]
+    PROGRAM["Looped Transformers as<br/>programmable computers"] --> LOOPED
+    ALGORITHMS["Looped Transformers learn<br/>learning algorithms"] --> LOOPED
+
+    LIMIT --> NRASP["n-RASP-L<br/>preprocess + repeated P' + postprocess"]
+    LOOPED --> NRASP
+    NRASP --> THIS["This paper<br/>FOP + step-dependent supervision<br/>+ input injection + adaptive stopping"]

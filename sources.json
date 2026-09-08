@@ -1903,6 +1903,19 @@
       "derived_path": "derived/pdf-markdown/hardware/ascend-950-npu-architecture-white-paper/ascend-950-npu-architecture-white-paper.md",
       "docs_path": "docs/hardware/ascend/ascend-950/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2409.15647v5",
+      "title": "Looped Transformers for Length Generalization",
+      "slug": "looped-transformers-length-generalization",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/algorithms/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/algorithms/looped-transformers-length-generalization.md",
+      "docs_path": "docs/algorithms/looped-transformers-length-generalization/index.md",
+      "status": "ingested"
     }
   ]
 }

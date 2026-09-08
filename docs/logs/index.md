@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-29
+updated: 2026-09-07
 ---
 
 # Wiki Index
@@ -115,6 +115,7 @@ updated: 2026-08-29
 - [Matrix Exponentiation for Linear Transitions](../algorithms/linear-attention/matrix-exponentiation.md) — Binary matrix exponentiation, transition-matrix construction, linear recurrences, augmented state vectors, and fixed linear dynamic programming.
 - [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/deepseek-v3.2/index.md) — Three innovations: DSA sparse attention with lightning indexer and top-k token selection, scaled GRPO with four MoE stabilization tricks, and cold-start + synthetic agentic task pipeline unifying reasoning with tool-use.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Exact pass-KV/pass-Q ring attention, load-balanced context sharding, cache-aware traffic selection, and 1M-token prefill scaling on 128 H100 GPUs.
+- [Looped Transformers for Length Generalization](../algorithms/looped-transformers-length-generalization/index.md) — Shared decoder recurrence, n-RASP-L task structure, step-dependent final-answer supervision, input injection, and adaptive stopping for algorithmic length extrapolation.
 
 ## Training
 

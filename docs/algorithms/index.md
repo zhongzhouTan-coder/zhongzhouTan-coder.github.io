@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-22
+updated: 2026-09-07
 ---
 
 # Algorithms
@@ -49,6 +49,10 @@ updated: 2026-08-22
 ## Distributed Inference
 
 - [Context Parallelism for Scalable Million-Token Inference](context-parallelism/index.md) — Exact pass-KV/pass-Q [ring attention](../terms/ring-attention.md), load-balanced sequence sharding, adaptive cache-aware traffic selection, and 128-GPU million-token prefill scaling.
+
+## Length Generalization
+
+- [Looped Transformers for Length Generalization](looped-transformers-length-generalization/index.md) — Shared decoder recurrence, n-RASP-L task structure, step-dependent final-answer supervision, input injection, and adaptive stopping for algorithmic length extrapolation.
 
 ## Model Papers
 
