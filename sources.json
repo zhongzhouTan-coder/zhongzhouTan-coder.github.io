@@ -768,7 +768,8 @@
         "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
         "docs/frameworks/vllm/vllm-context-parallelism.md",
         "docs/frameworks/vllm/dcp-attention/index.md",
-        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md"
+        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md",
+        "docs/frameworks/vllm/glm-5.1-expert-parallel/index.md"
       ],
       "status": "ingested"
     },

@@ -1,0 +1,20 @@
+flowchart LR
+    subgraph Model["GLM-5.1 model rank"]
+        H["Post-attention hidden rows"] --> G["GateLinear"]
+        G --> R["Grouped top-k router"]
+    end
+
+    R --> IDs["Global topk_ids\nand topk_weights"]
+    IDs --> Map["ExpertMapManager\nglobal -> local IDs"]
+    H --> Prep["Quantize + prepare"]
+    Map --> Prep
+
+    Prep --> Dispatch["EP dispatch\nall-gather or specialized A2A"]
+
+    subgraph Experts["EP ranks, one local expert shard per rank"]
+        Dispatch --> Local["Local expert MLPs\nw13 -> SiLU -> w2"]
+    end
+
+    Local --> Finalize["Weighted finalize + EP combine"]
+    Finalize --> Out["Source-token ordered\nMoE output"]
+    Out --> Next["Residual stream\nnext decoder operation"]

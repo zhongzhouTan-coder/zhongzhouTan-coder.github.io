@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-08-25
+updated: 2026-09-08
 ---
 
 # Wiki Log
@@ -390,3 +390,7 @@ updated: 2026-08-25
 ## 2026-09-07
 
 - Ingested `raw/algorithms/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf` with precise MinerU extraction into `derived/pdf-markdown/algorithms/looped-transformers-length-generalization.md` and added [Looped Transformers for Length Generalization](../algorithms/looped-transformers-length-generalization/index.md) at high confidence. The insight covers n-RASP-L decomposition, shared decoder recurrence, full-output prediction, step-dependent supervision without intermediate labels, adaptive stopping, length-generalization evidence, limitations, three local source figures, and an editable Landscape Mermaid source.
+
+## 2026-09-08
+
+- Added [GLM-5.1 on vLLM: Expert-Parallel MoE Path](../frameworks/vllm/glm-5.1-expert-parallel/index.md), backed by the pinned upstream vLLM revision `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`. The static insight traces GLM-5.1's `GlmMoeDsaForCausalLM` alias through EP group sizing, global-to-local expert maps, router top-k dispatch, local expert MLP execution, all-gather/reduce-scatter and specialized prepare/finalize branches, and residual return; it records the unrelated dirty-checkout edit and the unavailable multi-GPU runtime validation.

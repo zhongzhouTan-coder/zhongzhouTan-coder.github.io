@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-25
+updated: 2026-09-08
 ---
 
 # Frameworks
@@ -21,6 +21,7 @@ updated: 2026-08-25
 - [vLLM](vllm/index.md) — Category hub for vLLM serving framework pages.
 - [vLLM Architecture and Code Organization Overview](vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](vllm/glm-5.2-inference-path.md) — Upstream request trace through V1 scheduling, the CUDA runner, shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, and response cleanup.
+- [GLM-5.1 on vLLM: Expert-Parallel MoE Path](vllm/glm-5.1-expert-parallel/index.md) — GLM-5.1's shared MoE shell through EP group sizing, global-to-local expert mapping, routed dispatch, local expert compute, backend combine, and residual return.
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm/vllm-mha-code-path.md) — How decoder MHA/GQA/MQA moves from tensor-parallel QKV projection through runtime cache metadata, slot-mapped paged KV writes, backend dispatch, and output projection.
 - [vLLM: PagedAttention Serving Framework](vllm/vllm-framework.md) — LLM serving framework design, [PagedAttention](../terms/pagedattention.md) KV-cache paging, [block tables](../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
 - [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
