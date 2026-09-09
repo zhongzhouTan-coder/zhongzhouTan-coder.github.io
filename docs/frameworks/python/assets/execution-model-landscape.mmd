@@ -1,0 +1,14 @@
+flowchart LR
+    Text["Program text"] --> Block["Code block"]
+    Block --> Frame["Execution frame"]
+    Frame --> Bind["Name binding"]
+    Bind --> Namespace["Namespaces"]
+    Namespace --> Environment["Visible environment"]
+    Environment --> Resolve["Name resolution"]
+    Resolve --> Flow["Return or exception"]
+    Host["Host machine"] --> Process["Process"]
+    Process --> Runtime["Python global runtime"]
+    Runtime --> Interpreter["Interpreter"]
+    Interpreter --> Thread["Thread + thread state"]
+    Thread --> Frame
+    Scope["global / nonlocal / annotation rules"] --> Bind

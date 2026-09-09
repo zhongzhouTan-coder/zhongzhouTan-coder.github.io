@@ -1,0 +1,11 @@
+flowchart LR
+    Spec["Python language specification"] --> CPython["CPython reference implementation"]
+    CPython --> Guide["Real Python CPython 3.8.0b4 walkthrough"]
+    CPython --> Current["Current CPython implementation"]
+    CPython --> Alternatives["Other runtimes: PyPy, Jython, and Cython"]
+    Guide --> Pipeline["Input -> tokenizer -> parser -> AST"]
+    Guide --> Compiler["Symbol table -> CFG -> code object"]
+    Guide --> Runtime["Frames -> value stack -> PyObject"]
+    Guide --> Library["Standard library -> regression tests"]
+    Current -. "check version-sensitive details" .-> Pipeline
+    Current -. "check version-sensitive details" .-> Compiler

@@ -18,8 +18,10 @@ updated: 2026-09-09
 
 ## Python
 
-- [Python](python/index.md) — Reference-backed pages about Python runtime mechanisms and import behavior.
+- [Python](python/index.md) — Reference-backed pages about Python runtime mechanisms, execution, and import behavior.
 - [Python Import System: Cache, Finders, Loaders, and Module Specs](python/import-system.md) — How Python searches for modules, creates and executes them, caches their identities, and binds names for import statements.
+- [Python Execution Model: Code Blocks, Scopes, and Runtime State](python/execution-model.md) — How code blocks run in frames, names bind and resolve through namespaces, annotation scopes defer work, and runtime layers share state.
+- [Your Guide to the CPython Source Code](python/cpython-source-code-guide.md) — Historical CPython 3.8 source map from startup and parsing through code objects, frames, objects, the standard library, and tests.
 
 ## vLLM
 

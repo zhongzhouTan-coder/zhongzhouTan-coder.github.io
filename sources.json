@@ -1937,5 +1937,62 @@
       "docs_path": "docs/frameworks/python/import-system.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.python.org/python-execution-model@2026-09-09-00a7456c9112",
+      "title": "4. Execution model",
+      "slug": "python-execution-model",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.python.org/3.14/reference/executionmodel.html",
+      "final_url": "https://docs.python.org/3.14/reference/executionmodel.html",
+      "captured_at": "2026-09-09T00:00:00.000Z",
+      "revision": "00a7456c9112ad7ed318aa561b0879290d93df9bda7c7bc493b64ef404a78c77",
+      "raw_paths": [
+        "raw/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.html",
+        "raw/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.md",
+      "docs_path": "docs/frameworks/python/execution-model.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:realpython.com/cpython-source-code-guide@2026-09-09-eb5f92a6dedd",
+      "title": "Your Guide to the CPython Source Code",
+      "slug": "cpython-source-code-guide",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://realpython.com/cpython-source-code-guide/",
+      "final_url": "https://realpython.com/cpython-source-code-guide/",
+      "captured_at": "2026-09-09T09:16:20.000Z",
+      "revision": "eb5f92a6dedd748c9b4f252aaa212db679bd31f6f54199ea95124b69b668fef8",
+      "raw_paths": [
+        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.html",
+        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.md",
+      "docs_path": "docs/frameworks/python/cpython-source-code-guide.md",
+      "status": "captured"
+    }
+  ,
+    {
+      "id": "web:realpython.com/cpython-source-code-guide@2026-09-09-5a5fa6d91d40",
+      "title": "Your Guide to the CPython Source Code",
+      "slug": "cpython-source-code-guide",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://realpython.com/cpython-source-code-guide/",
+      "final_url": "https://realpython.com/cpython-source-code-guide/",
+      "captured_at": "2026-09-09T09:28:05.252Z",
+      "revision": "5a5fa6d91d401a149f5eda4aa2460ea328d15613641f8c8ab7c9aa9eddac03f9",
+      "raw_paths": [
+        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.html",
+        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.md",
+      "docs_path": "docs/frameworks/python/cpython-source-code-guide.md",
+      "status": "ingested"
+    }
   ]
 }

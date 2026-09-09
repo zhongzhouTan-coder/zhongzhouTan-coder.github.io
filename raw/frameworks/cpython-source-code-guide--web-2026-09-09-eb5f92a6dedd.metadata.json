@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://realpython.com/cpython-source-code-guide/",
+  "final_url": "https://realpython.com/cpython-source-code-guide/",
+  "canonical_url": "https://realpython.com/cpython-source-code-guide/",
+  "title": "Your Guide to the CPython Source Code",
+  "author": "Real Python",
+  "published_at": "2019-08-21T14:00:00+00:00",
+  "captured_at": "2026-09-09T09:16:20.000Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "local-html",
+  "content_sha256": "eb5f92a6dedd748c9b4f252aaa212db679bd31f6f54199ea95124b69b668fef8",
+  "raw_html_bytes": 806831,
+  "extracted_markdown_characters": 220687,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {},
+  "limitations": [
+    "HTML was supplied from a local file; HTTP status and response headers are unavailable."
+  ]
+}

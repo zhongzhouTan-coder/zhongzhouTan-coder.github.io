@@ -45,7 +45,9 @@ updated: 2026-09-09
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
-- [Python](../frameworks/python/index.md) — Reference-backed guide to Python runtime import behavior.
+- [Python](../frameworks/python/index.md) — Reference-backed guide to Python runtime execution and import behavior.
+- [Python Execution Model: Code Blocks, Scopes, and Runtime State](../frameworks/python/execution-model.md) — How code blocks run in frames, names bind and resolve through namespaces, annotation scopes defer work, and runtime layers share state.
+- [Your Guide to the CPython Source Code](../frameworks/python/cpython-source-code-guide.md) — Historical CPython 3.8 source map from startup and parsing through code objects, frames, objects, the standard library, and tests.
 - [OpenTelemetry: Vendor-Neutral Observability Framework](../frameworks/opentelemetry/index.md) — Open-source observability framework and toolkit for portable telemetry generation, collection, and export; storage and visualization remain external backend concerns.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Chunked prefills and decode-maximal batching improve decode utilization and reduce pipeline bubbles.
 - [vLLM](../frameworks/vllm/index.md) — Category hub for vLLM serving framework pages.
