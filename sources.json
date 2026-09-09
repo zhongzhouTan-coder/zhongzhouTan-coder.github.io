@@ -1918,5 +1918,24 @@
       "docs_path": "docs/algorithms/looped-transformers-length-generalization/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:docs.python.org/python-import-system@2026-09-09-b7c7ed32c384",
+      "title": "5. The import system",
+      "slug": "python-import-system",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://docs.python.org/3.14/reference/import.html",
+      "final_url": "https://docs.python.org/3.14/reference/import.html",
+      "captured_at": "2026-09-09T06:13:41.360Z",
+      "revision": "b7c7ed32c3844844384740a33843734f36a56e9c1c06869dec84734959e16d1a",
+      "raw_paths": [
+        "raw/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.html",
+        "raw/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.md",
+      "docs_path": "docs/frameworks/python/import-system.md",
+      "status": "ingested"
+    }
   ]
 }

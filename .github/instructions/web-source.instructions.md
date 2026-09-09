@@ -27,7 +27,26 @@ automatic JavaScript checks to clear; adjust this with `--challenge-wait-ms`.
 Use `--renderer chromium` for pages that require client-side rendering.
 Chromium honors `WEB_INGEST_PROXY`, or the standard `HTTPS_PROXY` /
 `HTTP_PROXY` and `NO_PROXY` environment variables when the explicit variable
-is absent.
+is absent. For a local agent, install the locked Playwright Chromium once into
+the ignored workspace directory:
+
+```bash
+./scripts/bootstrap-workspace.sh
+./scripts/run-in-workspace.sh npm run install:web-browser
+```
+
+The workspace wrapper sets `PLAYWRIGHT_BROWSERS_PATH` to
+`.workspace/playwright`, and the capture script prefers that managed browser
+over system browsers and Snap Chromium. When the local Linux system is missing
+Chromium runtime libraries, run the following from a trusted host shell with
+the required privileges:
+
+```bash
+./scripts/run-in-workspace.sh npx playwright-core install-deps chromium
+```
+
+The local-agent sandbox must also permit outbound access to the source URL, and
+any configured proxy must be reachable from inside that sandbox.
 
 The capture command detects common verification and CAPTCHA pages and refuses
 to save them as source content. It does not solve CAPTCHAs or bypass

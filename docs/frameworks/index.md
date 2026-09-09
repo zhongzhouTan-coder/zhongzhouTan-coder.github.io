@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 
 # Frameworks
@@ -15,6 +15,11 @@ updated: 2026-09-08
 - [CUDA Graphs in PyTorch: Capture Once, Replay Many](cuda/cuda-graphs/index.md) — Beginner-first guide to capture, stable memory addresses, warmup, replay, partial graphing, NCCL, benchmark interpretation, and failure modes.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](cuda/tile-ir/index.md) — Source-grounded explanation of tile blocks, tensor values, structured tensor views, compiler-owned mapping, and performance portability.
+
+## Python
+
+- [Python](python/index.md) — Reference-backed pages about Python runtime mechanisms and import behavior.
+- [Python Import System: Cache, Finders, Loaders, and Module Specs](python/import-system.md) — How Python searches for modules, creates and executes them, caches their identities, and binds names for import statements.
 
 ## vLLM
 

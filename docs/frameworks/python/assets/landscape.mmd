@@ -1,0 +1,10 @@
+flowchart LR
+    Legacy["Implicit import machinery"] --> PEP302["PEP 302\nimport hooks"]
+    PEP302 --> Meta["sys.meta_path\nmeta finders"]
+    PEP420["PEP 420\nnamespace packages"] --> Namespace["Composite package portions"]
+    PEP451["PEP 451\nModuleSpec"] --> Pipeline["Modern import pipeline"]
+    Meta --> Pipeline
+    Namespace --> Pipeline
+    Path["PathFinder\nsys.path + path hooks"] --> Pipeline
+    Pipeline --> Cache["sys.modules\nmodule cache"]
+    Pipeline --> Custom["Custom finders\nand loaders"]

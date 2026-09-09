@@ -394,3 +394,7 @@ updated: 2026-09-08
 ## 2026-09-08
 
 - Added [GLM-5.1 on vLLM: Expert-Parallel MoE Path](../frameworks/vllm/glm-5.1-expert-parallel/index.md), backed by the pinned upstream vLLM revision `a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b`. The static insight traces GLM-5.1's `GlmMoeDsaForCausalLM` alias through EP group sizing, global-to-local expert maps, router top-k dispatch, local expert MLP execution, all-gather/reduce-scatter and specialized prepare/finalize branches, and residual return; it records the unrelated dirty-checkout edit and the unavailable multi-GPU runtime validation.
+
+## 2026-09-09
+
+- Captured the Python 3.14 import-system reference as an immutable web source with derived Markdown, then added [Python Import System: Cache, Finders, Loaders, and Module Specs](../frameworks/python/import-system.md). The insight explains the cache-first pipeline, `ModuleSpec`, meta and path finders, loader execution and rollback, regular versus namespace packages, relative imports, and `__main__.__spec__`; the manifest entry is now marked ingested and the editable Landscape source is saved under `docs/frameworks/python/assets/`.

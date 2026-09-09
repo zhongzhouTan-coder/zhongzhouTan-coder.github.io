@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "requested_url": "https://docs.python.org/3.14/reference/import.html",
+  "final_url": "https://docs.python.org/3.14/reference/import.html",
+  "canonical_url": "https://docs.python.org/3/reference/import.html",
+  "title": "5. The import system",
+  "author": "Python documentation",
+  "published_at": null,
+  "captured_at": "2026-09-09T06:13:41.360Z",
+  "http_status": null,
+  "content_type": "text/html",
+  "renderer": "local-html",
+  "content_sha256": "b7c7ed32c3844844384740a33843734f36a56e9c1c06869dec84734959e16d1a",
+  "raw_html_bytes": 122267,
+  "extracted_markdown_characters": 54466,
+  "extracted_assets": [],
+  "extractor": "defuddle@0.13.0 + turndown@7.2.4",
+  "upstream_reference": "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5",
+  "response_headers": {},
+  "limitations": [
+    "HTML was supplied from a local file; HTTP status and response headers are unavailable."
+  ]
+}
