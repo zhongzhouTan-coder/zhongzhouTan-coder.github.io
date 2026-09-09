@@ -23,7 +23,8 @@ import { JSDOM } from "jsdom"
 import { chromium } from "playwright-core"
 import TurndownService from "turndown"
 
-const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url))
+const SCRIPT_PATH = fileURLToPath(import.meta.url)
+const SCRIPT_DIR = dirname(SCRIPT_PATH)
 const DEFAULT_ROOT = resolve(SCRIPT_DIR, "../..")
 const UPSTREAM_REFERENCE =
   "Ademking/MD-This-Page@dd8564584639c22bf083e6e3a10d7e84e6b379b5"
@@ -73,6 +74,8 @@ Options:
 
 Environment:
   WEB_INGEST_CHROMIUM       Default Chromium executable.
+  PLAYWRIGHT_BROWSERS_PATH  Directory containing Playwright-managed browsers;
+                            the workspace wrapper uses .workspace/playwright.
   WEB_INGEST_PROXY          Browser proxy URL; falls back to HTTPS_PROXY or
                             HTTP_PROXY. NO_PROXY is used as the bypass list.
 `
@@ -403,6 +406,27 @@ async function firstAccessible(paths) {
   return null
 }
 
+export async function resolveChromiumExecutable(options = {}) {
+  let playwrightExecutable = null
+  try {
+    playwrightExecutable = chromium.executablePath()
+  } catch {
+    // A custom Playwright installation may not register Chromium.
+  }
+  return firstAccessible([
+    options.browserExecutable,
+    process.env.WEB_INGEST_CHROMIUM,
+    playwrightExecutable,
+    process.env.CHROME_PATH,
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    // Snap Chromium commonly cannot start inside a local-agent sandbox.
+    "/snap/bin/chromium"
+  ])
+}
+
 function browserProxyConfig() {
   const value =
     process.env.WEB_INGEST_PROXY ||
@@ -431,16 +455,7 @@ function browserProxyConfig() {
 }
 
 async function captureWithChromium(options) {
-  const executablePath = await firstAccessible([
-    options.browserExecutable,
-    process.env.WEB_INGEST_CHROMIUM,
-    process.env.CHROME_PATH,
-    "/snap/bin/chromium",
-    "/usr/bin/chromium",
-    "/usr/bin/chromium-browser",
-    "/usr/bin/google-chrome",
-    "/usr/bin/google-chrome-stable"
-  ])
+  const executablePath = await resolveChromiumExecutable(options)
   if (!executablePath) {
     fail(
       "no Chromium executable found; pass --browser-executable or use --renderer http"
@@ -1110,7 +1125,9 @@ async function main() {
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`)
 }
 
-main().catch((error) => {
-  process.stderr.write(`web ingest: ${error.message}\n`)
-  process.exitCode = 1
-})
+if (resolve(process.argv[1] || "") === SCRIPT_PATH) {
+  main().catch((error) => {
+    process.stderr.write(`web ingest: ${error.message}\n`)
+    process.exitCode = 1
+  })
+}

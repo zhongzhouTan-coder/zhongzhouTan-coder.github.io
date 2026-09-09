@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import tempfile
 import unittest
@@ -256,6 +257,44 @@ class WebSourceIngestTests(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("private IP URLs are blocked", result.stderr)
+
+    def test_playwright_managed_chromium_precedes_system_fallbacks(self) -> None:
+        browser_root = self.root / "playwright"
+        alternate_browser = self.root / "system-chromium"
+        alternate_browser.write_text("", encoding="utf-8")
+        script = """
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+const module = await import(process.argv[1]);
+const { chromium } = await import("playwright-core");
+const expected = chromium.executablePath();
+await mkdir(dirname(expected), { recursive: true });
+await writeFile(expected, "");
+const actual = await module.resolveChromiumExecutable({});
+process.stdout.write(JSON.stringify({ actual, expected }));
+"""
+        environment = {
+            **os.environ,
+            "PLAYWRIGHT_BROWSERS_PATH": str(browser_root),
+            "CHROME_PATH": str(alternate_browser),
+        }
+        result = subprocess.run(
+            [
+                "node",
+                "--input-type=module",
+                "--eval",
+                script,
+                INGEST_SCRIPT.as_uri(),
+            ],
+            cwd=REPOSITORY_ROOT,
+            env=environment,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        resolved = json.loads(result.stdout)
+        self.assertEqual(resolved["actual"], resolved["expected"])
 
     def test_access_challenge_is_not_saved_as_source_content(self) -> None:
         self.fixture.write_text(

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "python3 -m unittest discover -s tests -p 'test_*.py'",
+    "install:web-browser": "playwright-core install chromium",
     "ingest:web": "node scripts/ingestion/web_to_markdown.mjs",
     "wiki:search": "python3 scripts/wiki/search.py",
     "wiki:graph": "python3 scripts/wiki/graph.py",

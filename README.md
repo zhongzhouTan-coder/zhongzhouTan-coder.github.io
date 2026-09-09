@@ -170,12 +170,16 @@ files, and line numbers with:
 Install dependencies and capture a web page:
 
 ```bash
-npm ci
-npm run ingest:web -- \
+./scripts/bootstrap-workspace.sh
+./scripts/run-in-workspace.sh npm run install:web-browser
+./scripts/run-in-workspace.sh npm run ingest:web -- \
   --url "https://example.com/article" \
   --category frameworks \
   --slug example-article
 ```
+
+The browser install is needed once per local workspace for Chromium rendering;
+HTTP-only captures do not require it.
 
 The command saves immutable HTML and metadata under `raw/`, writes readable
 Markdown under `derived/web-markdown/`, preserves inline SVG diagrams as local

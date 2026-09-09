@@ -13,6 +13,10 @@ workspace_python="$workspace_dir/python"
 workspace_node="$workspace_dir/node"
 workspace_ruby_tools="$workspace_dir/ruby-tools"
 
+# Keep Playwright-managed browsers inside the ignored workspace directory so
+# local agents do not depend on global or Snap browser installations.
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$workspace_dir/playwright}"
+
 if [[ -d "$workspace_python/bin" ]]; then
   export VIRTUAL_ENV="$workspace_python"
   PATH="$workspace_python/bin:$PATH"
