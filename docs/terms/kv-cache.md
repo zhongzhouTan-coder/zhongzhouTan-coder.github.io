@@ -10,6 +10,7 @@ sources:
   - raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
   - raw/training/k3-technical-report--paper.pdf
+  - raw/training/deepseek-v4.1-technical-report--paper.pdf
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
   - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
@@ -44,6 +45,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-overview.md
   - docs/hardware/quantization/flatquant/index.md
   - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/deepseek/index.md
   - docs/training/index.md
   - docs/training/kimi/kimi-k3/index.md
@@ -108,6 +110,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [vLLM Ascend](../frameworks/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
 - [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md) — A code-reading tour of the shared qwen3_5-family inference path: Qwen3.5-27B / Qwen3.6-27B (dense hybrid Mamba-Transformer.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
+- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Uses CED, cross-layer CSA2 reuse, FP4 main KV, and bounded SWA replay to reduce global and persistent cache footprints.
 - [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P.

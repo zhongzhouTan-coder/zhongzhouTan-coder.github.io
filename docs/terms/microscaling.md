@@ -8,12 +8,14 @@ category: hardware
 sources:
   - raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf
   - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/training/deepseek-v4.1-technical-report--paper.pdf
 appears_in:
   - docs/hardware/quantization/microscaling-mx-formats/index.md
   - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
   - docs/hardware/quantization/index.md
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/quantization/hif4/index.md
+  - docs/training/deepseek/deepseek-v4.1/index.md
 updated: 2026-08-25
 ---
 
@@ -46,6 +48,7 @@ The shared scale must cover the whole block. An outlier can therefore reduce the
 - [Quantization](../hardware/quantization/index.md) - Groups MX with other low-precision numeric formats.
 - [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) - Contrasts NVFP4's fractional, 16-element scaling with OCP MX's power-of-two, 32-element blocks.
 - [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) - Uses a larger 64-value block and two levels of shared micro-exponents to keep a richer four-bit payload and integer-heavy dot products.
+- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) - Uses an MXFP4-style E2M1 main-KV payload with one E4M3 scale per 16 channels.
 
 ## Related Terms
 

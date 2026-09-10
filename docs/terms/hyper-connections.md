@@ -7,6 +7,7 @@ confidence: high
 category: training
 sources:
   - raw/training/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf
+  - raw/training/deepseek-v4.1-technical-report--paper.pdf
 aliases:
   - hyper-connection
   - hc
@@ -19,6 +20,7 @@ appears_in:
   - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
   - docs/frameworks/vllm-ascend/index.md
   - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/deepseek/index.md
   - docs/training/index.md
   - docs/training/mhc/index.md
@@ -59,6 +61,7 @@ Each mapping is a sum of a dynamic (input-dependent) term and a static bias term
 
 - [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — The paper that introduces mHC and analyzes HC's instability.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — Deploys mHC as the residual mechanism in a 1.6T/284B MoE.
+- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Uses Single-Pass mHC and Mega-mHC to halve residual activation memory traffic at deployment.
 - [DeepSeek](../frameworks/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.

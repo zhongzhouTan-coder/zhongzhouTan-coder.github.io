@@ -1,0 +1,11 @@
+flowchart LR
+    A[Dense self-attention] --> B[GQA and MLA\nreduce entry size]
+    B --> C[DeepSeek-V2/V3\nlatent KV cache]
+    C --> D[DeepSeek-V3.2\nDSA sparse selection]
+    D --> E[DeepSeek-V4\nCSA plus HCA]
+    E --> F[DeepSeek-V4.1\nCSA2 plus FP4]
+    F --> G[Cross-layer KV reuse]
+    F --> H[Causal encoder-decoder\nfor prefill]
+    F --> I[Bounded replay\nfor SWA recovery]
+    J[Cross-layer attention and\nindex reuse] --> F
+    K[DSpark speculative decoding] --> F

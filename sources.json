@@ -695,6 +695,19 @@
       "status": "ingested"
     },
     {
+      "id": "paper:deepseek-v4.1-flash",
+      "title": "DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression",
+      "slug": "deepseek-v4.1-technical-report",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/deepseek-v4.1-technical-report--paper.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/deepseek-v4.1-technical-report.md",
+      "docs_path": "docs/training/deepseek/deepseek-v4.1/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2512.24880",
       "title": "mHC: Manifold-Constrained Hyper-Connections",
       "slug": "mhc-manifold-constrained-hyper-connections",

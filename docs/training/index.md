@@ -29,6 +29,7 @@ updated: 2026-08-14
 
 - [DeepSeek](deepseek/index.md) — Category hub for DeepSeek model training papers.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](deepseek/deepseek-v4/index.md) — 1.6T/284B [MoE](../terms/mixture-of-experts.md) models with CSA+HCA hybrid attention, [mHC](../terms/hyper-connections.md), and Muon optimizer; achieves 27% FLOPs and 10% [KV cache](../terms/kv-cache.md) of V3.2 at 1M-token contexts.
+- [DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression](deepseek/deepseek-v4.1/index.md) — 552B multimodal MoE with CED prefill, CSA2 cross-layer cache reuse, FP4 main KV, bounded SWA replay, and controllable reasoning effort.
 
 ## Residual and Hyper-Connections
 

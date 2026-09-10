@@ -10,6 +10,7 @@ sources:
   - raw/training/deepseek-v4--paper.pdf
   - raw/training/kimi-linear-expressive-efficient-attention--paper.pdf
   - raw/training/k3-technical-report--paper.pdf
+  - raw/training/deepseek-v4.1-technical-report--paper.pdf
 aliases:
   - MoE
   - sparse expert model
@@ -35,6 +36,7 @@ appears_in:
   - docs/hardware/quantization/nvfp4.md
   - docs/hardware/deepgemm/index.md
   - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/deepseek/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/training/index.md
@@ -71,6 +73,7 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 
 - [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention-variants/deepseek-v2-mla.md) — Uses DeepSeekMoE alongside MLA to reduce active FFN compute.
 - [DeepSeek-V4](../training/deepseek/deepseek-v4/index.md) — Uses a 1.6T/284B-active MoE model with hybrid compressed attention.
+- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Uses a 552B multimodal MoE with 8B active parameters during prefill and 16B during decode.
 - [Kimi Linear](../training/kimi/kimi-linear/index.md) — Evaluates KDA/MLA hybrid attention on a 48B MoE with 3B active parameters.
 - [Kimi K3](../training/kimi/kimi-k3/index.md) — Scales to 2.8T total parameters, 104B active, and 896 routed experts per layer.
 - [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — Traces quantized sparse-expert execution on GPU and Ascend NPU.

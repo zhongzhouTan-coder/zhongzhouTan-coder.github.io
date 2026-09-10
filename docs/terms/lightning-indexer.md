@@ -7,6 +7,7 @@ confidence: high
 category: algorithms
 sources:
   - raw/training/deepseek-v4--paper.pdf
+  - raw/training/deepseek-v4.1-technical-report--paper.pdf
 aliases:
   - indexer
   - index branch
@@ -22,6 +23,7 @@ appears_in:
   - docs/frameworks/vllm-ascend/index.md
   - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
   - docs/training/deepseek/deepseek-v4/index.md
+  - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/efficient-attention/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/training/efficient-attention/swat-sliding-window-attention/index.md
@@ -55,6 +57,7 @@ The indexer is a heuristic: 8-bit quantization or close score margins can reorde
 
 - [DeepSeek-V4 Inference on Ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — Connects the indexer to the end-to-end DSA serving stack and heterogeneous KV cache.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — Introduces the Lightning Indexer as the sparse-selection stage of CSA layers.
+- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Reuses indexer state across CSA2 layers and restricts later decoder indexers to a hierarchical candidate pool.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — vllm-ascend's INT8/FP8 indexer cache and quantized top-k operators.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — A sibling approach with a learned index branch for block selection.
 - [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/deepseek-v3.2/index.md) — DeepSeek-V3.2 introduces DeepSeek Sparse Attention (DSA) for sub-quadratic long-context efficiency, a scaled GRPO recipe with.
