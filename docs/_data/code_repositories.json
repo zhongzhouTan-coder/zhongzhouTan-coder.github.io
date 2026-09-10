@@ -124,5 +124,11 @@
     "provider": "github",
     "repository_url": "https://github.com/firecracker-microvm/firecracker",
     "revision": "f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a"
+  },
+  "inferencex-7fa1d14b6624": {
+    "local_checkout": "external-repos/InferenceX",
+    "provider": "github",
+    "repository_url": "https://github.com/SemiAnalysisAI/InferenceX",
+    "revision": "7fa1d14b6624d433bd4f72a540da739b8f3808d9"
   }
 }

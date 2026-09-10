@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 
 # Wiki Log
@@ -400,3 +400,4 @@ updated: 2026-09-08
 - Captured the Python 3.14 import-system reference as an immutable web source with derived Markdown, then added [Python Import System: Cache, Finders, Loaders, and Module Specs](../frameworks/python/import-system.md). The insight explains the cache-first pipeline, `ModuleSpec`, meta and path finders, loader execution and rollback, regular versus namespace packages, relative imports, and `__main__.__spec__`; the manifest entry is now marked ingested and the editable Landscape source is saved under `docs/frameworks/python/assets/`.
 - Captured the Python 3.14 execution-model reference as an immutable web source with derived Markdown, then added [Python Execution Model: Code Blocks, Scopes, and Runtime State](../frameworks/python/execution-model.md). The insight explains code blocks and frames, binding and name resolution, class and annotation scopes, lazy type evaluation, exception termination, and process/interpreter/thread ownership; the manifest entry is now marked ingested and the editable execution landscape is saved under `docs/frameworks/python/assets/`.
 - Re-fetched [Your Guide to the CPython Source Code](../frameworks/python/cpython-source-code-guide.md) through the integrated browser, preserved the rendered DOM as immutable web revision `5a5fa6d91d40`, and added an insight covering the CPython 3.8 startup, parser, compiler, frame, object, standard-library, and test path with an original runtime swim-lane figure and editable Landscape.
+- Added [InferenceX: Continuous Inference Benchmark Pipeline](../frameworks/inferencex/index.md), backed by clean pinned revision `7fa1d14b6624d433bd4f72a540da739b8f3808d9`. The static code-reading insight maps declarative configuration through matrix validation, fleet-specific launchers, fixed-sequence and AgentX workload branches, result normalization, collection, and downstream artifact handoff; it includes strict revision-aware code evidence and editable runtime and landscape Mermaid sources.

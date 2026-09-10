@@ -1,0 +1,7 @@
+flowchart LR
+    Snapshot["One-off benchmark snapshot"] --> Continuous["InferenceX\ncontinuous sweep"]
+    Fixed["Fixed sequence\nISL / OSL workload"] --> Continuous
+    AgentTraces["Agent traces\nlong context + branches"] --> Agentic["AgentX branch"]
+    Continuous --> Agentic
+    Continuous --> Result["Comparable result\nwith configuration provenance"]
+    Agentic --> Result

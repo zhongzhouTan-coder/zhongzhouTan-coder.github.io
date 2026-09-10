@@ -1,0 +1,13 @@
+flowchart LR
+    Config["Master YAML\nmodel + framework + topology"] --> Validate["Pydantic\nvalidation"]
+    Validate --> Matrix["Matrix rows\nconcurrency + derived fields"]
+    Matrix --> Launch["Workflow + fleet launcher"]
+    Launch --> Server["Serving server\nframework-specific"]
+    Server --> Fixed["Fixed-sequence\nserving client"]
+    Server --> Agentic["AgentX\ntrace replay"]
+    Fixed --> Normalize["Normalize\nprocess_result.py"]
+    Agentic --> Gate["Validate\naggregate AgentX output"]
+    Gate --> NormalizeAgentic["AgentX aggregate\nplus raw sidecar"]
+    Normalize --> Collect["Collect JSON\nrun-level artifact"]
+    NormalizeAgentic --> Collect
+    Collect --> Handoff["InferenceX-app\ningestion"]

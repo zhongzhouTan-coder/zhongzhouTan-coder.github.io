@@ -1993,6 +1993,25 @@
       "derived_path": "derived/web-markdown/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.md",
       "docs_path": "docs/frameworks/python/cpython-source-code-guide.md",
       "status": "ingested"
+    },
+    {
+      "id": "github:SemiAnalysisAI/InferenceX@7fa1d14b6624d433bd4f72a540da739b8f3808d9",
+      "title": "InferenceX",
+      "slug": "inferencex-codebase",
+      "repo_slug": "inferencex",
+      "revision": "7fa1d14b6624d433bd4f72a540da739b8f3808d9",
+      "category": "frameworks",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/SemiAnalysisAI/InferenceX",
+      "raw_paths": [
+        "raw/frameworks/inferencex-codebase--github-7fa1d14b6624.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/inferencex/7fa1d14b6624d433bd4f72a540da739b8f3808d9/",
+      "docs_paths": [
+        "docs/frameworks/inferencex/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

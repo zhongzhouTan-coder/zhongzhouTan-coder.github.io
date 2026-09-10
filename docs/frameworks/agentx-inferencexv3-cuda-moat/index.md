@@ -17,7 +17,7 @@ updated: 2026-08-25
 **Published:** 2026-08-24
 **Captured:** 2026-08-25
 
-**Related pages:** [Frameworks](../index.md), [vLLM](../vllm/index.md), [SGLang](../sglang/index.md), [vLLM prefill/decode disaggregation](../vllm/prefill-decode-disaggregated-deployment/index.md), [vLLM DCP and PCP](../vllm/vllm-context-parallelism.md), [KV Cache](../../terms/kv-cache.md), [Context Parallelism](../../terms/context-parallelism.md), [Speculative Decoding](../../terms/speculative-decoding.md), [Chunked Prefill](../../terms/chunked-prefill.md)
+**Related pages:** [Frameworks](../index.md), [InferenceX code pipeline](../inferencex/index.md), [vLLM](../vllm/index.md), [SGLang](../sglang/index.md), [vLLM prefill/decode disaggregation](../vllm/prefill-decode-disaggregated-deployment/index.md), [vLLM DCP and PCP](../vllm/vllm-context-parallelism.md), [KV Cache](../../terms/kv-cache.md), [Context Parallelism](../../terms/context-parallelism.md), [Speculative Decoding](../../terms/speculative-decoding.md), [Chunked Prefill](../../terms/chunked-prefill.md)
 
 ## TL;DR
 
