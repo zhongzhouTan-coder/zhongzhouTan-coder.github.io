@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-08-29
+updated: 2026-09-10
 ---
 
 # Terms Glossary
@@ -34,6 +34,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 ## Algorithms
 
 - [Context Parallelism](context-parallelism.md) — Distributes a long sequence and its KV state across ranks while preserving exact attention.
+- [Gated Retention](gated-retention.md) — Uses learned head-wise decay to carry a fixed-size recurrent key-value state across tokens.
 - [Grouped-Query Attention](grouped-query-attention.md) — Shares each key/value head across a group of query heads to reduce KV-cache and communication cost.
 - [Delta Rule](delta-rule.md) — Corrects an associative memory using the error between its current key-addressed prediction and the target value.
 - [General Matrix Multiply (GEMM)](gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
@@ -45,10 +46,12 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
 - [Layer Normalization](layer-normalization.md) — Standardizes each example or token across its feature dimensions, independently of other batch members.
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
+- [Looped Transformers](looped-transformers.md) — Reuse one block's parameters across repeated applications to gain effective computational depth without adding parameters.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Outer Product](outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
 - [Perplexity](perplexity.md) — The exponential of a causal language model's average next-token negative log likelihood on a specified tokenized corpus.
 - [Ring Attention](ring-attention.md) — Circulates query or KV blocks around a rank ring and merges partial softmax results into exact attention.
+- [Sliding-Window Attention](sliding-window-attention.md) — Restricts causal attention to a fixed number of recent tokens so per-layer KV state stays bounded.
 
 ## Hardware
 

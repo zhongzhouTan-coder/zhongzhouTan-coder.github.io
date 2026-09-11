@@ -2025,6 +2025,32 @@
         "docs/frameworks/inferencex/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2405.05254v2",
+      "title": "You Only Cache Once: Decoder-Decoder Architectures for Language Models",
+      "slug": "yoco-you-only-cache-once",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/yoco-you-only-cache-once/yoco-you-only-cache-once.md",
+      "docs_path": "docs/training/efficient-attention/yoco/index.md",
+      "status": "ingested"
+    },
+    {
+      "id": "arxiv:2604.01220v1",
+      "title": "Universal YOCO for Efficient Depth Scaling",
+      "slug": "universal-yoco-efficient-depth-scaling",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md",
+      "docs_path": "docs/training/efficient-attention/yoco/universal-yoco.md",
+      "status": "ingested"
     }
   ]
 }

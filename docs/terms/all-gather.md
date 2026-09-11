@@ -25,10 +25,11 @@ appears_in:
   - docs/training/kimi/kimi-k3/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
+  - docs/training/efficient-attention/yoco/index.md
   - docs/algorithms/context-parallelism/index.md
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-11
+updated: 2026-09-10
 ---
 
 # All-Gather
@@ -82,6 +83,7 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
 - [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
+- [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) — Uses one cross-decoder all-gather of the global K/V cache in chunk-parallel long-sequence training.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses ring send/recv instead of an all-gather of the full context for exact prefill and decode attention.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP gathers prefill cache inputs and restores hidden states; DCP gathers attention statistics.
 

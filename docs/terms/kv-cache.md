@@ -48,6 +48,7 @@ appears_in:
   - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/deepseek/index.md
   - docs/training/index.md
+  - docs/training/efficient-attention/yoco/index.md
   - docs/training/kimi/kimi-k3/index.md
   - docs/training/kimi/kimi-linear/index.md
   - docs/training/parallelism/megatron-lm/index.md
@@ -55,7 +56,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
   - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-17
+updated: 2026-09-10
 ---
 
 # KV Cache
@@ -113,6 +114,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Uses CED, cross-layer CSA2 reuse, FP4 main KV, and bounded SWA replay to reduce global and persistent cache footprints.
 - [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
 - [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) — Separates a bounded-memory self-decoder from cross-decoder layers that all reuse one global KV cache.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Explains both Megatron-LM papers: intra-layer tensor model parallelism with f/g conjugate operators (8.3B, V100), and the PTD-P.
 - [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Shards persistent KV state across context-parallel ranks and chooses whether to circulate KV or queries.
 - [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP shards persistent decode KV state; PCP gathers prefill cache inputs without duplicating decode writes.

@@ -1,0 +1,11 @@
+flowchart TD
+  Base["Decoder-only Transformer<br/>full attention, one KV cache per layer"] --> UT["Universal Transformer<br/>weight-shared recursion over the whole stack"]
+  Base --> YOCO["YOCO<br/>self-decoder writes one global KV cache"]
+  UT --> RINS["RINS / early-layer recursion<br/>loop a block of a dense Transformer"]
+  UT --> ParScale["ParScale<br/>more parallel branches, not more depth"]
+  YOCO --> USD["Universal Self-Decoder<br/>recursion using efficient attention only"]
+  RINS --> USD
+  USD --> YOCOU["YOCO-U<br/>looped self-decoder + static cross-decoder"]
+  YOCOU --> Win["Depth scaling with one cache<br/>linear prefill, bounded KV growth"]
+  UT --> Upper["Loop the cross-decoder<br/>ablated: smaller gains, more attention cost"]
+  Upper -.->|rejected| YOCOU

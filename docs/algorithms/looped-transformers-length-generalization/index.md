@@ -37,7 +37,7 @@ The visual shows the paper's central trade: **parameters stay fixed while effect
 
 Consider binary addition trained only on numbers with 1 to 20 digits. A fixed-depth next-token model can fit the training range, but a 30-digit test case requires the learned computation to propagate information through ten more positions than it saw during training. The paper reports that this baseline fails around the extrapolation point, while a looped model can keep applying the same learned update for the longer input.
 
-The important distinction is not simply "more layers." A deeper fixed model still has one fixed computation schedule. The looped model learns a **single algorithmic step** and runs that step as many times as the input requires, much like applying one carry-propagation update repeatedly.
+The important distinction is not simply "more layers." A deeper fixed model still has one fixed computation schedule. The [looped model](../../terms/looped-transformers.md) learns a **single algorithmic step** and runs that step as many times as the input requires, much like applying one carry-propagation update repeatedly.
 
 ## The Landscape
 
@@ -236,4 +236,5 @@ The result is therefore strongest as an architectural lesson: **sequential compu
 - **Read:** [Looped Transformers for Length Generalization](https://arxiv.org/abs/2409.15647v5)
 - **Build on:** [Looped Transformer code](https://github.com/UW-Madison-Lee-Lab/looped-tf) and the paper's references to Universal Transformers, RASP-L, and scratchpad supervision.
 - **Understand the context:** [The Transformer](../foundations/transformer.md), [Transformers Are RNNs: Linear Attention](../linear-attention/index.md), and [Recurrent Neural Networks: From RNN to LSTM](../foundations/recurrent-neural-networks/index.md)
+- **Follow up:** [Universal YOCO for Efficient Depth Scaling](../../training/efficient-attention/yoco/universal-yoco.md) applies shared-depth recursion inside an efficient-attention self-decoder so depth scales with a one-piece KV cache.
 - **Reproduce:** [UW-Madison-Lee-Lab/looped-tf](https://github.com/UW-Madison-Lee-Lab/looped-tf)

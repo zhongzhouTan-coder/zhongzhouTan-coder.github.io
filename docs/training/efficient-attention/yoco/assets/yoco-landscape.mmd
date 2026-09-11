@@ -1,0 +1,11 @@
+flowchart TD
+  FullAttention["Decoder-only Transformer<br/>global KV cache per layer"] --> CacheCompression["KV-cache compression<br/>MQA / GQA / quantization"]
+  FullAttention --> EfficientMemory["Efficient self-attention<br/>local or recurrent state"]
+  EfficientMemory --> Retention["Retention / gated retention<br/>constant recurrent state"]
+  EfficientMemory --> SWA["Sliding-window attention<br/>fixed local cache"]
+  FullAttention --> EncoderDecoder["Encoder–decoder split<br/>separate context representation"]
+  Retention --> YOCO["YOCO<br/>self-decoder + cross-decoder"]
+  SWA --> YOCO
+  EncoderDecoder --> YOCO
+  YOCO --> LongContext["Long-context deployment<br/>one global KV cache"]
+  YOCO --> ChunkParallel["Chunk parallelism<br/>one cross-decoder all-gather"]

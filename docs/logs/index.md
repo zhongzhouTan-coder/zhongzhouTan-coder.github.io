@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-09
+updated: 2026-09-10
 ---
 
 # Wiki Index
@@ -145,6 +145,8 @@ updated: 2026-09-09
 - [MiniMax Sparse Attention (MSA)](../training/efficient-attention/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss; 28.4× FLOPs reduction and 14.2× prefill / 7.6× decode speedup at 1M context on a 109B MoE model with native multimodal training.
 - [SWAT: Sliding Window Attention Training](../training/efficient-attention/swat-sliding-window-attention/index.md) — Sigmoid-based sliding window attention training: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability; SOTA on 8 commonsense reasoning benchmarks versus linear recurrent baselines at 340M/760M scale.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction, decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.
+- [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) — Decoder-decoder architecture with one shared global KV cache, prefill early exit, gated-retention/SWA self-decoding, and chunk-parallel long-context training.
+- [Universal YOCO for Efficient Depth Scaling](../training/efficient-attention/yoco/universal-yoco.md) — Loops the shallow efficient-attention self-decoder T times with shared parameters, scaling depth without touching the one global KV cache; 41.78 → 47.08 average downstream scores, ~62% fewer training tokens, and RINS-level quality at one-piece-cache inference cost.
 - [Fine-Tuning and Adaptation](../training/fine-tuning/index.md) — Category hub for fine-tuning, transfer learning, and self-evolution methods.
 - [Intrinsic Dimensionality and Language Model Fine-Tuning](../training/fine-tuning/intrinsic-dimensionality-fine-tuning/index.md) — Intrinsic-dimension view of pretrained language model fine-tuning: DID/SAID subspace training, low `d90` task dimensions, pretraining as downstream task compression, model-size trends, generalization correlations, and an editable Draw.io explainer.
 - [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/fine-tuning/socratic-swe/index.md) — Closed-loop self-evolution framework: trace-derived Agent Skill Registry, skill-guided Generator with four-stage Verifier Gate, gradient-aligned Generator reward via cosine similarity to validation gradient, GDPO-normalized Solver reward, and 50.40% on SWE-bench Verified across three iterations.

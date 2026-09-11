@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-08-14
+updated: 2026-09-10
 ---
 
 # Training
@@ -47,6 +47,8 @@ updated: 2026-08-14
 - [MiniMax Sparse Attention (MSA)](efficient-attention/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight [Index Branch](../terms/lightning-indexer.md) selects top-k KV blocks per group, Main Branch computes exact block-sparse softmax attention, trained with KL alignment loss.
 - [SWAT: Sliding Window Attention Training](efficient-attention/swat-sliding-window-attention/index.md) — Trains Transformers from scratch with sigmoid-based sliding window attention: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](efficient-attention/gated-delta-networks/index.md) — Combines Mamba2-style global decay with DeltaNet's key-targeted correction ([Delta Rule](../terms/delta-rule.md)), preserving hardware-efficient chunkwise training.
+- [YOCO: You Only Cache Once](efficient-attention/yoco/index.md) — Splits the decoder into a bounded-memory self-decoder and shared-cache cross-decoder, enabling one global KV cache, prefill early exit, and chunk-parallel long-context training.
+- [Universal YOCO for Efficient Depth Scaling](efficient-attention/yoco/universal-yoco.md) — Adds parameter-shared recursion to the YOCO self-decoder so extra compute becomes effective depth while the one-piece KV cache, linear prefill, and bounded long-context memory profile are preserved.
 
 ## Fine-Tuning and Adaptation
 
