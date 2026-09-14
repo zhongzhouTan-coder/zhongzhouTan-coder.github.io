@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/training/deepseek-v4.1-technical-report--paper.pdf
   - derived/pdf-markdown/training/deepseek-v4.1-technical-report.md
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression
@@ -15,7 +15,7 @@ updated: 2026-09-10
 **Authors:** DeepSeek-AI research and engineering teams  
 **arXiv:** No identifier stated in the supplied PDF; technical report, 2026
 
-**Related pages:** [DeepSeek-V4](../deepseek-v4/index.md), [DeepSeek-V3.2](../../../algorithms/deepseek-v3.2/index.md), [DeepSeek-V4 attention code reading](../../../frameworks/deepseek/v4-attention-code-reading.md), [DSpark](../../../frameworks/dspark/index.md), [Kimi K3](../../kimi/kimi-k3/index.md), [KV Cache](../../../terms/kv-cache.md), [Lightning Indexer](../../../terms/lightning-indexer.md), [Microscaling](../../../terms/microscaling.md)
+**Related pages:** [DeepSeek-V4](../deepseek-v4/index.md), [DeepSeek-V3.2](../../../algorithms/deepseek-v3.2/index.md), [IndexCache](../../efficient-attention/indexcache/index.md), [DeepSeek-V4 attention code reading](../../../frameworks/deepseek/v4-attention-code-reading.md), [DSpark](../../../frameworks/dspark/index.md), [Kimi K3](../../kimi/kimi-k3/index.md), [KV Cache](../../../terms/kv-cache.md), [Lightning Indexer](../../../terms/lightning-indexer.md), [Cross-Layer Index Reuse](../../../terms/cross-layer-index-reuse.md), [Microscaling](../../../terms/microscaling.md)
 
 > **Evidence:** The page synthesizes the supplied technical report and its precise MinerU extraction. The report gives internal benchmark results and engineering ratios; it does not provide a public reproducibility package for every cache, kernel, or training claim.
 
@@ -44,7 +44,7 @@ The model is easier to understand as four coordinated budgets:
 
 ## Why This Exists
 
-Imagine a coding agent working through a 900K-token repository and tool history. A new turn hits the stored global prefix, but its local Sliding-Window Attention (SWA) state has expired. A conventional deployment faces an uncomfortable choice: keep a large SWA cache in long-lived SSD storage, or rerun every layer over a long window to reconstruct it. Meanwhile, every decoder layer may keep its own global KV and rescore the same million-token context.
+Imagine a coding agent working through a 900K-token repository and tool history. A new turn hits the stored global prefix, but its local [Sliding-Window Attention](../../../terms/sliding-window-attention.md) (SWA) state has expired. A conventional deployment faces an uncomfortable choice: keep a large SWA cache in long-lived SSD storage, or rerun every layer over a long window to reconstruct it. Meanwhile, every decoder layer may keep its own global KV and rescore the same million-token context.
 
 DeepSeek-V4.1-Flash changes the accounting at each point in that scenario:
 
@@ -120,7 +120,7 @@ For a long sequence $N \gg n_{\mathrm{win}}$, the report characterizes global pr
 
 ### CSA2: share cache, refresh selection only when needed
 
-**What it does:** CSA2 assigns each attention layer one of three static modes that independently control main KV, indexer K, and top-k index reuse.
+**What it does:** CSA2 applies [cross-layer index reuse](../../../terms/cross-layer-index-reuse.md) through three static modes that independently control main KV, indexer K, and top-k selection reuse.
 
 **Why it matters:** V4's hybrid attention reduces the sequence dimension, but a deep model can still duplicate nearly the same cache and indexing work across layers. CSA2 adds layer-dimension compression without removing each layer's own query or local SWA path.
 

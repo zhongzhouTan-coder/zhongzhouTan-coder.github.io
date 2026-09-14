@@ -1,0 +1,13 @@
+flowchart TD
+    A["Dense self-attention<br/>quadratic core attention"] --> B["Learned sparse attention<br/>dynamic top-k selection"]
+    B --> C["DSA<br/>lightweight indexer at every layer"]
+    D["TidalDecode / Kascade / HySparse<br/>reuse selections from full-attention anchors"] --> E["Cross-layer index reuse"]
+    C --> F["IndexCache<br/>reuse DSA indexer outputs"]
+    E --> F
+    F --> G["Training-free<br/>loss-guided anchor search"]
+    F --> H["Training-aware<br/>multi-layer distillation"]
+    F --> I["DeepSeek-V4.1 CSA2<br/>index and KV reuse"]
+
+    style F fill:#c8e6c9,stroke:#1b5e20,stroke-width:3px
+    style G fill:#e3f2fd,stroke:#1565c0
+    style H fill:#e3f2fd,stroke:#1565c0

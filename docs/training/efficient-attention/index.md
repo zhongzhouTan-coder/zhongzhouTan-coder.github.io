@@ -5,11 +5,12 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Efficient Attention Training
 
+- [IndexCache: Cross-Layer Index Reuse for Sparse Attention](indexcache/index.md) — Retains a minority of sparse-attention indexers and lets other layers reuse top-k selections; loss-guided search or multi-layer distillation preserves quality while removing up to 75% of indexer calls.
 - [MiniMax Sparse Attention (MSA)](minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight [Index Branch](../../terms/lightning-indexer.md) selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss.
 - [SWAT: Sliding Window Attention Training](swat-sliding-window-attention/index.md) — Sigmoid-based sliding window attention training: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction ([Delta Rule](../../terms/delta-rule.md)); decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.

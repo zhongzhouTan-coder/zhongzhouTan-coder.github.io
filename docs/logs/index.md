@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Wiki Index
@@ -142,6 +142,7 @@ updated: 2026-09-10
 - [Kimi Linear: Expressive Efficient Attention Architecture](../training/kimi/kimi-linear/index.md) — Hybrid linear attention: KDA with channel-wise gating extends Gated DeltaNet, 3:1 KDA-to-MLA layer ratio with NoPE, 48B MoE (3B active); for the first time outperforms full attention across short/long/RL regimes, 6.3× decoding speedup at 1M context.
 - [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — 2.8T/104B-active native multimodal MoE with hybrid KDA/MLA attention, Stable LatentMoE, 1M context, multi-effort agentic RL, MoonEP balanced expert-parallel training, and long-rollout cache/sandbox infrastructure.
 - [Efficient Attention Training](../training/efficient-attention/index.md) — Category hub for training approaches built around efficient attention mechanisms.
+- [IndexCache: Cross-Layer Index Reuse for Sparse Attention](../training/efficient-attention/indexcache/index.md) — Reuses top-k selections across DSA layers, with loss-guided anchor search or multi-layer distillation and reported 1.82× prefill / 1.48× decode speedups at 200K.
 - [MiniMax Sparse Attention (MSA)](../training/efficient-attention/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight Index Branch selects top-k KV blocks per GQA group, Main Branch computes exact softmax attention over only the selected blocks, trained with KL alignment loss; 28.4× FLOPs reduction and 14.2× prefill / 7.6× decode speedup at 1M context on a 109B MoE model with native multimodal training.
 - [SWAT: Sliding Window Attention Training](../training/efficient-attention/swat-sliding-window-attention/index.md) — Sigmoid-based sliding window attention training: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability; SOTA on 8 commonsense reasoning benchmarks versus linear recurrent baselines at 340M/760M scale.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Fixed-state recurrent memory combining global adaptive decay with key-targeted correction, decay-aware chunkwise WY training, and SWA/Mamba2 hybrids.

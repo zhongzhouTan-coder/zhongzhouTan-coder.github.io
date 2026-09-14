@@ -2027,6 +2027,19 @@
       "status": "ingested"
     },
     {
+      "id": "arxiv:2603.12201v1",
+      "title": "IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse",
+      "slug": "indexcache-accelerating-sparse-attention-cross-layer-index-reuse",
+      "category": "training",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/indexcache-accelerating-sparse-attention-cross-layer-index-reuse.md",
+      "docs_path": "docs/training/efficient-attention/indexcache/index.md",
+      "status": "ingested"
+    },
+    {
       "id": "arxiv:2405.05254v2",
       "title": "You Only Cache Once: Decoder-Decoder Architectures for Language Models",
       "slug": "yoco-you-only-cache-once",

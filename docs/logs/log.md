@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Wiki Log
@@ -408,3 +408,7 @@ updated: 2026-09-09
 - Ingested `raw/training/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf` with precise MinerU extraction into `derived/pdf-markdown/training/yoco-you-only-cache-once/` and added [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) at high confidence. The insight explains the self-decoder/cross-decoder cache boundary, gated retention and sliding-window alternatives, prefill early exit, chunk parallelism, source-reported 1M-context efficiency, and paper-specific limitations; preserved six original figures, added an editable Landscape Mermaid source, and added the [Gated Retention](../terms/gated-retention.md) and [Sliding-Window Attention](../terms/sliding-window-attention.md) glossary terms.
 - Registered the related `raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf` source as captured and linked it from the [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) page for future synthesis; no derived extraction or second insight was created.
 - Ingested `raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf` with precise MinerU extraction into `derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/` and added [Universal YOCO for Efficient Depth Scaling](../training/efficient-attention/yoco/universal-yoco.md) at high confidence. The insight explains the Universal Self-Decoder loop, the T-independent global KV cache accounting against Universal Transformer and RINS costs, cross-decoder and loop-position ablations, loop, token, and parameter scaling, 300B-token MoE training and thinking-SFT results, and 8K–256K prefill, decode, and KV-memory measurements; preserved eight original figures, added an editable Landscape Mermaid source, and added the [Looped Transformers](../terms/looped-transformers.md) glossary term. The manifest entry now records the derived extraction and `ingested` status.
+
+## 2026-09-11
+
+- Normalized and ingested `raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf` with precise MinerU extraction into `derived/pdf-markdown/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/` and added [IndexCache: Cross-Layer Index Reuse for Sparse Attention](../training/efficient-attention/indexcache/index.md) at medium confidence. The insight covers Full/Shared layer execution, loss-guided training-free search, multi-layer distillation, 30B and preliminary GLM-5 evidence, four source figures, failure modes, and an editable Landscape Mermaid source; added the [Cross-Layer Index Reuse](../terms/cross-layer-index-reuse.md) glossary term and corrected the Lightning Indexer definition and DeepSeek-V3.2 long-context cost caveat.

@@ -6,7 +6,7 @@ confidence: high
 sources:
   - raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf
   - derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md
-updated: 2026-08-14
+updated: 2026-09-11
 ---
 
 # DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use
@@ -15,7 +15,7 @@ updated: 2026-08-14
 **Authors:** DeepSeek-AI  
 **arXiv:** 2026 (<research@deepseek.com>)  
 
-**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md)
+**Related pages:** [DeepSeek-V2 Multi-Head Latent Attention](../attention-variants/deepseek-v2-mla.md) · [IndexCache](../../training/efficient-attention/indexcache/index.md) · [Grouped-Query Attention in Llama 2](../attention-variants/grouped-query-attention/index.md) · [Multi-Query Attention](../attention-variants/multi-query-attention.md) · [The Transformer](../foundations/transformer.md)
 
 ## TL;DR
 
@@ -89,7 +89,7 @@ flowchart TD
 
 ## The Core Idea
 
-Instead of computing attention over all 128K tokens, DSA trains a tiny "lightning indexer" to predict which tokens each query will attend to, then runs the expensive MLA computation only on the top 2,048 selected tokens. The indexer is so small (few heads, FP8) that its own $O(L^2)$ cost is negligible. For post-training, the model learns to interleave reasoning and tool calls by retaining thinking context across tool interactions (discarding only on new user messages), and training stability during MoE RL is achieved through four concrete tricks: unbiased KL estimation, off-policy sequence masking, preserving inference-time expert routing, and preserving sampling truncation masks.
+Instead of computing attention over all 128K tokens, DSA trains a tiny "lightning indexer" to predict which tokens each query will attend to, then runs the expensive MLA computation only on the top 2,048 selected tokens. The indexer is far cheaper per token pair than MLA, but its own $O(L^2)$ scan can become material at longer contexts when repeated at every layer; the later [IndexCache](../../training/efficient-attention/indexcache/index.md) work reports it reaching 81% of 200K-token prefill time in a 30B DSA model. For post-training, the model learns to interleave reasoning and tool calls by retaining thinking context across tool interactions (discarding only on new user messages), and training stability during MoE RL is achieved through four concrete tricks: unbiased KL estimation, off-policy sequence masking, preserving inference-time expert routing, and preserving sampling truncation masks.
 
 ## Symbol Map
 
@@ -340,6 +340,7 @@ V3.2's reasoning performance comes from scaled RL compute: the post-training bud
 | Failure mode | When it happens | Impact |
 |---|---|---|
 | DSA indexer misses critical tokens | When a key token ranks just below top-2048 — the indexer is trained via KL to the main attention distribution, so it can drop low-attention tokens that turn out to be important | Slight quality degradation on long-context tasks vs. dense attention (paper reports parity, but edge cases may exist) |
+| Indexer overhead resurfaces at very long context | Every layer independently scans the full prefix even though adjacent top-k sets are similar | IndexCache later measures the indexer at 81% of prefill time at 200K on a 30B DSA model; cross-layer reuse can remove redundant scans. |
 | Thinking-mode incompatible with user-message-based agent frameworks | Frameworks like Roo Code or Terminus simulate tool interactions as user messages — which triggers reasoning discard per V3.2's context management | Forced to use non-thinking mode, losing 5-9 points on agent benchmarks |
 | Redundant self-verification in tool-use | V3.2 frequently engages in excessive self-verification, generating long trajectories that exceed 128K context | ~20% of BrowseComp cases exceed 128K; MCP-Mark GitHub/Playwright tasks truncated — hurts final scores |
 | Token efficiency vs. Gemini-3.0-Pro | V3.2 uses more output tokens than Gemini-3.0-Pro to achieve similar quality on most benchmarks | Higher deployment cost for equivalent output quality |
@@ -357,4 +358,5 @@ V3.2's reasoning performance comes from scaled RL compute: the post-training bud
 - [Multi-Query Attention](../attention-variants/multi-query-attention.md) — The original shared-KV-head insight.
 - [The Transformer](../foundations/transformer.md) — The vanilla attention baseline.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../../frameworks/dspark/index.md) — DeepSeek's speculative decoding framework deployed on V4.
+- [IndexCache: Cross-Layer Index Reuse for Sparse Attention](../../training/efficient-attention/indexcache/index.md) — Follow-up work that treats repeated DSA indexer scans as a long-context bottleneck and reuses top-k selections across layers.
 - Open-source code: DeepSeek-V3.2 implementation specifies DSA kernel details.

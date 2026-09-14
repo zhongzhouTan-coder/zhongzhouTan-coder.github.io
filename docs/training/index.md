@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Training
@@ -44,6 +44,7 @@ updated: 2026-09-10
 ## Efficient Attention Training
 
 - [Efficient Attention Training](efficient-attention/index.md) — Category hub for training approaches built around efficient attention mechanisms.
+- [IndexCache: Cross-Layer Index Reuse for Sparse Attention](efficient-attention/indexcache/index.md) — Shares top-k selections across neighboring DSA layers, using calibration-loss search for frozen models or multi-layer distillation during training; reports 1.82× prefill and 1.48× decode speedup at 200K.
 - [MiniMax Sparse Attention (MSA)](efficient-attention/minimax-sparse-attention/index.md) — Blockwise sparse attention co-designed with GQA: lightweight [Index Branch](../terms/lightning-indexer.md) selects top-k KV blocks per group, Main Branch computes exact block-sparse softmax attention, trained with KL alignment loss.
 - [SWAT: Sliding Window Attention Training](efficient-attention/swat-sliding-window-attention/index.md) — Trains Transformers from scratch with sigmoid-based sliding window attention: replaces softmax with sigmoid to eliminate attention sink, combines balanced bidirectional ALiBi with RoPE for training stability.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](efficient-attention/gated-delta-networks/index.md) — Combines Mamba2-style global decay with DeltaNet's key-targeted correction ([Delta Rule](../terms/delta-rule.md)), preserving hardware-efficient chunkwise training.

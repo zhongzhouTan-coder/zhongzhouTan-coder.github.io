@@ -1,13 +1,14 @@
 ---
 title: "Lightning Indexer"
-summary: "A learned top-k block selector in compressed sparse attention that scores compressed KV blocks against the query and returns the indices of the most relevant blocks for core attention."
-tooltip: "The Lightning Indexer is DeepSeek-V4's sparse-selection mechanism: a small query/key scorer that picks the top-k compressed KV blocks a CSA layer should attend to. It only needs the ordering of block scores, which is why serving frameworks can quantize its key cache to 8 bits without losing much accuracy."
+summary: "A lightweight learned selector that scores visible token or block candidates and returns the top-k indices used by core sparse attention."
+tooltip: "The Lightning Indexer is a small query/key scorer used by DeepSeek Sparse Attention to choose which past tokens or compressed blocks deserve core attention. Although far cheaper per pair than main attention, its full-prefix scan can become a long-context bottleneck when repeated at every layer."
 layout: default
 confidence: high
 category: algorithms
 sources:
   - raw/training/deepseek-v4--paper.pdf
   - raw/training/deepseek-v4.1-technical-report--paper.pdf
+  - raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf
 aliases:
   - indexer
   - index branch
@@ -25,31 +26,32 @@ appears_in:
   - docs/training/deepseek/deepseek-v4/index.md
   - docs/training/deepseek/deepseek-v4.1/index.md
   - docs/training/efficient-attention/index.md
+  - docs/training/efficient-attention/indexcache/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
   - docs/training/efficient-attention/swat-sliding-window-attention/index.md
   - docs/training/index.md
-updated: 2026-08-06
+updated: 2026-09-11
 ---
 
 # Lightning Indexer
 
-**Lightning Indexer** is a learned top-k block selector in compressed sparse attention that scores compressed KV blocks against the query and returns the indices of the most relevant blocks for core attention.
+**Lightning Indexer** is a lightweight learned selector that scores visible token or block candidates and returns the top-k indices used by core sparse attention.
 
 ## Why It Exists
 
-Compressed sparse attention shrinks the KV cache by merging tokens into blocks (DeepSeek-V4 compresses by 4× per CSA layer), but compression alone does not tell the model *which* compressed blocks matter for a given query. Without a selector, attention would have to either attend densely to all compressed blocks (expensive) or drop blocks blindly (inaccurate). The Lightning Indexer provides the sparse selection step: it decides which compressed blocks deserve full attention.
+Sparse attention saves core compute only after deciding *which* parts of the context matter. Without a content-dependent selector, attention must either scan every token in the expensive main branch or rely on a fixed mask that can miss distant evidence. The Lightning Indexer supplies that routing decision for token-level DSA and compressed-block variants.
 
 ## How It Works
 
-For each query token, a small indexer query is generated from the shared latent query representation. Separate indexer keys are produced at a reduced head dimension. The indexer scores every compressed block, aggregates per-head scores with learned head weights, and keeps the top-k scoring blocks. Core attention then runs only over those selected blocks (plus the sliding-window branch for recent tokens). Because the indexer only needs the *ordering* of block scores, serving frameworks can quantize its key cache and query to 8 bits — e.g. INT8 with per-token-head scales, or FP8 on Ascend A5 — while preserving selection quality.
+For each query token, small indexer query and key projections score all visible candidates. DeepSeek-V3.2 DSA selects individual token positions; DeepSeek-V4's compressed sparse attention scores compressed candidates and combines multiple indexer heads before top-k. Core attention then runs only over the selected positions. Because selection depends mainly on score ordering, serving frameworks can quantize the indexer cache and query to 8 bits—such as INT8 with per-token-head scales or FP8 on Ascend A5—while aiming to preserve the ranking.
 
 ## Tradeoffs
 
-The indexer is a heuristic: 8-bit quantization or close score margins can reorder borderline blocks and change the top-k set. The head count and head dimension are fixed by the model config (64 heads × 128 dim in DeepSeek-V4), so indexer compute scales with the number of compressed blocks rather than full sequence length.
+The indexer is a heuristic: quantization or close score margins can reorder borderline candidates and change the top-k set. Its per-pair work is much smaller than main attention, but a full-prefix scan still has quadratic prefill complexity and linear-per-token decode cost. [IndexCache](../training/efficient-attention/indexcache/index.md) reports that repeating this scan at every layer can dominate long-context prefill.
 
 ## Common Confusions
 
-- **Lightning Indexer vs. top-k in plain DSA:** earlier DeepSeek sparse attention (V3.2) also selects top-k blocks, but the Lightning Indexer is the *learned, query-dependent* scorer introduced with DeepSeek-V4's CSA; it is not a fixed mask.
+- **Token-level vs. compressed-block selection:** DeepSeek-V3.2 DSA selects token positions, while later compressed-attention designs select compressed entries or blocks. Both use a learned, query-dependent indexer rather than a fixed mask.
 - **Indexer vs. MoE router:** a router selects *experts* per token to reduce FFN compute; the indexer selects *KV blocks* per query to reduce attention compute.
 - **C4 vs. C8:** "C8" is the 8-bit quantization of the indexer cache and query implemented in vllm-ascend today; a 4-bit "C4" indexer quantization is not implemented yet (planned future work). Separately, "c4" is the DSV4 layer type (compress ratio 4) that owns an indexer.
 
@@ -60,6 +62,7 @@ The indexer is a heuristic: 8-bit quantization or close score margins can reorde
 - [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Reuses indexer state across CSA2 layers and restricts later decoder indexers to a hierarchical candidate pool.
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — vllm-ascend's INT8/FP8 indexer cache and quantized top-k operators.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — A sibling approach with a learned index branch for block selection.
+- [IndexCache](../training/efficient-attention/indexcache/index.md) — Shows that adjacent DSA layers often produce redundant top-k selections and reuses the index tensor across layers.
 - [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/deepseek-v3.2/index.md) — DeepSeek-V3.2 introduces DeepSeek Sparse Attention (DSA) for sub-quadratic long-context efficiency, a scaled GRPO recipe with.
 - [Algorithms](../algorithms/index.md) — Algorithm pages covering inference algorithms, attention kernels, and scheduling methods.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
@@ -75,4 +78,5 @@ The indexer is a heuristic: 8-bit quantization or close score margins can reorde
 ## Related Terms
 
 - [KV Cache](kv-cache.md) — The attention state the indexer selects blocks from.
+- [Cross-Layer Index Reuse](cross-layer-index-reuse.md) — Reuses one indexer's selected positions across several sparse-attention layers.
 - [Mixture of Experts](mixture-of-experts.md) — A router-based sparse selection mechanism for FFN capacity, often confused with attention indexers.

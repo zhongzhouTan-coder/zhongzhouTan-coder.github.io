@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Terms Glossary
@@ -34,13 +34,14 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 ## Algorithms
 
 - [Context Parallelism](context-parallelism.md) — Distributes a long sequence and its KV state across ranks while preserving exact attention.
+- [Cross-Layer Index Reuse](cross-layer-index-reuse.md) — Reuses dynamically selected token or block indices from an anchor sparse-attention layer in subsequent layers.
 - [Gated Retention](gated-retention.md) — Uses learned head-wise decay to carry a fixed-size recurrent key-value state across tokens.
 - [Grouped-Query Attention](grouped-query-attention.md) — Shares each key/value head across a group of query heads to reduce KV-cache and communication cost.
 - [Delta Rule](delta-rule.md) — Corrects an associative memory using the error between its current key-addressed prediction and the target value.
 - [General Matrix Multiply (GEMM)](gemm.md) — The dense multiply-accumulate kernel C = A×B whose execution rate is the standard performance reference for linear-algebra workloads on GPUs and NPUs.
 - [Inner Product](inner-product.md) — The scalar dot product Σ xᵢyᵢ; GEMM is the matrix of inner products between rows of A and columns of B, and attention scores are dot products.
 - [Kimi Delta Attention](kimi-delta-attention.md) — Extends delta-rule recurrent memory with channel-wise decay and hardware-efficient chunkwise computation.
-- [Lightning Indexer](lightning-indexer.md) — A learned top-k block selector in compressed sparse attention that scores compressed KV blocks against the query and returns the indices of the most relevant blocks for core attention.
+- [Lightning Indexer](lightning-indexer.md) — A lightweight learned selector that scores visible token or block candidates and returns the top-k indices used by core sparse attention.
 - [Hadamard Transform](hadamard-transform.md) — An orthogonal ±1 rotation that spreads a tensor's outlier mass across all coordinates, enabling accurate low-bit LLM quantization.
 - [Kronecker Product](kronecker-product.md) — The block-structured matrix product A⊗B that builds a large matrix from two smaller ones by scaling copies of B by the entries of A.
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
