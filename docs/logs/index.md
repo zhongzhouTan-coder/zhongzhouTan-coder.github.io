@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-11
+updated: 2026-09-14
 ---
 
 # Wiki Index
@@ -46,6 +46,7 @@ updated: 2026-09-11
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
+- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) — Survey of cache eviction, compression, hybrid memory, alternative attention, and combination strategies for long-context serving.
 - [Python](../frameworks/python/index.md) — Reference-backed guide to Python runtime execution and import behavior.
 - [Python Execution Model: Code Blocks, Scopes, and Runtime State](../frameworks/python/execution-model.md) — How code blocks run in frames, names bind and resolve through namespaces, annotation scopes defer work, and runtime layers share state.
 - [Your Guide to the CPython Source Code](../frameworks/python/cpython-source-code-guide.md) — Historical CPython 3.8 source map from startup and parsing through code objects, frames, objects, the standard library, and tests.

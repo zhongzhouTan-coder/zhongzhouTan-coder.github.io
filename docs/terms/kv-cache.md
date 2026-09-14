@@ -12,6 +12,7 @@ sources:
   - raw/training/k3-technical-report--paper.pdf
   - raw/training/deepseek-v4.1-technical-report--paper.pdf
   - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
+  - raw/frameworks/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
   - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - key-value cache
@@ -28,6 +29,7 @@ appears_in:
   - docs/frameworks/deepseek/index.md
   - docs/frameworks/deepseek/v4-attention-code-reading.md
   - docs/frameworks/index.md
+  - docs/frameworks/kv-cache-optimization/index.md
   - docs/frameworks/sarathi/index.md
   - docs/frameworks/sglang/index.md
   - docs/frameworks/triton-ascend/operator-mechanisms.md
@@ -56,7 +58,7 @@ appears_in:
   - docs/frameworks/vllm/vllm-context-parallelism.md
   - docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md
   - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-09-10
+updated: 2026-09-14
 ---
 
 # KV Cache
@@ -98,6 +100,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [DeepSeek](../frameworks/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
+- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) — Surveys the five main ways to reduce KV-cache pressure and maps them to deployment scenarios.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
 - [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.

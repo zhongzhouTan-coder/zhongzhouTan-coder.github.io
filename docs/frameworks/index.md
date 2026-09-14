@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-09
+updated: 2026-09-14
 ---
 
 # Frameworks
@@ -81,6 +81,7 @@ updated: 2026-09-09
 
 ## Other Frameworks
 
+- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](kv-cache-optimization/index.md) — Survey of cache eviction, compression, hybrid memory, alternative attention, and combination strategies, with deployment trade-offs.
 - [AgentX / InferenceX v3: Does the CUDA Moat Hold?](agentx-inferencexv3-cuda-moat/index.md) - Agentic inference benchmark insight covering long-context trace replay, prefix-cache and offload behavior, routing, disaggregation, software maturity, and date-scoped NVIDIA/AMD comparisons.
 - [InferenceX: Continuous Inference Benchmark Pipeline](inferencex/index.md) — Repository-backed map of configuration validation, matrix generation, framework-specific execution, AgentX replay, result normalization, and artifact handoff.
 - [OpenTelemetry: Vendor-Neutral Observability Framework](opentelemetry/index.md) — Open-source observability framework and toolkit for generating, collecting, and exporting portable traces, metrics, and logs while leaving storage and visualization to external backends.

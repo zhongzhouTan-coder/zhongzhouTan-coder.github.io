@@ -2064,6 +2064,19 @@
       "derived_path": "derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md",
       "docs_path": "docs/training/efficient-attention/yoco/universal-yoco.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2603.20397v1",
+      "title": "KV Cache Optimization Strategies for Scalable and Efficient LLM Inference",
+      "slug": "kv-cache-optimization-strategies",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/kv-cache-optimization-strategies/kv-cache-optimization-strategies.md",
+      "docs_path": "docs/frameworks/kv-cache-optimization/index.md",
+      "status": "ingested"
     }
   ]
 }

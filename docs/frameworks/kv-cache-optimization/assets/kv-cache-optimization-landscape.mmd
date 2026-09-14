@@ -1,0 +1,35 @@
+flowchart TD
+    Transformer["Decoder Transformer\nsoftmax attention + explicit KV history"]
+    Bottleneck["Long-context bottleneck\nmemory + bandwidth + repeated reads"]
+    Keep["What to keep\nToken selection"]
+    Encode["How to encode\nRepresentation compression"]
+    Place["Where to place\nMemory hierarchy"]
+    Compute["How to compute\nAttention redesign"]
+    Combine["Combine policies\nLayer- or workload-specific"]
+
+    H2O["H2O / SnapKV / Ada-KV\nEviction"]
+    Quant["KIVI / KVQuant / PALU\nCompression"]
+    Paged["PagedAttention / InfiniGen\nHybrid memory"]
+    Linear["Linear / log-linear / Kimi Linear\nNew attention"]
+    Shadow["FlexGen / ShadowKV / TailorKV\nCombination"]
+
+    Transformer --> Bottleneck
+    Bottleneck --> Keep
+    Bottleneck --> Encode
+    Bottleneck --> Place
+    Bottleneck --> Compute
+    Keep --> H2O
+    Encode --> Quant
+    Place --> Paged
+    Compute --> Linear
+    H2O --> Combine
+    Quant --> Combine
+    Paged --> Combine
+    Combine --> Shadow
+
+    classDef root fill:#d9edf0,stroke:#315c63,color:#111
+    classDef branch fill:#f8e6cc,stroke:#88633a,color:#111
+    classDef method fill:#edf0f2,stroke:#5d6870,color:#111
+    class Transformer,Bottleneck root
+    class Keep,Encode,Place,Compute,Combine branch
+    class H2O,Quant,Paged,Linear,Shadow method

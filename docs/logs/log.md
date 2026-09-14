@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-11
+updated: 2026-09-14
 ---
 
 # Wiki Log
@@ -412,3 +412,7 @@ updated: 2026-09-11
 ## 2026-09-11
 
 - Normalized and ingested `raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf` with precise MinerU extraction into `derived/pdf-markdown/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/` and added [IndexCache: Cross-Layer Index Reuse for Sparse Attention](../training/efficient-attention/indexcache/index.md) at medium confidence. The insight covers Full/Shared layer execution, loss-guided training-free search, multi-layer distillation, 30B and preliminary GLM-5 evidence, four source figures, failure modes, and an editable Landscape Mermaid source; added the [Cross-Layer Index Reuse](../terms/cross-layer-index-reuse.md) glossary term and corrected the Lightning Indexer definition and DeepSeek-V3.2 long-context cost caveat.
+
+## 2026-09-14
+
+- Ingested `raw/frameworks/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf` with precise MinerU extraction into `derived/pdf-markdown/frameworks/kv-cache-optimization-strategies/` and added [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) at medium confidence. The insight organizes eviction, compression, hybrid memory, alternative attention, and combination methods; preserves three original figures, adds an editable Landscape Mermaid source, maps the methods to deployment scenarios, and links the existing [KV Cache](../terms/kv-cache.md) glossary entry.
