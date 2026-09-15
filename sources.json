@@ -2078,5 +2078,43 @@
       "docs_path": "docs/frameworks/kv-cache-optimization/index.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:iies.in/universal-references-in-c@2026-09-15-243851bb3caf",
+      "title": "Universal References in C++ Explained",
+      "slug": "universal-references-in-c",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://iies.in/blog/universal-references-in-c-explained/",
+      "final_url": "https://iies.in/blog/universal-references-in-c-explained/",
+      "captured_at": "2026-09-15T02:19:31.416Z",
+      "revision": "243851bb3cafa1e33da2d384caf55d33aed2fb69378c787e15434c6fdde17ff7",
+      "raw_paths": [
+        "raw/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.html",
+        "raw/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.md",
+      "docs_path": "docs/frameworks/cpp/universal-references.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:isocpp.org/cpp-references-faq@2026-09-15-4aae33c31c6c",
+      "title": "Standard C++",
+      "slug": "cpp-references-faq",
+      "category": "frameworks",
+      "kind": "web",
+      "source_url": "https://isocpp.org/wiki/faq/references",
+      "final_url": "https://isocpp.org/wiki/faq/references",
+      "captured_at": "2026-09-15T07:41:08.796Z",
+      "revision": "4aae33c31c6c9712708957020beb4c1d9912c0aa72626380ace54a13e9a68155",
+      "raw_paths": [
+        "raw/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.html",
+        "raw/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.md",
+      "docs_path": "docs/frameworks/cpp/references.md",
+      "status": "ingested"
+    }
   ]
 }

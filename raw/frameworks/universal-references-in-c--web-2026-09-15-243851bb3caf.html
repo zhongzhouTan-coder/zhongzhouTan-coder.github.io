@@ -1,0 +1,1509 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Indian Institute of embedded systems – IIES",
+  "image": "https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png",
+  "@id": "",
+  "url": "https://iies.in/",
+  "telephone": "+919886920008",
+  "priceRange": "$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "No 80, Ahad Pinnacle, Ground Floor, 5th Main, 2nd Cross, 5th Block, Koramangala Industrial Area",
+    "addressLocality": "Bangalore",
+    "postalCode": "560095",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 12.9323614,
+    "longitude": 77.6148551
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Monday",
+    "opens": "09:00",
+    "closes": "18:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Tuesday",
+    "opens": "09:00",
+    "closes": "18:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Wednesday",
+    "opens": "09:00",
+    "closes": "18:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Thursday",
+    "opens": "09:00",
+    "closes": "18:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Friday",
+    "opens": "09:00",
+    "closes": "18:00"
+  },{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": "Saturday",
+    "opens": "09:00",
+    "closes": "13:30"
+  }],
+  "sameAs": [
+    "https://www.facebook.com/iiesbangalore/",
+    "https://twitter.com/IIES_Bangalore",
+    "https://www.instagram.com/iiesbangalore",
+    "https://www.youtube.com/@iiesbangalore",
+    "https://www.linkedin.com/company/indian-institute-of-embedded-systems/",
+    "https://iies.in/"
+  ] 
+}
+</script>
+
+
+<!DOCTYPE html>
+<html class="no-js" dir="ltr" lang="en-GB" prefix="og: https://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Universal References in C++ Explained</title>
+
+		<!-- All in One SEO 5.0.0.1 - aioseo.com -->
+	<meta name="description" content="Learn universal references in C++, std::forward, and perfect forwarding with examples. Understand lvalue vs rvalue, move semantics in c++" />
+	<meta name="robots" content="max-image-preview:large" />
+	<meta name="author" content="IIES Bangalore"/>
+	<link rel="canonical" href="https://iies.in/blog/universal-references-in-c-explained/" />
+	<meta name="generator" content="All in One SEO (AIOSEO) 5.0.0.1" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:site_name" content="IIES - Indian Institute of Embedded Systems" />
+		<meta property="og:type" content="article" />
+		<meta property="og:title" content="Universal References in C++ Explained" />
+		<meta property="og:description" content="Learn universal references in C++, std::forward, and perfect forwarding with examples. Understand lvalue vs rvalue, move semantics in c++" />
+		<meta property="og:url" content="https://iies.in/blog/universal-references-in-c-explained/" />
+		<meta property="og:image" content="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png" />
+		<meta property="og:image:secure_url" content="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png" />
+		<meta property="article:published_time" content="2026-04-03T04:23:46+00:00" />
+		<meta property="article:modified_time" content="2026-04-03T04:35:45+00:00" />
+		<meta property="article:publisher" content="https://www.facebook.com/iiesbangalore/?ref=pages_you_manage" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Universal References in C++ Explained" />
+		<meta name="twitter:description" content="Learn universal references in C++, std::forward, and perfect forwarding with examples. Understand lvalue vs rvalue, move semantics in c++" />
+		<meta name="twitter:image" content="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png" />
+		<!-- All in One SEO -->
+
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//www.googletagmanager.com' />
+<link rel='dns-prefetch' href='//code.jquery.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+<link rel="alternate" type="application/rss+xml" title="IIES &raquo; Feed" href="https://iies.in/feed/" />
+<link rel="alternate" type="application/rss+xml" title="IIES &raquo; Comments Feed" href="https://iies.in/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="IIES &raquo; Universal References in C++ Explained with std::forward and Perfect Forwarding Comments Feed" href="https://iies.in/blog/universal-references-in-c-explained/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://iies.in/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fiies.in%2Fblog%2Funiversal-references-in-c-explained%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://iies.in/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fiies.in%2Fblog%2Funiversal-references-in-c-explained%2F&#038;format=xml" />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+
+<link rel='stylesheet' id='hfe-widgets-style-css' href='https://iies.in/wp-content/plugins/header-footer-elementor/inc/widgets-css/frontend.css?ver=2.8.7' media='all' />
+<link rel='stylesheet' id='uacf7-spam-protection-css-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/spam-protection/assets/css/spam-protection-style.css?ver=6.1.7' media='all' />
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='contact-form-7-css' href='https://iies.in/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=6.1.7' media='all' />
+<link rel='stylesheet' id='css/e2pdf.frontend.global-css' href='https://iies.in/wp-content/plugins/e2pdf/css/e2pdf.frontend.global.css?ver=1.32.43' media='all' />
+<link rel='stylesheet' id='mega-submenu-css' href='https://iies.in/wp-content/plugins/mega-submenu/public/css/style.css?ver=1.3.2' media='all' />
+<link rel='stylesheet' id='mega-submenu-woocommerce-css' href='https://iies.in/wp-content/plugins/mega-submenu/public/css/woocommerce.css?ver=1.3.2' media='all' />
+<link rel='stylesheet' id='wp-theme-css' href='https://iies.in/wp-includes/css/dist/theme/design-tokens.min.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='wp-components-css' href='https://iies.in/wp-includes/css/dist/components/style.min.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='godaddy-styles-css' href='https://iies.in/wp-content/plugins/coblocks/includes/Dependencies/GoDaddy/Styles/build/latest.css?ver=2.0.2' media='all' />
+<link rel='stylesheet' id='ed-school-plugin-elementor-css' href='https://iies.in/wp-content/plugins/ed-school-plugin/includes/elementor/assets/css/main.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='hfe-style-css' href='https://iies.in/wp-content/plugins/header-footer-elementor/assets/css/header-footer-elementor.css?ver=2.8.7' media='all' />
+<link rel='stylesheet' id='elementor-icons-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.13.0' media='all' />
+<link rel='stylesheet' id='elementor-frontend-legacy-css' href='https://iies.in/wp-content/plugins/elementor/assets/css/frontend-legacy.min.css?ver=3.4.8' media='all' />
+<link rel='stylesheet' id='elementor-frontend-css' href='https://iies.in/wp-content/plugins/elementor/assets/css/frontend.min.css?ver=3.4.8' media='all' />
+<style id="elementor-frontend-inline-css">
+@font-face{font-family:eicons;src:url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.eot?5.10.0);src:url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.eot?5.10.0#iefix) format("embedded-opentype"),url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff2?5.10.0) format("woff2"),url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.woff?5.10.0) format("woff"),url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.ttf?5.10.0) format("truetype"),url(https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/fonts/eicons.svg?5.10.0#eicon) format("svg");font-weight:400;font-style:normal}
+/*# sourceURL=elementor-frontend-inline-css */
+</style>
+<link rel='stylesheet' id='elementor-post-290-css' href='https://iies.in/wp-content/uploads/elementor/css/post-290.css?ver=1773238153' media='all' />
+<link rel='stylesheet' id='font-awesome-5-all-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/all.min.css?ver=3.4.8' media='all' />
+<link rel='stylesheet' id='font-awesome-4-shim-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/v4-shims.min.css?ver=3.4.8' media='all' />
+<link rel='stylesheet' id='elementor-post-28654-css' href='https://iies.in/wp-content/uploads/elementor/css/post-28654.css?ver=1775467722' media='all' />
+<link rel='stylesheet' id='uacf7-frontend-style-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/assets/css/uacf7-frontend.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='uacf7-form-style-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/assets/css/form-style.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='uacf7-column-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/column/grid/columns.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='uacf7-multistep-style-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/multistep/assets/css/multistep.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='jquery-ui-style-css' href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='range-slider-style-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/range-slider/css/style.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='uacf7-country-select-main-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/country-dropdown/assets/css/countrySelect.min.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='uacf7-country-select-style-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/country-dropdown/assets/css/style.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='submission_id_public_css-css' href='https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/submission-id/assets/public/css/public-submission-id.css?ver=UAFC7_VERSION' media='1' />
+<link rel='stylesheet' id='hfe-elementor-icons-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.34.0' media='all' />
+<link rel='stylesheet' id='hfe-icons-list-css' href='https://iies.in/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css?ver=3.24.3' media='all' />
+<link rel='stylesheet' id='hfe-social-icons-css' href='https://iies.in/wp-content/plugins/elementor/assets/css/widget-social-icons.min.css?ver=3.24.0' media='all' />
+<link rel='stylesheet' id='hfe-social-share-icons-brands-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/brands.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='hfe-social-share-icons-fontawesome-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='hfe-nav-menu-icons-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='font-awesome-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/font-awesome.min.css?ver=4.7.0' media='all' />
+<link rel='stylesheet' id='ed-school-plugin-style-css' href='https://iies.in/wp-content/plugins/ed-school-plugin/public/css/style.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='groundwork-grid-css' href='https://iies.in/wp-content/themes/ed-school/assets/css/groundwork-responsive.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='ed-school-theme-icons-css' href='https://iies.in/wp-content/themes/ed-school/assets/css/theme-icons.css?ver=7.1' media='all' />
+<link rel='stylesheet' id='ed-school-style-css' href='https://iies.in/wp-content/themes/ed-school/style.css?ver=7.1' media='all' />
+<style id="ed-school-style-inline-css">
+.header-mobile {display: none;}@media screen and (max-width:950px) {.header-left {padding-left: 0;}.wh-header, .wh-top-bar {display: none;}.header-mobile {display: block;}}
+/*# sourceURL=ed-school-style-inline-css */
+</style>
+<link rel='stylesheet' id='magnific-popup-css' href='https://iies.in/wp-content/plugins/ed-school-plugin/includes/elementor/widgets/video-popup/assets/magnific-popup.css?ver=7.1' media='all' />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Roboto:400%7CMontserrat:100,200,300,400,500,600,700,800,900,100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic&#038;subset=latin&#038;display=swap&#038;ver=1760419859" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400%7CMontserrat:100,200,300,400,500,600,700,800,900,100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic&#038;subset=latin&#038;display=swap&#038;ver=1760419859" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400%7CMontserrat:100,200,300,400,500,600,700,800,900,100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic&#038;subset=latin&#038;display=swap&#038;ver=1760419859" /></noscript><link rel='stylesheet' id='ed_school_options_style-css' href='//iies.in/wp-content/uploads/ed_school_options_style.css?ver=7.1' media='all' />
+<style id="ed_school_options_style-inline-css">
+#footer-top, #latest-news, #features, #welcome {
+    background-repeat: repeat-y !important;
+    background-size: 100% !important;
+}
+
+@media (max-width: 768px) {
+   #footer-top, #latest-news, #features, #welcome {
+        background-image: none !important;
+    }
+}
+/*# sourceURL=ed_school_options_style-inline-css */
+</style>
+<link rel='stylesheet' id='elementor-post-221-css' href='https://iies.in/wp-content/uploads/elementor/css/post-221.css?ver=1773238154' media='all' />
+<link rel='stylesheet' id='elementor-post-220-css' href='https://iies.in/wp-content/uploads/elementor/css/post-220.css?ver=1780574345' media='all' />
+<link rel='stylesheet' id='google-fonts-1-css' href='https://fonts.googleapis.com/css?family=Roboto:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic%7CRoboto+Slab:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic%7CMontserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&#038;display=auto&#038;ver=7.1' media='all' />
+<link rel='stylesheet' id='elementor-icons-shared-0-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-solid-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-brands-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/css/brands.min.css?ver=5.15.3' media='all' />
+<script id="jquery-core-js" src="https://iies.in/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://iies.in/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
+<script id="jquery-js-after">
+!function($){"use strict";$(document).ready(function(){$(this).scrollTop()>100&&$(".hfe-scroll-to-top-wrap").removeClass("hfe-scroll-to-top-hide"),$(window).scroll(function(){$(this).scrollTop()<100?$(".hfe-scroll-to-top-wrap").fadeOut(300):$(".hfe-scroll-to-top-wrap").fadeIn(300)}),$(".hfe-scroll-to-top-wrap").on("click",function(){$("html, body").animate({scrollTop:0},300);return!1})})}(jQuery);
+!function($){'use strict';$(document).ready(function(){var bar=$('.hfe-reading-progress-bar');if(!bar.length)return;$(window).on('scroll',function(){var s=$(window).scrollTop(),d=$(document).height()-$(window).height(),p=d? s/d*100:0;bar.css('width',p+'%')});});}(jQuery);
+//# sourceURL=jquery-js-after
+</script>
+<script id="js/e2pdf.frontend-js" src="https://iies.in/wp-content/plugins/e2pdf/js/e2pdf.frontend.js?ver=1.32.43"></script>
+<script id="mega-submenu-js-extra">
+var msm_mega_submenu = {"data":{"submenu_items_position_relative":0,"mobile_menu_trigger_click_bellow":768}};
+//# sourceURL=mega-submenu-js-extra
+</script>
+<script id="mega-submenu-js" src="https://iies.in/wp-content/plugins/mega-submenu/public/js/msm-main.min.js?ver=1.3.2"></script>
+<script id="font-awesome-4-shim-js" src="https://iies.in/wp-content/plugins/elementor/assets/lib/font-awesome/js/v4-shims.min.js?ver=3.4.8"></script>
+<script id="facebook-signal-js-extra">
+var facebookSignalConfig = {"cookieName":"wc_facebook_signals_state","ajaxUrl":"https://iies.in/wp-admin/admin-ajax.php","signalsAction":"fbpix_set_pixel_signals","signalsNonce":"968ff7a58e"};
+//# sourceURL=facebook-signal-js-extra
+</script>
+<script id="facebook-signal-js" src="https://iies.in/wp-content/plugins/official-facebook-pixel/core/../js/facebook_signal.js?ver=5.2.2"></script>
+
+<!-- Google tag (gtag.js) snippet added by Site Kit -->
+<!-- Google Analytics snippet added by Site Kit -->
+<script id="google_gtagjs-js" src="https://www.googletagmanager.com/gtag/js?id=GT-MQPX3WN" async></script>
+<script id="google_gtagjs-js-after">
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag("set","linker",{"domains":["iies.in"]});
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "GT-MQPX3WN");
+//# sourceURL=google_gtagjs-js-after
+</script>
+<script id="modernizr-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/vendor/modernizr-2.7.0.min.js"></script>
+<link rel="https://api.w.org/" href="https://iies.in/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://iies.in/wp-json/wp/v2/posts/28654" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://iies.in/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1" />
+<link rel='shortlink' href='https://iies.in/?p=28654' />
+<meta name="generator" content="Redux 4.5.13" /><script>(function(w, d) { w.CollectId = "661f97850f95c58c78ec55dc"; var h = d.head || d.getElementsByTagName("head")[0]; var s = d.createElement("script"); s.setAttribute("type", "text/javascript"); s.async=true; s.setAttribute("src", "https://collectcdn.com/launcher.js"); h.appendChild(s); })(window, document);</script><script>var CollectChatWordpress = true;</script>
+<meta name="generator" content="Site Kit by Google 1.179.0" /><!-- HFCM by 99 Robots - Snippet # 1: Review Snippet -->
+<script type="application/ld+json" class="saswp-custom-schema-markup-output">
+    {"@context":"https://schema.org","@type":"Review",
+     "name":"Embedded Systems Training",
+     "url":"https://iies.in/",
+     "image":" https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img/https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png",
+			     "author":{"@type":"Person",
+               "name":"Kakuluri Vishnupriya"},
+     "reviewBody": "I am kakuluri vishnupriya from Andhra Pradesh. graduated in the year 2024 in ECE branch from Rajiv Gandhi university of Knowledge Technologies. I am very happy to share that recently I got placed in Mirafra technologies. After completing my degree, I was searching for an institute that offered both top-notch training and placement opportunities.
+
+My elder brother recommended IIES institute. Following his advice, I enrolled in the embedded systems Design and Development course. At IIES, I gained expertise in various programming languages and technologies, including C,C++, Data Structures, Embedded C, Python. Additionally, I received hands on training with hardware boards like 8051, LPC 1768 which further enhanced my practical skills.
+
+The placement team at IIES was exceptional, treating all students equally and providing multiple opportunities. Thanks to their support, I successfully cleared my interview with Mirafra Technologies and was offered a package of 4 LPA.
+
+I am very thrilled to say that in my first attempt only I cleared my interview and placed in such a reputed company. I’m incredibly grateful to the IIES staff and the placement team for their unwavering support in helping me to secure my first job in reputed company. ",
+     "reviewRating":{"@type":"Rating",
+                     "ratingValue":"4.9",
+                     "ratingCount": "2995"
+                    },
+     "itemReviewed":{"@type":"LocalBusiness",
+                     "name":"Embedded Systems | IOT | Software Programming Courses",
+                     "priceRange":"INR 0",
+                     "telephone":"9886920008",
+                     "image":" https://iies.in/wp-content/uploads/2024/03/banner121.png ",
+                     "address":{"@type":"PostalAddress",
+                                "streetAddress":" No 80, Ahad Pinnacle, Ground Floor, 5th Main, 2nd Cross, 5th Block, Koramangala Industrial Area Bangalore 560095, Karnataka, India ",
+                                "addressLocality":"Bengaluru",
+                                "addressRegion":"Karnataka",
+                                "postalCode":"560095",
+                                "addressCountry":"IN"}
+}
+}
+</script>
+
+<!-- /end HFCM by 99 Robots -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M57G8XZ7');</script>
+<!-- End Google Tag Manager -->
+
+<style type="text/css" id="breadcrumb-trail-css">.breadcrumbs .trail-browse,.breadcrumbs .trail-items,.breadcrumbs .trail-items li {display: inline-block;margin:0;padding: 0;border:none;background:transparent;text-indent: 0;}.breadcrumbs .trail-browse {font-size: inherit;font-style:inherit;font-weight: inherit;color: inherit;}.breadcrumbs .trail-items {list-style: none;}.trail-items li::after {content: "\002F";padding: 0 0.5em;}.trail-items li:last-of-type::after {display: none;}</style>
+
+<!-- Meta Pixel Code -->
+<script type='text/javascript'>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+</script>
+<!-- End Meta Pixel Code -->
+<script type='text/javascript'>FacebookSignal.init({"held":false,"ajaxUrl":"https:\/\/iies.in\/wp-admin\/admin-ajax.php","releaseAction":"fbpix_release_signals","pixelId":"986434045532397","attribution":{},"capig":"1"});FacebookSignal.initPixel("986434045532397",{},{"agent":"wordpress_0-7.1-5.2.2","includeCapiIntegration":true});</script><script type='text/javascript'>
+    fbq('track', 'PageView', []);
+  </script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://iies.in/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "About IIES",
+      "item": "https://iies.in/about-iies/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "IIES Vision",
+      "item": "https://iies.in/about-iies/iies-vision/"
+    }
+  ]
+}
+</script>
+<link rel="icon" href="https://iies.in/wp-content/uploads/2021/02/cropped-iies-ico-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://iies.in/wp-content/uploads/2021/02/cropped-iies-ico-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://iies.in/wp-content/uploads/2021/02/cropped-iies-ico-180x180.png" />
+<meta name="msapplication-TileImage" content="https://iies.in/wp-content/uploads/2021/02/cropped-iies-ico-270x270.png" />
+<style id="wp-custom-css">
+.cbp-row.wh-page-title-bar {
+	display:none;
+}
+/* Hide theme H1 title (page-title) only on page ID 22962 */
+.page-id-22962 h1.page-title {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+.elementor-editor-active .page-id-22962 h1.page-title {
+    display: none !important;
+}
+
+body.home .widget_search,
+body.home .widget-banner,
+body.home .nav_menu-4 {
+	display:none;
+}
+</style>
+<link rel='stylesheet' id='lwptoc-main-css' href='https://iies.in/wp-content/plugins/luckywp-table-of-contents/front/assets/main.min.css?ver=2.1.14' media='all' />
+<link rel='stylesheet' id='e-animations-css' href='https://iies.in/wp-content/plugins/elementor/assets/lib/animations/animations.min.css?ver=3.4.8' media='all' />
+
+</head>
+<body class="wp-singular post-template post-template-elementor_header_footer single single-post postid-28654 single-format-standard wp-custom-logo wp-theme-ed-school ehf-template-ed-school ehf-stylesheet-ed-school header-top page-title-enabled single-layout-default elementor-default elementor-template-full-width elementor-kit-290 elementor-page elementor-page-28654">
+		<div class="header-mobile header-mobile-default">
+		<div id="wh-mobile-menu" class="respmenu-wrap">
+	<div class="respmenu-header">
+					<a href="https://iies.in/" class="respmenu-header-logo-link">
+				<img src="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png" class="respmenu-header-logo" alt="Logo">
+			</a>
+				<div class="respmenu-open">
+							<hr>
+				<hr>
+				<hr>
+					</div>
+	</div>
+	<div class="menu-main-menu-container"><ul id="menu-main-menu-2" class="respmenu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-239 msm-top-level-item"><a href="https://iies.in/">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-337 msm-top-level-item"><a href="https://iies.in/certification-courses-freshers/">Certification Courses</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4576"><a>Freshers</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28031"><a href="https://iies.in/certification-courses-freshers/pgd-embedded-systems-course-with-artificial-intelligence/">PGD in Embedded Systems Course with Artificial intelligence</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27982"><a href="https://iies.in/certification-courses-freshers/diploma-in-embedded-systems-course-with-placement/">Professional Diploma in Embedded Systems Course with Placement</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-501"><a href="https://iies.in/certification-courses-freshers/embedded-system-course-with-placement/">PG Diploma in Embedded Systems Design &#038; Development</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-500"><a href="https://iies.in/certification-courses-freshers/iot-course-with-placement/">PG Diploma in Internet of Things (IoT)</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1782"><a href="https://iies.in/certification-courses-freshers/full-stack-java-developer-course-with-placement-2/">Full Stack Java With Placements</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-777"><a href="https://iies.in/certification-courses-freshers/software-programming-course-with-placement/">Professional Diploma in Software Programming</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4578"><a>PG Diploma in Data Science &#8211; Coming Soon</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4577"><a>Working Professional</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-339"><a href="https://iies.in/diploma-programs-working-professionals/">Diploma Programs- Working Professionals</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4545 msm-top-level-item"><a href="https://iies.in/crash-courses/">Crash Courses</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4551"><a>Software</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4546"><a href="https://iies.in/crash-courses/programming-in-c-course/">Programming in C</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5812"><a href="https://iies.in/crash-courses/crash-course-on-cpp/">C++</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4547"><a href="https://iies.in/crash-courses/python-crash-course/">Python</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5337"><a href="https://iies.in/crash-courses/matlab-and-simulink-crash-course/">MATLAB &#038; Simulink</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5636"><a href="https://iies.in/crash-courses/internet-of-things-iot-crash-course/">Internet of Things – IoT</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5910"><a href="https://iies.in/crash-courses/crash-course-on-ai-artificial-intelligence/">Artificial Intelligence</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5980"><a href="https://iies.in/crash-courses/crash-course-on-machine-learning/">Machine Learning</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4553"><a>Hardware</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4674"><a href="https://iies.in/crash-courses/embedded-system/">Embedded System</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4630"><a href="https://iies.in/crash-courses/arm-crash-course/">ARM</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4738"><a href="https://iies.in/crash-courses/embedded-c-crash-course/">Embedded C</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4851"><a href="https://iies.in/crash-courses/pcb-design-crash-course/">PCB Design</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4881"><a href="https://iies.in/crash-courses/stm32-microcontroller/">STM32</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4967"><a href="https://iies.in/crash-courses/automotive-embedded-system/">Automotive Embedded System</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5471"><a href="https://iies.in/crash-courses/arduino-crash-course/">Arduino</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4560"><a>Electronics</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5023"><a href="https://iies.in/crash-courses/basic-electronics/">Basic Electronics</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-338 msm-top-level-item"><a href="https://iies.in/institutional-training-undergraduate/">College Training</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-498"><a href="https://iies.in/institutional-training-undergraduate/technical-workshop-for-engineering-college-students/">College Workshop</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-494"><a href="https://iies.in/institutional-training-undergraduate/internship-for-engineering-students-in-bangalore/">Internship Program</a>
+<div class="respmenu-submenu-toggle cbp-respmenu-more"><i class="icon-edright-arrow"></i></div>
+
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28197"><a href="https://iies.in/aicte-approved-internships-in-bangalore/">AICTE-Approved Internships in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24695"><a href="https://iies.in/institutional-training-undergraduate/vtu-approved-internship-institute-bangalore/">VTU Approved Institute For Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24768"><a href="https://iies.in/institutional-training-undergraduate/vtu-approved-internship-on-embedded-systems/">VTU Approved Internship on Embedded Systems with Placement</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24718"><a href="https://iies.in/institutional-training-undergraduate/best-iot-internship-bangalore/">VTU-Approved IoT Internship Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24825"><a href="https://iies.in/institutional-training-undergraduate/arm-cortex-embedded-internship-bangalore/">VTU Approved ARM Cortex Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24861"><a href="https://iies.in/institutional-training-undergraduate/ai-ml-internship-vtu-approved-bangalore/">VTU Approved AI &#038; Machine Learning Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25551"><a href="https://iies.in/institutional-training-undergraduate/stm32-cortex-embedded-internship-bangalore/">VTU Approved STM32 Cortex Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25515"><a href="https://iies.in/institutional-training-undergraduate/matlab-simulink-embedded-internship-bangalore/">VTU Approved MATLAB &#038; Simulink Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25638"><a href="https://iies.in/institutional-training-undergraduate/embedded-with-ai-internship-bangalore/">VTU Approved Embedded with AI Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25668"><a href="https://iies.in/institutional-training-undergraduate/pcb-design-internship-bangalore/">VTU Approved PCB Design Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25738"><a href="https://iies.in/institutional-training-undergraduate/embedded-communication-protocols-internship-bangalore/">VTU Approved Internship On Communication Protocols in Embedded Systems</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-497"><a href="https://iies.in/institutional-training-undergraduate/faculty-development-program-fdp/">Faculty Development Program (FDP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-496"><a href="https://iies.in/institutional-training-undergraduate/placement-prepardness-program-ppp/">Placement Prepardness Program (PPP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-495"><a href="https://iies.in/institutional-training-undergraduate/summer-training-programs-stp/">Summer Training Programs (STP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-493"><a href="https://iies.in/institutional-training-undergraduate/academic-projects/">Academic Projects</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-492"><a href="https://iies.in/institutional-training-undergraduate/rd-lab-setup/">R&#038;D Lab Setup</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-336 msm-top-level-item"><a href="https://iies.in/corporate-training/">Corporate Training</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-333 msm-top-level-item"><a href="https://iies.in/iies-placements/">Placements</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-401 msm-top-level-item"><a href="https://iies.in/admission/">Admission Process</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-668 msm-top-level-item"><a href="https://iies.in/contact/">Contact</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15510 msm-top-level-item"><a href="https://iies.in/enrollment-application/">Enrollment</a></li>
+</ul></div></div>
+	</div>
+		<div class="cbp-row wh-header top wh-sticky-header-enabled">
+				<div data-elementor-type="wp-post" data-elementor-id="221" class="elementor elementor-221" data-elementor-settings="[]">
+						<div class="elementor-inner">
+							<div class="elementor-section-wrap">
+							<section class="elementor-section elementor-top-section elementor-element elementor-element-f985d2d elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="f985d2d" data-element_type="section" data-settings="{&quot;stretch_section&quot;:&quot;section-stretched&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-b6dc7ce width-auto" data-id="b6dc7ce" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-1bb33ca elementor-widget elementor-widget-scp_logo" data-id="1bb33ca" data-element_type="widget" data-widget_type="scp_logo.default">
+				<div class="elementor-widget-container">
+			<div class="elementor-image"><a href="https://iies.in/"><img src="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-d-e1625258492616.png" alt="logo"/></a></div>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-9853566 width-auto margin-left-auto" data-id="9853566" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="right elementor-element elementor-element-b0a2c5a elementor-widget elementor-widget-scp_menu" data-id="b0a2c5a" data-element_type="widget" data-widget_type="scp_menu.default">
+				<div class="elementor-widget-container">
+			<div class="menu-top-menu-container"><ul id="menu-top-menu-2" class="sf-menu wh-menu-top right"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-700 msm-top-level-item"><a href="https://iies.in/recruiters-area/">Recruiters Area</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-559 msm-top-level-item"><a href="https://iies.in/entrance-test/">Admission</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-4580 msm-top-level-item"><a href="https://iies.in/blog/">Blog</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19737 msm-top-level-item"><a href="https://iies.in/about-iies/work-with-iies/">Work With IIES</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25360 msm-top-level-item"><a href="https://iies.in/resources/">Resources</a></li>
+</ul></div>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-a6a2353 width-auto margin-left-auto" data-id="a6a2353" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-730b789 elementor-shape-circle e-grid-align-right elementor-grid-0 elementor-widget elementor-widget-social-icons" data-id="730b789" data-element_type="widget" data-widget_type="social-icons.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-social-icons-wrapper elementor-grid">
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-240e416" href="https://www.facebook.com/Indian-Institute-of-Embedded-Systems-IIES-108445004670896" target="_blank">
+						<span class="elementor-screen-only">Facebook-f</span>
+						<i class="fab fa-facebook-f"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-429520e" href="https://www.instagram.com/iiesbangalore/" target="_blank">
+						<span class="elementor-screen-only">Instagram</span>
+						<i class="fab fa-instagram"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-eb9b1ee" href="https://twitter.com/IIES_Bangalore" target="_blank">
+						<span class="elementor-screen-only">Twitter</span>
+						<i class="fab fa-twitter"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-linkedin elementor-repeater-item-b328637" href="https://in.linkedin.com/company/indian-institute-of-embedded-systems" target="_blank">
+						<span class="elementor-screen-only">Linkedin</span>
+						<i class="fab fa-linkedin"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-youtube elementor-repeater-item-a5507d8" href="https://www.youtube.com/@iiesbangalore/videos" target="_blank">
+						<span class="elementor-screen-only">Youtube</span>
+						<i class="fab fa-youtube"></i>					</a>
+				</span>
+					</div>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-98212d1 elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="98212d1" data-element_type="section" data-settings="{&quot;stretch_section&quot;:&quot;section-stretched&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-1f7529c" data-id="1f7529c" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="left elementor-element elementor-element-22061b4 elementor-widget elementor-widget-scp_menu" data-id="22061b4" data-element_type="widget" data-widget_type="scp_menu.default">
+				<div class="elementor-widget-container">
+			<div id="cbp-menu-main" class="menu-main-menu-container"><ul id="menu-main-menu-3" class="sf-menu wh-menu-main left"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-239 msm-top-level-item"><a href="https://iies.in/">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-337 msm-top-level-item"><a href="https://iies.in/certification-courses-freshers/">Certification Courses</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4576"><a>Freshers</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28031"><a href="https://iies.in/certification-courses-freshers/pgd-embedded-systems-course-with-artificial-intelligence/">PGD in Embedded Systems Course with Artificial intelligence</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27982"><a href="https://iies.in/certification-courses-freshers/diploma-in-embedded-systems-course-with-placement/">Professional Diploma in Embedded Systems Course with Placement</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-501"><a href="https://iies.in/certification-courses-freshers/embedded-system-course-with-placement/">PG Diploma in Embedded Systems Design &#038; Development</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-500"><a href="https://iies.in/certification-courses-freshers/iot-course-with-placement/">PG Diploma in Internet of Things (IoT)</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1782"><a href="https://iies.in/certification-courses-freshers/full-stack-java-developer-course-with-placement-2/">Full Stack Java With Placements</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-777"><a href="https://iies.in/certification-courses-freshers/software-programming-course-with-placement/">Professional Diploma in Software Programming</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4578"><a>PG Diploma in Data Science &#8211; Coming Soon</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4577"><a>Working Professional</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-339"><a href="https://iies.in/diploma-programs-working-professionals/">Diploma Programs- Working Professionals</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4545 msm-top-level-item"><a href="https://iies.in/crash-courses/">Crash Courses</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4551"><a>Software</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4546"><a href="https://iies.in/crash-courses/programming-in-c-course/">Programming in C</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5812"><a href="https://iies.in/crash-courses/crash-course-on-cpp/">C++</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4547"><a href="https://iies.in/crash-courses/python-crash-course/">Python</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5337"><a href="https://iies.in/crash-courses/matlab-and-simulink-crash-course/">MATLAB &#038; Simulink</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5636"><a href="https://iies.in/crash-courses/internet-of-things-iot-crash-course/">Internet of Things – IoT</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5910"><a href="https://iies.in/crash-courses/crash-course-on-ai-artificial-intelligence/">Artificial Intelligence</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5980"><a href="https://iies.in/crash-courses/crash-course-on-machine-learning/">Machine Learning</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4553"><a>Hardware</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4674"><a href="https://iies.in/crash-courses/embedded-system/">Embedded System</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4630"><a href="https://iies.in/crash-courses/arm-crash-course/">ARM</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4738"><a href="https://iies.in/crash-courses/embedded-c-crash-course/">Embedded C</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4851"><a href="https://iies.in/crash-courses/pcb-design-crash-course/">PCB Design</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4881"><a href="https://iies.in/crash-courses/stm32-microcontroller/">STM32</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4967"><a href="https://iies.in/crash-courses/automotive-embedded-system/">Automotive Embedded System</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5471"><a href="https://iies.in/crash-courses/arduino-crash-course/">Arduino</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-4560"><a>Electronics</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5023"><a href="https://iies.in/crash-courses/basic-electronics/">Basic Electronics</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-338 msm-top-level-item"><a href="https://iies.in/institutional-training-undergraduate/">College Training</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-498"><a href="https://iies.in/institutional-training-undergraduate/technical-workshop-for-engineering-college-students/">College Workshop</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-494"><a href="https://iies.in/institutional-training-undergraduate/internship-for-engineering-students-in-bangalore/">Internship Program</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28197"><a href="https://iies.in/aicte-approved-internships-in-bangalore/">AICTE-Approved Internships in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24695"><a href="https://iies.in/institutional-training-undergraduate/vtu-approved-internship-institute-bangalore/">VTU Approved Institute For Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24768"><a href="https://iies.in/institutional-training-undergraduate/vtu-approved-internship-on-embedded-systems/">VTU Approved Internship on Embedded Systems with Placement</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24718"><a href="https://iies.in/institutional-training-undergraduate/best-iot-internship-bangalore/">VTU-Approved IoT Internship Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24825"><a href="https://iies.in/institutional-training-undergraduate/arm-cortex-embedded-internship-bangalore/">VTU Approved ARM Cortex Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24861"><a href="https://iies.in/institutional-training-undergraduate/ai-ml-internship-vtu-approved-bangalore/">VTU Approved AI &#038; Machine Learning Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25551"><a href="https://iies.in/institutional-training-undergraduate/stm32-cortex-embedded-internship-bangalore/">VTU Approved STM32 Cortex Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25515"><a href="https://iies.in/institutional-training-undergraduate/matlab-simulink-embedded-internship-bangalore/">VTU Approved MATLAB &#038; Simulink Embedded Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25638"><a href="https://iies.in/institutional-training-undergraduate/embedded-with-ai-internship-bangalore/">VTU Approved Embedded with AI Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25668"><a href="https://iies.in/institutional-training-undergraduate/pcb-design-internship-bangalore/">VTU Approved PCB Design Internship in Bangalore</a></li>
+		<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25738"><a href="https://iies.in/institutional-training-undergraduate/embedded-communication-protocols-internship-bangalore/">VTU Approved Internship On Communication Protocols in Embedded Systems</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-497"><a href="https://iies.in/institutional-training-undergraduate/faculty-development-program-fdp/">Faculty Development Program (FDP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-496"><a href="https://iies.in/institutional-training-undergraduate/placement-prepardness-program-ppp/">Placement Prepardness Program (PPP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-495"><a href="https://iies.in/institutional-training-undergraduate/summer-training-programs-stp/">Summer Training Programs (STP)</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-493"><a href="https://iies.in/institutional-training-undergraduate/academic-projects/">Academic Projects</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-492"><a href="https://iies.in/institutional-training-undergraduate/rd-lab-setup/">R&#038;D Lab Setup</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-336 msm-top-level-item"><a href="https://iies.in/corporate-training/">Corporate Training</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-333 msm-top-level-item"><a href="https://iies.in/iies-placements/">Placements</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-401 msm-top-level-item"><a href="https://iies.in/admission/">Admission Process</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-668 msm-top-level-item"><a href="https://iies.in/contact/">Contact</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15510 msm-top-level-item"><a href="https://iies.in/enrollment-application/">Enrollment</a></li>
+</ul></div>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+						</div>
+						</div>
+					</div>
+			</div>
+		<div data-elementor-type="wp-post" data-elementor-id="28654" class="elementor elementor-28654" data-elementor-settings="[]">
+						<div class="elementor-inner">
+							<div class="elementor-section-wrap">
+							<section class="elementor-section elementor-top-section elementor-element elementor-element-cd79a91 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="cd79a91" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-176ca82" data-id="176ca82" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-ec0bce6 elementor-widget elementor-widget-heading" data-id="ec0bce6" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h1 class="elementor-heading-title elementor-size-default"><span id="Universal_References_in_C_stdforward_and_Perfect_Forwarding_Explained_with_Examples">Universal References in C++: std::forward and Perfect Forwarding Explained with Examples</span></h1>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-d51c125 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="d51c125" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-75cd4a9" data-id="75cd4a9" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-39984ea elementor-widget elementor-widget-image" data-id="39984ea" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-image">
+												<img fetchpriority="high" decoding="async" width="768" height="511" src="https://iies.in/wp-content/uploads/2026/04/Universal-References-in-C-stdforward-and-Perfect-Forwarding-Explained-with-Examples.webp" class="attachment-large size-large" alt="Universal References in C++ stdforward and Perfect Forwarding Explained with Examples" srcset="https://iies.in/wp-content/uploads/2026/04/Universal-References-in-C-stdforward-and-Perfect-Forwarding-Explained-with-Examples.webp 768w, https://iies.in/wp-content/uploads/2026/04/Universal-References-in-C-stdforward-and-Perfect-Forwarding-Explained-with-Examples-300x200.webp 300w, https://iies.in/wp-content/uploads/2026/04/Universal-References-in-C-stdforward-and-Perfect-Forwarding-Explained-with-Examples-150x100.webp 150w" sizes="(max-width: 768px) 100vw, 768px">														</div>
+						</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-14dd9c4 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="14dd9c4" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-75d7a89" data-id="75d7a89" data-element_type="column">
+			<div class="elementor-column-wrap">
+							<div class="elementor-widget-wrap">
+								</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-467710b elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="467710b" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-53ef964" data-id="53ef964" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-a2e4909 elementor-widget elementor-widget-text-editor" data-id="a2e4909" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<p><span style="font-weight: 400;"><a href="https://iies.in/blog/the-significance-of-c-in-modern-programming-a-comprehensive-overview/">Modern C++</a> (since C++11) introduced powerful features such as rvalue references, move semantics, and std::forward to solve a critical performance issue: unnecessary copying of objects. </span><span style="font-weight: 400;">If you are working with high-performance systems, template libraries, or preparing for <a href="https://iies.in/crash-courses/crash-course-on-cpp/">C++</a> interviews, understanding universal references in C++ (also known as forwarding references) is essential. </span><span style="font-weight: 400;">This guide explains everything in a structured way, including lvalue vs rvalue in C++, how std::forward works, and how perfect forwarding improves performance.</span></p><blockquote><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div class="flex flex-col text-sm pb-25"><article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" tabindex="-1" data-turn-id="request-WEB:9ec4f962-e713-4123-99f0-f538e0a4f4c8-11" data-testid="conversation-turn-24" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" dir="auto" data-message-author-role="assistant" data-message-id="6d587701-4a30-40ef-b641-7e9d568e563b" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full break-words light markdown-new-styling"><div class="flex flex-col text-sm pb-25"><article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" tabindex="-1" data-turn-id="request-WEB:729694fd-e3af-4759-9172-80a9e95b132f-10" data-testid="conversation-turn-22" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" dir="auto" data-message-author-role="assistant" data-message-id="d4977ece-aae1-4f0a-881c-566d0888289b" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" tabindex="-1" data-turn-id="request-6995a73e-28d4-8323-9fe0-58e4c63a73d8-12" data-testid="conversation-turn-26" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" dir="auto" data-message-author-role="assistant" data-message-id="e4f9ce62-85be-4039-87f2-11db19f3425d" data-message-model-slug="gpt-5-2"><div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]"><div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling"><div class="flex flex-col text-sm pb-25"><article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" tabindex="-1" data-turn-id="request-WEB:9aafc9f9-d237-4000-9109-e72e3e5236fd-2" data-testid="conversation-turn-6" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:var(--thread-content-margin-xs,calc(var(--spacing)*4))] @w-sm/main:[--thread-content-margin:var(--thread-content-margin-sm,calc(var(--spacing)*6))] @w-lg/main:[--thread-content-margin:var(--thread-content-margin-lg,calc(var(--spacing)*16))] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1"><div class="flex max-w-full flex-col gap-4 grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" dir="auto" data-message-author-role="assistant" data-message-id="b6988a8e-e083-411c-ae62-6de46c687eb3" data-message-model-slug="gpt-5-3"><div class="flex w-full flex-col gap-1 empty:hidden"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><div class="flex flex-col text-sm pb-25"><section class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" data-turn-id="request-WEB:d8d2a111-9e76-4bca-8a78-6ab1ba0c8f43-32" data-testid="conversation-turn-32" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:var(--thread-content-margin-xs,calc(var(--spacing)*4))] @w-sm/main:[--thread-content-margin:var(--thread-content-margin-sm,calc(var(--spacing)*6))] @w-lg/main:[--thread-content-margin:var(--thread-content-margin-lg,calc(var(--spacing)*16))] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn"><div class="flex max-w-full flex-col gap-4 grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal outline-none keyboard-focused:focus-ring [.text-message+&amp;]:mt-1" dir="auto" tabindex="0" data-message-author-role="assistant" data-message-id="6c4af530-1095-402d-98b7-b4c1661faee2" data-message-model-slug="gpt-5-3" data-turn-start-message="true"><div class="flex w-full flex-col gap-1 empty:hidden"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><div class="flex flex-col text-sm pb-25"><section class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" data-turn-id="request-WEB:fdbc2eb8-716c-4e4a-bebe-13f7ca6a35ef-6" data-testid="conversation-turn-10" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:var(--thread-content-margin-xs,calc(var(--spacing)*4))] @w-sm/main:[--thread-content-margin:var(--thread-content-margin-sm,calc(var(--spacing)*6))] @w-lg/main:[--thread-content-margin:var(--thread-content-margin-lg,calc(var(--spacing)*16))] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn"><div class="flex max-w-full flex-col gap-4 grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal outline-none keyboard-focused:focus-ring [.text-message+&amp;]:mt-1" dir="auto" tabindex="0" data-message-author-role="assistant" data-message-id="4b6b5ea7-6c61-4ce4-855c-e347fc29973a" data-message-model-slug="gpt-5-3" data-turn-start-message="true"><div class="flex w-full flex-col gap-1 empty:hidden"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><div class="flex flex-col text-sm pb-25"><section class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" dir="auto" data-turn-id="request-WEB:79dd8771-f032-484d-af34-b6d6f27aecd5-3" data-testid="conversation-turn-6" data-scroll-anchor="true" data-turn="assistant"><div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:var(--thread-content-margin-xs,calc(var(--spacing)*4))] @w-sm/main:[--thread-content-margin:var(--thread-content-margin-sm,calc(var(--spacing)*6))] @w-lg/main:[--thread-content-margin:var(--thread-content-margin-lg,calc(var(--spacing)*16))] px-(--thread-content-margin)"><div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn"><div class="flex max-w-full flex-col gap-4 grow"><div class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal outline-none keyboard-focused:focus-ring [.text-message+&amp;]:mt-1" dir="auto" tabindex="0" data-message-author-role="assistant" data-message-id="3cb0836b-cbea-4f3f-ab4a-0b31a60c467e" data-message-model-slug="gpt-5-3" data-turn-start-message="true"><div class="flex w-full flex-col gap-1 empty:hidden"><div class="markdown prose dark:prose-invert w-full wrap-break-word dark markdown-new-styling"><p data-start="50" data-end="508" data-is-last-node="" data-is-only-node="">Universal references in C++ (T&amp;&amp;) allow functions to accept both lvalues and rvalues, enabling flexible and efficient template programming. std::forward preserves the original value category of arguments, ensuring correct function calls and avoiding unnecessary copies. Together, they enable perfect forwarding, a key technique for writing high-performance and generic C++ code..</p></div></div></div></div></div></div></section></div></div></div></div></div></div></div></section></div></div></div></div></div></div></div></section></div></div></div></div></div></div></div></article></div></div></div></div></div></div></div></article></div></div></div></div></div></div></article></div></div></div></div></div></div></div></article></div></div></div></div></blockquote>					</div>
+						</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-767d4b9 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="767d4b9" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-7096787" data-id="7096787" data-element_type="column">
+			<div class="elementor-column-wrap">
+							<div class="elementor-widget-wrap">
+								</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-2db689a elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="2db689a" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-2db17f5" data-id="2db17f5" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-5cd4d9c elementor-widget elementor-widget-wp-widget-lpwtoc_widget" data-id="5cd4d9c" data-element_type="widget" data-widget_type="wp-widget-lpwtoc_widget.default">
+				<div class="elementor-widget-container">
+			<div class="lwptoc lwptoc-autoWidth lwptoc-baseItems lwptoc-inherit" data-smooth-scroll="1" data-smooth-scroll-offset="24"><div class="lwptoc_i">    <div class="lwptoc_header">
+        <b class="lwptoc_title">Table of Contents</b>                    <span class="lwptoc_toggle">
+                <a href="#" class="lwptoc_toggle_label" data-label="▼">▲</a>            </span>
+            </div>
+<div class="lwptoc_items lwptoc_items-visible">
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Universal_References_in_C_stdforward_and_Perfect_Forwarding_Explained_with_Examples">
+                <span class="lwptoc_item_label">Universal References in C++: std::forward and Perfect Forwarding Explained with Examples</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#The_Problem_Before_C11">
+                <span class="lwptoc_item_label">The Problem Before C++11</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Lvalue_vs_Rvalue_in_C">
+                <span class="lwptoc_item_label">Lvalue vs Rvalue in C++</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Lvalue">
+                <span class="lwptoc_item_label">Lvalue</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Rvalue">
+                <span class="lwptoc_item_label">Rvalue</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Function_Overloading_Example">
+                <span class="lwptoc_item_label">Function Overloading Example:</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#What_is_a_Universal_Reference_in_C">
+                <span class="lwptoc_item_label">What is a Universal Reference in C++?</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#How_Universal_References_Work">
+                <span class="lwptoc_item_label">How Universal References Work</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Wrapper_Function_Problem_in_C">
+                <span class="lwptoc_item_label">Wrapper Function Problem in C++</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#What_is_stdforward_in_C">
+                <span class="lwptoc_item_label">What is std::forward in C++?</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Perfect_Forwarding_in_C">
+                <span class="lwptoc_item_label">Perfect Forwarding in C++</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#stdforward_vs_stdmove">
+                <span class="lwptoc_item_label">std::forward vs std::move</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Real_Example_Move_Constructor_vs_Copy_Constructor">
+                <span class="lwptoc_item_label">Real Example: Move Constructor vs Copy Constructor</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#When_Universal_References_Are_Not_Universal">
+                <span class="lwptoc_item_label">When Universal References Are Not Universal</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Real-World_Applications">
+                <span class="lwptoc_item_label">Real-World Applications</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Final_Thoughts">
+                <span class="lwptoc_item_label">Final Thoughts</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Frequently_Asked_Questions">
+                <span class="lwptoc_item_label">Frequently Asked Questions</span>
+    </a>
+    </div></div></div></div></div>
+</div></div>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-e5e858f elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="e5e858f" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-b7d1fcc" data-id="b7d1fcc" data-element_type="column">
+			<div class="elementor-column-wrap">
+							<div class="elementor-widget-wrap">
+								</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7896d9d elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7896d9d" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-15105ba" data-id="15105ba" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-5e29a67 elementor-widget elementor-widget-text-editor" data-id="5e29a67" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<h2><span id="The_Problem_Before_C11">The Problem Before C++11</span></h2><p>Before C++11, objects passed to functions were typically copied. This created performance overhead, especially when dealing with large objects.</p><p><strong>Example:</strong></p><pre><code>#include 
+using namespace std;
+
+class Data {
+public:
+    Data() { cout &lt;&lt; "Constructor\n"; }
+    Data(const Data&amp;) { cout &lt;&lt; "Copy Constructor\n"; }
+};
+
+void process(Data d) {
+    cout &lt;&lt; "Processing data\n";
+}
+
+int main() {
+    Data d;
+    process(d);   // copy happens
+}<br>
+</code></pre><p><a href="https://iies.in/enrollment-application/"><img decoding="async" class="aligncenter size-full wp-image-22722" src="https://iies.in/wp-content/uploads/2023/06/REGISTER-NOW.webp" alt="Start Your Training Journey Today" width="600" height="150" srcset="https://iies.in/wp-content/uploads/2023/06/REGISTER-NOW.webp 600w, https://iies.in/wp-content/uploads/2023/06/REGISTER-NOW-300x75.webp 300w, https://iies.in/wp-content/uploads/2023/06/REGISTER-NOW-150x38.webp 150w" sizes="(max-width: 600px) 100vw, 600px"></a></p><p> </p><p>In this example, the copy constructor is invoked. For large objects like vectors or buffers, this becomes inefficient.</p><p>This problem led to the introduction of move semantics and rvalue references in C++11.</p><h2><span id="Lvalue_vs_Rvalue_in_C">Lvalue vs Rvalue in C++</span></h2><p>Understanding the difference between lvalue and rvalue in C++ is fundamental.</p><h3><span id="Lvalue">Lvalue</span></h3><p>An lvalue has a name and a stable memory location.</p><pre><code>int x = 10; // x is an lvalue
+</code></pre><h3><span id="Rvalue">Rvalue</span></h3><p>An rvalue is a temporary value without a persistent memory location.</p><pre><code>int y = x + 5; // (x + 5) is an rvalue
+</code></pre><h3><span id="Function_Overloading_Example">Function Overloading Example:</span></h3><pre><code>#include 
+using namespace std;
+
+void func(int&amp; x) {
+    cout &lt;&lt; "Lvalue version\n";
+}
+
+void func(int&amp;&amp; x) {
+    cout &lt;&lt; "Rvalue version\n";
+}
+
+int main() {
+    int a = 10;
+    func(a);   // lvalue
+    func(20);  // rvalue
+}
+</code></pre><h2><span id="What_is_a_Universal_Reference_in_C">What is a Universal Reference in C++?</span></h2><p>A universal reference occurs when a template parameter is declared as <strong>T&amp;&amp;</strong> and the type is deduced.</p><pre><code>template
+void func(T&amp;&amp; arg)
+{
+}
+</code></pre><p>In this case, <strong>T&amp;&amp;</strong> is not always an rvalue reference. It can behave as either:</p><ul><li>lvalue reference</li><li>rvalue reference</li></ul><p>This is why it is called a forwarding reference in C++11.</p><h2><span id="How_Universal_References_Work">How Universal References Work</span></h2><p>Universal references rely on reference collapsing rules.</p><p><strong>Example:</strong></p><pre><code>#include 
+using namespace std;
+
+template
+void func(T&amp;&amp; arg) {
+    cout &lt;&lt; "Function called\n";
+}
+
+int main() {
+    int x = 10;
+    func(x);    // lvalue
+    func(20);   // rvalue
+}
+</code></pre><p><strong>Behavior:</strong></p><ul><li>func(x): T is deduced as int&amp;, so arg becomes int&amp;</li><li>func(20): T is deduced as int, so arg becomes int&amp;&amp;</li></ul><p>This behavior is governed by <a href="https://iies.in/blog/introduction-to-data-types-and-type-specifiers-in-c-programming/">C++</a> reference collapsing rules.</p><p> </p><p><a href="https://iies.in/wp-content/uploads/2025/09/Broucher_IIES.pdf"><img decoding="async" class="aligncenter size-full wp-image-22723" src="https://iies.in/wp-content/uploads/2023/06/DOWNLOAD-BROCHER.webp" alt="Explore Courses - Learn More" width="600" height="150" srcset="https://iies.in/wp-content/uploads/2023/06/DOWNLOAD-BROCHER.webp 600w, https://iies.in/wp-content/uploads/2023/06/DOWNLOAD-BROCHER-300x75.webp 300w, https://iies.in/wp-content/uploads/2023/06/DOWNLOAD-BROCHER-150x38.webp 150w" sizes="(max-width: 600px) 100vw, 600px"></a></p><h2> </h2><h2><span id="Wrapper_Function_Problem_in_C">Wrapper Function Problem in C++</span></h2><p>When writing generic programming code using templates, a common issue arises.</p><p><strong>Example:</strong></p><pre><code>#include 
+using namespace std;
+
+void process(int&amp; x) {
+    cout &lt;&lt; "Lvalue version\n";
+}
+
+void process(int&amp;&amp; x) {
+    cout &lt;&lt; "Rvalue version\n";
+}
+
+template
+void wrapper(T&amp;&amp; arg) {
+    process(arg); // issue here
+}
+
+int main() {
+    int x = 10;
+    wrapper(x);
+    wrapper(20);
+}
+</code></pre><p><strong>Output:</strong></p><pre><code>Lvalue version
+Lvalue version
+</code></pre><p>Even though 20 is an rvalue, it is treated as an lvalue inside the function because it has a name (arg).</p><h2><span id="What_is_stdforward_in_C">What is std::forward in C++?</span></h2><p><strong>std::forward</strong> preserves the original value category of the argument (lvalue or rvalue).</p><p><strong>Syntax:</strong></p><pre><code>std::forward(arg)
+</code></pre><p><strong>Required Header:</strong></p><pre><code>#include 
+</code></pre><h2><span id="Perfect_Forwarding_in_C">Perfect Forwarding in C++</span></h2><p>Perfect forwarding ensures that arguments are passed without changing their type or value category.</p><p><strong>Correct Implementation:</strong></p><pre><code>#include 
+#include 
+using namespace std;
+
+void process(int&amp; x) {
+    cout &lt;&lt; "Lvalue version\n";
+}
+
+void process(int&amp;&amp; x) {
+    cout &lt;&lt; "Rvalue version\n";
+}
+
+template
+void wrapper(T&amp;&amp; arg) {
+    process(std::forward(arg));
+}
+
+int main() {
+    int x = 10;
+    wrapper(x);
+    wrapper(20);
+}
+</code></pre><p><strong>Output:</strong></p><pre><code>Lvalue version
+Rvalue version
+</code></pre><p>This is known as perfect forwarding in C++.</p><h2><span id="stdforward_vs_stdmove">std::forward vs std::move</span></h2><p><strong>std::move</strong> and <strong>std::forward</strong> serve different purposes.</p><ul><li>std::move converts an object into an rvalue, forcing move semantics</li><li>std::forward conditionally forwards based on the original type</li></ul><p>Use std::forward in templates and std::move when you explicitly want to move an object.</p><h2><span id="Real_Example_Move_Constructor_vs_Copy_Constructor">Real Example: Move Constructor vs Copy Constructor</span></h2><pre><code>#include 
+#include 
+using namespace std;
+
+class Data {
+public:
+    Data() { cout &lt;&lt; "Constructor\n"; }
+
+    Data(const Data&amp;) {
+        cout &lt;&lt; "Copy Constructor\n";
+    }
+
+    Data(Data&amp;&amp;) {
+        cout &lt;&lt; "Move Constructor\n";
+    }
+};
+
+void process(Data d) {
+    cout &lt;&lt; "Processing\n";
+}
+
+template
+void wrapper(T&amp;&amp; arg) {
+    process(std::forward(arg));
+}
+
+int main() {
+    Data d;
+    wrapper(d);          // copy
+    wrapper(Data());     // move
+}
+</code></pre><p><strong>Output:</strong></p><pre><code>Constructor
+Copy Constructor
+Processing
+Constructor
+Move Constructor
+Processing
+</code></pre><p>This demonstrates how move semantics help avoid unnecessary copying in C++.</p><h2><span id="When_Universal_References_Are_Not_Universal">When Universal References Are Not Universal</span></h2><p>Not all T&amp;&amp; are universal references.</p><p><strong>Example 1:</strong></p><pre><code>void func(int&amp;&amp; x)
+</code></pre><p>This is a pure rvalue reference, not a universal reference.</p><p><strong>Example 2:</strong></p><pre><code>template
+void func(vector&amp;&amp; v)
+</code></pre><p>This is not universal because the type is not deduced directly in T&amp;&amp;.</p><h2><span id="Real-World_Applications">Real-World Applications</span></h2><p>Universal references and perfect forwarding are widely used in:</p><ul><li>STL containers</li><li>smart pointers</li><li>thread libraries</li><li>factory functions</li><li>generic template libraries</li></ul><p>They are essential in building:</p><ul><li>memory allocators</li><li>game engines</li><li><a href="https://iies.in/blog/how-can-embedded-systems-be-connected-to-a-network/">networking</a> frameworks</li><li>high-performance C++ systems</li></ul><h2><span id="Final_Thoughts">Final Thoughts</span></h2><p>Universal references and std::forward are essential features in modern <a href="https://iies.in/blog/introduction-to-data-types-and-type-specifiers-in-c-programming/">C++</a>. They allow developers to write efficient and generic code without unnecessary copying.</p><p><strong>Key takeaways:</strong></p><ul><li>T&amp;&amp; in templates can accept both lvalues and rvalues</li><li>std::forward preserves the original value category</li><li>Together, they enable perfect forwarding</li></ul><p>Mastering these concepts is important for advanced C++ development, system programming, and performance-critical applications.</p><p> </p><p> </p><p><a href="https://iies.in/contact/"><img decoding="async" class="aligncenter size-full wp-image-22724" src="https://iies.in/wp-content/uploads/2023/06/CALL-NOW.webp" alt="Talk to Academic Advisor" width="600" height="150" srcset="https://iies.in/wp-content/uploads/2023/06/CALL-NOW.webp 600w, https://iies.in/wp-content/uploads/2023/06/CALL-NOW-300x75.webp 300w, https://iies.in/wp-content/uploads/2023/06/CALL-NOW-150x38.webp 150w" sizes="(max-width: 600px) 100vw, 600px"></a></p>					</div>
+						</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-c65aaac elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="c65aaac" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-c9f433c" data-id="c9f433c" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-bbe7112 elementor-widget elementor-widget-heading" data-id="bbe7112" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default"><span id="Frequently_Asked_Questions">Frequently Asked Questions</span></h2>		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-016c136 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="016c136" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-8adeaef" data-id="8adeaef" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-aa1e7ca elementor-widget elementor-widget-accordion" data-id="aa1e7ca" data-element_type="widget" data-widget_type="accordion.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-accordion" role="tablist">
+							<div class="elementor-accordion-item">
+					<div id="elementor-tab-title-1781" class="elementor-tab-title" data-tab="1" role="tab" aria-controls="elementor-tab-content-1781" aria-expanded="false">
+													<span class="elementor-accordion-icon elementor-accordion-icon-left" aria-hidden="true">
+															<span class="elementor-accordion-icon-closed"><i class="fas fa-plus"></i></span>
+								<span class="elementor-accordion-icon-opened"><i class="fas fa-minus"></i></span>
+														</span>
+												<a class="elementor-accordion-title" href="">What is perfect forwarding in C++?</a>
+					</div>
+					<div id="elementor-tab-content-1781" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1781"><p><span style="font-weight: 400;">Perfect forwarding allows passing arguments to another function without changing their type or value category using std::forward.</span></p></div>
+				</div>
+							<div class="elementor-accordion-item">
+					<div id="elementor-tab-title-1782" class="elementor-tab-title" data-tab="2" role="tab" aria-controls="elementor-tab-content-1782" aria-expanded="false">
+													<span class="elementor-accordion-icon elementor-accordion-icon-left" aria-hidden="true">
+															<span class="elementor-accordion-icon-closed"><i class="fas fa-plus"></i></span>
+								<span class="elementor-accordion-icon-opened"><i class="fas fa-minus"></i></span>
+														</span>
+												<a class="elementor-accordion-title" href="">What is the difference between std::move and std::forward?</a>
+					</div>
+					<div id="elementor-tab-content-1782" class="elementor-tab-content elementor-clearfix" data-tab="2" role="tabpanel" aria-labelledby="elementor-tab-title-1782"><p><span style="font-weight: 400;">std::move forces an object to be treated as an rvalue, while std::forward preserves the original type depending on how the argument was passed.</span></p></div>
+				</div>
+							<div class="elementor-accordion-item">
+					<div id="elementor-tab-title-1783" class="elementor-tab-title" data-tab="3" role="tab" aria-controls="elementor-tab-content-1783" aria-expanded="false">
+													<span class="elementor-accordion-icon elementor-accordion-icon-left" aria-hidden="true">
+															<span class="elementor-accordion-icon-closed"><i class="fas fa-plus"></i></span>
+								<span class="elementor-accordion-icon-opened"><i class="fas fa-minus"></i></span>
+														</span>
+												<a class="elementor-accordion-title" href="">What is a forwarding reference in C++11?</a>
+					</div>
+					<div id="elementor-tab-content-1783" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1783"><p><span style="font-weight: 400;">A forwarding reference is a template parameter declared as T&amp;&amp; where T is deduced, allowing it to bind to both lvalues and rvalues.</span></p></div>
+				</div>
+								</div>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-09474a7 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="09474a7" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-d76219c" data-id="d76219c" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-c0509ed elementor-widget elementor-widget-html" data-id="c0509ed" data-element_type="widget" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+			<div style="margin-left:25px; margin-right:10px;">
+
+<div style="max-width:680px; margin:55px auto 35px; padding:70px 20px 28px;
+            text-align:center; background:#f4f7ff; border-radius:16px;
+            box-shadow:0 10px 22px rgba(0,0,0,0.08);
+            position:relative; font-family:Arial, sans-serif; overflow:visible;">
+
+  <div style="width:90px; height:90px; border-radius:50%; background:#ffffff;
+              display:flex; align-items:center; justify-content:center;
+              box-shadow:0 4px 12px rgba(0,0,0,0.15);
+              margin:-115px auto 10px;">
+    <a href="https://iies.in/" target="_blank" style="display:flex;">
+      <img decoding="async" src="https://iies.in/wp-content/uploads/2021/02/iies-logo-web-m-1.png" style="max-width:70px; max-height:70px; object-fit:contain;" alt="IIES Logo">
+    </a>
+  </div>
+
+  <p style="margin:0 0 6px; font-size:22px; font-weight:700; color:#111;">Author</p>
+  <p style="margin:0 0 8px; font-size:17px; font-weight:600; color:#333;">
+     Embedded Systems trainer – IIES
+  </p>
+  <p style="margin:0; font-size:15px; font-weight:600; color:#555;">Updated On: 03-04-26</p><br style="color:#000000">10+ years of hands-on experience delivering practical training in Embedded Systems and it's design
+
+</div>
+
+</div>
+		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+						</div>
+						</div>
+					</div>
+			<div class="cbp-row wh-footer">
+		<div class="cbp-container wh-padding">
+					<div data-elementor-type="wp-post" data-elementor-id="220" class="elementor elementor-220" data-elementor-settings="[]">
+						<div class="elementor-inner">
+							<div class="elementor-section-wrap">
+							<section class="elementor-section elementor-top-section elementor-element elementor-element-3f72fa7 elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="3f72fa7" data-element_type="section" data-settings="{&quot;stretch_section&quot;:&quot;section-stretched&quot;,&quot;background_background&quot;:&quot;classic&quot;}">
+							<div class="elementor-background-overlay"></div>
+							<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-dd097b2" data-id="dd097b2" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-64a218a elementor-widget elementor-widget-text-editor" data-id="64a218a" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<p><strong>Indian Institute of Embedded Systems &#8211; IIES​</strong></p>					</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-c09b2ab elementor-widget elementor-widget-text-editor" data-id="c09b2ab" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<p><a href="https://iies.in/">Home</a></p><p><a href="https://iies.in/about-iies/">About Us</a></p><p><a href="https://iies.in/blog/">Blogs</a></p><p><a href="https://iies.in/admission/">Admission</a> </p><p><a href="https://iies.in/iies-placements/">Placements</a></p><p><a href="https://iies.in/recruiters-area/">Recruiters Area</a></p><p><a href="https://iies.in/contact/">Contact Us</a></p><p><a href="https://iies.in/privacy-policy/">Privacy Policy</a></p>					</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-5ef9187 hoverable elementor-widget elementor-widget-button" data-id="5ef9187" data-element_type="widget" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-button-wrapper">
+			<a href="https://iies.in/wp-content/uploads/2025/09/Broucher_IIES.pdf" class="elementor-button-link elementor-button elementor-size-md" role="button">
+						<span class="elementor-button-content-wrapper">
+						<span class="elementor-button-text">GET BROCHURE</span>
+		</span>
+					</a>
+		</div>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-8387b42" data-id="8387b42" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-c831220 elementor-widget elementor-widget-text-editor" data-id="c831220" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<p><b>Certification Courses</b></p><ul><li><a href="https://iies.in/certification-courses-freshers/embedded-system-course-with-placement/">PG Diploma in Embedded Systems Design &amp; Development</a></li><li><a href="https://iies.in/certification-courses-freshers/iot-course-with-placement/">PG Diploma in Internet of Things (IoT)</a></li><li><a href="https://iies.in/certification-courses-freshers/full-stack-java-developer-course-with-placement-2/">Full Stack Java With Placements</a></li><li><a href="https://iies.in/certification-courses-freshers/software-programming-course-with-placement/">Professional Diploma in Software Programming</a></li></ul>					</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-5991a6f elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="5991a6f" data-element_type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-8e80e57 elementor-widget elementor-widget-text-editor" data-id="8e80e57" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+								<div class="elementor-text-editor elementor-clearfix">
+				<div style="color: #ffffff; letter-spacing: 0.1px;"><span style="letter-spacing: 0.1px;"><b>Training Programs</b></span></div><div style="color: #ffffff; letter-spacing: 0.1px;"><ul><li><a style="color: #4e86e0;" href="https://iies.in/diploma-programs-working-professionals/">Diploma Programs- Working Professionals</a></li><li><a href="https://iies.in/corporate-training/">Corporate Training</a></li><li><a href="https://iies.in/certification-courses-freshers/">Certification Courses– Freshers</a></li><li><a href="https://iies.in/institutional-training-undergraduate/">Institutional Training– Undergraduate</a></li></ul></div>					</div>
+						</div>
+				</div>
+						</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-8504d7f" data-id="8504d7f" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-71973bc elementor-widget elementor-widget-heading" data-id="71973bc" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default"><b>Get In Touch</b></h2>		</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-9f5f375 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="9f5f375" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-a991eee" data-id="a991eee" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-72a1ef0 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="72a1ef0" data-element_type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+					<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+											<a href="https://www.google.com/search?rlz=1C1CHBF_enIN1002IN1002&#038;tbs=lf:1,lf_ui:2&#038;tbm=lcl&#038;sxsrf=APwXEdcEita6gDKmvG91g62iJFSMet8utw:1686505779332&#038;q=iies&#038;rflfq=1&#038;num=10&#038;rllag=13021066,77607699,9894&#038;ved=2ahUKEwjb3Y3P47v_AhVdwTgGHfPFD_0QtgN6BAgUEAI#rlfi=hd:;si:13540897705501890112,l,CgRpaWVzSPH_xZugtICACFoIEAAiBGlpZXOSARtzb2Z0d2FyZV90cmFpbmluZ19pbnN0aXR1dGWaASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVTlhkQzFRVWtwUkVBRaoBNhABKggiBGlpZXMoADIeEAEiGkXL9hgxzqHbmgIVQxVrMVUKO-J6qcZKmPO5MggQAiIEaWllcw;mv:%5B%5B13.120416599999999,77.6157138%5D,%5B12.921716799999999,77.59968529999999%5D%5D">
+
+												<span class="elementor-icon-list-icon">
+							<i aria-hidden="true" class="fas fa-map-marker"></i>						</span>
+										<span class="elementor-icon-list-text">Indian Institute of Embedded Systems (IIES) - No 80, Ahad Pinnacle, Ground Floor, 5th Main, 2nd Cross, 5th Block, Koramangala Industrial Area
+Bangalore 560095, Karnataka, India</span>
+											</a>
+									</li>
+						</ul>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				<div class="elementor-element elementor-element-cd80559 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="cd80559" data-element_type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+					<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+											<a href="tel:8041216422">
+
+												<span class="elementor-icon-list-icon">
+							<i aria-hidden="true" class="fas fa-phone-alt"></i>						</span>
+										<span class="elementor-icon-list-text">Phone +91 80 4121 6422</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="tel:9886920008">
+
+												<span class="elementor-icon-list-icon">
+							<i aria-hidden="true" class="fas fa-mobile-alt"></i>						</span>
+										<span class="elementor-icon-list-text">Mobile +91 98869 20008</span>
+											</a>
+									</li>
+						</ul>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-a94a2bc elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="a94a2bc" data-element_type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-307be65 e-grid-align-left elementor-shape-rounded elementor-grid-0 elementor-widget elementor-widget-social-icons" data-id="307be65" data-element_type="widget" data-widget_type="social-icons.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-social-icons-wrapper elementor-grid">
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-facebook elementor-repeater-item-dfd2cb9" href="https://www.facebook.com/Indian-Institute-of-Embedded-Systems-IIES-108445004670896" target="_blank">
+						<span class="elementor-screen-only">Facebook</span>
+						<i class="fab fa-facebook"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-52de77c" href="https://www.instagram.com/iiesbangalore/" target="_blank">
+						<span class="elementor-screen-only">Instagram</span>
+						<i class="fab fa-instagram"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-8a5766c" href="https://twitter.com/IIES_Bangalore" target="_blank">
+						<span class="elementor-screen-only">Twitter</span>
+						<i class="fab fa-twitter"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-linkedin elementor-repeater-item-6e484ad" href="https://in.linkedin.com/company/indian-institute-of-embedded-systems" target="_blank">
+						<span class="elementor-screen-only">Linkedin</span>
+						<i class="fab fa-linkedin"></i>					</a>
+				</span>
+							<span class="elementor-grid-item">
+					<a class="elementor-icon elementor-social-icon elementor-social-icon-youtube elementor-repeater-item-eaaa82c" href="https://www.youtube.com/@iiesbangalore/videos" target="_blank">
+						<span class="elementor-screen-only">Youtube</span>
+						<i class="fab fa-youtube"></i>					</a>
+				</span>
+					</div>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+						</div>
+						</div>
+					</div>
+				</div>
+	</div>
+        <!-- Meta Pixel Event Code -->
+        <script type='text/javascript'>
+        (function () {
+            function runPixelCode( response ) {
+                if ( ! response || ! response.data || ! response.data.fb_pxl_code ) {
+                    return;
+                }
+
+                try {
+                    new Function( response.data.fb_pxl_code )();
+                } catch ( e ) {
+                    console && console.warn
+                        && console.warn( 'Meta Pixel response parsing failed. Please check if your pixel is connected.', e );
+                }
+            }
+
+            var radio = window.nfRadio
+                || ( window.Backbone && window.Backbone.Radio );
+            if ( radio && radio.channel ) {
+                radio.channel( 'forms' ).on( 'submit:response', runPixelCode );
+            }
+
+            if ( window.jQuery ) {
+                window.jQuery( document ).on(
+                    'nfFormSubmitResponse',
+                    function ( event, data ) {
+                        if ( data && data.response ) {
+                            runPixelCode( data.response );
+                        }
+                    }
+                );
+            }
+        })();
+        </script>
+        <!-- End Meta Pixel Event Code -->
+                <!-- Meta Pixel Event Code -->
+        <script type='text/javascript'>
+        (function ( $ ) {
+            if ( ! $ || typeof document === 'undefined' ) {
+                return;
+            }
+            // WPForms triggers this jQuery event and passes the AJAX response object.
+            $( document ).on( 'wpformsAjaxSubmitSuccess', function ( event, data ) {
+                if ( data && data.data && data.data.fb_pxl_code ) {
+                    try {
+                        new Function( data.data.fb_pxl_code )();
+                    } catch ( e ) {
+                        console && console.warn && console.warn( 'Meta Pixel eval failed', e );
+                    }
+                }
+            } );
+        })( window.jQuery );
+        </script>
+        <!-- End Meta Pixel Event Code -->
+        <script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/ed-school/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script>
+
+				
+						document.addEventListener( 'wpcf7mailsent', function( event ) {
+							
+							if ( 1516 == event.detail.contactFormId ){
+								jQuery('body').append('<a id="cf7fd-attachment-link15161" href="https://iies.in/wp-content/uploads/2021/07/Interview-level-QA-on-C.pdf" download="Programming in C Interview Question"></a>');
+								jQuery('#cf7fd-attachment-link15161')[0].click();
+
+								setTimeout(function(){
+									jQuery('#cf7fd-attachment-link15161').remove();
+								},2000);
+							}
+
+
+						}, false );
+					
+
+
+			
+
+				
+						document.addEventListener( 'wpcf7mailsent', function( event ) {
+							
+							if ( 1543 == event.detail.contactFormId ){
+								jQuery('body').append('<a id="cf7fd-attachment-link15432" href="https://iies.in/wp-content/uploads/2021/07/Interview-level-QA-on-C-1.pdf" download="Programming in C++ Interview Question"></a>');
+								jQuery('#cf7fd-attachment-link15432')[0].click();
+
+								setTimeout(function(){
+									jQuery('#cf7fd-attachment-link15432').remove();
+								},2000);
+							}
+
+
+						}, false );
+					
+
+
+			
+
+				
+						document.addEventListener( 'wpcf7mailsent', function( event ) {
+							
+							if ( 1544 == event.detail.contactFormId ){
+								jQuery('body').append('<a id="cf7fd-attachment-link15443" href="https://iies.in/wp-content/uploads/2021/07/Interview-level-QA-on-Python-Programming.pdf" download="Python Interview Question"></a>');
+								jQuery('#cf7fd-attachment-link15443')[0].click();
+
+								setTimeout(function(){
+									jQuery('#cf7fd-attachment-link15443').remove();
+								},2000);
+							}
+
+
+						}, false );
+					
+
+
+			</script>		
+		<script>
+			document.addEventListener( 'wpcf7mailsent', function( event ) {
+				if ( 0 == event.detail.contactFormId ){
+					jQuery('body').append('<a id="cf7fd-attachment-link" href="" download=""></a>');
+					jQuery('#cf7fd-attachment-link')[0].click();
+
+					setTimeout(function(){
+						jQuery('#cf7fd-attachment-link').remove();
+					},2000);
+				}
+
+
+			}, false );
+		</script>
+
+
+
+
+
+
+		    <!-- Meta Pixel Event Code -->
+    <script type='text/javascript'>
+        document.addEventListener( 'wpcf7mailsent', function( event ) {
+        if( "fb_pxl_code" in event.detail.apiResponse){
+            eval(event.detail.apiResponse.fb_pxl_code);
+        }
+        }, false );
+    </script>
+    <!-- End Meta Pixel Event Code -->
+        <div id="fb-pxl-ajax-code"></div><script id="coblocks-animation-js" src="https://iies.in/wp-content/plugins/coblocks/dist/js/coblocks-animation.js?ver=3.1.17"></script>
+<script id="wp-hooks-js" src="https://iies.in/wp-includes/js/dist/hooks.min.js?ver=f0f188028580e8dc1255"></script>
+<script id="wp-i18n-js" src="https://iies.in/wp-includes/js/dist/i18n.min.js?ver=1dfe7db3940c23ea9216"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+//# sourceURL=wp-i18n-js-after
+</script>
+<script id="swv-js" src="https://iies.in/wp-content/plugins/contact-form-7/includes/swv/js/index.js?ver=6.1.7"></script>
+<script id="contact-form-7-js-translations">
+( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "contact-form-7", {"translation-revision-date":"2026-05-05 18:32:38+0000","generator":"GlotPress\/4.0.3","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n != 1;","lang":"en_GB"},"This contact form is placed in the wrong place.":["This contact form is placed in the wrong place."],"Error:":["Error:"]}},"comment":{"reference":"includes\/js\/index.js"}} );
+//# sourceURL=contact-form-7-js-translations
+</script>
+<script id="contact-form-7-js-before">
+var wpcf7 = {
+    "api": {
+        "root": "https:\/\/iies.in\/wp-json\/",
+        "namespace": "contact-form-7\/v1"
+    },
+    "cached": 1
+};
+//# sourceURL=contact-form-7-js-before
+</script>
+<script id="contact-form-7-js" src="https://iies.in/wp-content/plugins/contact-form-7/includes/js/index.js?ver=6.1.7"></script>
+<script id="jquery-parallax-js" src="https://iies.in/wp-content/plugins/ed-school-plugin/includes/elementor/assets/js/jquery-parallax.js"></script>
+<script id="uacf7-redirect-script-js-extra">
+var uacf7_redirect_object = {"30274":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"27883":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"19688":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"19246":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"15240":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"4116":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"1135":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""},"830":{"uacf7_redirect_to_type":"to_page","page_id":"0","external_url":"","target":"","thankyou_page_url":""}};
+var uacf7_redirect_enable = [];
+//# sourceURL=uacf7-redirect-script-js-extra
+</script>
+<script id="uacf7-redirect-script-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/redirection/js/redirect.js"></script>
+<script id="uacf7-cf-script-js-extra">
+var uacf7_cf_object = [];
+//# sourceURL=uacf7-cf-script-js-extra
+</script>
+<script id="uacf7-cf-script-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/conditional-field/js/uacf7-cf-script.js?ver=3.5.42"></script>
+<script id="uacf7-multistep-js-extra">
+var uacf7_multistep_obj = {"ajax_url":"https://iies.in/wp-admin/admin-ajax.php","nonce":"30c333e097"};
+//# sourceURL=uacf7-multistep-js-extra
+</script>
+<script id="uacf7-multistep-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/multistep/assets/js/multistep.js"></script>
+<script id="uacf7-progressbar-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/multistep/assets/js/progressbar.js"></script>
+<script id="jquery-ui-js" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js?ver=7.1"></script>
+<script id="uacf7-range-slider-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/range-slider/js/range-slider.js?ver=7.1"></script>
+<script id="jquery-ui-core-js-before">
+jQuery.uiBackCompat = true;
+//# sourceURL=jquery-ui-core-js-before
+</script>
+<script id="jquery-ui-core-js" src="https://iies.in/wp-includes/js/jquery/ui/core.min.js?ver=1.14.2"></script>
+<script id="touch-punch-js" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js?ver=7.1"></script>
+<script id="uacf7-country-select-library-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/country-dropdown/assets/js/countrySelect.js"></script>
+<script id="uacf7-country-select-script-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/country-dropdown/assets/js/script.js"></script>
+<script id="submission_id_public_js-js-extra">
+var submission_id_obj = {"ajaxurl":"https://iies.in/wp-admin/admin-ajax.php","nonce":"72399e82c6"};
+//# sourceURL=submission_id_public_js-js-extra
+</script>
+<script id="submission_id_public_js-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/submission-id/assets/public/js/public-submission-id.js?ver=WPCF7_VERSION"></script>
+<script id="uacf7-signature-public-assets-js-extra">
+var uacf7_sign_obj = {"message_notice":"Please sign first and confirm your signature before form submission","message_success":"Signature Confirmed"};
+//# sourceURL=uacf7-signature-public-assets-js-extra
+</script>
+<script id="uacf7-signature-public-assets-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/signature/assets/public/js/signature.js?ver=UACF7_VERSION"></script>
+<script id="uacf7-sign-lib.min-js" src="https://iies.in/wp-content/plugins/ultimate-addons-for-contact-form-7/addons/signature/assets/public/js/sign-lib.min.js?ver=UACF7_VERSION"></script>
+<script id="google-recaptcha-js" src="https://www.google.com/recaptcha/api.js?render=6LdifFEsAAAAAAgi5m8ZSF30JrmaZpiar1kofigh&#038;ver=3.0"></script>
+<script id="wp-polyfill-js" src="https://iies.in/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0"></script>
+<script id="wpcf7-recaptcha-js-before">
+var wpcf7_recaptcha = {
+    "sitekey": "6LdifFEsAAAAAAgi5m8ZSF30JrmaZpiar1kofigh",
+    "actions": {
+        "homepage": "homepage",
+        "contactform": "contactform"
+    }
+};
+//# sourceURL=wpcf7-recaptcha-js-before
+</script>
+<script id="wpcf7-recaptcha-js" src="https://iies.in/wp-content/plugins/contact-form-7/modules/recaptcha/index.js?ver=6.1.7"></script>
+<script async data-wp-strategy="async" fetchpriority="low" id="comment-reply-js" src="https://iies.in/wp-includes/js/comment-reply.min.js?ver=7.1"></script>
+<script id="fitvids-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/fitvids.js"></script>
+<script id="jquery-superfish-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/superfish.js"></script>
+<script id="hoverintent-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/hoverintent.js"></script>
+<script id="scrollup-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/scrollup.js"></script>
+<script id="jquery-sticky-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/jquery.sticky.js"></script>
+<script id="natural-width-height-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/natural-width-height.js"></script>
+<script id="fakeLoader-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/plugins/fakeLoader.min.js"></script>
+<script id="ed-school-scripts-js-extra">
+var wheels = {"siteName":"IIES","data":{"useScrollToTop":true,"useStickyMenu":true,"scrollToTopText":"Go to Top","isAdminBarShowing":false,"initialWaypointScrollCompensation":"120","preloaderSpinner":0,"preloaderBgColor":"#FFFFFF"}};
+//# sourceURL=ed-school-scripts-js-extra
+</script>
+<script id="ed-school-scripts-js" src="https://iies.in/wp-content/themes/ed-school/assets/js/wheels-main.min.js"></script>
+<script id="underscore-js" src="https://iies.in/wp-includes/js/underscore.min.js?ver=1.13.8"></script>
+<script id="jquery.magnific-popup-js" src="https://iies.in/wp-content/plugins/ed-school-plugin/includes/elementor/widgets/video-popup/assets/jquery.magnific-popup.min.js?ver=7.1"></script>
+<script id="lwptoc-main-js" src="https://iies.in/wp-content/plugins/luckywp-table-of-contents/front/assets/main.min.js?ver=2.1.14"></script>
+<script id="elementor-webpack-runtime-js" src="https://iies.in/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.4.8"></script>
+<script id="elementor-frontend-modules-js" src="https://iies.in/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.4.8"></script>
+<script id="elementor-waypoints-js" src="https://iies.in/wp-content/plugins/elementor/assets/lib/waypoints/waypoints.min.js?ver=4.0.2"></script>
+<script id="swiper-js" src="https://iies.in/wp-content/plugins/elementor/assets/lib/swiper/swiper.min.js?ver=5.3.6"></script>
+<script id="share-link-js" src="https://iies.in/wp-content/plugins/elementor/assets/lib/share-link/share-link.min.js?ver=3.4.8"></script>
+<script id="elementor-dialog-js" src="https://iies.in/wp-content/plugins/elementor/assets/lib/dialog/dialog.min.js?ver=4.8.1"></script>
+<script id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Share on Facebook","shareOnTwitter":"Share on Twitter","pinIt":"Pin it","download":"Download","downloadImage":"Download image","fullscreen":"Fullscreen","zoom":"Zoom","share":"Share","playVideo":"Play Video","previous":"Previous","next":"Next","close":"Close"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobile","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Extra","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablet","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablet Extra","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Laptop","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}}},"version":"3.4.8","is_static":false,"experimentalFeatures":{"e_import_export":true,"landing-pages":true,"elements-color-picker":true,"admin-top-bar":true},"urls":{"assets":"https:\/\/iies.in\/wp-content\/plugins\/elementor\/assets\/"},"settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":28654,"title":"Universal%20References%20in%20C%2B%2B%20Explained","excerpt":"","featuredImage":"https:\/\/iies.in\/wp-content\/uploads\/2026\/04\/Universal-References-in-C-stdforward-and-Perfect-Forwarding-Explained-with-Examples.webp"}};
+//# sourceURL=elementor-frontend-js-before
+</script>
+<script id="elementor-frontend-js" src="https://iies.in/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.4.8"></script>
+<script id="preloaded-modules-js" src="https://iies.in/wp-content/plugins/elementor/assets/js/preloaded-modules.min.js?ver=3.4.8"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://iies.in/wp-includes/js/wp-emoji-release.min.js?ver=7.1"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://iies.in/wp-includes/js/wp-emoji-loader.min.js
+</script>
+<style>.lwptoc .lwptoc_i{border:1px solid #1e73be;}.lwptoc_header{color:#0166bf;}</style><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b425a5597615a4',t:'MTc4OTQzODc3Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

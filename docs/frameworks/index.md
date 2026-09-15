@@ -1,11 +1,11 @@
 ---
 title: "Frameworks"
-summary: "Framework pages covering LLM serving systems and structured language-model programming runtimes."
+summary: "Framework pages covering LLM serving systems, programming frameworks, and runtime architecture."
 layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Frameworks
@@ -15,6 +15,12 @@ updated: 2026-09-14
 - [CUDA Graphs in PyTorch: Capture Once, Replay Many](cuda/cuda-graphs/index.md) — Beginner-first guide to capture, stable memory addresses, warmup, replay, partial graphing, NCCL, benchmark interpretation, and failure modes.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](cuda/tile-ir/index.md) — Source-grounded explanation of tile blocks, tensor values, structured tensor views, compiler-owned mapping, and performance portability.
+
+## C++
+
+- [C++](cpp/index.md) — Reference-backed pages about modern C++ language mechanisms and generic programming.
+- [C++ References: Aliases, Binding, Lifetime, and Interface Design](cpp/references.md) — How references alias existing objects, why assignment does not reseat them, and when pointers, handles, or values make clearer contracts.
+- [C++ Universal References: Forwarding and Perfect Forwarding](cpp/universal-references.md) — How forwarding references accept lvalues and rvalues, why named parameters become lvalue expressions, and how `std::forward` restores the caller's value category.
 
 ## Python
 

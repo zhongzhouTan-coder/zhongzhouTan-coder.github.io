@@ -1,0 +1,16 @@
+flowchart LR
+    OBJECT["Existing object"] --> REFERENCE["Reference\nalias / alternate name"]
+    OBJECT --> POINTER["Pointer\nseparate indirection value"]
+    REFERENCE --> MUTATE["T&\nmodify the referent"]
+    REFERENCE --> READ["const T&\nread without a copy"]
+    REFERENCE --> RETURN["T& return\nassignable result"]
+    POINTER --> NULLABLE["nullptr\nabsence is expressible"]
+    POINTER --> RESEAT["reseat\nchange the target"]
+    POINTER --> HANDLE["Handle\nrepresentation may vary"]
+    MUTATE --> INTERFACE["Interface design\nencode caller intent"]
+    READ --> INTERFACE
+    INTERFACE --> VALUE["T by value\nindependent value"]
+    INTERFACE --> FORWARD["Deduced T&&\nforwarding wrapper"]
+    FORWARD --> PRESERVE["std::forward<T>\npreserve value category"]
+    LIFETIME["Lifetime / ownership\ncontract"] -. constrains .-> REFERENCE
+    LIFETIME -. constrains .-> POINTER

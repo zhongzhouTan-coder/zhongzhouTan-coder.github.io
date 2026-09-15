@@ -1,0 +1,10 @@
+flowchart LR
+    PRE["By-value APIs\ncopy or move at the parameter boundary"] --> MOVE["C++11 move semantics\nreuse resources from expiring objects"]
+    MOVE --> RV["Rvalue references\nbind to rvalue expressions"]
+    RV --> OVERLOAD["lvalue/rvalue overloads\nselect by value category"]
+    RV --> FORWARDING["Forwarding references\nT&& with deduction"]
+    FORWARDING --> FORWARD["std::forward<T>\nrestore the caller's category"]
+    MOVE --> MOVECAST["std::move\nexplicit rvalue cast"]
+    FORWARD --> PERFECT["Perfect forwarding\ngeneric wrappers and factories"]
+    MOVECAST -. "deliberate choice" .-> PERFECT
+    PERFECT --> LIBRARY["STL and library utilities"]

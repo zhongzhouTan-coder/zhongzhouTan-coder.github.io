@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Wiki Index
@@ -44,6 +44,9 @@ updated: 2026-09-14
 - [CUDA Graphs in PyTorch: Capture Once, Replay Many](../frameworks/cuda/cuda-graphs/index.md) — How stream capture bundles repeated GPU work, why replay needs static shapes and stable addresses, and when PyTorch graphing removes CPU launch overhead.
 - [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
 - [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Tile-block execution, tensor-first values, structured tensor views, compiler-owned hardware mapping, and performance-portability goals.
+- [C++](../frameworks/cpp/index.md) — Subcategory hub for modern C++ language mechanisms and generic programming.
+- [C++ References: Aliases, Binding, Lifetime, and Interface Design](../frameworks/cpp/references.md) — References as non-reseatable aliases, pointer/reference boundaries, lifetime rules, and parameter-design guidance.
+- [C++ Universal References: Forwarding and Perfect Forwarding](../frameworks/cpp/universal-references.md) — Forwarding-reference deduction, reference collapsing, named-parameter lvalue behavior, `std::forward` versus `std::move`, and perfect-forwarding wrappers.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) — Survey of cache eviction, compression, hybrid memory, alternative attention, and combination strategies for long-context serving.
