@@ -47,6 +47,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [KV Cache](kv-cache.md) — Stores earlier attention keys and values so autoregressive decoding reuses the prefix instead of recomputing it.
 - [Layer Normalization](layer-normalization.md) — Standardizes each example or token across its feature dimensions, independently of other batch members.
 - [Linear Attention](linear-attention.md) — Factors query–key similarity through feature maps so key–value associations can be accumulated without an explicit quadratic attention matrix.
+- [Low-Rank Approximation](low-rank-approximation.md) — Represents a matrix with fewer independent directions while preserving its dominant structure.
 - [Looped Transformers](looped-transformers.md) — Reuse one block's parameters across repeated applications to gain effective computational depth without adding parameters.
 - [Matrix Tiling](matrix-tiling.md) — Blocking a GEMM (or any kernel) into tiles that fit on-chip SRAM and registers so operands are loaded from global memory few times and reused many times.
 - [Outer Product](outer-product.md) — A rank-1 matrix u vᵀ formed from two vectors; GEMM can be computed by accumulating outer products of columns of A with rows of B.
@@ -81,6 +82,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 - [Continuous Batching](continuous-batching.md) — Rebuilds the active LLM-serving batch at each model iteration so finished work can leave and newly ready work can enter.
 - [Block Table](block-table.md) — The per-request logical-to-physical mapping that tells paged attention kernels which physical KV block holds each logical block of a sequence.
+- [KV Cache Offloading](kv-cache-offloading.md) — Moves request-specific key/value state to a slower memory or storage tier and fetches it during inference.
 - [PagedAttention](pagedattention.md) — An attention algorithm that stores a sequence's KV cache in fixed-size non-contiguous blocks addressed through a per-request block table, enabling paged memory management.
 - [Speculative Decoding](speculative-decoding.md) — Drafts several tokens cheaply and has the target model verify them in parallel without changing the target distribution under strict acceptance.
 - [Tree Attention](tree-attention.md) — Evaluates speculative draft branches together while restricting every token to its own root-to-node ancestry.

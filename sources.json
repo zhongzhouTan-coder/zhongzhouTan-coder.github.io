@@ -2115,6 +2115,19 @@
       "derived_path": "derived/web-markdown/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.md",
       "docs_path": "docs/frameworks/cpp/references.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2511.11907v2",
+      "title": "KVSwap: Disk-aware KV Cache Offloading for Long-Context On-device Inference",
+      "slug": "kvswap-disk-aware-kv-cache-offloading-on-device-inference",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference/kvswap-disk-aware-kv-cache-offloading-on-device-inference.md",
+      "docs_path": "docs/frameworks/kvswap/index.md",
+      "status": "ingested"
     }
   ]
 }

@@ -1,0 +1,26 @@
+flowchart TD
+    Base["Decoder LM with explicit KV cache"] --> Wall["Long-context memory and movement wall"]
+
+    Wall --> Evict["Selective access<br/>H2O · Quest · Loki"]
+    Wall --> Compress["Cache compression<br/>KIVI · ShadowKV · MLA"]
+    Wall --> Move["Tiered placement<br/>FlexGen · InfiniGen · PagedAttention"]
+    Move --> Disk["Disk and prefix storage<br/>CacheGen · IMPRESS · CacheBlend"]
+
+    Evict --> KVSwap["KVSwap<br/>disk-first decode offload"]
+    Compress --> KVSwap
+    Move --> KVSwap
+    Disk --> KVSwap
+
+    KVSwap --> Group["Grouped critical-group reads"]
+    KVSwap --> Buffers["Rolling buffer + reuse buffer"]
+    KVSwap --> Overlap["Layer-ahead prediction + overlap"]
+    Paged["PagedAttention"] -. "compatible logical map" .-> KVSwap
+
+    classDef root fill:#e8eef7,stroke:#335d92,color:#17263c
+    classDef pressure fill:#fff1d6,stroke:#b7791f,color:#3b2a0b
+    classDef prior fill:#eef5ea,stroke:#527a4c,color:#1f331c
+    classDef current fill:#dcefe8,stroke:#19734a,color:#102d21
+    class Base root
+    class Wall pressure
+    class Evict,Compress,Move,Disk,Paged prior
+    class KVSwap,Group,Buffers,Overlap current

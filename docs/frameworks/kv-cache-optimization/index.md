@@ -158,7 +158,7 @@ The factor 2 is for keys and values. Every strategy in the survey changes at lea
 **How it works:**
 
 - **PagedAttention** divides cache storage into non-contiguous blocks and maps logical sequence positions to physical blocks, reducing fragmentation and enabling prefix sharing with copy-on-write.
-- **InfiniGen** predicts the next layer's useful KV pairs and prefetches them from CPU while the current layer computes; **LayerKV** overlaps layer-wise transfers with prefill work and uses an SLO-aware scheduler.
+- **InfiniGen** predicts the next layer's useful KV pairs and prefetches them from CPU while the current layer computes; **LayerKV** overlaps layer-wise transfers with prefill work and uses an SLO-aware scheduler. [KV cache offloading](../../terms/kv-cache-offloading.md) becomes disk-first in KVSwap, which adds storage-aligned grouping and reuse for iterative on-device decoding.
 - **KVPR** overlaps partial recomputation with transfer, **Oneiros** remaps parameter memory under KV pressure, and **CLO** reuses recently loaded data when adjacent queries are similar.
 - **INF2** pushes attention closer to storage with computational storage devices, trading generality for specialized hardware.
 

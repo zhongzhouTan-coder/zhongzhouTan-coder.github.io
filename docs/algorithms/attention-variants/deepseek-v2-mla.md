@@ -19,7 +19,7 @@ updated: 2026-08-14
 
 ## TL;DR
 
-**What:** DeepSeek-V2 introduces Multi-head Latent Attention (MLA), an attention layout that caches a low-rank latent vector for keys and values instead of caching full per-head K/V tensors.
+**What:** DeepSeek-V2 introduces Multi-head Latent Attention (MLA), an attention layout that caches a [low-rank latent vector](../../terms/low-rank-approximation.md) for keys and values instead of caching full per-head K/V tensors.
 
 **How:** MLA jointly compresses K and V into a shared latent state, absorbs the K/V up-projections into query and output projections during inference, and adds a small decoupled RoPE key so position information does not break that absorption trick.
 

@@ -50,6 +50,7 @@ updated: 2026-09-15
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](../frameworks/vllm-ascend/qwen3.5-mtp.md) — MTP proposal and target-logit verification path: Qwen3.5 drafts from target hidden states, while vLLM's rejection sampler commits only an accepted prefix.
 - [Frameworks](../frameworks/index.md) — Category overview for LLM serving and programming framework pages.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) — Survey of cache eviction, compression, hybrid memory, alternative attention, and combination strategies for long-context serving.
+- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/kvswap/index.md) — Disk-first KV-cache decoding with compact prediction, grouped storage reads, rolling/reuse buffers, and device-specific tuning.
 - [Python](../frameworks/python/index.md) — Reference-backed guide to Python runtime execution and import behavior.
 - [Python Execution Model: Code Blocks, Scopes, and Runtime State](../frameworks/python/execution-model.md) — How code blocks run in frames, names bind and resolve through namespaces, annotation scopes defer work, and runtime layers share state.
 - [Your Guide to the CPython Source Code](../frameworks/python/cpython-source-code-guide.md) — Historical CPython 3.8 source map from startup and parsing through code objects, frames, objects, the standard library, and tests.
@@ -177,6 +178,8 @@ updated: 2026-09-15
 ## Terms
 
 - [Terms Glossary](../terms/index.md) — Alphabetical glossary of cross-paper technical terms with concise definitions and backlinks to the papers that use them.
+- [KV Cache Offloading](../terms/kv-cache-offloading.md) — Moves request-specific key/value state to a slower memory or storage tier and fetches it during inference.
+- [Low-Rank Approximation](../terms/low-rank-approximation.md) — Represents a matrix with fewer independent directions while preserving its dominant structure.
 - [GPTQ](../terms/gptq.md) — Second-order post-training weight quantization with activation-derived error compensation and scalable block updates.
 - [Post-Training Quantization](../terms/post-training-quantization.md) — Quantization applied to a trained model using calibration data or weight statistics instead of full retraining.
 - [Hadamard Transform](../terms/hadamard-transform.md) — An orthogonal ±1 rotation that spreads outlier mass across coordinates, enabling low-bit LLM quantization.
