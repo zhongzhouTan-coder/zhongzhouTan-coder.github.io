@@ -6,16 +6,16 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
-  - raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/numerics/quantization/microscaling-mx-formats--ocp-v1.0.pdf
 aliases:
   - block-floating-point
   - BFP
 mention_lint: canonical
 appears_in:
-  - docs/hardware/quantization/hif4/index.md
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-updated: 2026-08-25
+  - docs/hardware/numerics/quantization/hif4/index.md
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+updated: 2026-09-16
 ---
 
 # Block Floating Point
@@ -41,8 +41,8 @@ The shared scale must cover the whole block. An outlier can therefore waste repr
 
 ## Where It Appears
 
-- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/quantization/hif4/index.md) — Uses a three-level scale hierarchy to preserve precision and simplify 64-wide dot products.
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Defines the OCP shared-scale block contract and its hardware boundaries.
+- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/numerics/quantization/hif4/index.md) — Uses a three-level scale hierarchy to preserve precision and simplify 64-wide dot products.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md) — Defines the OCP shared-scale block contract and its hardware boundaries.
 
 ## Related Terms
 

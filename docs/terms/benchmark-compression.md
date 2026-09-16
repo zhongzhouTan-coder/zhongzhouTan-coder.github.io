@@ -6,8 +6,8 @@ layout: default
 confidence: medium
 category: benchmarks
 sources:
-  - raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf
-  - raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
+  - raw/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf
+  - raw/benchmarks/agent-eval/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
 aliases:
   - benchmark coreset selection
   - compressed benchmark
@@ -17,7 +17,7 @@ mention_lint: canonical
 appears_in:
   - docs/benchmarks/agent-eval/essencebench/index.md
   - docs/benchmarks/agent-eval/autojudger.md
-updated: 2026-08-19
+updated: 2026-09-16
 ---
 
 # Benchmark Compression

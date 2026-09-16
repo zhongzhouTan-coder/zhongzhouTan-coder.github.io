@@ -6,14 +6,13 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - ring self-attention
   - RSA
 appears_in:
-  - docs/algorithms/context-parallelism/index.md
-  - docs/algorithms/index.md
-updated: 2026-08-14
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+updated: 2026-09-16
 ---
 
 # Ring Attention
@@ -39,10 +38,8 @@ Ring attention needs repeated point-to-point traffic and becomes communication-b
 
 ## Where It Appears
 
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Adapts pass-KV and pass-Q ring attention to full prefill, persistent-KV prefill, and decode.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) - Adapts pass-KV and pass-Q ring attention to full prefill, persistent-KV prefill, and decode.
 - [Ring Attention with Blockwise Transformers](https://arxiv.org/abs/2310.01889) - Earlier blockwise ring formulation for near-infinite-context training.
-
-- [Algorithms](../algorithms/index.md)
 
 ## Related Terms
 

@@ -6,18 +6,17 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
-  - raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf
+  - raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - raw/training/parallelism/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf
 aliases:
   - micro-batch
   - micro batch
 appears_in:
-  - docs/frameworks/sarathi/index.md
-  - docs/training/index.md
+  - docs/frameworks/serving/sarathi/index.md
   - docs/training/parallelism/gpipe/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-07-27
+updated: 2026-09-16
 ---
 
 # Microbatch
@@ -52,8 +51,7 @@ Two main ways to order microbatches:
 - [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md) — Introduces microbatches as the core mechanism for synchronous pipeline-parallel training; defines the bubble overhead formula $O(\frac{K-1}{M+K-1})$ and the $M \ge 4K$ rule.
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Defines the microbatch-bubble tradeoff for PTD-P training and reports throughput sensitivity to microbatch size.
 - [GPipe (Huang et al., 2019)](https://arxiv.org/abs/1811.06965) — Introduced microbatches as the mechanism for pipeline-parallel training of giant neural networks.
-- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Applies uniform pipeline microbatches to LLM inference to reduce bubbles.
-- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md) — Applies uniform pipeline microbatches to LLM inference to reduce bubbles.
 - [Training Parallelism](../training/parallelism/index.md) — Data, tensor, pipeline, and sequence parallelism techniques for large-model training.
 
 ## Related Terms

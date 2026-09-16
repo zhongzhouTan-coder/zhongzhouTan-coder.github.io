@@ -6,18 +6,18 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - CP
   - context parallel
 appears_in:
-  - docs/algorithms/context-parallelism/index.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-  - docs/frameworks/vllm/dcp-attention/index.md
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
-  - docs/training/kimi/kimi-k3/index.md
-updated: 2026-08-14
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+  - docs/frameworks/serving/vllm/dcp-attention/index.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm/vllm-kimi-k3-code-reading.md
+  - docs/training/model-families/kimi/kimi-k3/index.md
+updated: 2026-09-16
 ---
 
 # Context Parallelism
@@ -43,14 +43,14 @@ Context parallelism is strongest for long prefill, where attention compute can h
 
 ## Where It Appears
 
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Exact pass-KV and pass-Q ring attention for Llama3 405B, scaling to 1M-token prefill on 128 H100 GPUs.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) - Separates prefill batch partitioning from decode KV sharding in the V1 serving runtime.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) - Exact pass-KV and pass-Q ring attention for Llama3 405B, scaling to 1M-token prefill on 128 H100 GPUs.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) - Separates prefill batch partitioning from decode KV sharding in the V1 serving runtime.
 
-- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) - Shows how DCP merges local outputs and LSE statistics to recover exact global attention.
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/serving/vllm/dcp-attention/index.md) - Shows how DCP merges local outputs and LSE statistics to recover exact global attention.
 
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md)
-- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md)
-- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md)
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md)
+- [vLLM Kimi K3 Code Reading Map](../frameworks/serving/vllm/vllm-kimi-k3-code-reading.md)
+- [Kimi K3: Open 3T-Class Frontier Model](../training/model-families/kimi/kimi-k3/index.md)
 
 ## Related Terms
 

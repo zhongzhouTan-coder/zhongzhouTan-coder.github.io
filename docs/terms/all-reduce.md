@@ -6,29 +6,29 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
-  - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
-  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - raw/training/parallelism/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - allreduce
   - all_reduce
   - all-reduce collective
 appears_in:
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm/vllm-framework.md
-  - docs/frameworks/vllm/vllm-overview.md
-  - docs/hardware/quantization/nvfp4.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm/vllm-framework.md
+  - docs/frameworks/serving/vllm/vllm-overview.md
+  - docs/hardware/numerics/quantization/nvfp4.md
   - docs/training/foundation-models/llama.md
   - docs/training/parallelism/gpipe/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-  - docs/algorithms/context-parallelism/index.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-  - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-11
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+  - docs/frameworks/serving/vllm/dcp-attention/index.md
+updated: 2026-09-16
 ---
 
 # All-Reduce
@@ -51,7 +51,7 @@ and delivers `result` to every rank. The dominant implementation is the **ring a
 
 The bandwidth cost is $2 \cdot \frac{t-1}{t} \cdot \text{size}$ — nearly independent of $t$ for large $t$, meaning the cost is dominated by the tensor size, not the number of ranks.
 
-![All-reduce source figure](./assets/medium-communication-primitives-all-reduce.png)
+![All-reduce source figure](assets/medium-communication-primitives-all-reduce.png)
 
 *Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article visualizes all-reduce as a cluster-wide reduction whose reduced output is delivered back to every GPU.*
 
@@ -79,16 +79,16 @@ Sequence parallelism has **zero all-reduces in MLP blocks**. Each device compute
 
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Tensor parallelism creates frequent all-reduces inside each Transformer layer; keeping them within a DGX node over NVLink is a core design constraint.
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids all-reduces in MLP blocks entirely because each chunk's linear layers operate independently.
-- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
+- [vLLM: PagedAttention Serving Framework](../frameworks/serving/vllm/vllm-framework.md) — Workers synchronize intermediate results through all-reduce in tensor-parallel inference.
 - [LLaMA: Open and Efficient Foundation Language Models](../training/foundation-models/llama.md) — LLaMA overlaps all-reduce communication with computation to hide gradient-synchronization latency.
-- [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-reduce for distributed amax and scale statistics.
-- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [NVFP4](../hardware/numerics/quantization/nvfp4.md) — Uses all-reduce for distributed amax and scale statistics.
+- [vLLM Architecture and Code Organization Overview](../frameworks/serving/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
 - [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md) — GPipe introduces synchronous micro-batch pipeline parallelism with re-materialization, achieving near-linear speedup when.
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Contrasts CP's ring KV/Q traffic with tensor parallelism's frequent all-reduces across model layers.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — DCP's AG+AR merge can replicate merged attention output across PCP/DCP ranks.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) — Contrasts CP's ring KV/Q traffic with tensor parallelism's frequent all-reduces across model layers.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) — DCP's AG+AR merge can replicate merged attention output across PCP/DCP ranks.
 
-- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Uses all-reduce to replicate the exact merged attention output across ranks in the AG+AR backend.
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/serving/vllm/dcp-attention/index.md) — Uses all-reduce to replicate the exact merged attention output across ranks in the AG+AR backend.
 
 ## Related Terms
 

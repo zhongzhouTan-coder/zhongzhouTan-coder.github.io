@@ -6,22 +6,22 @@ layout: default
 confidence: high
 category: frameworks
 sources:
-  - raw/frameworks/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf
-  - raw/frameworks/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf
-  - raw/frameworks/eagle-3-scaling-inference-acceleration--arxiv-2503.01840v3.pdf
-  - raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf
-  - raw/frameworks/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf
+  - raw/frameworks/speculative-decoding/eagle/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf
+  - raw/frameworks/speculative-decoding/eagle-2/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf
+  - raw/frameworks/speculative-decoding/eagle-3/eagle-3-scaling-inference-acceleration--arxiv-2503.01840v3.pdf
+  - raw/frameworks/speculative-decoding/dspark/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf
+  - raw/frameworks/speculative-decoding/dflash/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf
 aliases:
   - speculative sampling
   - assisted generation
 mention_lint: off
 appears_in:
-  - docs/frameworks/eagle/index.md
-  - docs/frameworks/eagle-2/index.md
-  - docs/frameworks/eagle-3/index.md
-  - docs/frameworks/dspark/index.md
-  - docs/frameworks/dflash/index.md
-updated: 2026-08-17
+  - docs/frameworks/speculative-decoding/eagle/index.md
+  - docs/frameworks/speculative-decoding/eagle-2/index.md
+  - docs/frameworks/speculative-decoding/eagle-3/index.md
+  - docs/frameworks/speculative-decoding/dspark/index.md
+  - docs/frameworks/speculative-decoding/dflash/index.md
+updated: 2026-09-16
 ---
 
 # Speculative Decoding
@@ -54,11 +54,11 @@ Speculative decoding helps when the drafter's early tokens are likely to survive
 
 ## Where It Appears
 
-- [EAGLE: Feature-Level Speculative Sampling](../frameworks/eagle/index.md) - Predicts target-aligned features conditioned on the sampled token and verifies a candidate tree losslessly.
-- [EAGLE-2: Context-Aware Dynamic Draft Trees](../frameworks/eagle-2/index.md) - Uses calibrated confidence and prefix survival to allocate the draft tree per context.
-- [EAGLE-3: Training-Time Test for Speculative Decoding](../frameworks/eagle-3/index.md) - Removes feature regression, fuses target layers, and trains the drafter on self-produced states.
-- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/dspark/index.md) - Adds semi-autoregressive drafting, calibrated prefix survival, and hardware-aware verification scheduling.
-- [DFlash: Block Diffusion for Flash Speculative Decoding](../frameworks/dflash/index.md) - Uses a target-conditioned block-diffusion adapter to draft many tokens in parallel.
+- [EAGLE: Feature-Level Speculative Sampling](../frameworks/speculative-decoding/eagle/index.md) - Predicts target-aligned features conditioned on the sampled token and verifies a candidate tree losslessly.
+- [EAGLE-2: Context-Aware Dynamic Draft Trees](../frameworks/speculative-decoding/eagle-2/index.md) - Uses calibrated confidence and prefix survival to allocate the draft tree per context.
+- [EAGLE-3: Training-Time Test for Speculative Decoding](../frameworks/speculative-decoding/eagle-3/index.md) - Removes feature regression, fuses target layers, and trains the drafter on self-produced states.
+- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/speculative-decoding/dspark/index.md) - Adds semi-autoregressive drafting, calibrated prefix survival, and hardware-aware verification scheduling.
+- [DFlash: Block Diffusion for Flash Speculative Decoding](../frameworks/speculative-decoding/dflash/index.md) - Uses a target-conditioned block-diffusion adapter to draft many tokens in parallel.
 
 ## Related Terms
 

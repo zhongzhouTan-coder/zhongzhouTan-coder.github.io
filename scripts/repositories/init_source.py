@@ -105,6 +105,7 @@ def update_manifest_text(
             "repo_slug",
             "revision",
             "category",
+            "topic_path",
             "kind",
             "provider",
             "repository_url",
@@ -144,6 +145,11 @@ def main() -> int:
     )
     parser.add_argument("checkout")
     parser.add_argument("--category", required=True)
+    parser.add_argument(
+        "--topic-path",
+        required=True,
+        help="Slash-separated topic beneath the selected category.",
+    )
     parser.add_argument("--docs-path", action="append", required=True)
     parser.add_argument("--scope", action="append", required=True)
     parser.add_argument(
@@ -172,6 +178,19 @@ def main() -> int:
     categories = json.loads(categories_path.read_text(encoding="utf-8"))["categories"]
     if args.category not in categories:
         fail(f"unknown category: {args.category}")
+    topic_path = Path(args.topic_path).as_posix().strip("/")
+    if (
+        Path(topic_path).is_absolute()
+        or ".." in Path(topic_path).parts
+        or not re.fullmatch(
+            r"[a-z0-9]+(?:-[a-z0-9]+)*(?:/[a-z0-9]+(?:-[a-z0-9]+)*)*",
+            topic_path,
+        )
+    ):
+        fail("--topic-path must be lowercase, hyphenated, and slash-separated")
+    topic_root = topic_path.split("/", 1)[0]
+    if topic_root not in categories[args.category].get("topic_roots", []):
+        fail(f"topic root {topic_root!r} is not allowed for {args.category}")
 
     checkout_input = Path(args.checkout)
     checkout = (
@@ -245,11 +264,12 @@ def main() -> int:
     )
     source_slug = f"{repo_slug}-codebase"
     raw_path = (
-        f"raw/{args.category}/{repo_slug}-codebase--"
+        f"raw/{args.category}/{topic_path}/{repo_slug}-codebase--"
         f"{repository_remote.provider}-{short_sha}.md"
     )
     derived_path = (
-        f"derived/repo-analysis/{args.category}/{repo_slug}/{commit}/"
+        f"derived/repo-analysis/{args.category}/{topic_path}/"
+        f"{repo_slug}/{commit}/"
     )
 
     docs_paths: list[str] = []
@@ -258,6 +278,9 @@ def main() -> int:
         if path.is_absolute() or ".." in path.parts or not value.startswith("docs/"):
             fail(f"docs path must be repository-relative beneath docs/: {value}")
         normalized = path.as_posix()
+        expected_docs_prefix = f"docs/{args.category}/"
+        if not normalized.startswith(expected_docs_prefix):
+            fail(f"docs path must be beneath {expected_docs_prefix}: {value}")
         if normalized not in docs_paths:
             docs_paths.append(normalized)
 
@@ -326,6 +349,7 @@ quantitative codebase claims.
         "repo_slug": repo_slug,
         "revision": commit,
         "category": args.category,
+        "topic_path": topic_path,
         "kind": "repository",
         "provider": repository_remote.provider,
         "repository_url": repository_remote.repository_url,

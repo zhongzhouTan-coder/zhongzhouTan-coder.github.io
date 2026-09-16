@@ -6,21 +6,20 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - PP
   - pipeline model parallelism
 appears_in:
-  - docs/algorithms/context-parallelism/index.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-  - docs/frameworks/sarathi/index.md
-  - docs/training/index.md
-  - docs/training/mhc/index.md
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+  - docs/frameworks/serving/sarathi/index.md
+  - docs/training/architectures/mhc/index.md
   - docs/training/parallelism/gpipe/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-14
+updated: 2026-09-16
 ---
 
 # Pipeline Parallelism
@@ -46,12 +45,11 @@ Pipeline parallelism does not split the tokens of one request across stages, so 
 
 ## Where It Appears
 
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Describes why pipeline parallelism alone does not remove long-prompt latency.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP currently rejects PP greater than one in its MRV2 validation.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) - Describes why pipeline parallelism alone does not remove long-prompt latency.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) — PCP currently rejects PP greater than one in its MRV2 validation.
 
-- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md)
-- [Training](../training/index.md)
-- [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md)
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md)
+- [mHC: Manifold-Constrained Hyper-Connections](../training/architectures/mhc/index.md)
 - [GPipe: Micro-Batch Pipeline Parallelism](../training/parallelism/gpipe/index.md)
 - [Training Parallelism](../training/parallelism/index.md)
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md)

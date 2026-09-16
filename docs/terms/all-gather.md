@@ -6,30 +6,30 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
-  - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
-  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - raw/training/parallelism/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - allgather
   - all_gather
   - all-gather collective
   - split/all-gather
 appears_in:
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
-  - docs/frameworks/vllm/vllm-overview.md
-  - docs/hardware/quantization/nvfp4.md
-  - docs/training/kimi/kimi-k3/index.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md
+  - docs/frameworks/serving/vllm/vllm-overview.md
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/training/model-families/kimi/kimi-k3/index.md
   - docs/training/parallelism/megatron-lm/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
   - docs/training/efficient-attention/yoco/index.md
-  - docs/algorithms/context-parallelism/index.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-  - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-09-10
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+  - docs/frameworks/serving/vllm/dcp-attention/index.md
+updated: 2026-09-16
 ---
 
 # All-Gather
@@ -51,7 +51,7 @@ For $t$ ranks, each holding one shard of size $s$, all-gather proceeds as:
 
 In practice, libraries such as NCCL implement this with topology-aware algorithms such as rings or trees, but the observable contract is simple: everyone ends with the same full tensor.
 
-![All-gather source figure](./assets/medium-communication-primitives-all-gather.png)
+![All-gather source figure](assets/medium-communication-primitives-all-gather.png)
 
 *Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article visualizes all-gather as a full collection step whose end state is identical on every GPU.*
 
@@ -78,16 +78,16 @@ Sequence parallelism splits the input sequence into chunks across GPUs at the st
 
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — The scatter/gather optimization uses split + all-gather at pipeline boundaries, yielding up to 11% throughput improvement.
 - [Sequence Parallelism: Splitting Sequences Across GPUs](../training/parallelism/sequence-parallelism/index.md) — Sequence parallelism avoids the split/all-gather cost entirely because activations are already chunked along the sequence dimension.
-- [NVFP4](../hardware/quantization/nvfp4.md) — Uses all-gather to assemble quantized tensor shards in distributed training.
-- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
-- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
-- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
+- [NVFP4](../hardware/numerics/quantization/nvfp4.md) — Uses all-gather to assemble quantized tensor shards in distributed training.
+- [vLLM Architecture and Code Organization Overview](../frameworks/serving/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [Kimi K3: Open 3T-Class Frontier Model](../training/model-families/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
 - [YOCO: You Only Cache Once](../training/efficient-attention/yoco/index.md) — Uses one cross-decoder all-gather of the global K/V cache in chunk-parallel long-sequence training.
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses ring send/recv instead of an all-gather of the full context for exact prefill and decode attention.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP gathers prefill cache inputs and restores hidden states; DCP gathers attention statistics.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) — Uses ring send/recv instead of an all-gather of the full context for exact prefill and decode attention.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) — PCP gathers prefill cache inputs and restores hidden states; DCP gathers attention statistics.
 
-- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Gathers per-rank LSE statistics before correcting local attention outputs.
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/serving/vllm/dcp-attention/index.md) — Gathers per-rank LSE statistics before correcting local attention outputs.
 
 ## Related Terms
 

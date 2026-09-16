@@ -6,25 +6,25 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
-  - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
+  - derived/web-markdown/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - dot product
   - scalar product
 appears_in:
   - docs/algorithms/foundations/transformer.md
-  - docs/algorithms/linear-attention/index.md
-  - docs/algorithms/linear-attention/linear-attention-without-softmax.md
-  - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
-  - docs/hardware/spatial-gemm.md
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-  - docs/hardware/quantization/hif4/index.md
+  - docs/algorithms/attention/linear/index.md
+  - docs/algorithms/attention/linear/linear-attention-without-softmax.md
+  - docs/frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md
+  - docs/hardware/kernels-dataflow/spatial-gemm.md
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+  - docs/hardware/numerics/quantization/hif4/index.md
   - docs/training/efficient-attention/swat-sliding-window-attention/index.md
-  - docs/training/fine-tuning/socratic-swe/index.md
+  - docs/training/adaptation/fine-tuning/socratic-swe/index.md
   - docs/training/parallelism/sequence-parallelism/index.md
-updated: 2026-08-25
+updated: 2026-09-16
 ---
 
 # Inner Product
@@ -58,16 +58,16 @@ The reduction over $k$ is the "inner" dimension — the one shared by both matri
 ## Where It Appears
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Mentions inner-product GEMM as the alternative to the outer-product version it builds (linked from the companion Inner Product tutorial).
-- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — Frames inner-product accumulation as one of the GEMM decomposition choices.
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Uses narrow MX elements in block-level dot products and explains why shared scaling changes the reduction hardware.
-- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Shows how shared micro-exponents can be absorbed into a 64-length integer-heavy dot product.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/kernels-dataflow/spatial-gemm.md) — Frames inner-product accumulation as one of the GEMM decomposition choices.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md) — Uses narrow MX elements in block-level dot products and explains why shared scaling changes the reduction hardware.
+- [HiFloat4 (HiF4)](../hardware/numerics/quantization/hif4/index.md) — Shows how shared micro-exponents can be absorbed into a 64-length integer-heavy dot product.
 - [Transformer Foundations](../algorithms/foundations/transformer.md) — Scaled dot-product attention: compatibility between query and key, with $\sqrt{d_k}$ scaling.
-- [Linear Attention](../algorithms/linear-attention/index.md) — Query–key similarity is an ordinary dot product in feature space.
+- [Linear Attention](../algorithms/attention/linear/index.md) — Query–key similarity is an ordinary dot product in feature space.
 - [Sequence Parallelism](../training/parallelism/sequence-parallelism/index.md) — Each GPU computes dot products between its query chunk and every other rank's keys.
-- [线性Attention的探索：Attention必须有个Softmax吗？](../algorithms/linear-attention/linear-attention-without-softmax.md) — Su Jianlin's influential blog survey on why softmax is the bottleneck of standard attention, how removing it enables O(n) linear.
-- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
+- [线性Attention的探索：Attention必须有个Softmax吗？](../algorithms/attention/linear/linear-attention-without-softmax.md) — Su Jianlin's influential blog survey on why softmax is the bottleneck of standard attention, how removing it enables O(n) linear.
+- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
 - [SWAT: Sliding Window Attention Training](../training/efficient-attention/swat-sliding-window-attention/index.md) — Trains transformers from scratch with sigmoid-based sliding window attention, replacing softmax to eliminate attention sink and.
-- [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/fine-tuning/socratic-swe/index.md) — Closed-loop self-evolution framework that distills SWE agent solving traces into structured skills, uses them to guide targeted.
+- [Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Skills](../training/adaptation/fine-tuning/socratic-swe/index.md) — Closed-loop self-evolution framework that distills SWE agent solving traces into structured skills, uses them to guide targeted.
 
 ## Related Terms
 

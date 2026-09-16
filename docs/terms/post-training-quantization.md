@@ -6,19 +6,19 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf
-  - raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/numerics/quantization/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf
+  - raw/hardware/numerics/quantization/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - PTQ
   - one-shot quantization
 mention_lint: canonical
 appears_in:
-  - docs/hardware/quantization/gptq/index.md
-  - docs/hardware/quantization/flatquant/index.md
-  - docs/hardware/quantization/quarot/index.md
-  - docs/hardware/quantization/hif4/index.md
-updated: 2026-08-25
+  - docs/hardware/numerics/quantization/gptq/index.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
+  - docs/hardware/numerics/quantization/quarot/index.md
+  - docs/hardware/numerics/quantization/hif4/index.md
+updated: 2026-09-16
 ---
 
 # Post-Training Quantization
@@ -47,10 +47,10 @@ PTQ is inexpensive relative to retraining, yet it has less freedom to recover fr
 
 ## Where It Appears
 
-- [GPTQ](../hardware/quantization/gptq/index.md) — Uses activation-derived second-order correction to make 3–4-bit weight-only PTQ practical at 175B scale.
-- [FlatQuant](../hardware/quantization/flatquant/index.md) — Learns affine transformations, scaling, and clipping for accurate weight-and-activation PTQ.
-- [QuaRot](../hardware/quantization/quarot/index.md) — Rotates activations to remove outliers so plain 4-bit weight-and-activation PTQ works end to end.
-- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Compares direct-cast HiF4 with NVFP4 and adapts GPTQ as HiGPTQ for further accuracy recovery.
+- [GPTQ](../hardware/numerics/quantization/gptq/index.md) — Uses activation-derived second-order correction to make 3–4-bit weight-only PTQ practical at 175B scale.
+- [FlatQuant](../hardware/numerics/quantization/flatquant/index.md) — Learns affine transformations, scaling, and clipping for accurate weight-and-activation PTQ.
+- [QuaRot](../hardware/numerics/quantization/quarot/index.md) — Rotates activations to remove outliers so plain 4-bit weight-and-activation PTQ works end to end.
+- [HiFloat4 (HiF4)](../hardware/numerics/quantization/hif4/index.md) — Compares direct-cast HiF4 with NVFP4 and adapts GPTQ as HiGPTQ for further accuracy recovery.
 
 ## Related Terms
 

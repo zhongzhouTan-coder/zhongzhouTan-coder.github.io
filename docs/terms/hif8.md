@@ -6,10 +6,10 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf
+  - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
-  - docs/hardware/ascend/ascend-950/index.md
-updated: 2026-08-31
+  - docs/hardware/accelerators/ascend/ascend-950/index.md
+updated: 2026-09-16
 ---
 
 # HiF8
@@ -35,7 +35,7 @@ HiF8 is a vendor-specific format, so software, kernels, calibration, accumulatio
 
 ## Where It Appears
 
-- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Explains HiF8's exponent encoding and its role in the third-generation Cube datapath.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/accelerators/ascend/ascend-950/index.md) — Explains HiF8's exponent encoding and its role in the third-generation Cube datapath.
 
 ## Related Terms
 

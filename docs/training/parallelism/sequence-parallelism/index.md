@@ -4,9 +4,9 @@ summary: "Distributes input sequence chunks across GPUs with ring-style communic
 layout: default
 confidence: high
 sources:
-  - raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
-  - derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md
-updated: 2026-08-14
+  - raw/training/parallelism/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf
+  - derived/pdf-markdown/training/parallelism/sequence-parallelism-long-sequence-training.md
+updated: 2026-09-16
 ---
 
 # Sequence Parallelism: Long Sequence Training from System Perspective

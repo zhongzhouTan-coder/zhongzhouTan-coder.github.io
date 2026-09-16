@@ -4,9 +4,9 @@ summary: "Trains transformers from scratch with sigmoid-based sliding window att
 layout: default
 confidence: high
 sources:
-  - raw/training/swat-sliding-window-attention-training--paper.pdf
-  - derived/pdf-markdown/training/swat-sliding-window-attention-training.md
-updated: 2026-08-14
+  - raw/training/efficient-attention/swat-sliding-window-attention-training--paper.pdf
+  - derived/pdf-markdown/training/efficient-attention/swat-sliding-window-attention-training.md
+updated: 2026-09-16
 ---
 
 # SWAT: Sliding Window Attention Training
@@ -15,7 +15,7 @@ updated: 2026-08-14
 **Authors:** Zichuan Fu, Wentao Song, Yejing Wang, Xian Wu, Yefeng Zheng, Yingying Zhang, Derong Xu, Xuetao Wei, Tong Xu, Xiangyu Zhao (City University of Hong Kong, Xi'an Jiaotong University, Tencent YouTu Lab, Westlake University, USTC, SUSTech)
 **Published:** 2025
 
-**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention-variants/multi-query-attention.md)
+**Related pages:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/model-architectures/deepseek-v3-2/index.md), [Transformer](../../../algorithms/foundations/transformer.md), [Grouped-Query Attention](../../../algorithms/attention/variants/grouped-query-attention/index.md), [Multi-Query Attention](../../../algorithms/attention/variants/multi-query-attention.md)
 
 ## TL;DR
 
@@ -251,4 +251,4 @@ The SWA training ablation (Table 2) demonstrates the fundamental advantage: Slid
 - **Longformer (original SWA):** Beltagy et al., "Longformer: The Long-Document Transformer" (arXiv:2004.05150) — introduced sliding window attention for Transformers
 - **ALiBi:** Press et al., "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation" (arXiv:2108.12409) — the original ALiBi position embedding method
 - **RoPE:** Su et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding" (arXiv:2104.09864) — Rotary Position Embedding
-- **Related docs:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md) — another sparse attention approach co-designed with GQA; [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md) — sparse attention with [lightning indexer](../../../terms/lightning-indexer.md)
+- **Related docs:** [MiniMax Sparse Attention](../minimax-sparse-attention/index.md) — another sparse attention approach co-designed with GQA; [DeepSeek-V3.2 DSA](../../../algorithms/model-architectures/deepseek-v3-2/index.md) — sparse attention with [lightning indexer](../../../terms/lightning-indexer.md)

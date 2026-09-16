@@ -4,10 +4,10 @@ summary: "Explains the binary-reflected Gray code, its reflect-and-prefix constr
 layout: default
 confidence: medium
 sources:
-  - raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.html
-  - raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.metadata.json
-  - derived/web-markdown/algorithms/gray-code--web-2026-08-24-614922af9d5c.md
-updated: 2026-08-24
+  - raw/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.html
+  - raw/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.metadata.json
+  - derived/web-markdown/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.md
+updated: 2026-09-16
 ---
 
 # Gray Code: One-Bit Transitions for Safe State Changes

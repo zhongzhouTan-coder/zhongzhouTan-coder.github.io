@@ -4,8 +4,8 @@ summary: "τ-Voice extends τ²-bench to full-duplex voice: 278 tasks across ret
 layout: default
 confidence: high
 sources:
-  - raw/benchmarks/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf
-updated: 2026-07-15
+  - raw/benchmarks/agent-eval/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf
+updated: 2026-09-16
 ---
 
 # τ-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains

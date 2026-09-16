@@ -6,17 +6,16 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
-  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
 aliases:
   - scatter-gather
   - scatter gather
 appears_in:
-  - docs/training/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-03
+updated: 2026-09-16
 ---
 
 # Scatter/Gather
@@ -35,7 +34,7 @@ The generic primitives behind this optimization are the same ones described in t
 
 This reduces the cross-node payload from $b \cdot s \cdot h$ (full tensor, $t$ redundant copies) to $\frac{b \cdot s \cdot h}{t}$ (one shard per rank).
 
-![Scatter source figure](./assets/medium-communication-primitives-scatter.png)
+![Scatter source figure](assets/medium-communication-primitives-scatter.png)
 
 *Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The article's scatter figure shows the sender-side half of the optimization: different shards go to different GPUs instead of broadcasting the same full tensor to all of them.*
 
@@ -47,7 +46,6 @@ Megatron-LM reports up to **11% throughput improvement** for communication-inten
 
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md) — Introduced as part of the PTD-P training system; Section 5.7 shows the 11% throughput gain on GPT-3 175B.
 - The technique is accelerator-agnostic and applies to any distributed training system where intra-node bandwidth (NVLink) vastly exceeds inter-node bandwidth (InfiniBand).
-- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
 
 ## Related Terms
 

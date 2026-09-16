@@ -4,8 +4,8 @@ summary: "Pier is a Harbor-compatible coding-agent evaluation harness focused on
 layout: default
 confidence: high
 sources:
-  - raw/benchmarks/pier-coding-agent-evaluation-harness.md
-updated: 2026-07-15
+  - raw/benchmarks/agent-eval/pier-coding-agent-evaluation-harness.md
+updated: 2026-09-16
 ---
 
 # Pier: Coding-Agent Evaluation Harness
@@ -200,7 +200,7 @@ Pier's most distinctive contribution is its insistence on **high-quality, analyz
 
 - **Read:** [Pier repository](https://github.com/datacurve-ai/pier)
 - **Build on:** [DeepSWE: Long-Horizon Software Engineering Benchmark](../deepswe/index.md), [DeepSWE v1.1](../deepswe-v1-1/index.md)
-- **Understand the context:** [Harbor: Agent Evaluation Framework Design](../../../frameworks/harbor/index.md)
+- **Understand the context:** [Harbor: Agent Evaluation Framework Design](../../../frameworks/infrastructure/harbor/index.md)
 - **Reproduce:** [github.com/datacurve-ai/pier](https://github.com/datacurve-ai/pier)
 
 ## Key Takeaways

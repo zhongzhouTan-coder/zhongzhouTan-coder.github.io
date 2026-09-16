@@ -25,50 +25,56 @@ Do not create new top-level `raw/`, `derived/pdf-markdown/`, `derived/repo-analy
 PDF source names must be deterministic and readable:
 
 ```text
-raw/{category}/{short-title-slug}--{source-id}.pdf
+raw/{category}/{topic-path}/{short-title-slug}--{source-id}.pdf
 ```
 
 Markdown source names should use:
 
 ```text
-raw/{category}/{short-title-slug}.md
+raw/{category}/{topic-path}/{short-title-slug}.md
 ```
 
 Repository source records should use:
 
 ```text
-raw/{category}/{repo-slug}-codebase--{provider}-{short-sha}.md
+raw/{category}/{topic-path}/{repo-slug}-codebase--{provider}-{short-sha}.md
 ```
 
 Generated Markdown should use:
 
 ```text
-derived/pdf-markdown/{category}/{short-title-slug}.md
+derived/pdf-markdown/{category}/{topic-path}/{short-title-slug}.md
 ```
 
 When a generated extraction needs sibling assets, use a folder-backed primary Markdown file:
 
 ```text
-derived/pdf-markdown/{category}/{short-title-slug}/{short-title-slug}.md
+derived/pdf-markdown/{category}/{topic-path}/{short-title-slug}/{short-title-slug}.md
 ```
 
 Generated repository analysis should use:
 
 ```text
-derived/repo-analysis/{category}/{repo-slug}/{full-sha}/
+derived/repo-analysis/{category}/{topic-path}/{repo-slug}/{full-sha}/
 ```
 
 Immutable web captures should use:
 
 ```text
-raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.html
-raw/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.metadata.json
-derived/web-markdown/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.md
-derived/web-markdown/{category}/{short-title-slug}--web-{capture-date}-{short-sha256}.assets/
+raw/{category}/{topic-path}/{short-title-slug}--web-{capture-date}-{short-sha256}.html
+raw/{category}/{topic-path}/{short-title-slug}--web-{capture-date}-{short-sha256}.metadata.json
+derived/web-markdown/{category}/{topic-path}/{short-title-slug}--web-{capture-date}-{short-sha256}.md
+derived/web-markdown/{category}/{topic-path}/{short-title-slug}--web-{capture-date}-{short-sha256}.assets/
 ```
 
 Rules:
 
+- Select a `topic_path` whose first component is listed in the category's
+  `topic_roots` in `kb-categories.json`. Use additional components for stable
+  project or method families, not for source type or publication date.
+- Mirror the same `topic_path` across raw and derived evidence. Keep a
+  repository revision under its repository's stable home even when it supports
+  docs pages in several topics.
 - Use lowercase ASCII slugs.
 - Use hyphens between words.
 - Keep arXiv versions when the filename already has one.
@@ -94,6 +100,7 @@ Every ingested source should have an entry in `sources.json` with:
 - `title`
 - `slug`
 - `category`
+- `topic_path`
 - `kind`
 - `raw_paths`
 - `docs_path` for non-repository sources, or `docs_paths` for repository revisions
@@ -102,13 +109,16 @@ Every ingested source should have an entry in `sources.json` with:
 Add `derived_path` when a generated Markdown extraction exists.
 For `kind: "repository"`, require `repo_slug`, `provider`, `repository_url`,
 `revision`, `docs_paths`, and a `derived_path` ending in
-`derived/repo-analysis/{category}/{repo-slug}/{full-sha}/`.
+`derived/repo-analysis/{category}/{topic-path}/{repo-slug}/{full-sha}/`.
 For `kind: "web"`, require `source_url`, `final_url`, `captured_at`, a
 64-character SHA-256 `revision`, two immutable `raw_paths`, and a
 `derived_path` below `derived/web-markdown/{category}/`. A captured source may
 omit `docs_path`; an ingested source must name and be cited by its docs page.
 
-`docs_path` (and each `docs_paths` entry) must stay under `docs/{category}/`.
+`docs_path` for a non-repository source must stay under
+`docs/{category}/{topic-path}/`. Repository `docs_paths` may span topic paths
+within the same category because one pinned revision can support several
+subsystems.
 `kb-check-integrity.py` enforces this prefix, and the page's raw and derived
 sources live under the same category. Reorganize within the category instead of
 relocating a page across categories unless the raw and derived sources are moved

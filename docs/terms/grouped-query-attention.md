@@ -6,18 +6,17 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - GQA
   - grouped query attention
 appears_in:
-  - docs/algorithms/context-parallelism/index.md
-  - docs/algorithms/attention-variants/grouped-query-attention/index.md
-  - docs/algorithms/attention-variants/multi-query-attention.md
-  - docs/algorithms/index.md
-  - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
-  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
-updated: 2026-08-14
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/algorithms/attention/variants/grouped-query-attention/index.md
+  - docs/algorithms/attention/variants/multi-query-attention.md
+  - docs/frameworks/serving/vllm-ascend/qwen3.5-qwen3.6-inference.md
+  - docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md
+updated: 2026-09-16
 ---
 
 # Grouped-Query Attention
@@ -43,14 +42,13 @@ Fewer KV heads reduce cache and communication cost, but the model must be traine
 
 ## Where It Appears
 
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Uses Llama3's 128 query heads and 8 KV heads to make pass-KV communication efficient.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) - Uses Llama3's 128 query heads and 8 KV heads to make pass-KV communication efficient.
 - [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245) - Introduces grouped-query adaptation from multi-head checkpoints.
 
-- [Grouped-Query Attention in Llama 2](../algorithms/attention-variants/grouped-query-attention/index.md)
-- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention-variants/multi-query-attention.md)
-- [Algorithms](../algorithms/index.md)
-- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md)
-- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md)
+- [Grouped-Query Attention in Llama 2](../algorithms/attention/variants/grouped-query-attention/index.md)
+- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention/variants/multi-query-attention.md)
+- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/serving/vllm-ascend/qwen3.5-qwen3.6-inference.md)
+- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md)
 
 ## Related Terms
 

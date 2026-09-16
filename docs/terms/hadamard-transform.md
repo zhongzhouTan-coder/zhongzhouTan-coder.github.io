@@ -6,7 +6,7 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf
+  - raw/hardware/numerics/quantization/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf
 aliases:
   - Walsh-Hadamard Transform
   - Hadamard rotation
@@ -17,11 +17,11 @@ mention_aliases:
   - randomized Hadamard transform
 mention_lint: canonical
 appears_in:
-  - docs/hardware/quantization/quarot/index.md
-  - docs/hardware/quantization/flatquant/index.md
-  - docs/hardware/quantization/nvfp4.md
-  - docs/algorithms/kronecker-product.md
-updated: 2026-08-21
+  - docs/hardware/numerics/quantization/quarot/index.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/algorithms/foundations/kronecker-product.md
+updated: 2026-09-16
 ---
 
 # Hadamard Transform
@@ -55,10 +55,10 @@ and larger sizes recurse with a [Kronecker product](kronecker-product.md): $H_{2
 
 ## Where It Appears
 
-- [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/quantization/quarot/index.md) — Source-defining use: fused Hadamard rotations make weights, activations, and KV cache all quantizable to 4 bits.
-- [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md) — Replaces the fixed Hadamard rotation with a per-layer learned affine transform, citing QuaRot as the baseline.
-- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — Uses a Random Hadamard Transform to smooth outliers before FP4 block quantization.
-- [Kronecker Product](../algorithms/kronecker-product.md) — Builds large Hadamard matrices from small ones via Kronecker products.
+- [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](../hardware/numerics/quantization/quarot/index.md) — Source-defining use: fused Hadamard rotations make weights, activations, and KV cache all quantizable to 4 bits.
+- [FlatQuant: Fast Learnable Affine Quantization](../hardware/numerics/quantization/flatquant/index.md) — Replaces the fixed Hadamard rotation with a per-layer learned affine transform, citing QuaRot as the baseline.
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/numerics/quantization/nvfp4.md) — Uses a Random Hadamard Transform to smooth outliers before FP4 block quantization.
+- [Kronecker Product](../algorithms/foundations/kronecker-product.md) — Builds large Hadamard matrices from small ones via Kronecker products.
 
 ## Related Terms
 

@@ -28,11 +28,11 @@ This repository is a markdown knowledge base.
 
 ## Source Locations
 
-- `raw/` stores original source files. Never modify them.
-- `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats. These files are derived from `raw/` sources and may be regenerated.
-- `derived/web-markdown/` stores generated Markdown extracted from immutable HTML snapshots under `raw/`. These files may be regenerated from the matching snapshot.
+- `raw/` stores original source files beneath category-relative topic paths. Never modify source contents.
+- `derived/pdf-markdown/` stores generated Markdown extracted from PDFs and other document formats, mirroring each source's category and `topic_path`. These files are derived from `raw/` sources and may be regenerated.
+- `derived/web-markdown/` stores generated Markdown extracted from immutable HTML snapshots under `raw/`, mirroring each source's category and `topic_path`. These files may be regenerated from the matching snapshot.
 - `external-repos/` stores local third-party repository checkouts used for code reading. This directory is ignored by git. Agents may inspect files there but must not edit them. In docs, never link a checkout file with ordinary Markdown; use the revision-aware `code-link` anchor required by `.github/instructions/repo-reading.instructions.md` so links remain valid when another agent has not materialized the checkout.
-- `derived/repo-analysis/` stores generated code-reading notes extracted from local repository checkouts. These files are derived from pinned repository commits and may be regenerated.
+- `derived/repo-analysis/` stores generated code-reading notes beneath category, `topic_path`, repository slug, and pinned revision. These files are derived from pinned repository commits and may be regenerated.
 - `docs/` stores AI-maintained markdown knowledge pages by topic.
 - `docs/logs/index.md` is the wiki index.
 - `docs/logs/log.md` is the chronological change log.
@@ -90,7 +90,7 @@ The triggers below apply only after the request has passed the intent gate and
 has been classified as source ingest.
 
 - When a new source is added for knowledge-base ingestion: read the source from `raw/`, create or update the relevant `docs/` page, update `docs/logs/index.md`, and append to `docs/logs/log.md`.
-- When a new PDF source is added: choose its canonical category from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise raw/algorithms/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
+- When a new PDF source is added: choose its canonical category and `topic_path` from `kb-categories.json`, normalize its filename with the policy in `.github/instructions/source-organization.instructions.md`, add or update `sources.json`, convert it to Markdown with `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise`, then read the generated Markdown to write the insight page. Save generated Markdown under the matching category and topic subdirectory below `derived/pdf-markdown/`, for example `./scripts/run-in-workspace.sh python scripts/ingestion/mineru_to_markdown.py --mode precise raw/algorithms/attention/flashattention/example--arxiv-0000.00000v1.pdf --output-dir derived/pdf-markdown/algorithms/attention/flashattention`. Treat the generated Markdown as the primary source for docs synthesis. Keep the original PDF content unchanged, and cite the canonical `raw/` PDF path in docs front matter.
 - When a new web page source is added: capture it with `scripts/ingestion/web_to_markdown.mjs`, preserve the immutable HTML and metadata under `raw/`, use the generated `derived/web-markdown/` file for synthesis, then cite all three artifacts from the docs page before changing the manifest status from `captured` to `ingested`.
 - For any new or existing repository-backed page, follow the canonical
   `reuse` / `new revision` / `new repository` workflow in
@@ -118,7 +118,7 @@ has been classified as source ingest.
 
 ## Docs Organization
 
-- **Keep categories organized with subcategory folders.** Inside each topic category (`docs/frameworks/`, `docs/algorithms/`, `docs/benchmarks/`, `docs/training/`, `docs/hardware/`), group related pages into per-project or per-theme subfolders (for example `docs/frameworks/vllm/`, `docs/algorithms/flashattention/`, `docs/benchmarks/agent-eval/`). Give each subcategory a hub page at `<subfolder>/index.md` that lists its pages, and group links under matching subheadings in the category `index.md`.
+- **Keep categories organized with topic paths.** Inside each category (`docs/frameworks/`, `docs/algorithms/`, `docs/benchmarks/`, `docs/training/`, `docs/hardware/`), choose a stable topic root from `kb-categories.json` and optionally a project or method-family component (for example `docs/frameworks/serving/vllm/`, `docs/algorithms/attention/flashattention/`, `docs/benchmarks/agent-eval/`). Give every navigational level a hub `index.md`; category indexes link topic hubs, which link project or family hubs.
 - **Keep pages linked to avoid orphans.** Every docs page must be reachable from a category index, a subcategory hub, or `docs/logs/index.md`; the lint reports unreferenced pages as orphans.
 - **Do not move a page across categories casually.** `kb-check-integrity.py` requires each `sources.json` `docs_path` to stay under `docs/{category}/`, and the page's raw/derived sources live under `raw/{category}/` and `derived/pdf-markdown/{category}/`. Relocating a page to another category therefore requires moving its raw and derived sources and updating the manifest `category`. Prefer reorganizing within the page's existing category.
 - **When moving or renaming any docs page:** use `git mv` to preserve history, recompute relative links in the moved page and in every page that links to it, update `sources.json` (`docs_path` or `docs_paths`), update the category index and subcategory hub, update `docs/logs/index.md`, append `docs/logs/log.md`, then run `./scripts/lint-docs.sh`.

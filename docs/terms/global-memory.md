@@ -6,27 +6,27 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.html
-  - derived/web-markdown/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.md
+  - raw/frameworks/compilers-kernels/triton-ascend/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.html
+  - derived/web-markdown/frameworks/compilers-kernels/triton-ascend/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.md
 aliases:
   - GM
   - HBM
   - device memory
 appears_in:
-  - docs/algorithms/flashattention/flashattention-2.md
-  - docs/algorithms/flashattention/flashattention-3.md
-  - docs/algorithms/flashattention/flashattention-4.md
-  - docs/algorithms/flashattention/flashattention.md
-  - docs/frameworks/cuda/index.md
-  - docs/frameworks/cuda/tile-ir/index.md
-  - docs/frameworks/tilelang/index.md
-  - docs/frameworks/triton-ascend/operator-mechanisms.md
-  - docs/hardware/quantization/flatquant/index.md
-  - docs/hardware/spatial-gemm.md
-  - docs/training/deepseek/deepseek-v4/index.md
+  - docs/algorithms/attention/flashattention/flashattention-2.md
+  - docs/algorithms/attention/flashattention/flashattention-3.md
+  - docs/algorithms/attention/flashattention/flashattention-4.md
+  - docs/algorithms/attention/flashattention/flashattention.md
+  - docs/frameworks/compilers-kernels/cuda/index.md
+  - docs/frameworks/compilers-kernels/cuda/tile-ir/index.md
+  - docs/frameworks/compilers-kernels/tilelang/index.md
+  - docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
+  - docs/hardware/kernels-dataflow/spatial-gemm.md
+  - docs/training/model-families/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
-  - docs/training/kimi/kimi-k3/index.md
-updated: 2026-08-10
+  - docs/training/model-families/kimi/kimi-k3/index.md
+updated: 2026-09-16
 ---
 
 # Global Memory
@@ -52,19 +52,19 @@ Global memory is the performance bottleneck of most kernels: bandwidth is far lo
 
 ## Where It Appears
 
-- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Defines global memory as device DRAM visible to all SMs and contrasts it with registers, shared memory, and caches.
-- [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Explains how tensor views attach shape and stride structure to global-memory pointers before partitioned tile loads and stores.
-- [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — GM is the source and destination of every tile movement on the Ascend NPU.
-- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Explains how tiled copies stage operands from global memory into shared memory before fragment-level computation.
-- [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
-- [FlatQuant](../hardware/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
+- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/compilers-kernels/cuda/index.md) — Defines global memory as device DRAM visible to all SMs and contrasts it with registers, shared memory, and caches.
+- [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/compilers-kernels/cuda/tile-ir/index.md) — Explains how tensor views attach shape and stride structure to global-memory pointers before partitioned tile loads and stores.
+- [Triton Ascend Operator Mechanisms](../frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md) — GM is the source and destination of every tile movement on the Ascend NPU.
+- [TileLang Design and Code Learning Path](../frameworks/compilers-kernels/tilelang/index.md) — Explains how tiled copies stage operands from global memory into shared memory before fragment-level computation.
+- [FlashAttention-3](../algorithms/attention/flashattention/flashattention-3.md) — Labels GPU HBM as global memory holding the Q/K/V/O tiles in its dataflow diagram.
+- [FlatQuant](../hardware/numerics/quantization/flatquant/index.md) — Fuses affine transformation and quantization so only the quantized result is written to global memory.
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — Emits LSE tensors directly to global memory for the KL-loss backward kernel.
-- [Spatial GEMM](../hardware/spatial-gemm.md) — Tiles matrices from off-chip DRAM into banked on-chip SRAM before computing.
-- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
-- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
-- [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) — Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension.
-- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
-- [Kimi K3: Open 3T-Class Frontier Model](../training/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
+- [Spatial GEMM](../hardware/kernels-dataflow/spatial-gemm.md) — Tiles matrices from off-chip DRAM into banked on-chip SRAM before computing.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/attention/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/attention/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
+- [FlashAttention: IO-Aware Exact Attention](../algorithms/attention/flashattention/flashattention.md) — Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/model-families/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
+- [Kimi K3: Open 3T-Class Frontier Model](../training/model-families/kimi/kimi-k3/index.md) — Kimi K3 is a 2.8T-parameter native multimodal MoE model with 104B active parameters, hybrid KDA/MLA attention, 1M-token context.
 
 ## Related Terms
 

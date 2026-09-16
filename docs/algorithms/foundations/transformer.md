@@ -4,9 +4,9 @@ summary: "The foundational paper that introduced the Transformer architecture, d
 layout: default
 confidence: high
 sources:
-  - raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf
-  - derived/pdf-markdown/algorithms/attention-is-all-you-need.md
-updated: 2026-08-13
+  - raw/algorithms/foundations/attention-is-all-you-need--arxiv-1706.03762.pdf
+  - derived/pdf-markdown/algorithms/foundations/attention-is-all-you-need.md
+updated: 2026-09-16
 ---
 
 # The Transformer: Attention Is All You Need
@@ -15,7 +15,7 @@ updated: 2026-08-13
 **Authors:** Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, Illia Polosukhin (Google Brain / Google Research)
 **arXiv:** 1706.03762 (2017), published at NeurIPS 2017
 
-**Related pages:** [Collaborative Multi-Head Attention](../attention-variants/collaborative-attention.md) · [FlashAttention](../flashattention/flashattention.md) · [Softmax](softmax.md) · [vLLM Framework](../../frameworks/vllm/vllm-framework.md)
+**Related pages:** [Collaborative Multi-Head Attention](../attention/variants/collaborative-attention.md) · [FlashAttention](../attention/flashattention/flashattention.md) · [Softmax](softmax.md) · [vLLM Framework](../../frameworks/serving/vllm/vllm-framework.md)
 
 ## TL;DR
 
@@ -630,6 +630,6 @@ The Transformer's advantage comes from two sources: (1) **parallelizability** �
 
 - **Read:** [arXiv:1706.03762](https://arxiv.org/abs/1706.03762) · The Annotated Transformer (Harvard NLP)
 - **Build on:** BERT (Devlin et al. 2019), GPT series (Radford et al.), T5 (Raffel et al. 2020), Vision Transformer (Dosovitskiy et al. 2021)
-- **Understand the context:** [Collaborative Multi-Head Attention](../attention-variants/collaborative-attention.md) (head redundancy) · [FlashAttention](../flashattention/flashattention.md) (IO-aware attention) · [Softmax](softmax.md) (the attention nonlinearity) · [vLLM Framework](../../frameworks/vllm/vllm-framework.md) (Transformer serving with PagedAttention)
+- **Understand the context:** [Collaborative Multi-Head Attention](../attention/variants/collaborative-attention.md) (head redundancy) · [FlashAttention](../attention/flashattention/flashattention.md) (IO-aware attention) · [Softmax](softmax.md) (the attention nonlinearity) · [vLLM Framework](../../frameworks/serving/vllm/vllm-framework.md) (Transformer serving with PagedAttention)
 - **Dig into the mechanism:** [PagedAttention](../../terms/pagedattention.md) for the paged KV-cache layout behind vLLM's Transformer serving.
 - **Reproduce:** Original code at `tensorflow/tensor2tensor` (GitHub)

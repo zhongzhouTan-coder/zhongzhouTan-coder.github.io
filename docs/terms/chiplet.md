@@ -6,10 +6,10 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf
+  - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
-  - docs/hardware/ascend/ascend-950/index.md
-updated: 2026-08-31
+  - docs/hardware/accelerators/ascend/ascend-950/index.md
+updated: 2026-09-16
 ---
 
 # Chiplet
@@ -35,7 +35,7 @@ Chiplets add die-to-die latency, link traffic, packaging constraints, and locali
 
 ## Where It Appears
 
-- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Combines two AI Dies, two IO Dies, and high-speed memory into a two-die UMA package.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/accelerators/ascend/ascend-950/index.md) — Combines two AI Dies, two IO Dies, and high-speed memory into a two-die UMA package.
 
 ## Related Terms
 

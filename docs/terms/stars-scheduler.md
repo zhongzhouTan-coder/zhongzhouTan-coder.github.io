@@ -6,10 +6,10 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf
+  - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
-  - docs/hardware/ascend/ascend-950/index.md
-updated: 2026-08-31
+  - docs/hardware/accelerators/ascend/ascend-950/index.md
+updated: 2026-09-16
 ---
 
 # STARS Scheduler
@@ -35,7 +35,7 @@ STARS reduces submission overhead but does not invent parallelism: unresolved de
 
 ## Where It Appears
 
-- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Explains device-side scheduling, task streams, groups, and resource slicing.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/accelerators/ascend/ascend-950/index.md) — Explains device-side scheduling, task streams, groups, and resource slicing.
 
 ## Related Terms
 

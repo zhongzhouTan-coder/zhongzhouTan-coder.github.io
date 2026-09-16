@@ -4,11 +4,11 @@ summary: "Explains both Megatron-LM papers: intra-layer tensor model parallelism
 layout: default
 confidence: high
 sources:
-  - raw/training/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf
-  - raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
-  - derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md
-  - derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md
-updated: 2026-08-14
+  - raw/training/parallelism/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf
+  - raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf
+  - derived/pdf-markdown/training/parallelism/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md
+  - derived/pdf-markdown/training/parallelism/megatron-lm-gpu-cluster-training-parallelism.md
+updated: 2026-09-16
 ---
 
 # Megatron-LM: GPU-Cluster Training Parallelism

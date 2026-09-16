@@ -4,9 +4,9 @@ summary: "Gated DeltaNet combines global state decay with key-targeted delta upd
 layout: default
 confidence: high
 sources:
-  - raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
-  - derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md
-updated: 2026-08-06
+  - raw/training/efficient-attention/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf
+  - derived/pdf-markdown/training/efficient-attention/gated-delta-networks-improving-mamba2-with-delta-rule.md
+updated: 2026-09-16
 ---
 
 # Gated Delta Networks: Improving Mamba2 with Delta Rule
@@ -15,7 +15,7 @@ updated: 2026-08-06
 **Authors:** Songlin Yang, Jan Kautz, Ali Hatamizadeh  
 **arXiv:** [2412.06464](https://arxiv.org/abs/2412.06464) (December 2024)
 
-**Related pages:** [Kimi Linear](../../kimi/kimi-linear/index.md), [Transformers Are RNNs: Linear Attention](../../../algorithms/linear-attention/index.md), [Linear Attention term](../../../terms/linear-attention.md), [SWAT](../swat-sliding-window-attention/index.md)
+**Related pages:** [Kimi Linear](../../model-families/kimi/kimi-linear/index.md), [Transformers Are RNNs: Linear Attention](../../../algorithms/attention/linear/index.md), [Linear Attention term](../../../terms/linear-attention.md), [SWAT](../swat-sliding-window-attention/index.md)
 
 ## TL;DR
 
@@ -255,6 +255,6 @@ The table compares pretraining architectures under the paper's controlled recipe
 ## Go Deeper
 
 - **Read:** [arXiv 2412.06464](https://arxiv.org/abs/2412.06464)
-- **Build on:** [Kimi Linear](../../kimi/kimi-linear/index.md) extends scalar decay to channel-wise Kimi Delta Attention.
-- **Understand the context:** [Linear Attention](../../../algorithms/linear-attention/index.md) explains the fixed-state foundation; [SWAT](../swat-sliding-window-attention/index.md) provides a contrasting local-attention route.
+- **Build on:** [Kimi Linear](../../model-families/kimi/kimi-linear/index.md) extends scalar decay to channel-wise Kimi Delta Attention.
+- **Understand the context:** [Linear Attention](../../../algorithms/attention/linear/index.md) explains the fixed-state foundation; [SWAT](../swat-sliding-window-attention/index.md) provides a contrasting local-attention route.
 - **Reproduce:** [NVlabs/GatedDeltaNet](https://github.com/NVlabs/GatedDeltaNet)

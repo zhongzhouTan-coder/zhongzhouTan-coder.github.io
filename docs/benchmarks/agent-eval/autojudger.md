@@ -4,9 +4,9 @@ summary: "An agent-driven framework that adaptively selects informative question
 layout: default
 confidence: high
 sources:
-  - raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
-  - derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md
-updated: 2026-08-19
+  - raw/benchmarks/agent-eval/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/autojudger-agent-driven-mllm-benchmarking.md
+updated: 2026-09-16
 ---
 
 # AutoJudger: Agent-Driven Efficient MLLM Benchmarking

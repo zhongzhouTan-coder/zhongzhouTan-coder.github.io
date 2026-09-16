@@ -6,14 +6,14 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/training/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf
+  - raw/training/efficient-attention/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf
 aliases:
   - gRet
   - gRetNet
   - RetNet-3
 appears_in:
   - docs/training/efficient-attention/yoco/index.md
-updated: 2026-09-10
+updated: 2026-09-16
 ---
 
 # Gated Retention

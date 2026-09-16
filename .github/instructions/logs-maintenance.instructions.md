@@ -12,7 +12,9 @@ Use this instruction when updating the knowledge-base index or the chronological
 - Keep the top-level title as `# Wiki Index`.
 - Maintain category sections as markdown headings.
 - Use concise bullet lists under each category.
-- Add one bullet per docs page or topic entry.
+- Keep the global index focused on category and major topic hubs. List leaf
+  pages in their nearest project or method-family hub instead of duplicating
+  the complete inventory here.
 - Each bullet should link to the relevant page in `docs/` using a relative markdown link.
 - Prefer short link labels that match the page title or topic name.
 - Keep entries grouped by the most relevant category instead of duplicating the same page under many categories.

@@ -6,10 +6,10 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf
+  - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
-  - docs/hardware/ascend/ascend-950/index.md
-updated: 2026-08-31
+  - docs/hardware/accelerators/ascend/ascend-950/index.md
+updated: 2026-09-16
 ---
 
 # Unified Bus (UB)
@@ -36,7 +36,7 @@ UB's unified programming family does not make remote access local. Link speed, p
 
 ## Where It Appears
 
-- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Connects UB Memory, URMA, CCU, port reuse, and supernode topology.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/accelerators/ascend/ascend-950/index.md) — Connects UB Memory, URMA, CCU, port reuse, and supernode topology.
 
 ## Related Terms
 

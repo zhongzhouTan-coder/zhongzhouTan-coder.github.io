@@ -6,16 +6,16 @@ layout: default
 confidence: medium
 category: frameworks
 sources:
-  - raw/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
-  - raw/frameworks/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
+  - raw/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
+  - raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
 aliases:
   - KV offloading
   - key/value cache offloading
 mention_lint: canonical
 appears_in:
-  - docs/frameworks/kvswap/index.md
-  - docs/frameworks/kv-cache-optimization/index.md
-updated: 2026-09-15
+  - docs/frameworks/serving/kvswap/index.md
+  - docs/frameworks/serving/kv-cache-optimization/index.md
+updated: 2026-09-16
 ---
 
 # KV Cache Offloading
@@ -50,8 +50,8 @@ Offloading increases the usable context or batch size, but the slower tier adds 
 
 ## Where It Appears
 
-- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/kvswap/index.md) — Makes disk-first iterative decoding practical with grouped prediction, overlap, a rolling buffer, and reuse slots.
-- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/kv-cache-optimization/index.md) — Places offloading in the hybrid-memory family and contrasts placement with eviction, compression, and alternative attention.
+- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Makes disk-first iterative decoding practical with grouped prediction, overlap, a rolling buffer, and reuse slots.
+- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/serving/kv-cache-optimization/index.md) — Places offloading in the hybrid-memory family and contrasts placement with eviction, compression, and alternative attention.
 
 ## Related Terms
 

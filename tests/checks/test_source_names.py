@@ -21,9 +21,10 @@ class NormalizeSourceNameTests(unittest.TestCase):
                         "id": "arxiv:1234.5678v1",
                         "slug": "example-paper",
                         "category": "algorithms",
+                        "topic_path": "foundations",
                         "kind": "paper",
-                        "raw_paths": ["raw/algorithms/wrong.pdf"],
-                        "derived_path": "derived/pdf-markdown/algorithms/wrong.md",
+                        "raw_paths": ["raw/algorithms/foundations/wrong.pdf"],
+                        "derived_path": "derived/pdf-markdown/algorithms/foundations/wrong.md",
                     }
                 ]
             }
@@ -52,9 +53,9 @@ class NormalizeSourceNameTests(unittest.TestCase):
             payload["mismatches"][0],
             {
                 "kind": "raw",
-                "actual": "raw/algorithms/wrong.pdf",
+                "actual": "raw/algorithms/foundations/wrong.pdf",
                 "expected": (
-                    "raw/algorithms/example-paper--arxiv-1234.5678v1.pdf"
+                    "raw/algorithms/foundations/example-paper--arxiv-1234.5678v1.pdf"
                 ),
             },
         )
@@ -73,10 +74,11 @@ class NormalizeSourceNameTests(unittest.TestCase):
                         "provider": "gitcode",
                         "revision": commit,
                         "category": "frameworks",
+                        "topic_path": "serving/repo",
                         "kind": "repository",
-                        "raw_paths": ["raw/frameworks/wrong.md"],
+                        "raw_paths": ["raw/frameworks/serving/repo/wrong.md"],
                         "derived_path": (
-                            f"derived/repo-analysis/frameworks/repo/{commit}/"
+                            f"derived/repo-analysis/frameworks/serving/repo/repo/{commit}/"
                         ),
                     }
                 ]
@@ -102,7 +104,7 @@ class NormalizeSourceNameTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertEqual(
             payload["mismatches"][0]["expected"],
-            "raw/frameworks/repo-codebase--gitcode-0123456789ab.md",
+            "raw/frameworks/serving/repo/repo-codebase--gitcode-0123456789ab.md",
         )
 
 

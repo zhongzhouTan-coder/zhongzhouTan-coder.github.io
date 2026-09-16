@@ -19,6 +19,9 @@ from common.paths import find_repository_root  # noqa: E402
 DEFAULT_ROOT = find_repository_root(__file__)
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+TOPIC_PATH_RE = re.compile(
+    r"^[a-z0-9]+(?:-[a-z0-9]+)*(?:/[a-z0-9]+(?:-[a-z0-9]+)*)*$"
+)
 
 
 def source_id_suffix(source_id: str) -> str:
@@ -33,6 +36,10 @@ def source_id_suffix(source_id: str) -> str:
 def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
     path = Path(raw_path)
     category = entry["category"]
+    topic_path = entry.get("topic_path")
+    if not isinstance(topic_path, str) or not TOPIC_PATH_RE.fullmatch(topic_path):
+        return None
+    raw_prefix = f"raw/{category}/{topic_path}/"
     suffix = path.suffix
     if entry.get("kind") == "web":
         captured_at = entry.get("captured_at", "")
@@ -46,9 +53,9 @@ def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
                 f"{entry['slug']}--web-{captured_at[:10]}-{revision[:12]}"
             )
             if raw_path.endswith(".metadata.json"):
-                return f"raw/{category}/{snapshot}.metadata.json"
+                return f"{raw_prefix}{snapshot}.metadata.json"
             if suffix == ".html":
-                return f"raw/{category}/{snapshot}.html"
+                return f"{raw_prefix}{snapshot}.html"
         return None
     if entry.get("kind") == "repository" and suffix in {".md", ".mdx"}:
         repo_slug = entry.get("repo_slug")
@@ -56,15 +63,15 @@ def expected_raw_path(entry: dict[str, Any], raw_path: str) -> str | None:
         revision = entry.get("revision", "")
         if repo_slug and provider in {"github", "gitcode"} and SHA_RE.fullmatch(revision):
             return (
-                f"raw/{category}/{repo_slug}-codebase--{provider}-"
+                f"{raw_prefix}{repo_slug}-codebase--{provider}-"
                 f"{revision[:12]}{suffix}"
             )
         return None
     if suffix == ".pdf":
         source_suffix = entry.get("source_suffix", source_id_suffix(entry["id"]))
-        return f"raw/{category}/{entry['slug']}--{source_suffix}.pdf"
+        return f"{raw_prefix}{entry['slug']}--{source_suffix}.pdf"
     if suffix in {".md", ".mdx"} and len(entry.get("raw_paths", [])) == 1:
-        return f"raw/{category}/{entry['slug']}{suffix}"
+        return f"{raw_prefix}{entry['slug']}{suffix}"
     return None
 
 
@@ -72,12 +79,15 @@ def expected_derived_path(entry: dict[str, Any]) -> str | None:
     actual_path = entry.get("derived_path")
     if not actual_path:
         return None
+    topic_path = entry.get("topic_path")
+    if not isinstance(topic_path, str) or not TOPIC_PATH_RE.fullmatch(topic_path):
+        return None
     if entry.get("kind") == "repository":
         repo_slug = entry.get("repo_slug")
         revision = entry.get("revision")
         if repo_slug and SHA_RE.fullmatch(revision or ""):
             return (
-                f"derived/repo-analysis/{entry['category']}/"
+                f"derived/repo-analysis/{entry['category']}/{topic_path}/"
                 f"{repo_slug}/{revision}/"
             )
         return None
@@ -92,11 +102,17 @@ def expected_derived_path(entry: dict[str, Any]) -> str | None:
             snapshot = (
                 f"{entry['slug']}--web-{captured_at[:10]}-{revision[:12]}"
             )
-            return f"derived/web-markdown/{entry['category']}/{snapshot}.md"
+            return (
+                f"derived/web-markdown/{entry['category']}/{topic_path}/"
+                f"{snapshot}.md"
+            )
         return None
-    flat_path = f"derived/pdf-markdown/{entry['category']}/{entry['slug']}.md"
+    flat_path = (
+        f"derived/pdf-markdown/{entry['category']}/{topic_path}/"
+        f"{entry['slug']}.md"
+    )
     folder_path = (
-        f"derived/pdf-markdown/{entry['category']}/"
+        f"derived/pdf-markdown/{entry['category']}/{topic_path}/"
         f"{entry['slug']}/{entry['slug']}.md"
     )
     if actual_path in {flat_path, folder_path}:
@@ -127,6 +143,15 @@ def main() -> int:
     mismatches: list[dict[str, str]] = []
 
     for entry in manifest:
+        topic_path = entry.get("topic_path")
+        if not isinstance(topic_path, str) or not TOPIC_PATH_RE.fullmatch(topic_path):
+            mismatches.append(
+                {
+                    "kind": "topic",
+                    "actual": str(topic_path),
+                    "expected": "lowercase slash-separated topic path",
+                }
+            )
         for raw_path in entry.get("raw_paths", []):
             expected = expected_raw_path(entry, raw_path)
             if expected and raw_path != expected:

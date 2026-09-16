@@ -4,9 +4,9 @@ summary: "HORIZON turns RTL design tasks into git-traced, executable repository 
 layout: default
 confidence: medium
 sources:
-  - raw/benchmarks/agentic-hardware-design-repository-code-evolution--arxiv-2606.28279v1.pdf
-  - derived/pdf-markdown/benchmarks/agentic-hardware-design-repository-code-evolution.md
-updated: 2026-08-06
+  - raw/benchmarks/agent-eval/agentic-hardware-design-repository-code-evolution--arxiv-2606.28279v1.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/agentic-hardware-design-repository-code-evolution.md
+updated: 2026-09-16
 ---
 
 # HORIZON: Agentic Hardware Design as Repository-Level Code Evolution
@@ -15,7 +15,7 @@ updated: 2026-08-06
 **Authors:** Cunxi Yu, Chenhui Deng, Nathaniel Pinckney, Brucek Khailany (NVIDIA Research)
 **arXiv:** [2606.28279v1 (26 Jun 2026)](https://arxiv.org/abs/2606.28279)
 
-**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [Pier: Coding-Agent Evaluation Harness](../pier/index.md) · [Harbor: Agent Evaluation Framework](../../../frameworks/harbor/index.md) · [Socratic-SWE: Self-Evolving Coding Agents](../../../training/fine-tuning/socratic-swe/index.md)
+**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [Pier: Coding-Agent Evaluation Harness](../pier/index.md) · [Harbor: Agent Evaluation Framework](../../../frameworks/infrastructure/harbor/index.md) · [Socratic-SWE: Self-Evolving Coding Agents](../../../training/adaptation/fine-tuning/socratic-swe/index.md)
 
 ## TL;DR
 
@@ -27,7 +27,7 @@ updated: 2026-08-06
 
 ## The Big Picture
 
-![HORIZON overview from harness to git-traced hardware-design evolution](./assets/horizon-overview.jpg)
+![HORIZON overview from harness to git-traced hardware-design evolution](assets/horizon-overview.jpg)
 
 *Source: [HORIZON paper, Figure 1](https://arxiv.org/abs/2606.28279). ① A human writes a structured Markdown harness. ② The bootstrap agent compiles it into a project pack with mission, domain skills, evaluator, correctness gate, and runtime policy. ③ A hands-free loop edits the worktree, runs the evaluator, and records accepted commits or rejected attempts as replayable evidence.*
 
@@ -155,7 +155,7 @@ The paper uses $p$ for the compiled project pack, $E_p$ for its evaluator, $A_p$
 
 *The one original ChipBench miss is attributed to a specification-harness mismatch; counting it as resolved yields 100%.*
 
-![CVDP convergence over agent iterations](./assets/horizon-cvdp-convergence.jpg)
+![CVDP convergence over agent iterations](assets/horizon-cvdp-convergence.jpg)
 
 *Source: [HORIZON paper, Figure 2b](https://arxiv.org/abs/2606.28279). The curves show why “100% complete” is not a sufficient summary: CVDP categories have very different repair trajectories, with CID 002 carrying an 82-iteration long tail.*
 
@@ -185,6 +185,6 @@ The reported iteration-0 pass rate is the repository state after the first agent
 
 - **Read:** [Agentic Hardware Design as Repository-Level Code Evolution (arXiv:2606.28279)](https://arxiv.org/abs/2606.28279)
 - **Build on:** [AutoChip](https://arxiv.org/abs/2311.04887), [VerilogCoder](https://arxiv.org/abs/2408.08927), [CVDP](https://arxiv.org/abs/2506.14074), [ABCEvo](https://arxiv.org/abs/2604.15082)
-- **Understand the context:** [Pier: Coding-Agent Evaluation Harness](../pier/index.md) · [Harbor: Agent Evaluation Framework](../../../frameworks/harbor/index.md) · [DeepSWE](../deepswe/index.md)
+- **Understand the context:** [Pier: Coding-Agent Evaluation Harness](../pier/index.md) · [Harbor: Agent Evaluation Framework](../../../frameworks/infrastructure/harbor/index.md) · [DeepSWE](../deepswe/index.md)
 - **Reproduce:** The paper reports a fixed GPT-5.3 backbone and hands-free single-agent campaigns on an AMD EPYC 9334 host with 512 GB RAM; no public HORIZON implementation is identified in the source.
 - **Editable diagram:** [horizon-landscape.mmd](assets/horizon-landscape.mmd)

@@ -4,9 +4,9 @@ summary: "Scales the decoder-only Transformer to 175 billion parameters and disc
 layout: default
 confidence: high
 sources:
-  - raw/training/gpt-3-language-models-few-shot-learners--paper.pdf
-  - derived/pdf-markdown/training/gpt-3-language-models-few-shot-learners.md
-updated: 2026-07-27
+  - raw/training/foundation-models/gpt-3-language-models-few-shot-learners--paper.pdf
+  - derived/pdf-markdown/training/foundation-models/gpt-3-language-models-few-shot-learners.md
+updated: 2026-09-16
 ---
 
 # GPT-3: Language Models are Few-Shot Learners
@@ -15,7 +15,7 @@ updated: 2026-07-27
 **Authors:** Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, ... (31 authors, OpenAI)
 **Year:** 2020 (NeurIPS)
 
-**Related pages:** [The Transformer](../../algorithms/foundations/transformer.md) · [GPT-1](gpt-1.md) · [GPT-2](gpt-2.md) · [Megatron-LM](../parallelism/megatron-lm/) · [Training Index](../index.md)
+**Related pages:** [The Transformer](../../algorithms/foundations/transformer.md) · [GPT-1](gpt-1.md) · [GPT-2](gpt-2.md) · [Megatron-LM](../parallelism/megatron-lm) · [Training Index](../index.md)
 
 ## TL;DR
 
@@ -149,7 +149,7 @@ These results suggest GPT-3 is doing something beyond pattern matching — it ca
 
 ### Training Compute
 
-GPT-3 175B required approximately $3.14 \times 10^{23}$ FLOPs for training — roughly 3,640 petaflop/s-days. All models were trained on V100 GPUs on Microsoft's high-bandwidth cluster. For the systems question of how GPT-scale dense models fit and run efficiently on multi-node GPU clusters, see [Megatron-LM](../parallelism/megatron-lm/), which explains tensor, pipeline, and data parallel composition.
+GPT-3 175B required approximately $3.14 \times 10^{23}$ FLOPs for training — roughly 3,640 petaflop/s-days. All models were trained on V100 GPUs on Microsoft's high-bandwidth cluster. For the systems question of how GPT-scale dense models fit and run efficiently on multi-node GPU clusters, see [Megatron-LM](../parallelism/megatron-lm), which explains tensor, pipeline, and data parallel composition.
 
 ## Putting It Together
 

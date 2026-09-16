@@ -6,8 +6,8 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/algorithms/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf
-  - raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf
+  - raw/algorithms/length-generalization/looped-transformers/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf
+  - raw/training/efficient-attention/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf
 aliases:
   - looped transformer
   - weight-shared recurrence
@@ -17,8 +17,8 @@ mention_aliases:
   - recursive depth
 appears_in:
   - docs/training/efficient-attention/yoco/universal-yoco.md
-  - docs/algorithms/looped-transformers-length-generalization/index.md
-updated: 2026-09-10
+  - docs/algorithms/length-generalization/looped-transformers/index.md
+updated: 2026-09-16
 ---
 
 # Looped Transformers
@@ -55,7 +55,7 @@ For a block $f$ with shared weights, one loop iteration computes $X_{t+1} = f(X_
 ## Where It Appears
 
 - [Universal YOCO for Efficient Depth Scaling](../training/efficient-attention/yoco/universal-yoco.md) — Loops the shallow efficient-attention self-decoder so recursion adds depth while the global KV cache is still written once.
-- [Looped Transformers for Length Generalization](../algorithms/looped-transformers-length-generalization/index.md) — Reuses one decoder block with input injection and step-dependent supervision so effective depth adapts to algorithmic input length.
+- [Looped Transformers for Length Generalization](../algorithms/length-generalization/looped-transformers/index.md) — Reuses one decoder block with input injection and step-dependent supervision so effective depth adapts to algorithmic input length.
 
 ## Related Terms
 

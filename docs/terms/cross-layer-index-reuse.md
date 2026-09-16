@@ -6,8 +6,8 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf
-  - raw/training/deepseek-v4.1-technical-report--paper.pdf
+  - raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf
+  - raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf
 aliases:
   - index reuse
   - cross-layer attention index reuse
@@ -16,8 +16,8 @@ mention_aliases:
 mention_lint: canonical
 appears_in:
   - docs/training/efficient-attention/indexcache/index.md
-  - docs/training/deepseek/deepseek-v4.1/index.md
-updated: 2026-09-11
+  - docs/training/model-families/deepseek/deepseek-v4.1/index.md
+updated: 2026-09-16
 ---
 
 # Cross-Layer Index Reuse
@@ -47,7 +47,7 @@ Reuse removes selector compute but constrains several layers to the same candida
 ## Where It Appears
 
 - [IndexCache](../training/efficient-attention/indexcache/index.md) — Systematically selects retained indexer layers with loss-guided search or trains them with multi-layer distillation.
-- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — CSA2 Reuse layers share top-k selections while Full/Reindex layers refresh them, alongside global KV sharing.
+- [DeepSeek-V4.1-Flash](../training/model-families/deepseek/deepseek-v4.1/index.md) — CSA2 Reuse layers share top-k selections while Full/Reindex layers refresh them, alongside global KV sharing.
 - TidalDecode, Kascade, and HySparse — Related methods described by IndexCache that reuse selections from full-attention anchor layers.
 
 ## Related Terms

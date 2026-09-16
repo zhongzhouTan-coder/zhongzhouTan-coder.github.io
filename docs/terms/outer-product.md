@@ -6,17 +6,17 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
-  - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
+  - derived/web-markdown/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
 aliases:
   - outer product accumulation
   - rank-1 update
 appears_in:
-  - docs/algorithms/linear-attention/index.md
-  - docs/algorithms/linear-attention/linear-attention-without-softmax.md
-  - docs/hardware/spatial-gemm.md
-updated: 2026-08-06
+  - docs/algorithms/attention/linear/index.md
+  - docs/algorithms/attention/linear/linear-attention-without-softmax.md
+  - docs/hardware/kernels-dataflow/spatial-gemm.md
+updated: 2026-09-16
 ---
 
 # Outer Product
@@ -49,9 +49,9 @@ Each term is a rank-1 matrix added into the accumulator. In the Spatial GEMM tut
 ## Where It Appears
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Builds the blocked GEMM explicitly from outer products of `tileA` columns and `tileB` rows.
-- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The tutorial's main demonstration is outer-product accumulation.
-- [Linear Attention](../algorithms/linear-attention/index.md) — The KV state is a prefix sum of key–value outer products.
-- [Linear Attention Without Softmax](../algorithms/linear-attention/linear-attention-without-softmax.md) — The parallel training mode materializes all token outer products before a cumulative sum.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/kernels-dataflow/spatial-gemm.md) — The tutorial's main demonstration is outer-product accumulation.
+- [Linear Attention](../algorithms/attention/linear/index.md) — The KV state is a prefix sum of key–value outer products.
+- [Linear Attention Without Softmax](../algorithms/attention/linear/linear-attention-without-softmax.md) — The parallel training mode materializes all token outer products before a cumulative sum.
 
 ## Related Terms
 

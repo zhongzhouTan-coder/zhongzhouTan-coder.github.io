@@ -4,9 +4,9 @@ summary: "SkillLens studies the full lifecycle of model-generated agent skills a
 layout: default
 confidence: medium
 sources:
-  - raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf
-  - derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md
-updated: 2026-08-29
+  - raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md
+updated: 2026-09-16
 ---
 
 # From Raw Experience to Skill Consumption: Model-Generated Agent Skills
@@ -16,7 +16,7 @@ updated: 2026-08-29
 **arXiv:** [2605.23899v1 (May 2026)](https://arxiv.org/abs/2605.23899)  
 **Code:** <https://aka.ms/SkillLens>
 
-**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [EssenceBench](../essencebench/index.md) · [Socratic-SWE](../../../training/fine-tuning/socratic-swe/index.md) · [Pier](../pier/index.md)
+**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [EssenceBench](../essencebench/index.md) · [Socratic-SWE](../../../training/adaptation/fine-tuning/socratic-swe/index.md) · [Pier](../pier/index.md)
 
 ## TL;DR
 
@@ -28,7 +28,7 @@ updated: 2026-08-29
 
 ![SkillLens lifecycle from target trajectories through extraction to downstream evaluation](assets/skilllens-lifecycle-overview.jpg)
 
-*Source: [SkillLens paper, Figure 1](../../../../raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① A target model generates a mixed pool of successful and failed trajectories. ② An extractor analyzes trajectories, consolidates patterns, and writes a schema-conformant skill. ③ The target consumes that skill on unseen tasks, while EE and TE summarize extractor- and target-side effects. ④ Lifecycle analysis produces a validated meta-skill that favors concrete failure mechanisms and remedies.*
+*Source: [SkillLens paper, Figure 1](../../../../raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① A target model generates a mixed pool of successful and failed trajectories. ② An extractor analyzes trajectories, consolidates patterns, and writes a schema-conformant skill. ③ The target consumes that skill on unseen tasks, while EE and TE summarize extractor- and target-side effects. ④ Lifecycle analysis produces a validated meta-skill that favors concrete failure mechanisms and remedies.*
 
 The figure answers the central reader question: **where can a reusable skill fail?** It can be missing from the experience pool, distorted during extraction, or unusable for the target that receives it. SkillLens measures all three boundaries instead of treating “skill quality” as a property of text alone.
 
@@ -121,7 +121,7 @@ $$
 
 ![Average skill utility as the success ratio in the experience pool changes](assets/experience-composition-vs-utility.jpg)
 
-*Source: [SkillLens paper, Figure 2](../../../../raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① All-failure pools are consistently weak. ② SpreadsheetBench benefits most from success-heavy pools. ③ ALFWorld peaks with a failure-heavy mix. ④ SWE-bench-Verified peaks with mostly successful experience, showing that the best ratio is domain-specific.*
+*Source: [SkillLens paper, Figure 2](../../../../raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① All-failure pools are consistently weak. ② SpreadsheetBench benefits most from success-heavy pools. ③ ALFWorld peaks with a failure-heavy mix. ④ SWE-bench-Verified peaks with mostly successful experience, showing that the best ratio is domain-specific.*
 
 **What it does:** It tests how the success/failure mixture of the experience pool changes the utility of the extracted skill.
 
@@ -159,7 +159,7 @@ $$
 
 ![Unguided and rubric-guided pairwise skill selection accuracy](assets/skill-quality-rubric-accuracy.jpg)
 
-*Source: [SkillLens paper, Figure 3](../../../../raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). Gray bars show unguided selection falling from 46% overall to 16% on pairs with at least a 5-point utility gap; blue bars show the stronger guided results in the wider-gap buckets. The paper’s prose and chart disagree on the guided overall value; the discrepancy is recorded in “How to read these numbers.”*
+*Source: [SkillLens paper, Figure 3](../../../../raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). Gray bars show unguided selection falling from 46% overall to 16% on pairs with at least a 5-point utility gap; blue bars show the stronger guided results in the wider-gap buckets. The paper’s prose and chart disagree on the guided overall value; the discrepancy is recorded in “How to read these numbers.”*
 
 **What it does:** It tests whether a skill’s formatting or textual plausibility can stand in for actual downstream utility.
 
@@ -177,7 +177,7 @@ $$
 
 ![Cross-model transfer of strong-pool and weak-pool SpreadsheetBench skills](assets/cross-model-skill-transfer.jpg)
 
-*Source: [SkillLens paper, Figure 4](../../../../raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① The same strong-pool skill helps every shown target, from +1.8 pp on Gemini-3.1-Pro to +9.5 pp on Qwen3.5-35B. ② The weak-pool skill ranges from −2.0 pp on GPT-5.4 to positive but smaller gains elsewhere. ③ The baseline bars show that transfer is a change relative to each target’s own no-skill score.*
+*Source: [SkillLens paper, Figure 4](../../../../raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). ① The same strong-pool skill helps every shown target, from +1.8 pp on Gemini-3.1-Pro to +9.5 pp on Qwen3.5-35B. ② The weak-pool skill ranges from −2.0 pp on GPT-5.4 to positive but smaller gains elsewhere. ③ The baseline bars show that transfer is a change relative to each target’s own no-skill score.*
 
 **What it does:** It holds the skill text fixed and measures how differently target models consume it.
 
@@ -195,7 +195,7 @@ $$
 
 ![Effect of plausibility and validated rubric guidance on downstream skill utility](assets/meta-skill-guidance-results.jpg)
 
-*Source: [SkillLens paper, Figure 5](../../../../raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). Orange squares are changes from the original prompt after adding a seven-dimension plausibility rubric; blue circles are changes after adding the three dimensions validated against downstream utility.*
+*Source: [SkillLens paper, Figure 5](../../../../raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf). Orange squares are changes from the original prompt after adding a seven-dimension plausibility rubric; blue circles are changes after adding the three dimensions validated against downstream utility.*
 
 **What it does:** It converts the study’s diagnosis into a generation-time instruction that guides extractors toward utility-bearing content.
 
@@ -272,8 +272,8 @@ The paper’s prose reports that validated rubric guidance raises the pairwise j
 ## Go Deeper
 
 - **Read:** [From Raw Experience to Skill Consumption](https://arxiv.org/abs/2605.23899)
-- **Build on:** [SkillOpt’s validation-gated skill optimization](../skillopt/index.md) · [Socratic-SWE’s trace-derived skills](../../../training/fine-tuning/socratic-swe/index.md) · [Trace2Skill](https://arxiv.org/abs/2603.25158) · [SkillsBench](https://arxiv.org/abs/2602.12670)
-- **Understand the context:** [Agent Evaluation Benchmarks](../index.md) · [EssenceBench’s fixed benchmark compression](../essencebench/index.md) · [Pier’s agent evaluation harness](../pier/index.md) · [Harbor’s evaluation framework](../../../frameworks/harbor/index.md)
+- **Build on:** [SkillOpt’s validation-gated skill optimization](../skillopt/index.md) · [Socratic-SWE’s trace-derived skills](../../../training/adaptation/fine-tuning/socratic-swe/index.md) · [Trace2Skill](https://arxiv.org/abs/2603.25158) · [SkillsBench](https://arxiv.org/abs/2602.12670)
+- **Understand the context:** [Agent Evaluation Benchmarks](../index.md) · [EssenceBench’s fixed benchmark compression](../essencebench/index.md) · [Pier’s agent evaluation harness](../pier/index.md) · [Harbor’s evaluation framework](../../../frameworks/infrastructure/harbor/index.md)
 - **Reproduce:** [SkillLens code](https://aka.ms/SkillLens); expect provider API access, benchmark-specific environments, and the paper’s single-skill prompt protocol.
-- **Source extraction:** [MinerU Markdown](../../../../derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md)
+- **Source extraction:** [MinerU Markdown](../../../../derived/pdf-markdown/benchmarks/agent-eval/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md)
 - **Editable diagram:** [skilllens-landscape.mmd](assets/skilllens-landscape.mmd)

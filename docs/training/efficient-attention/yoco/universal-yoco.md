@@ -4,9 +4,9 @@ summary: "YOCO-U loops YOCO's shallow self-decoder with shared parameters, buyin
 layout: default
 confidence: high
 sources:
-  - raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf
-  - derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md
-updated: 2026-09-10
+  - raw/training/efficient-attention/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf
+  - derived/pdf-markdown/training/efficient-attention/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md
+updated: 2026-09-16
 ---
 
 # Universal YOCO for Efficient Depth Scaling
@@ -15,7 +15,7 @@ updated: 2026-09-10
 **Authors:** Yutao Sun, Li Dong, Tianzhu Ye, Shaohan Huang, Jianyong Wang, Furu Wei (Microsoft Research; Tsinghua University)  
 **arXiv:** [2604.01220v1](https://arxiv.org/abs/2604.01220) (April 2026)
 
-**Related pages:** [YOCO: You Only Cache Once](index.md), [Efficient Attention Training](../index.md), [Looped Transformers for Length Generalization](../../../algorithms/looped-transformers-length-generalization/index.md), [KV Cache](../../../terms/kv-cache.md), [Sliding-Window Attention](../../../terms/sliding-window-attention.md)
+**Related pages:** [YOCO: You Only Cache Once](index.md), [Efficient Attention Training](../index.md), [Looped Transformers for Length Generalization](../../../algorithms/length-generalization/looped-transformers/index.md), [KV Cache](../../../terms/kv-cache.md), [Sliding-Window Attention](../../../terms/sliding-window-attention.md)
 
 ## TL;DR
 
@@ -298,7 +298,7 @@ These are source-reported measurements from a single paper. Quality results come
 
 ## Go Deeper
 
-- **Read:** [Universal YOCO for Efficient Depth Scaling](https://arxiv.org/abs/2604.01220); [extracted Markdown](../../../../derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md)
+- **Read:** [Universal YOCO for Efficient Depth Scaling](https://arxiv.org/abs/2604.01220); [extracted Markdown](../../../../derived/pdf-markdown/training/efficient-attention/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md)
 - **Build on:** [YOCO: You Only Cache Once](index.md), the Universal Transformer ([arXiv 1807.03819](https://arxiv.org/abs/1807.03819)), RINS ([arXiv 2502.07503](https://arxiv.org/abs/2502.07503)), and ParScale ([arXiv 2505.10475](https://arxiv.org/abs/2505.10475))
-- **Understand the context:** [Looped Transformers for Length Generalization](../../../algorithms/looped-transformers-length-generalization/index.md) for the other face of shared-depth recurrence, [KV Cache](../../../terms/kv-cache.md), [Sliding-Window Attention](../../../terms/sliding-window-attention.md), and [Mixture-of-Experts](../../../terms/mixture-of-experts.md) for the components of the training recipe
+- **Understand the context:** [Looped Transformers for Length Generalization](../../../algorithms/length-generalization/looped-transformers/index.md) for the other face of shared-depth recurrence, [KV Cache](../../../terms/kv-cache.md), [Sliding-Window Attention](../../../terms/sliding-window-attention.md), and [Mixture-of-Experts](../../../terms/mixture-of-experts.md) for the components of the training recipe
 - **Reproduce:** No official release found at the time of writing; the paper's inference benchmark is built on [Nano-vLLM](https://github.com/GeeeekExplorer/nano-vllm)

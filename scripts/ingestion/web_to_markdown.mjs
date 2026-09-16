@@ -44,11 +44,12 @@ function fail(message) {
 function usage() {
   return `Usage:
   node scripts/ingestion/web_to_markdown.mjs \\
-    --url URL --category CATEGORY --slug SLUG [options]
+    --url URL --category CATEGORY --topic-path TOPIC --slug SLUG [options]
 
 Required:
   --url URL                 HTTP(S) page to capture.
   --category CATEGORY       Canonical category from kb-categories.json.
+  --topic-path TOPIC        Slash-separated topic beneath the category.
   --slug SLUG               Stable lowercase ASCII slug.
 
 Options:
@@ -96,6 +97,7 @@ function parseArgs(argv) {
   const valueOptions = new Map([
     ["--url", "url"],
     ["--category", "category"],
+    ["--topic-path", "topicPath"],
     ["--slug", "slug"],
     ["--renderer", "renderer"],
     ["--input-html", "inputHtml"],
@@ -153,7 +155,7 @@ function parseArgs(argv) {
 }
 
 function validateOptions(options, categories) {
-  for (const key of ["url", "category", "slug"]) {
+  for (const key of ["url", "category", "topicPath", "slug"]) {
     if (!options[key]) fail(`--${key} is required`)
   }
   if (!["auto", "http", "chromium"].includes(options.renderer)) {
@@ -171,12 +173,20 @@ function validateOptions(options, categories) {
   if (!categories[options.category].web_derived_prefix) {
     fail(`category has no web_derived_prefix: ${options.category}`)
   }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/.test(options.topicPath)) {
+    fail("--topic-path must be lowercase, hyphenated, and slash-separated")
+  }
+  const topicRoot = options.topicPath.split("/", 1)[0]
+  if (!(categories[options.category].topic_roots || []).includes(topicRoot)) {
+    fail(`topic root ${topicRoot} is not allowed for ${options.category}`)
+  }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(options.slug)) {
     fail("--slug must use lowercase ASCII letters, digits, and single hyphens")
   }
   if (options.docsPath) {
     const normalized = options.docsPath.replaceAll("\\", "/")
-    const expectedPrefix = categories[options.category].docs_prefix
+    const expectedPrefix =
+      `${categories[options.category].docs_prefix}${options.topicPath}/`
     if (
       normalized.startsWith("/") ||
       normalized.split("/").includes("..") ||
@@ -880,6 +890,7 @@ function appendManifestEntry(text, entry) {
       "title",
       "slug",
       "category",
+      "topic_path",
       "kind",
       "source_url",
       "final_url",
@@ -962,13 +973,17 @@ async function main() {
   const snapshot = `${options.slug}--web-${captureDate}-${shortHash}`
   const host = new URL(capture.finalUrl).hostname.toLowerCase()
   const sourceId = `web:${host}/${options.slug}@${captureDate}-${shortHash}`
-  const rawHtmlPath = `raw/${options.category}/${snapshot}.html`
-  const rawMetadataPath = `raw/${options.category}/${snapshot}.metadata.json`
+  const rawHtmlPath =
+    `raw/${options.category}/${options.topicPath}/${snapshot}.html`
+  const rawMetadataPath =
+    `raw/${options.category}/${options.topicPath}/${snapshot}.metadata.json`
+  const webDerivedPrefix =
+    `${categories[options.category].web_derived_prefix}${options.topicPath}/`
   const derivedPath =
-    `${categories[options.category].web_derived_prefix}${snapshot}.md`
+    `${webDerivedPrefix}${snapshot}.md`
   const prepared = prepareDerivedAssets(
     extraction,
-    categories[options.category].web_derived_prefix,
+    webDerivedPrefix,
     snapshot
   )
 
@@ -1018,6 +1033,7 @@ async function main() {
     title: extraction.title || options.slug,
     slug: options.slug,
     category: options.category,
+    topic_path: options.topicPath,
     kind: "web",
     source_url: options.url,
     final_url: capture.finalUrl,
@@ -1082,7 +1098,7 @@ async function main() {
       }
       await removeStaleDerivedAssets(
         options.root,
-        `${categories[options.category].web_derived_prefix}${snapshot}.assets`,
+        `${webDerivedPrefix}${snapshot}.assets`,
         prepared.assets.map((asset) => asset.repositoryPath)
       )
       await writeAtomically(

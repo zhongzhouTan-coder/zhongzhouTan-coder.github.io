@@ -11,8 +11,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 INTEGRITY_SCRIPT = REPOSITORY_ROOT / "scripts/checks/repository_integrity.py"
 COMMIT = "0123456789abcdef0123456789abcdef01234567"
 SOURCE_ID = f"github:owner/repo@{COMMIT}"
-RAW_PATH = "raw/frameworks/repo-codebase--github-0123456789ab.md"
-DERIVED_PATH = f"derived/repo-analysis/frameworks/repo/{COMMIT}/"
+RAW_PATH = "raw/frameworks/serving/repo/repo-codebase--github-0123456789ab.md"
+DERIVED_PATH = f"derived/repo-analysis/frameworks/serving/repo/repo/{COMMIT}/"
 ANALYSIS_PATH = f"{DERIVED_PATH}important-files.md"
 
 
@@ -27,12 +27,14 @@ class RepositoryIntegrityTests(unittest.TestCase):
                     "derived_prefix": "derived/pdf-markdown/frameworks/",
                     "repo_analysis_prefix": "derived/repo-analysis/frameworks/",
                     "docs_prefix": "docs/frameworks/",
+                    "topic_roots": ["serving"],
                 },
                 "algorithms": {
                     "raw_prefix": "raw/algorithms/",
                     "derived_prefix": "derived/pdf-markdown/algorithms/",
                     "repo_analysis_prefix": "derived/repo-analysis/algorithms/",
                     "docs_prefix": "docs/algorithms/",
+                    "topic_roots": ["foundations"],
                 },
             }
         }
@@ -44,14 +46,15 @@ class RepositoryIntegrityTests(unittest.TestCase):
             "repo_slug": "repo",
             "revision": COMMIT,
             "category": "frameworks",
+            "topic_path": "serving/repo",
             "kind": "repository",
             "provider": "github",
             "repository_url": "https://github.com/owner/repo",
             "raw_paths": [RAW_PATH],
             "derived_path": DERIVED_PATH,
             "docs_paths": [
-                "docs/frameworks/repo.md",
-                "docs/algorithms/repo-kernel.md",
+                "docs/frameworks/serving/repo.md",
+                "docs/frameworks/other/repo-kernel.md",
             ],
             "status": "ingested",
         }
@@ -117,7 +120,7 @@ generated: 2026-07-28
     def write_manifest(self) -> None:
         self.write_json(
             "sources.json",
-            {"schema_version": 1, "sources": [self.entry]},
+            {"schema_version": 2, "sources": [self.entry]},
         )
 
     def write_docs(
@@ -174,7 +177,7 @@ updated: 2026-07-28
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(expected, result.stderr)
 
-    def test_valid_revision_supports_multiple_categories(self) -> None:
+    def test_valid_revision_supports_multiple_topics(self) -> None:
         result = self.run_integrity()
         self.assertEqual(result.returncode, 0, result.stderr)
 
@@ -212,18 +215,18 @@ updated: 2026-07-28
 
     def test_every_consumer_must_cite_raw_revision(self) -> None:
         self.write_docs(
-            "docs/algorithms/repo-kernel.md",
+            "docs/frameworks/other/repo-kernel.md",
             include_raw=False,
         )
         self.assert_integrity_error("front matter missing source")
 
     def test_citing_page_must_be_listed_as_consumer(self) -> None:
-        self.write_docs("docs/frameworks/unlisted.md")
+        self.write_docs("docs/frameworks/serving/unlisted.md")
         self.assert_integrity_error("but is missing from docs_paths")
 
     def test_full_commit_must_appear_near_top(self) -> None:
         self.write_docs(
-            "docs/frameworks/repo.md",
+            "docs/frameworks/serving/repo.md",
             include_commit=False,
         )
         self.assert_integrity_error("must state full commit near the top")

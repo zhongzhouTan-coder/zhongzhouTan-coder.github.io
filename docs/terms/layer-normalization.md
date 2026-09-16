@@ -6,9 +6,9 @@ layout: default
 confidence: medium
 category: algorithms
 sources:
-  - raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.html
-  - raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json
-  - derived/web-markdown/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.md
+  - raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.html
+  - raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json
+  - derived/web-markdown/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.md
 aliases:
   - LayerNorm
   - layer norm
@@ -17,15 +17,13 @@ appears_in:
   - docs/algorithms/foundations/layer-normalization/index.md
   - docs/algorithms/foundations/transformer.md
   - docs/algorithms/foundations/index.md
-  - docs/algorithms/index.md
-  - docs/frameworks/triton/triton-in-vllm.md
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm/vllm-overview.md
-  - docs/hardware/quantization/flatquant/index.md
+  - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm/vllm-overview.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
   - docs/training/foundation-models/gpt-2.md
-  - docs/training/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-13
+updated: 2026-09-16
 ---
 
 # Layer Normalization
@@ -60,11 +58,9 @@ LayerNorm is independent of batch size and needs no running statistics, but it d
 - [The Transformer: Attention Is All You Need](../algorithms/foundations/transformer.md) — Uses LayerNorm around every attention and feed-forward sublayer in the original post-norm architecture.
 
 - [Attention Foundations](../algorithms/foundations/index.md)
-- [Algorithms](../algorithms/index.md)
-- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md)
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md)
-- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md)
-- [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md)
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md)
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md)
+- [vLLM Architecture and Code Organization Overview](../frameworks/serving/vllm/vllm-overview.md)
+- [FlatQuant: Fast Learnable Affine Quantization](../hardware/numerics/quantization/flatquant/index.md)
 - [GPT-2: Language Models are Unsupervised Multitask Learners](../training/foundation-models/gpt-2.md)
-- [Training](../training/index.md)
 - [Megatron-LM: GPU-Cluster Training Parallelism](../training/parallelism/megatron-lm/index.md)

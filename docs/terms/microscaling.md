@@ -6,17 +6,17 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
-  - raw/training/deepseek-v4.1-technical-report--paper.pdf
+  - raw/hardware/numerics/quantization/microscaling-mx-formats--ocp-v1.0.pdf
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf
 appears_in:
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
-  - docs/hardware/quantization/index.md
-  - docs/hardware/quantization/nvfp4.md
-  - docs/hardware/quantization/hif4/index.md
-  - docs/training/deepseek/deepseek-v4.1/index.md
-updated: 2026-08-25
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+  - docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/hardware/numerics/quantization/index.md
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/hardware/numerics/quantization/hif4/index.md
+  - docs/training/model-families/deepseek/deepseek-v4.1/index.md
+updated: 2026-09-16
 ---
 
 # Microscaling
@@ -43,12 +43,12 @@ The shared scale must cover the whole block. An outlier can therefore reduce the
 
 ## Where It Appears
 
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) - OCP MX block structure, concrete encodings, conversion rules, dot products, and hardware history.
-- [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) - Uses MXFP4 as one of the hardware-backed W4A4 paths.
-- [Quantization](../hardware/quantization/index.md) - Groups MX with other low-precision numeric formats.
-- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) - Contrasts NVFP4's fractional, 16-element scaling with OCP MX's power-of-two, 32-element blocks.
-- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) - Uses a larger 64-value block and two levels of shared micro-exponents to keep a richer four-bit payload and integer-heavy dot products.
-- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) - Uses an MXFP4-style E2M1 main-KV payload with one E4M3 scale per 16 channels.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md) - OCP MX block structure, concrete encodings, conversion rules, dot products, and hardware history.
+- [MiniMax GQA W4A4 Quantization Path](../frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md) - Uses MXFP4 as one of the hardware-backed W4A4 paths.
+- [Quantization](../hardware/numerics/quantization/index.md) - Groups MX with other low-precision numeric formats.
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/numerics/quantization/nvfp4.md) - Contrasts NVFP4's fractional, 16-element scaling with OCP MX's power-of-two, 32-element blocks.
+- [HiFloat4 (HiF4)](../hardware/numerics/quantization/hif4/index.md) - Uses a larger 64-value block and two levels of shared micro-exponents to keep a richer four-bit payload and integer-heavy dot products.
+- [DeepSeek-V4.1-Flash](../training/model-families/deepseek/deepseek-v4.1/index.md) - Uses an MXFP4-style E2M1 main-KV payload with one E4M3 scale per 16 channels.
 
 ## Related Terms
 

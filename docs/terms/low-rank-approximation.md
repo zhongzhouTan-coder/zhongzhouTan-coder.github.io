@@ -6,16 +6,16 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
-  - raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf
+  - raw/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
+  - raw/algorithms/attention/variants/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf
 aliases:
   - low-rank compression
   - low-rank representation
 mention_lint: canonical
 appears_in:
-  - docs/frameworks/kvswap/index.md
-  - docs/algorithms/attention-variants/deepseek-v2-mla.md
-updated: 2026-09-15
+  - docs/frameworks/serving/kvswap/index.md
+  - docs/algorithms/attention/variants/deepseek-v2-mla.md
+updated: 2026-09-16
 ---
 
 # Low-Rank Approximation
@@ -42,8 +42,8 @@ A smaller rank saves memory but loses weaker directions. The acceptable rank dep
 
 ## Where It Appears
 
-- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/kvswap/index.md) — Uses an offline SVD-derived K summary only to rank disk-resident KV groups, enabling more aggressive compression than a summary used for final attention.
-- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention-variants/deepseek-v2-mla.md) — Uses low-rank latent K/V state and absorbed projections to reduce the persistent cache representation.
+- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Uses an offline SVD-derived K summary only to rank disk-resident KV groups, enabling more aggressive compression than a summary used for final attention.
+- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention/variants/deepseek-v2-mla.md) — Uses low-rank latent K/V state and absorbed projections to reduce the persistent cache representation.
 
 ## Related Terms
 

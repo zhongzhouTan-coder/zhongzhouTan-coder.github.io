@@ -75,6 +75,7 @@ Use the scaffolder rather than hand-writing repository metadata:
 ./scripts/run-in-workspace.sh python scripts/repositories/init_source.py \
   external-repos/<repo> \
   --category <category> \
+  --topic-path <topic/project> \
   --docs-path docs/<category>/<page>.md \
   --scope "Subsystem or question inspected" \
   --important-file "path/to/file.py::Why it matters"
@@ -83,8 +84,8 @@ Use the scaffolder rather than hand-writing repository metadata:
 The canonical artifacts are:
 
 ```text
-raw/{category}/{repo-slug}-codebase--{provider}-{short-sha}.md
-derived/repo-analysis/{category}/{repo-slug}/{full-sha}/
+raw/{category}/{topic-path}/{repo-slug}-codebase--{provider}-{short-sha}.md
+derived/repo-analysis/{category}/{topic-path}/{repo-slug}/{full-sha}/
 ```
 
 The scaffolder maintains the matching `sources.json` entry and

@@ -5,6 +5,9 @@ baseurl: ""
 
 theme: minima
 
+plugins:
+  - jekyll-redirect-from
+
 # GitHub Pages settings
 markdown: kramdown
 highlighter: rouge

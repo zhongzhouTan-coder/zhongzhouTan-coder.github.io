@@ -4,9 +4,9 @@ summary: "IndexCache removes redundant sparse-attention indexers by letting most
 layout: default
 confidence: medium
 sources:
-  - raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf
-  - derived/pdf-markdown/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/indexcache-accelerating-sparse-attention-cross-layer-index-reuse.md
-updated: 2026-09-11
+  - raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf
+  - derived/pdf-markdown/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/indexcache-accelerating-sparse-attention-cross-layer-index-reuse.md
+updated: 2026-09-16
 ---
 
 # IndexCache: Cross-Layer Index Reuse for Sparse Attention
@@ -15,7 +15,7 @@ updated: 2026-09-11
 **Authors:** Yushi Bai, Qian Dong, Ting Jiang, Xin Lv, Zhengxiao Du, Aohan Zeng, Jie Tang, Juanzi Li  
 **arXiv:** [2603.12201v1](https://arxiv.org/abs/2603.12201v1), March 2026  
 
-**Related pages:** [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [DeepSeek-V4.1 CSA2](../../deepseek/deepseek-v4.1/index.md), [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [Lightning Indexer](../../../terms/lightning-indexer.md)
+**Related pages:** [DeepSeek-V3.2 DSA](../../../algorithms/model-architectures/deepseek-v3-2/index.md), [DeepSeek-V4.1 CSA2](../../model-families/deepseek/deepseek-v4.1/index.md), [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), [Lightning Indexer](../../../terms/lightning-indexer.md)
 
 > **Evidence:** Results are author-reported from a 30B DSA model and preliminary experiments on GLM-5. The paper does not provide a public reproduction package, so mechanism claims are high-confidence source facts but performance generalization remains medium confidence.
 
@@ -31,7 +31,7 @@ updated: 2026-09-11
 
 ![Heatmap of top-k index overlap across 47 DSA layers, with nonuniform IndexCache sharing groups outlined](assets/cross-layer-index-overlap.jpg)
 
-*Source: [Figure 4 of the IndexCache paper](../../../../raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). ① Bright cells near the diagonal show that adjacent layers select many of the same 2,048 tokens. ② Larger bright blocks reveal regions where one retained indexer can serve several layers. ③ Darker early-to-late regions show that one global selection cannot serve the whole network. ④ Red boxes mark the loss-searched one-quarter-retention groups, whose boundaries do not simply follow visual overlap.*
+*Source: [Figure 4 of the IndexCache paper](../../../../raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). ① Bright cells near the diagonal show that adjacent layers select many of the same 2,048 tokens. ② Larger bright blocks reveal regions where one retained indexer can serve several layers. ③ Darker early-to-late regions show that one global selection cannot serve the whole network. ④ Red boxes mark the loss-searched one-quarter-retention groups, whose boundaries do not simply follow visual overlap.*
 
 **The important pattern is local redundancy, not global sameness.** Adjacent layers overlap by roughly 70–100%, but early and late layers may overlap by 40% or less. IndexCache therefore caches only the current top-k index tensor and refreshes it at selected boundaries rather than freezing one mask across the model.
 
@@ -163,15 +163,15 @@ Follow one decode query from the 200K-token coding session through an `FSSSF` gr
 
 ![Reported prefill speedup for DSA and IndexCache at 10K to 200K context](assets/prefill-speedup.jpg)
 
-*Source: Figure 3a of the [IndexCache paper](../../../../raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). Prefill speedup is relative to the DSA baseline on the 30B model; one-quarter retention reaches 182% at 200K.*
+*Source: Figure 3a of the [IndexCache paper](../../../../raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). Prefill speedup is relative to the DSA baseline on the 30B model; one-quarter retention reaches 182% at 200K.*
 
 ![Reported single-request decode throughput speedup for DSA and IndexCache](assets/decode-per-request-speedup.jpg)
 
-*Source: Figure 3b of the [IndexCache paper](../../../../raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). Single-request decode throughput reaches 148% of DSA at 200K with one-quarter retention.*
+*Source: Figure 3b of the [IndexCache paper](../../../../raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). Single-request decode throughput reaches 148% of DSA at 200K with one-quarter retention.*
 
 ![Reported full-KV-cache decode throughput speedup for DSA and IndexCache](assets/decode-full-throughput-speedup.jpg)
 
-*Source: Figure 3c of the [IndexCache paper](../../../../raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). With roughly 800K cached tokens per GPU, total decode throughput reaches 151% of DSA at 200K.*
+*Source: Figure 3c of the [IndexCache paper](../../../../raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf). With roughly 800K cached tokens per GPU, total decode throughput reaches 151% of DSA at 200K.*
 
 ### How we know: 30B end-to-end serving at 200K
 
@@ -217,8 +217,8 @@ The 30B model was derived from GLM-4.7-Flash and trained/evaluated by the author
 
 ## Go Deeper
 
-- **Read:** [IndexCache paper](https://arxiv.org/abs/2603.12201v1) and the local [source PDF](../../../../raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf).
-- **Build on:** [DeepSeek-V3.2](../../../algorithms/deepseek-v3.2/index.md), whose DSA indexer is the mechanism IndexCache accelerates.
-- **Compare:** [DeepSeek-V4.1 CSA2](../../deepseek/deepseek-v4.1/index.md), which jointly reuses sparse indices and global KV state, and [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), another learned selector architecture.
+- **Read:** [IndexCache paper](https://arxiv.org/abs/2603.12201v1) and the local [source PDF](../../../../raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf).
+- **Build on:** [DeepSeek-V3.2](../../../algorithms/model-architectures/deepseek-v3-2/index.md), whose DSA indexer is the mechanism IndexCache accelerates.
+- **Compare:** [DeepSeek-V4.1 CSA2](../../model-families/deepseek/deepseek-v4.1/index.md), which jointly reuses sparse indices and global KV state, and [MiniMax Sparse Attention](../minimax-sparse-attention/index.md), another learned selector architecture.
 - **Understand the mechanism:** [Cross-Layer Index Reuse](../../../terms/cross-layer-index-reuse.md) and [Lightning Indexer](../../../terms/lightning-indexer.md).
 - **Reproduce:** No public code or checkpoint is identified in the paper; the reported 30B serving setup uses SGLang on an eight-H100 node.

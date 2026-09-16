@@ -6,15 +6,15 @@ layout: default
 confidence: high
 category: frameworks
 sources:
-  - raw/frameworks/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf
-  - raw/frameworks/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf
+  - raw/frameworks/speculative-decoding/eagle/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf
+  - raw/frameworks/speculative-decoding/eagle-2/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf
 aliases:
   - tree-structured attention
 mention_lint: canonical
 appears_in:
-  - docs/frameworks/eagle/index.md
-  - docs/frameworks/eagle-2/index.md
-updated: 2026-08-17
+  - docs/frameworks/speculative-decoding/eagle/index.md
+  - docs/frameworks/speculative-decoding/eagle-2/index.md
+updated: 2026-09-16
 ---
 
 # Tree Attention
@@ -42,8 +42,8 @@ Tree attention increases candidate coverage without adding a target-model pass, 
 
 ## Where It Appears
 
-- [EAGLE: Feature-Level Speculative Sampling](../frameworks/eagle/index.md) - Builds a multi-branch feature-level draft and verifies it in one target-model pass.
-- [EAGLE-2: Context-Aware Dynamic Draft Trees](../frameworks/eagle-2/index.md) - Changes the tree per context, then constructs the corresponding ancestry mask after reranking.
+- [EAGLE: Feature-Level Speculative Sampling](../frameworks/speculative-decoding/eagle/index.md) - Builds a multi-branch feature-level draft and verifies it in one target-model pass.
+- [EAGLE-2: Context-Aware Dynamic Draft Trees](../frameworks/speculative-decoding/eagle-2/index.md) - Changes the tree per context, then constructs the corresponding ancestry mask after reranking.
 
 ## Related Terms
 

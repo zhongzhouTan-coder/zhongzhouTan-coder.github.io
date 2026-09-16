@@ -4,9 +4,9 @@ summary: "AutoSkill turns recurring user requests into retrieved, versioned SKIL
 layout: default
 confidence: medium
 sources:
-  - raw/benchmarks/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf
-  - derived/pdf-markdown/benchmarks/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md
-updated: 2026-08-31
+  - raw/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md
+updated: 2026-09-16
 ---
 
 # AutoSkill: Experience-Driven Lifelong Learning
@@ -16,7 +16,7 @@ updated: 2026-08-31
 **arXiv:** [2603.01145v2 (March 2026)](https://arxiv.org/abs/2603.01145v2)  
 **Code:** [ECNU-ICALK/AutoSkill](https://github.com/ECNU-ICALK/AutoSkill)
 
-**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [SkillLens](../skilllens/index.md) · [SkillOpt](../skillopt/index.md) · [Socratic-SWE](../../../training/fine-tuning/socratic-swe/index.md)
+**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [SkillLens](../skilllens/index.md) · [SkillOpt](../skillopt/index.md) · [Socratic-SWE](../../../training/adaptation/fine-tuning/socratic-swe/index.md)
 
 ## TL;DR
 
@@ -28,7 +28,7 @@ updated: 2026-08-31
 
 ![AutoSkill architecture with a response-generation loop and a skill-evolution loop around a shared SkillBank](assets/autoskill-two-loop-framework.jpg)
 
-*Source: [AutoSkill paper, Figure 1](../../../../raw/benchmarks/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf). ① The response loop rewrites a request, retrieves relevant skills, and conditions the answer. ② The evolution loop extracts a reusable candidate from user inputs. ③ A local management decision adds, merges, or discards the candidate. ④ Both loops meet at a persistent, versioned SkillBank; no model weights are updated.*
+*Source: [AutoSkill paper, Figure 1](../../../../raw/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf). ① The response loop rewrites a request, retrieves relevant skills, and conditions the answer. ② The evolution loop extracts a reusable candidate from user inputs. ③ A local management decision adds, merges, or discards the candidate. ④ Both loops meet at a persistent, versioned SkillBank; no model weights are updated.*
 
 The figure answers the architectural question: **where does lifelong adaptation live?** AutoSkill places it in ordinary external artifacts and retrieval state, not in the base model. That makes adaptation inspectable and reversible, while also moving correctness risk into extraction, retrieval, merging, and prompt obedience.
 
@@ -182,7 +182,7 @@ The foreground response and background update are logically separate. **The curr
 
 ![Distribution of 1,858 extracted AutoSkill artifacts across eight task categories](assets/autoskill-skill-category-distribution.jpg)
 
-*Source: [AutoSkill paper, Figure 2](../../../../raw/benchmarks/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf). Programming and software development is the largest category at 482 skills, followed by writing/content creation at 363, general/mixed at 356, and data/AI/ML at 354.*
+*Source: [AutoSkill paper, Figure 2](../../../../raw/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf). Programming and software development is the largest category at 482 skills, followed by writing/content creation at 363, general/mixed at 356, and data/AI/ML at 354.*
 
 ### The mechanism behind the numbers
 
@@ -214,8 +214,8 @@ The counts establish **production volume**, not precision, usefulness, safety, o
 ## Go Deeper
 
 - **Read:** [AutoSkill paper](https://arxiv.org/abs/2603.01145v2)
-- **Build on:** [SkillLens utility-grounded lifecycle](../skilllens/index.md) · [SkillOpt validation-gated updates](../skillopt/index.md) · [Socratic-SWE trace-derived skills](../../../training/fine-tuning/socratic-swe/index.md)
+- **Build on:** [SkillLens utility-grounded lifecycle](../skilllens/index.md) · [SkillOpt validation-gated updates](../skillopt/index.md) · [Socratic-SWE trace-derived skills](../../../training/adaptation/fine-tuning/socratic-swe/index.md)
 - **Understand the context:** [Agent Skill glossary](../../../terms/agent-skill.md) · [Agent Evaluation Benchmarks](../index.md)
 - **Reproduce:** [ECNU-ICALK/AutoSkill](https://github.com/ECNU-ICALK/AutoSkill); the paper describes an SDK, Web UI, and OpenAI-compatible proxy, but does not report the exact model and retrieval hyperparameters used for the WildChat extraction.
-- **Source extraction:** [MinerU Markdown](../../../../derived/pdf-markdown/benchmarks/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md)
+- **Source extraction:** [MinerU Markdown](../../../../derived/pdf-markdown/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md)
 - **Editable diagram:** [autoskill-landscape.mmd](assets/autoskill-landscape.mmd)

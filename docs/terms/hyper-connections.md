@@ -6,25 +6,23 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf
-  - raw/training/deepseek-v4.1-technical-report--paper.pdf
+  - raw/training/architectures/mhc/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf
+  - raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf
 aliases:
   - hyper-connection
   - hc
   - mhc
   - manifold-constrained-hyper-connections
 appears_in:
-  - docs/frameworks/deepseek/index.md
-  - docs/frameworks/deepseek/v4-attention-code-reading.md
-  - docs/frameworks/index.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
-  - docs/frameworks/vllm-ascend/index.md
-  - docs/training/deepseek/deepseek-v4/index.md
-  - docs/training/deepseek/deepseek-v4.1/index.md
-  - docs/training/deepseek/index.md
-  - docs/training/index.md
-  - docs/training/mhc/index.md
-updated: 2026-08-06
+  - docs/frameworks/serving/deepseek/index.md
+  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/serving/vllm-ascend/index.md
+  - docs/training/model-families/deepseek/deepseek-v4/index.md
+  - docs/training/model-families/deepseek/deepseek-v4.1/index.md
+  - docs/training/model-families/deepseek/index.md
+  - docs/training/architectures/mhc/index.md
+updated: 2026-09-16
 ---
 
 # Hyper-Connections
@@ -59,16 +57,14 @@ Each mapping is a sum of a dynamic (input-dependent) term and a static bias term
 
 ## Where It Appears
 
-- [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — The paper that introduces mHC and analyzes HC's instability.
-- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — Deploys mHC as the residual mechanism in a 1.6T/284B MoE.
-- [DeepSeek-V4.1-Flash](../training/deepseek/deepseek-v4.1/index.md) — Uses Single-Pass mHC and Mega-mHC to halve residual activation memory traffic at deployment.
-- [DeepSeek](../frameworks/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
-- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
-- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
-- [vLLM Ascend](../frameworks/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
-- [DeepSeek](../training/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
-- [Training](../training/index.md) — Training and fine-tuning pages covering optimization behavior, transfer learning, and generalization in large models.
+- [mHC: Manifold-Constrained Hyper-Connections](../training/architectures/mhc/index.md) — The paper that introduces mHC and analyzes HC's instability.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/model-families/deepseek/deepseek-v4/index.md) — Deploys mHC as the residual mechanism in a 1.6T/284B MoE.
+- [DeepSeek-V4.1-Flash](../training/model-families/deepseek/deepseek-v4.1/index.md) — Uses Single-Pass mHC and Mega-mHC to halve residual activation memory traffic at deployment.
+- [DeepSeek](../frameworks/serving/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [vLLM Ascend](../frameworks/serving/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
+- [DeepSeek](../training/model-families/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.
 
 ## Related Terms
 

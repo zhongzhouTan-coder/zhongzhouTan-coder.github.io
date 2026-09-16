@@ -6,10 +6,10 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf
+  - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
-  - docs/hardware/ascend/ascend-950/index.md
-updated: 2026-08-31
+  - docs/hardware/accelerators/ascend/ascend-950/index.md
+updated: 2026-09-16
 ---
 
 # Collective Communication Unit (CCU)
@@ -35,7 +35,7 @@ CCU still depends on a programmed algorithm, message sizes, route topology, and 
 
 ## Where It Appears
 
-- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/ascend/ascend-950/index.md) — Explains CCU Missions, Memory Slices, Reduce Units, URMA movement, and supported collectives.
+- [Ascend 950 NPU Architecture: Compute, Memory, and Unified Bus](../hardware/accelerators/ascend/ascend-950/index.md) — Explains CCU Missions, Memory Slices, Reduce Units, URMA movement, and supported collectives.
 
 ## Related Terms
 

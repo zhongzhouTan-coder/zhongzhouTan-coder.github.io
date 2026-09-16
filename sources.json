@@ -1,15 +1,15 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "naming_policy": {
-    "pdf": "raw/{category}/{slug}--{source_id}.pdf",
-    "markdown": "raw/{category}/{slug}.md",
-    "repository": "raw/{category}/{repo_slug}-codebase--{provider}-{short_sha}.md",
-    "web_html": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.html",
-    "web_metadata": "raw/{category}/{slug}--web-{capture_date}-{short_sha256}.metadata.json",
-    "derived_markdown": "derived/pdf-markdown/{category}/{slug}.md",
-    "derived_markdown_folder": "derived/pdf-markdown/{category}/{slug}/{slug}.md",
-    "web_markdown": "derived/web-markdown/{category}/{slug}--web-{capture_date}-{short_sha256}.md",
-    "repo_analysis": "derived/repo-analysis/{category}/{repo_slug}/{full_sha}/"
+    "pdf": "raw/{category}/{topic_path}/{slug}--{source_id}.pdf",
+    "markdown": "raw/{category}/{topic_path}/{slug}.md",
+    "repository": "raw/{category}/{topic_path}/{repo_slug}-codebase--{provider}-{short_sha}.md",
+    "web_html": "raw/{category}/{topic_path}/{slug}--web-{capture_date}-{short_sha256}.html",
+    "web_metadata": "raw/{category}/{topic_path}/{slug}--web-{capture_date}-{short_sha256}.metadata.json",
+    "derived_markdown": "derived/pdf-markdown/{category}/{topic_path}/{slug}.md",
+    "derived_markdown_folder": "derived/pdf-markdown/{category}/{topic_path}/{slug}/{slug}.md",
+    "web_markdown": "derived/web-markdown/{category}/{topic_path}/{slug}--web-{capture_date}-{short_sha256}.md",
+    "repo_analysis": "derived/repo-analysis/{category}/{topic_path}/{repo_slug}/{full_sha}/"
   },
   "sources": [
     {
@@ -19,11 +19,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/attention-is-all-you-need--arxiv-1706.03762.pdf"
+        "raw/algorithms/foundations/attention-is-all-you-need--arxiv-1706.03762.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/attention-is-all-you-need.md",
+      "derived_path": "derived/pdf-markdown/algorithms/foundations/attention-is-all-you-need.md",
       "docs_path": "docs/algorithms/foundations/transformer.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundations"
     },
     {
       "id": "arxiv:2006.16362v2",
@@ -32,11 +33,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf"
+        "raw/algorithms/attention/variants/collaborative-multi-head-attention--arxiv-2006.16362v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/collaborative-multi-head-attention.md",
-      "docs_path": "docs/algorithms/attention-variants/collaborative-attention.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/variants/collaborative-multi-head-attention.md",
+      "docs_path": "docs/algorithms/attention/variants/collaborative-attention.md",
+      "status": "ingested",
+      "topic_path": "attention/variants"
     },
     {
       "id": "arxiv:2006.16236v3",
@@ -45,11 +47,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf"
+        "raw/algorithms/attention/linear/transformers-are-rnns-linear-attention--arxiv-2006.16236v3.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/transformers-are-rnns-linear-attention.md",
-      "docs_path": "docs/algorithms/linear-attention/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/linear/transformers-are-rnns-linear-attention.md",
+      "docs_path": "docs/algorithms/attention/linear/index.md",
+      "status": "ingested",
+      "topic_path": "attention/linear"
     },
     {
       "id": "arxiv:2405.04434",
@@ -58,11 +61,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf"
+        "raw/algorithms/attention/variants/deepseek-v2-multi-head-latent-attention--arxiv-2405.04434.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/deepseek-v2-multi-head-latent-attention.md",
-      "docs_path": "docs/algorithms/attention-variants/deepseek-v2-mla.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/variants/deepseek-v2-multi-head-latent-attention.md",
+      "docs_path": "docs/algorithms/attention/variants/deepseek-v2-mla.md",
+      "status": "ingested",
+      "topic_path": "attention/variants"
     },
     {
       "id": "paper:deepseek-v3.2",
@@ -71,11 +75,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf"
+        "raw/algorithms/model-architectures/deepseek-v3-2/deepseek-v3.2-sparse-attention-scaled-rl-tool-use--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md",
-      "docs_path": "docs/algorithms/deepseek-v3.2/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/model-architectures/deepseek-v3-2/deepseek-v3.2-sparse-attention-scaled-rl-tool-use.md",
+      "docs_path": "docs/algorithms/model-architectures/deepseek-v3-2/index.md",
+      "status": "ingested",
+      "topic_path": "model-architectures/deepseek-v3-2"
     },
     {
       "id": "arxiv:2205.14135v2",
@@ -84,11 +89,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf"
+        "raw/algorithms/attention/flashattention/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/flashattention-io-aware-exact-attention.md",
-      "docs_path": "docs/algorithms/flashattention/flashattention.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/flashattention/flashattention-io-aware-exact-attention.md",
+      "docs_path": "docs/algorithms/attention/flashattention/flashattention.md",
+      "status": "ingested",
+      "topic_path": "attention/flashattention"
     },
     {
       "id": "arxiv:2307.08691v1",
@@ -97,11 +103,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf"
+        "raw/algorithms/attention/flashattention/flashattention-2-better-parallelism-work-partitioning--arxiv-2307.08691v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/flashattention-2-better-parallelism-work-partitioning.md",
-      "docs_path": "docs/algorithms/flashattention/flashattention-2.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/flashattention/flashattention-2-better-parallelism-work-partitioning.md",
+      "docs_path": "docs/algorithms/attention/flashattention/flashattention-2.md",
+      "status": "ingested",
+      "topic_path": "attention/flashattention"
     },
     {
       "id": "arxiv:2407.08608v2",
@@ -110,11 +117,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf"
+        "raw/algorithms/attention/flashattention/flashattention-3-asynchrony-low-precision--arxiv-2407.08608v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/flashattention-3-asynchrony-low-precision.md",
-      "docs_path": "docs/algorithms/flashattention/flashattention-3.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/flashattention/flashattention-3-asynchrony-low-precision.md",
+      "docs_path": "docs/algorithms/attention/flashattention/flashattention-3.md",
+      "status": "ingested",
+      "topic_path": "attention/flashattention"
     },
     {
       "id": "arxiv:2603.05451v1",
@@ -123,11 +131,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf"
+        "raw/algorithms/attention/flashattention/flashattention-4-kernel-pipelining-co-design--arxiv-2603.05451v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/flashattention-4-kernel-pipelining-co-design.md",
-      "docs_path": "docs/algorithms/flashattention/flashattention-4.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/flashattention/flashattention-4-kernel-pipelining-co-design.md",
+      "docs_path": "docs/algorithms/attention/flashattention/flashattention-4.md",
+      "status": "ingested",
+      "topic_path": "attention/flashattention"
     },
     {
       "id": "paper:llama-2",
@@ -136,11 +145,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/grouped-query-attention-llama-2--paper.pdf"
+        "raw/algorithms/attention/variants/grouped-query-attention-llama-2--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/grouped-query-attention-llama-2.md",
-      "docs_path": "docs/algorithms/attention-variants/grouped-query-attention/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/variants/grouped-query-attention-llama-2.md",
+      "docs_path": "docs/algorithms/attention/variants/grouped-query-attention/index.md",
+      "status": "ingested",
+      "topic_path": "attention/variants"
     },
     {
       "id": "web:hackerearth",
@@ -149,10 +159,11 @@
       "category": "algorithms",
       "kind": "reference",
       "raw_paths": [
-        "raw/algorithms/matrix-exponentiation-hackerearth--web.pdf"
+        "raw/algorithms/attention/linear/matrix-exponentiation-hackerearth--web.pdf"
       ],
-      "docs_path": "docs/algorithms/linear-attention/matrix-exponentiation.md",
-      "status": "ingested"
+      "docs_path": "docs/algorithms/attention/linear/matrix-exponentiation.md",
+      "status": "ingested",
+      "topic_path": "attention/linear"
     },
     {
       "id": "paper:multi-query-attention",
@@ -161,11 +172,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/multi-query-attention-one-write-head--paper.pdf"
+        "raw/algorithms/attention/variants/multi-query-attention-one-write-head--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/multi-query-attention-one-write-head.md",
-      "docs_path": "docs/algorithms/attention-variants/multi-query-attention.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/attention/variants/multi-query-attention-one-write-head.md",
+      "docs_path": "docs/algorithms/attention/variants/multi-query-attention.md",
+      "status": "ingested",
+      "topic_path": "attention/variants"
     },
     {
       "id": "paper:franke-degen-softmax",
@@ -175,11 +187,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf"
+        "raw/algorithms/foundations/softmax-function-properties-motivation-interpretation--franke-degen.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/softmax-function-properties-motivation-interpretation.md",
+      "derived_path": "derived/pdf-markdown/algorithms/foundations/softmax-function-properties-motivation-interpretation.md",
       "docs_path": "docs/algorithms/foundations/softmax.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundations"
     },
     {
       "id": "arxiv:2505.21389v1",
@@ -188,11 +201,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf"
+        "raw/benchmarks/agent-eval/autojudger-agent-driven-mllm-benchmarking--arxiv-2505.21389v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/autojudger-agent-driven-mllm-benchmarking.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/autojudger-agent-driven-mllm-benchmarking.md",
       "docs_path": "docs/benchmarks/agent-eval/autojudger.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "arxiv:2510.10457v1",
@@ -201,11 +215,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf"
+        "raw/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/rethinking-llm-evaluation-200x-less-data/rethinking-llm-evaluation-200x-less-data.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data/rethinking-llm-evaluation-200x-less-data.md",
       "docs_path": "docs/benchmarks/agent-eval/essencebench/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "arxiv:2606.28279v1",
@@ -214,11 +229,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/agentic-hardware-design-repository-code-evolution--arxiv-2606.28279v1.pdf"
+        "raw/benchmarks/agent-eval/agentic-hardware-design-repository-code-evolution--arxiv-2606.28279v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/agentic-hardware-design-repository-code-evolution.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/agentic-hardware-design-repository-code-evolution.md",
       "docs_path": "docs/benchmarks/agent-eval/agentic-hardware-design/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "paper:tau-bench",
@@ -227,10 +243,11 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf"
+        "raw/benchmarks/agent-eval/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf"
       ],
       "docs_path": "docs/benchmarks/agent-eval/tau-bench.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "paper:tau2-bench",
@@ -239,10 +256,11 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/tau2-bench-mechanism-and-design--paper.pdf"
+        "raw/benchmarks/agent-eval/tau2-bench-mechanism-and-design--paper.pdf"
       ],
       "docs_path": "docs/benchmarks/agent-eval/tau2-bench-mechanism.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "paper:tau-voice",
@@ -251,10 +269,11 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf"
+        "raw/benchmarks/agent-eval/tau-voice-full-duplex-voice-agent-benchmark--paper.pdf"
       ],
       "docs_path": "docs/benchmarks/agent-eval/tau-voice.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "web:deepswe",
@@ -263,10 +282,11 @@
       "category": "benchmarks",
       "kind": "reference",
       "raw_paths": [
-        "raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md"
+        "raw/benchmarks/agent-eval/deepswe-long-horizon-software-engineering-benchmark.md"
       ],
       "docs_path": "docs/benchmarks/agent-eval/deepswe/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "web:deepswe-v1.1",
@@ -275,10 +295,11 @@
       "category": "benchmarks",
       "kind": "reference",
       "raw_paths": [
-        "raw/benchmarks/deepswe-v1.1-execution-and-scoring-changes.md"
+        "raw/benchmarks/agent-eval/deepswe-v1.1-execution-and-scoring-changes.md"
       ],
       "docs_path": "docs/benchmarks/agent-eval/deepswe-v1-1/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "web:pier",
@@ -287,10 +308,11 @@
       "category": "benchmarks",
       "kind": "reference",
       "raw_paths": [
-        "raw/benchmarks/pier-coding-agent-evaluation-harness.md"
+        "raw/benchmarks/agent-eval/pier-coding-agent-evaluation-harness.md"
       ],
       "docs_path": "docs/benchmarks/agent-eval/pier/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "arxiv:2607.05147v1",
@@ -299,11 +321,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"
+        "raw/frameworks/speculative-decoding/dspark/dspark-confidence-scheduled-speculative-decoding--arxiv-2607.05147v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/dspark-confidence-scheduled-speculative-decoding.md",
-      "docs_path": "docs/frameworks/dspark/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/speculative-decoding/dspark/dspark-confidence-scheduled-speculative-decoding.md",
+      "docs_path": "docs/frameworks/speculative-decoding/dspark/index.md",
+      "status": "ingested",
+      "topic_path": "speculative-decoding/dspark"
     },
     {
       "id": "arxiv:2312.07104v2",
@@ -312,10 +335,11 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf"
+        "raw/frameworks/serving/sglang/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf"
       ],
-      "docs_path": "docs/frameworks/sglang/index.md",
-      "status": "ingested"
+      "docs_path": "docs/frameworks/serving/sglang/index.md",
+      "status": "ingested",
+      "topic_path": "serving/sglang"
     },
     {
       "id": "arxiv:2309.06180v1",
@@ -324,11 +348,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"
+        "raw/frameworks/serving/vllm/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/vllm-pagedattention-serving-framework.md",
-      "docs_path": "docs/frameworks/vllm/vllm-framework.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/serving/vllm/vllm-pagedattention-serving-framework.md",
+      "docs_path": "docs/frameworks/serving/vllm/vllm-framework.md",
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "mapl:2019-tillet-kung-cox",
@@ -337,11 +362,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"
+        "raw/frameworks/compilers-kernels/triton/triton-tiled-gpu-kernel-language-compiler--mapl-2019-tillet-kung-cox.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/triton-tiled-gpu-kernel-language-compiler.md",
-      "docs_path": "docs/frameworks/triton/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/compilers-kernels/triton/triton-tiled-gpu-kernel-language-compiler.md",
+      "docs_path": "docs/frameworks/compilers-kernels/triton/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/triton"
     },
     {
       "id": "github:vllm-project/vllm@d18ed2304a2703e3211fc384a58607e754f5b723",
@@ -354,14 +380,15 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-d18ed2304a27.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-d18ed2304a27.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
       "docs_paths": [
-        "docs/frameworks/triton/triton-in-vllm.md",
-        "docs/frameworks/deepseek/v4-attention-code-reading.md"
+        "docs/frameworks/compilers-kernels/triton/triton-in-vllm.md",
+        "docs/frameworks/serving/deepseek/v4-attention-code-reading.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "github:vllm-project/vllm-ascend@8645122088f5cad1701205310573c5ee05c809f5",
@@ -374,14 +401,15 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-8645122088f5.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-8645122088f5.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
       "docs_paths": [
-        "docs/frameworks/triton/triton-in-vllm.md",
-        "docs/frameworks/deepseek/v4-attention-code-reading.md"
+        "docs/frameworks/compilers-kernels/triton/triton-in-vllm.md",
+        "docs/frameworks/serving/deepseek/v4-attention-code-reading.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
     },
     {
       "id": "github:vllm-project/vllm-ascend@e3bb5f570f0b7d7fef9df3190a450052bee090cc",
@@ -394,13 +422,14 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-e3bb5f570f0b.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-e3bb5f570f0b.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/e3bb5f570f0b7d7fef9df3190a450052bee090cc/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/e3bb5f570f0b7d7fef9df3190a450052bee090cc/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md"
+        "docs/frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
     },
     {
       "id": "github:vllm-project/vllm-ascend@32a59d4e349c12c32cdbc1916436c16e39939afc",
@@ -413,15 +442,16 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-32a59d4e349c.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-32a59d4e349c.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/32a59d4e349c12c32cdbc1916436c16e39939afc/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/architecture.md",
-        "docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
-        "docs/frameworks/vllm-ascend/deepseek-v4-inference.md"
+        "docs/frameworks/serving/vllm-ascend/architecture.md",
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md",
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
     },
     {
       "id": "github:vllm-project/vllm-ascend@9a52ca5fc36c1852241822863c50717bee5dc761",
@@ -434,16 +464,17 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-9a52ca5fc36c.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-9a52ca5fc36c.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/9a52ca5fc36c1852241822863c50717bee5dc761/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/9a52ca5fc36c1852241822863c50717bee5dc761/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md",
-        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
-        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
-        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md"
+        "docs/frameworks/serving/vllm-ascend/qwen3.5-qwen3.6-inference.md",
+        "docs/frameworks/serving/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
+        "docs/frameworks/serving/vllm-ascend/qwen3.5-mtp.md",
+        "docs/frameworks/serving/vllm-ascend/glm-5.2-inference-path.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
     },
     {
       "id": "arxiv:2410.09426v4",
@@ -452,11 +483,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"
+        "raw/hardware/numerics/quantization/flatquant-fast-learnable-affine-quantization--arxiv-2410.09426v4.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/flatquant-fast-learnable-affine-quantization.md",
-      "docs_path": "docs/hardware/quantization/flatquant/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/numerics/quantization/flatquant-fast-learnable-affine-quantization.md",
+      "docs_path": "docs/hardware/numerics/quantization/flatquant/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "arxiv:2404.00456v2",
@@ -465,11 +497,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf"
+        "raw/hardware/numerics/quantization/quarot-outlier-free-4bit-inference-rotated-llms--arxiv-2404.00456v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/quarot-outlier-free-4bit-inference-rotated-llms.md",
-      "docs_path": "docs/hardware/quantization/quarot/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/numerics/quantization/quarot-outlier-free-4bit-inference-rotated-llms.md",
+      "docs_path": "docs/hardware/numerics/quantization/quarot/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "paper:gpt-1",
@@ -478,11 +511,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/gpt-1-improving-language-understanding--paper.pdf"
+        "raw/training/foundation-models/gpt-1-improving-language-understanding--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/gpt-1-improving-language-understanding.md",
+      "derived_path": "derived/pdf-markdown/training/foundation-models/gpt-1-improving-language-understanding.md",
       "docs_path": "docs/training/foundation-models/gpt-1.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundation-models"
     },
     {
       "id": "paper:gpt-2",
@@ -491,11 +525,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf"
+        "raw/training/foundation-models/gpt-2-unsupervised-multitask-learners--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md",
+      "derived_path": "derived/pdf-markdown/training/foundation-models/gpt-2-unsupervised-multitask-learners.md",
       "docs_path": "docs/training/foundation-models/gpt-2.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundation-models"
     },
     {
       "id": "paper:gpt-3",
@@ -504,11 +539,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/gpt-3-language-models-few-shot-learners--paper.pdf"
+        "raw/training/foundation-models/gpt-3-language-models-few-shot-learners--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/gpt-3-language-models-few-shot-learners.md",
+      "derived_path": "derived/pdf-markdown/training/foundation-models/gpt-3-language-models-few-shot-learners.md",
       "docs_path": "docs/training/foundation-models/gpt-3.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundation-models"
     },
     {
       "id": "arxiv:2012.13255v1",
@@ -517,10 +553,11 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf"
+        "raw/training/adaptation/fine-tuning/intrinsic-dimensionality-language-model-fine-tuning--arxiv-2012.13255v1.pdf"
       ],
-      "docs_path": "docs/training/fine-tuning/intrinsic-dimensionality-fine-tuning/index.md",
-      "status": "ingested"
+      "docs_path": "docs/training/adaptation/fine-tuning/intrinsic-dimensionality-fine-tuning/index.md",
+      "status": "ingested",
+      "topic_path": "adaptation/fine-tuning"
     },
     {
       "id": "paper:llama",
@@ -529,11 +566,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/llama-open-efficient-foundation-language-models--paper.pdf"
+        "raw/training/foundation-models/llama-open-efficient-foundation-language-models--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/llama-open-efficient-foundation-language-models.md",
+      "derived_path": "derived/pdf-markdown/training/foundation-models/llama-open-efficient-foundation-language-models.md",
       "docs_path": "docs/training/foundation-models/llama.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundation-models"
     },
     {
       "id": "paper:megatron-lm",
@@ -542,11 +580,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/megatron-lm-gpu-cluster-training-parallelism--paper.pdf"
+        "raw/training/parallelism/megatron-lm-gpu-cluster-training-parallelism--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/megatron-lm-gpu-cluster-training-parallelism.md",
+      "derived_path": "derived/pdf-markdown/training/parallelism/megatron-lm-gpu-cluster-training-parallelism.md",
       "docs_path": "docs/training/parallelism/megatron-lm/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "parallelism"
     },
     {
       "id": "arxiv:1909.08053",
@@ -555,11 +594,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf"
+        "raw/training/parallelism/megatron-lm-tensor-parallelism--arxiv-1909.08053.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md",
+      "derived_path": "derived/pdf-markdown/training/parallelism/megatron-lm-tensor-parallelism/megatron-lm-tensor-parallelism.md",
       "docs_path": "docs/training/parallelism/megatron-lm/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "parallelism"
     },
     {
       "id": "arxiv:1811.06965v5",
@@ -568,11 +608,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf"
+        "raw/training/parallelism/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/gpipe-micro-batch-pipeline-parallelism.md",
+      "derived_path": "derived/pdf-markdown/training/parallelism/gpipe-micro-batch-pipeline-parallelism.md",
       "docs_path": "docs/training/parallelism/gpipe/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "parallelism"
     },
     {
       "id": "arxiv:2606.07412v1",
@@ -581,11 +622,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf"
+        "raw/training/adaptation/fine-tuning/socratic-swe-self-evolving-coding-agents--arxiv-2606.07412v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/socratic-swe-self-evolving-coding-agents.md",
-      "docs_path": "docs/training/fine-tuning/socratic-swe/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/adaptation/fine-tuning/socratic-swe-self-evolving-coding-agents.md",
+      "docs_path": "docs/training/adaptation/fine-tuning/socratic-swe/index.md",
+      "status": "ingested",
+      "topic_path": "adaptation/fine-tuning"
     },
     {
       "id": "arxiv:2105.13120",
@@ -594,11 +636,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf"
+        "raw/training/parallelism/sequence-parallelism-long-sequence-training--arxiv-2105.13120.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/sequence-parallelism-long-sequence-training.md",
+      "derived_path": "derived/pdf-markdown/training/parallelism/sequence-parallelism-long-sequence-training.md",
       "docs_path": "docs/training/parallelism/sequence-parallelism/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "parallelism"
     },
     {
       "id": "paper:minimax-sparse-attention",
@@ -607,11 +650,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/minimax-sparse-attention--paper.pdf"
+        "raw/training/efficient-attention/minimax-sparse-attention--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/minimax-sparse-attention.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/minimax-sparse-attention.md",
       "docs_path": "docs/training/efficient-attention/minimax-sparse-attention/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "github:triton-lang/triton-ascend@41f499924da1d58955196c946895597e992127f0",
@@ -624,13 +668,14 @@
       "provider": "github",
       "repository_url": "https://github.com/triton-lang/triton-ascend",
       "raw_paths": [
-        "raw/frameworks/triton-ascend-codebase--github-41f499924da1.md"
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-codebase--github-41f499924da1.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/triton-ascend/41f499924da1d58955196c946895597e992127f0/",
+      "derived_path": "derived/repo-analysis/frameworks/compilers-kernels/triton-ascend/triton-ascend/41f499924da1d58955196c946895597e992127f0/",
       "docs_paths": [
-        "docs/frameworks/triton-ascend/index.md"
+        "docs/frameworks/compilers-kernels/triton-ascend/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "compilers-kernels/triton-ascend"
     },
     {
       "id": "web:nvidia.github.io/nvfp4-te@2026-07-28-6625830e9e9e",
@@ -643,12 +688,13 @@
       "captured_at": "2026-07-28T07:33:23.583Z",
       "revision": "6625830e9e9ee594d10067a0b433c6a1dff08c40ed8c66c9b7c7addd07c74284",
       "raw_paths": [
-        "raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.html",
-        "raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json"
+        "raw/hardware/numerics/quantization/nvfp4-te--web-2026-07-28-6625830e9e9e.html",
+        "raw/hardware/numerics/quantization/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.md",
-      "docs_path": "docs/hardware/quantization/nvfp4.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/hardware/numerics/quantization/nvfp4-te--web-2026-07-28-6625830e9e9e.md",
+      "docs_path": "docs/hardware/numerics/quantization/nvfp4.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "web:developer.nvidia.com/nvfp4-blog@2026-07-28-a2f3eb0ba3bb",
@@ -661,12 +707,13 @@
       "captured_at": "2026-07-28T07:34:13.307Z",
       "revision": "a2f3eb0ba3bb315802edaf2ff95856c8041b8d2e9c7e5f99877f7fc271e140c6",
       "raw_paths": [
-        "raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html",
-        "raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json"
+        "raw/hardware/numerics/quantization/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html",
+        "raw/hardware/numerics/quantization/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md",
-      "docs_path": "docs/hardware/quantization/nvfp4.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/hardware/numerics/quantization/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.md",
+      "docs_path": "docs/hardware/numerics/quantization/nvfp4.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "paper:swat-sliding-window-attention-training",
@@ -675,11 +722,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/swat-sliding-window-attention-training--paper.pdf"
+        "raw/training/efficient-attention/swat-sliding-window-attention-training--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/swat-sliding-window-attention-training.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/swat-sliding-window-attention-training.md",
       "docs_path": "docs/training/efficient-attention/swat-sliding-window-attention/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "paper:deepseek-v4",
@@ -688,11 +736,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/deepseek-v4--paper.pdf"
+        "raw/training/model-families/deepseek/deepseek-v4--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/deepseek-v4.md",
-      "docs_path": "docs/training/deepseek/deepseek-v4/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/model-families/deepseek/deepseek-v4.md",
+      "docs_path": "docs/training/model-families/deepseek/deepseek-v4/index.md",
+      "status": "ingested",
+      "topic_path": "model-families/deepseek"
     },
     {
       "id": "paper:deepseek-v4.1-flash",
@@ -701,11 +750,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/deepseek-v4.1-technical-report--paper.pdf"
+        "raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/deepseek-v4.1-technical-report.md",
-      "docs_path": "docs/training/deepseek/deepseek-v4.1/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/model-families/deepseek/deepseek-v4.1-technical-report.md",
+      "docs_path": "docs/training/model-families/deepseek/deepseek-v4.1/index.md",
+      "status": "ingested",
+      "topic_path": "model-families/deepseek"
     },
     {
       "id": "arxiv:2512.24880",
@@ -714,11 +764,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf"
+        "raw/training/architectures/mhc/mhc-manifold-constrained-hyper-connections--arxiv-2512.24880.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/mhc-manifold-constrained-hyper-connections.md",
-      "docs_path": "docs/training/mhc/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/architectures/mhc/mhc-manifold-constrained-hyper-connections.md",
+      "docs_path": "docs/training/architectures/mhc/index.md",
+      "status": "ingested",
+      "topic_path": "architectures/mhc"
     },
     {
       "id": "paper:kimi-linear",
@@ -727,11 +778,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/kimi-linear-expressive-efficient-attention--paper.pdf"
+        "raw/training/model-families/kimi/kimi-linear-expressive-efficient-attention--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/kimi-linear-expressive-efficient-attention.md",
-      "docs_path": "docs/training/kimi/kimi-linear/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/model-families/kimi/kimi-linear-expressive-efficient-attention.md",
+      "docs_path": "docs/training/model-families/kimi/kimi-linear/index.md",
+      "status": "ingested",
+      "topic_path": "model-families/kimi"
     },
     {
       "id": "arxiv:2412.06464",
@@ -740,11 +792,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf"
+        "raw/training/efficient-attention/gated-delta-networks-improving-mamba2-with-delta-rule--arxiv-2412.06464.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/gated-delta-networks-improving-mamba2-with-delta-rule.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/gated-delta-networks-improving-mamba2-with-delta-rule.md",
       "docs_path": "docs/training/efficient-attention/gated-delta-networks/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "paper:k3-technical-report",
@@ -753,11 +806,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/k3-technical-report--paper.pdf"
+        "raw/training/model-families/kimi/k3-technical-report--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/k3-technical-report.md",
-      "docs_path": "docs/training/kimi/kimi-k3/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/training/model-families/kimi/k3-technical-report.md",
+      "docs_path": "docs/training/model-families/kimi/kimi-k3/index.md",
+      "status": "ingested",
+      "topic_path": "model-families/kimi"
     },
     {
       "id": "github:vllm-project/vllm@a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b",
@@ -770,21 +824,22 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-a0c092ee72c0.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-a0c092ee72c0.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/a0c092ee72c0dcefbb3b3e74f97ac62d842e5f4b/",
       "docs_paths": [
-        "docs/frameworks/vllm/vllm-kimi-k3-code-reading.md",
-        "docs/frameworks/vllm/vllm-continuous-batching/index.md",
-        "docs/frameworks/vllm/vllm-overview.md",
-        "docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
-        "docs/frameworks/vllm-ascend/qwen3.5-mtp.md",
-        "docs/frameworks/vllm/vllm-context-parallelism.md",
-        "docs/frameworks/vllm/dcp-attention/index.md",
-        "docs/frameworks/vllm-ascend/glm-5.2-inference-path.md",
-        "docs/frameworks/vllm/glm-5.1-expert-parallel/index.md"
+        "docs/frameworks/serving/vllm/vllm-kimi-k3-code-reading.md",
+        "docs/frameworks/serving/vllm/vllm-continuous-batching/index.md",
+        "docs/frameworks/serving/vllm/vllm-overview.md",
+        "docs/frameworks/serving/vllm-ascend/prefill-decode-scheduling-qwen3.5.md",
+        "docs/frameworks/serving/vllm-ascend/qwen3.5-mtp.md",
+        "docs/frameworks/serving/vllm/vllm-context-parallelism.md",
+        "docs/frameworks/serving/vllm/dcp-attention/index.md",
+        "docs/frameworks/serving/vllm-ascend/glm-5.2-inference-path.md",
+        "docs/frameworks/serving/vllm/glm-5.1-expert-parallel/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "web:web.archive.org/linear-attention-without-softmax@2026-07-30-e116218d6fdb",
@@ -797,12 +852,13 @@
       "captured_at": "2026-07-30T11:17:58.569Z",
       "revision": "e116218d6fdb6e4d838d369f4e7000183b59c965f8c38fb35053599416b359da",
       "raw_paths": [
-        "raw/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.html",
-        "raw/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.metadata.json"
+        "raw/algorithms/attention/linear/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.html",
+        "raw/algorithms/attention/linear/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.md",
+      "derived_path": "derived/web-markdown/algorithms/attention/linear/linear-attention-without-softmax--web-2026-07-30-e116218d6fdb.md",
       "status": "ingested",
-      "docs_path": "docs/algorithms/linear-attention/linear-attention-without-softmax.md"
+      "docs_path": "docs/algorithms/attention/linear/linear-attention-without-softmax.md",
+      "topic_path": "attention/linear"
     },
     {
       "id": "web:www.cnblogs.com/recurrent-neural-networks-rnn-lstm@2026-07-30-565de51c278c",
@@ -815,14 +871,14 @@
       "captured_at": "2026-07-30T15:21:29.683Z",
       "revision": "565de51c278c833549ba8f4cf1e0413fc038bca6ee5d4cc0fecd35b1bebf362c",
       "raw_paths": [
-        "raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.html",
-        "raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.metadata.json"
+        "raw/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.html",
+        "raw/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.md",
+      "derived_path": "derived/web-markdown/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.md",
       "docs_path": "docs/algorithms/foundations/recurrent-neural-networks/index.md",
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "foundations"
+    },
     {
       "id": "web:www.hiascend.com/cann-ascendc-basic-architecture@2026-07-31-87f687f6b225",
       "title": "基本架构-硬件架构与数据处理原理-概念原理和术语-Ascend C算子开发-算子开发-CANN社区版8.3.RCX开发文档-昇腾社区",
@@ -834,14 +890,14 @@
       "captured_at": "2026-07-31T06:04:49.849Z",
       "revision": "87f687f6b2255dacea6859d17956367791548946bd6e3a9adb1eb97b5df83e0c",
       "raw_paths": [
-        "raw/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.html",
-        "raw/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.metadata.json"
+        "raw/frameworks/compilers-kernels/triton-ascend/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.html",
+        "raw/frameworks/compilers-kernels/triton-ascend/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.md",
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/triton-ascend/cann-ascendc-basic-architecture--web-2026-07-31-87f687f6b225.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md",
+      "topic_path": "compilers-kernels/triton-ascend"
+    },
     {
       "id": "web:triton-ascend.readthedocs.io/triton-ascend-vector-operator@2026-07-31-f4dff5a43fca",
       "title": "Vector 算子开发 - Triton Ascend latest 文档",
@@ -853,14 +909,14 @@
       "captured_at": "2026-07-31T06:04:53.347Z",
       "revision": "f4dff5a43fca259c9a7cb33eb3bf85b79d5154e8c427ebda15d6a9b8f8ac26e1",
       "raw_paths": [
-        "raw/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.html",
-        "raw/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.metadata.json"
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.html",
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.md",
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/triton-ascend/triton-ascend-vector-operator--web-2026-07-31-f4dff5a43fca.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md",
+      "topic_path": "compilers-kernels/triton-ascend"
+    },
     {
       "id": "web:triton-ascend.readthedocs.io/triton-ascend-cube-operator@2026-07-31-4aac18bcbb4a",
       "title": "Cube 算子开发 - Triton Ascend latest 文档",
@@ -872,14 +928,14 @@
       "captured_at": "2026-07-31T06:04:56.742Z",
       "revision": "4aac18bcbb4aec244ab4ec53d6da70dffcdbeec9d9fd6077f7c54a1a2f2fc5ef",
       "raw_paths": [
-        "raw/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.html",
-        "raw/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.metadata.json"
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.html",
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.md",
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/triton-ascend/triton-ascend-cube-operator--web-2026-07-31-4aac18bcbb4a.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md",
+      "topic_path": "compilers-kernels/triton-ascend"
+    },
     {
       "id": "web:triton-ascend.readthedocs.io/triton-ascend-cv-fusion-operator@2026-07-31-5943a1d2b3f9",
       "title": "CV 融合算子开发 - Triton Ascend latest 文档",
@@ -891,14 +947,14 @@
       "captured_at": "2026-07-31T06:04:58.837Z",
       "revision": "5943a1d2b3f9299f2c0a16a98799bf304c5e930581699b5b2b48fad4f360e545",
       "raw_paths": [
-        "raw/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.html",
-        "raw/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.metadata.json"
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.html",
+        "raw/frameworks/compilers-kernels/triton-ascend/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.md",
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/triton-ascend/triton-ascend-cv-fusion-operator--web-2026-07-31-5943a1d2b3f9.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/triton-ascend/operator-mechanisms.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md",
+      "topic_path": "compilers-kernels/triton-ascend"
+    },
     {
       "id": "gitcode:cann/cannbot-skills@326a6b47210fc31a9c225f1643778a4cc733e57c",
       "title": "CANNBot Skills — Triton Ascend Development Skills",
@@ -910,15 +966,15 @@
       "provider": "gitcode",
       "repository_url": "https://gitcode.com/cann/cannbot-skills",
       "raw_paths": [
-        "raw/frameworks/cannbot-skills-codebase--gitcode-326a6b47210f.md"
+        "raw/frameworks/compilers-kernels/triton-ascend/cannbot-skills-codebase--gitcode-326a6b47210f.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/",
+      "derived_path": "derived/repo-analysis/frameworks/compilers-kernels/triton-ascend/cannbot-skills/326a6b47210fc31a9c225f1643778a4cc733e57c/",
       "docs_paths": [
-        "docs/frameworks/triton-ascend/cannbot-skills-workflow.md"
+        "docs/frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md"
       ],
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "compilers-kernels/triton-ascend"
+    },
     {
       "id": "web:blog.easecloud.io/increase-throughput-with-vllm-serving@2026-08-02-348cdcbaa1cd",
       "title": "vLLM Throughput Guide - PagedAttention and Batching Tips (2026)",
@@ -930,14 +986,14 @@
       "captured_at": "2026-08-02T09:30:51.850Z",
       "revision": "348cdcbaa1cd823a9b4e9bf7590a745b4645639ee4669bf4231fc8b5675f9a50",
       "raw_paths": [
-        "raw/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.html",
-        "raw/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.metadata.json"
+        "raw/frameworks/serving/vllm/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.html",
+        "raw/frameworks/serving/vllm/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.md",
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/increase-throughput-with-vllm-serving--web-2026-08-02-348cdcbaa1cd.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/vllm/vllm-continuous-batching/index.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/serving/vllm/vllm-continuous-batching/index.md",
+      "topic_path": "serving/vllm"
+    },
     {
       "id": "web:vllm.ai/vllm-easy-fast-cheap-llm-serving@2026-08-02-4ac3b3ecb767",
       "title": "vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention",
@@ -949,14 +1005,14 @@
       "captured_at": "2026-08-02T09:31:01.156Z",
       "revision": "4ac3b3ecb76736a3b8cd00f34b43405e30847b14acd90868188e8d7108662e99",
       "raw_paths": [
-        "raw/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.html",
-        "raw/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.metadata.json"
+        "raw/frameworks/serving/vllm/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.html",
+        "raw/frameworks/serving/vllm/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.md",
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/vllm-easy-fast-cheap-llm-serving--web-2026-08-02-4ac3b3ecb767.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/vllm/vllm-continuous-batching/index.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/serving/vllm/vllm-continuous-batching/index.md",
+      "topic_path": "serving/vllm"
+    },
     {
       "id": "web:www.anyscale.com/continuous-batching-llm-inference@2026-08-02-083bded3a6af",
       "title": "Achieve 23x LLM Inference Throughput & Reduce p50 Latency",
@@ -968,14 +1024,14 @@
       "captured_at": "2026-08-02T09:31:06.909Z",
       "revision": "083bded3a6af1e15dee4aad260660a5e6ffb4ed6b42964097d70cec2a70d650d",
       "raw_paths": [
-        "raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html",
-        "raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json"
+        "raw/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html",
+        "raw/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md",
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md",
       "status": "ingested",
-      "docs_path": "docs/frameworks/vllm/vllm-continuous-batching/index.md"
-    }
-  ,
+      "docs_path": "docs/frameworks/serving/vllm/vllm-continuous-batching/index.md",
+      "topic_path": "serving/vllm"
+    },
     {
       "id": "web:docs.pytest.org/pytest-monkeypatch-documentation@2026-08-03-71ec0c060fa3",
       "title": "Monkeypatching/mocking modules and environments — pytest documentation",
@@ -987,13 +1043,13 @@
       "captured_at": "2026-08-03T09:25:30.316Z",
       "revision": "71ec0c060fa32bae29652a72751e0d73cfc50bb4b263948ce16ff0ecf732a669",
       "raw_paths": [
-        "raw/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.html",
-        "raw/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.metadata.json"
+        "raw/frameworks/languages/python/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.html",
+        "raw/frameworks/languages/python/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.md",
-      "status": "captured"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/languages/python/pytest-monkeypatch-documentation--web-2026-08-03-71ec0c060fa3.md",
+      "status": "captured",
+      "topic_path": "languages/python"
+    },
     {
       "id": "web:naddod.medium.com/ai-distributed-training-communication-primitives@2026-08-03-bc80f96db386",
       "title": "In-Depth Understanding of AI Distributed Training Communication Primitives",
@@ -1005,11 +1061,12 @@
       "captured_at": "2026-08-03T09:40:00.000Z",
       "revision": "bc80f96db38670545547c4e96c2731285e43c5c50416f1e156a4ee3c7a51e854",
       "raw_paths": [
-        "raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html",
-        "raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json"
+        "raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html",
+        "raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md",
-      "status": "captured"
+      "derived_path": "derived/web-markdown/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md",
+      "status": "captured",
+      "topic_path": "parallelism"
     },
     {
       "id": "github:vllm-project/vllm@dd11df04f3b7046c40f13e586ac38a3725bc3c03",
@@ -1022,13 +1079,14 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-dd11df04f3b7.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-dd11df04f3b7.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/dd11df04f3b7046c40f13e586ac38a3725bc3c03/",
       "docs_paths": [
-        "docs/frameworks/vllm/vllm-block-management/index.md"
+        "docs/frameworks/serving/vllm/vllm-block-management/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "github:vllm-project/vllm@72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0",
@@ -1041,13 +1099,14 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-72cd5424da80.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-72cd5424da80.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/72cd5424da80a4a9caa3f42fd65bc0b94e61cbf0/",
       "docs_paths": [
-        "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+        "docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "github:vllm-project/vllm-ascend@61221e9add8c717b304005bd9d48d6215d035be7",
@@ -1060,15 +1119,15 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-61221e9add8c.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-61221e9add8c.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/61221e9add8c717b304005bd9d48d6215d035be7/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/61221e9add8c717b304005bd9d48d6215d035be7/",
       "docs_paths": [
-        "docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md"
+        "docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md"
       ],
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
+    },
     {
       "id": "web:spatial-lang.org/spatial-gemm@2026-08-04-5ae8cd1f3ba2",
       "title": "General Matrix Multiply (GeMM)",
@@ -1080,14 +1139,14 @@
       "captured_at": "2026-08-04T08:12:15.893Z",
       "revision": "5ae8cd1f3ba2da484af3790005d75af15c06ee81e49292c2712f1196e6b3f5f4",
       "raw_paths": [
-        "raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html",
-        "raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json"
+        "raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html",
+        "raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md",
-      "docs_path": "docs/hardware/spatial-gemm.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md",
+      "docs_path": "docs/hardware/kernels-dataflow/spatial-gemm.md",
+      "status": "ingested",
+      "topic_path": "kernels-dataflow"
+    },
     {
       "id": "web:mathworld.wolfram.com/kronecker-product@2026-08-04-41ef5673a67a",
       "title": "Kronecker Product -- from Wolfram MathWorld",
@@ -1099,12 +1158,13 @@
       "captured_at": "2026-08-04T12:28:35.676Z",
       "revision": "41ef5673a67ab59fd862ac4e1685d4b022b4ef5a6f4ce93946f490e496dbb6d1",
       "raw_paths": [
-        "raw/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.html",
-        "raw/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.metadata.json"
+        "raw/algorithms/foundations/kronecker-product--web-2026-08-04-41ef5673a67a.html",
+        "raw/algorithms/foundations/kronecker-product--web-2026-08-04-41ef5673a67a.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/kronecker-product--web-2026-08-04-41ef5673a67a.md",
-      "docs_path": "docs/algorithms/kronecker-product.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/algorithms/foundations/kronecker-product--web-2026-08-04-41ef5673a67a.md",
+      "docs_path": "docs/algorithms/foundations/kronecker-product.md",
+      "status": "ingested",
+      "topic_path": "foundations"
     },
     {
       "id": "github:harbor-framework/harbor@97e65926410ba6b9cef15cd5d9bf9a0c700cef26",
@@ -1117,13 +1177,14 @@
       "provider": "github",
       "repository_url": "https://github.com/harbor-framework/harbor",
       "raw_paths": [
-        "raw/frameworks/harbor-codebase--github-97e65926410b.md"
+        "raw/frameworks/infrastructure/harbor/harbor-codebase--github-97e65926410b.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/harbor/97e65926410ba6b9cef15cd5d9bf9a0c700cef26/",
+      "derived_path": "derived/repo-analysis/frameworks/infrastructure/harbor/harbor/97e65926410ba6b9cef15cd5d9bf9a0c700cef26/",
       "docs_paths": [
-        "docs/frameworks/harbor/index.md"
+        "docs/frameworks/infrastructure/harbor/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "infrastructure/harbor"
     },
     {
       "id": "arxiv:2308.16369v1",
@@ -1132,13 +1193,13 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1--arxiv-2308.16369v1.pdf"
+        "raw/frameworks/serving/sarathi/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1--arxiv-2308.16369v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1.md",
-      "docs_path": "docs/frameworks/sarathi/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/pdf-markdown/frameworks/serving/sarathi/sarathi-efficient-llm-inference-with-chunked-prefills-2308.16369v1.md",
+      "docs_path": "docs/frameworks/serving/sarathi/index.md",
+      "status": "ingested",
+      "topic_path": "serving/sarathi"
+    },
     {
       "id": "web:fpga.org/microscaling-mx-formats@2026-08-09-90ef04cebff3",
       "title": "Microscaling (MX) Formats",
@@ -1150,12 +1211,13 @@
       "captured_at": "2026-08-09T14:44:46.604Z",
       "revision": "90ef04cebff36658a6a8a2930e995105cb592a4124f4713579964b3eeb4596fa",
       "raw_paths": [
-        "raw/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.html",
-        "raw/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.metadata.json"
+        "raw/hardware/numerics/quantization/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.html",
+        "raw/hardware/numerics/quantization/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.md",
-      "docs_path": "docs/hardware/quantization/microscaling-mx-formats/index.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/hardware/numerics/quantization/microscaling-mx-formats--web-2026-08-09-90ef04cebff3.md",
+      "docs_path": "docs/hardware/numerics/quantization/microscaling-mx-formats/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "ocp:microscaling-mx-formats@v1.0",
@@ -1165,11 +1227,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/microscaling-mx-formats--ocp-v1.0.pdf"
+        "raw/hardware/numerics/quantization/microscaling-mx-formats--ocp-v1.0.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/microscaling-mx-formats.md",
-      "docs_path": "docs/hardware/quantization/microscaling-mx-formats/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/numerics/quantization/microscaling-mx-formats.md",
+      "docs_path": "docs/hardware/numerics/quantization/microscaling-mx-formats/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "github:tile-ai/tilelang@5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd",
@@ -1182,14 +1245,15 @@
       "provider": "github",
       "repository_url": "https://github.com/tile-ai/tilelang",
       "raw_paths": [
-        "raw/frameworks/tilelang-codebase--github-5a9b2a54b9a0.md"
+        "raw/frameworks/compilers-kernels/tilelang/tilelang-codebase--github-5a9b2a54b9a0.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/tilelang/5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd/",
+      "derived_path": "derived/repo-analysis/frameworks/compilers-kernels/tilelang/tilelang/5a9b2a54b9a04831886d9b4dfd7a9ad758cd7ebd/",
       "docs_paths": [
-        "docs/frameworks/tilelang/index.md",
-        "docs/frameworks/tilelang-ascend/index.md"
+        "docs/frameworks/compilers-kernels/tilelang/index.md",
+        "docs/frameworks/compilers-kernels/tilelang-ascend/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "compilers-kernels/tilelang"
     },
     {
       "id": "github:tile-ai/tilelang-ascend@34a048c19bd762381db0d0f2d5acfdf3527c459f",
@@ -1202,15 +1266,15 @@
       "provider": "github",
       "repository_url": "https://github.com/tile-ai/tilelang-ascend",
       "raw_paths": [
-        "raw/frameworks/tilelang-ascend-codebase--github-34a048c19bd7.md"
+        "raw/frameworks/compilers-kernels/tilelang-ascend/tilelang-ascend-codebase--github-34a048c19bd7.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/tilelang-ascend/34a048c19bd762381db0d0f2d5acfdf3527c459f/",
+      "derived_path": "derived/repo-analysis/frameworks/compilers-kernels/tilelang-ascend/tilelang-ascend/34a048c19bd762381db0d0f2d5acfdf3527c459f/",
       "docs_paths": [
-        "docs/frameworks/tilelang-ascend/index.md"
+        "docs/frameworks/compilers-kernels/tilelang-ascend/index.md"
       ],
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "compilers-kernels/tilelang-ascend"
+    },
     {
       "id": "web:docs.nvidia.com/cuda-programming-guide-introduction@2026-08-10-8644b0f17d26",
       "title": "1.1. Introduction — CUDA Programming Guide",
@@ -1222,14 +1286,14 @@
       "captured_at": "2026-08-10T06:19:06.799Z",
       "revision": "8644b0f17d268e4749162f6745886bfdb8b72c3b715e186536f3937285d13702",
       "raw_paths": [
-        "raw/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.html",
-        "raw/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.metadata.json"
+        "raw/frameworks/compilers-kernels/cuda/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.html",
+        "raw/frameworks/compilers-kernels/cuda/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.md",
-      "docs_path": "docs/frameworks/cuda/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/cuda/cuda-programming-guide-introduction--web-2026-08-10-8644b0f17d26.md",
+      "docs_path": "docs/frameworks/compilers-kernels/cuda/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/cuda"
+    },
     {
       "id": "web:docs.nvidia.com/cuda-programming-model@2026-08-10-27d269165146",
       "title": "1.2. Programming Model — CUDA Programming Guide",
@@ -1241,14 +1305,14 @@
       "captured_at": "2026-08-10T06:19:15.179Z",
       "revision": "27d269165146314de12f45ee359a808d37b47265924ca970a5fd6a6c98b1bb7f",
       "raw_paths": [
-        "raw/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.html",
-        "raw/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.metadata.json"
+        "raw/frameworks/compilers-kernels/cuda/cuda-programming-model--web-2026-08-10-27d269165146.html",
+        "raw/frameworks/compilers-kernels/cuda/cuda-programming-model--web-2026-08-10-27d269165146.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cuda-programming-model--web-2026-08-10-27d269165146.md",
-      "docs_path": "docs/frameworks/cuda/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/cuda/cuda-programming-model--web-2026-08-10-27d269165146.md",
+      "docs_path": "docs/frameworks/compilers-kernels/cuda/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/cuda"
+    },
     {
       "id": "web:docs.nvidia.com/cuda-tile-ir-introduction@2026-08-10-42169412fa72",
       "title": "1. Introduction — Tile IR",
@@ -1260,14 +1324,14 @@
       "captured_at": "2026-08-10T08:04:34.406Z",
       "revision": "42169412fa72091fdd4471040ce04d3d8869ef99e499fd181c3a072eae9717e9",
       "raw_paths": [
-        "raw/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.html",
-        "raw/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.metadata.json"
+        "raw/frameworks/compilers-kernels/cuda/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.html",
+        "raw/frameworks/compilers-kernels/cuda/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.md",
-      "docs_path": "docs/frameworks/cuda/tile-ir/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/cuda/cuda-tile-ir-introduction--web-2026-08-10-42169412fa72.md",
+      "docs_path": "docs/frameworks/compilers-kernels/cuda/tile-ir/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/cuda"
+    },
     {
       "id": "web:docs.nvidia.com/cuda-tile-ir-programming-model@2026-08-10-95e94e1a9f38",
       "title": "2. Programming Model — Tile IR",
@@ -1279,14 +1343,14 @@
       "captured_at": "2026-08-10T08:04:51.618Z",
       "revision": "95e94e1a9f3847c3dae54271bf9cbb1dc43f24e54398e1a195388483d6b4024b",
       "raw_paths": [
-        "raw/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.html",
-        "raw/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.metadata.json"
+        "raw/frameworks/compilers-kernels/cuda/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.html",
+        "raw/frameworks/compilers-kernels/cuda/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.md",
-      "docs_path": "docs/frameworks/cuda/tile-ir/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/cuda/cuda-tile-ir-programming-model--web-2026-08-10-95e94e1a9f38.md",
+      "docs_path": "docs/frameworks/compilers-kernels/cuda/tile-ir/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/cuda"
+    },
     {
       "id": "web:pytorch.org/pytorch-cuda-graphs@2026-08-10-ad0c8a15d55e",
       "title": "Accelerating PyTorch with CUDA Graphs – PyTorch",
@@ -1298,12 +1362,13 @@
       "captured_at": "2026-08-10T09:07:24.838Z",
       "revision": "ad0c8a15d55eedc5a21ed2de60a90e0951cac920d48afc65c2413bba79610e42",
       "raw_paths": [
-        "raw/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.html",
-        "raw/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.metadata.json"
+        "raw/frameworks/compilers-kernels/cuda/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.html",
+        "raw/frameworks/compilers-kernels/cuda/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.md",
-      "docs_path": "docs/frameworks/cuda/cuda-graphs/index.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/frameworks/compilers-kernels/cuda/pytorch-cuda-graphs--web-2026-08-10-ad0c8a15d55e.md",
+      "docs_path": "docs/frameworks/compilers-kernels/cuda/cuda-graphs/index.md",
+      "status": "ingested",
+      "topic_path": "compilers-kernels/cuda"
     },
     {
       "id": "arxiv:2411.01783v3",
@@ -1312,11 +1377,12 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf"
+        "raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/context-parallelism-scalable-million-token-inference.md",
-      "docs_path": "docs/algorithms/context-parallelism/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference.md",
+      "docs_path": "docs/algorithms/distributed-inference/context-parallelism/index.md",
+      "status": "ingested",
+      "topic_path": "distributed-inference/context-parallelism"
     },
     {
       "id": "arxiv:2401.15077v3",
@@ -1325,11 +1391,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf"
+        "raw/frameworks/speculative-decoding/eagle/eagle-speculative-sampling-feature-uncertainty--arxiv-2401.15077v3.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/eagle-speculative-sampling-feature-uncertainty/eagle-speculative-sampling-feature-uncertainty.md",
-      "docs_path": "docs/frameworks/eagle/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/speculative-decoding/eagle/eagle-speculative-sampling-feature-uncertainty/eagle-speculative-sampling-feature-uncertainty.md",
+      "docs_path": "docs/frameworks/speculative-decoding/eagle/index.md",
+      "status": "ingested",
+      "topic_path": "speculative-decoding/eagle"
     },
     {
       "id": "arxiv:2406.16858v2",
@@ -1338,11 +1405,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf"
+        "raw/frameworks/speculative-decoding/eagle-2/eagle-2-dynamic-draft-trees--arxiv-2406.16858v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/eagle-2-dynamic-draft-trees/eagle-2-dynamic-draft-trees.md",
-      "docs_path": "docs/frameworks/eagle-2/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/speculative-decoding/eagle-2/eagle-2-dynamic-draft-trees/eagle-2-dynamic-draft-trees.md",
+      "docs_path": "docs/frameworks/speculative-decoding/eagle-2/index.md",
+      "status": "ingested",
+      "topic_path": "speculative-decoding/eagle-2"
     },
     {
       "id": "arxiv:2503.01840v3",
@@ -1351,11 +1419,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/eagle-3-scaling-inference-acceleration--arxiv-2503.01840v3.pdf"
+        "raw/frameworks/speculative-decoding/eagle-3/eagle-3-scaling-inference-acceleration--arxiv-2503.01840v3.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/eagle-3-scaling-inference-acceleration/eagle-3-scaling-inference-acceleration.md",
-      "docs_path": "docs/frameworks/eagle-3/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/speculative-decoding/eagle-3/eagle-3-scaling-inference-acceleration/eagle-3-scaling-inference-acceleration.md",
+      "docs_path": "docs/frameworks/speculative-decoding/eagle-3/index.md",
+      "status": "ingested",
+      "topic_path": "speculative-decoding/eagle-3"
     },
     {
       "id": "github:vllm-project/vllm@2d24355eb87b716fc1169e66731dc0386ed1a3a2",
@@ -1368,16 +1437,16 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-2d24355eb87b.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-2d24355eb87b.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/2d24355eb87b716fc1169e66731dc0386ed1a3a2/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/2d24355eb87b716fc1169e66731dc0386ed1a3a2/",
       "docs_paths": [
-        "docs/frameworks/vllm/prefill-decode-disaggregated-deployment/index.md",
-        "docs/frameworks/vllm/vllm-mha-code-path.md"
+        "docs/frameworks/serving/vllm/prefill-decode-disaggregated-deployment/index.md",
+        "docs/frameworks/serving/vllm/vllm-mha-code-path.md"
       ],
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "serving/vllm"
+    },
     {
       "id": "web:penpenf28.github.io/transformer-layernorm@2026-08-13-a67f03dab584",
       "title": "Batch Normalization和Layer Normalization",
@@ -1389,12 +1458,13 @@
       "captured_at": "2026-08-13T15:39:51.648Z",
       "revision": "a67f03dab584fca9a9af3149feb78c898f25e9275edd130f62532251e181abd0",
       "raw_paths": [
-        "raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.html",
-        "raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json"
+        "raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.html",
+        "raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.md",
+      "derived_path": "derived/web-markdown/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.md",
       "docs_path": "docs/algorithms/foundations/layer-normalization/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundations"
     },
     {
       "id": "arxiv:2210.17323v2",
@@ -1403,11 +1473,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf"
+        "raw/hardware/numerics/quantization/gptq-accurate-post-training-quantization--arxiv-2210.17323v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/gptq-accurate-post-training-quantization.md",
-      "docs_path": "docs/hardware/quantization/gptq/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/numerics/quantization/gptq-accurate-post-training-quantization.md",
+      "docs_path": "docs/hardware/numerics/quantization/gptq/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "arxiv:2602.06036v2",
@@ -1416,11 +1487,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf"
+        "raw/frameworks/speculative-decoding/dflash/dflash-block-diffusion-flash-speculative-decoding--arxiv-2602.06036v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/dflash-block-diffusion-flash-speculative-decoding/dflash-block-diffusion-flash-speculative-decoding.md",
-      "docs_path": "docs/frameworks/dflash/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/speculative-decoding/dflash/dflash-block-diffusion-flash-speculative-decoding/dflash-block-diffusion-flash-speculative-decoding.md",
+      "docs_path": "docs/frameworks/speculative-decoding/dflash/index.md",
+      "status": "ingested",
+      "topic_path": "speculative-decoding/dflash"
     },
     {
       "id": "github:vllm-project/vllm@5c9ff5366b039a69b344773bdfead8466ed9a097",
@@ -1433,14 +1505,15 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-5c9ff5366b03.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-5c9ff5366b03.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/5c9ff5366b039a69b344773bdfead8466ed9a097/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/5c9ff5366b039a69b344773bdfead8466ed9a097/",
       "docs_paths": [
-        "docs/frameworks/vllm/glm-5.2-inference-path.md",
-        "docs/frameworks/vllm/mamba2-linear-attention-prefix-cache/index.md"
+        "docs/frameworks/serving/vllm/glm-5.2-inference-path.md",
+        "docs/frameworks/serving/vllm/mamba2-linear-attention-prefix-cache/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "web:geek-docs.com/perplexity-pytorch-calculation@2026-08-22-1786b54fa0c7",
@@ -1453,12 +1526,13 @@
       "captured_at": "2026-08-22T03:35:00.000Z",
       "revision": "1786b54fa0c7ccd3984b938f575aceb5f991f976e5ece79a42abdc3ed24b5c20",
       "raw_paths": [
-        "raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html",
-        "raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json"
+        "raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html",
+        "raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md",
+      "derived_path": "derived/web-markdown/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md",
       "docs_path": "docs/algorithms/foundations/perplexity.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "foundations"
     },
     {
       "id": "web:huggingface.co/perplexity-fixed-length-models@2026-08-22-32174cdba6b9",
@@ -1471,14 +1545,14 @@
       "captured_at": "2026-08-22T03:35:00.000Z",
       "revision": "32174cdba6b96df1695c9686968196466e5a8ec1b077c2c18281c8958cc1c516",
       "raw_paths": [
-        "raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html",
-        "raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json"
+        "raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html",
+        "raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md",
+      "derived_path": "derived/web-markdown/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md",
       "docs_path": "docs/algorithms/foundations/perplexity.md",
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "foundations"
+    },
     {
       "id": "web:opentelemetry.io/opentelemetry@2026-08-22-c0e01c8e3d66",
       "title": "What is OpenTelemetry?",
@@ -1490,14 +1564,14 @@
       "captured_at": "2026-08-22T03:59:42.898Z",
       "revision": "c0e01c8e3d664144eb72f62eae1456e80989587bd1f6f979581d8331a633671b",
       "raw_paths": [
-        "raw/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.html",
-        "raw/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.metadata.json"
+        "raw/frameworks/infrastructure/opentelemetry/opentelemetry--web-2026-08-22-c0e01c8e3d66.html",
+        "raw/frameworks/infrastructure/opentelemetry/opentelemetry--web-2026-08-22-c0e01c8e3d66.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/opentelemetry--web-2026-08-22-c0e01c8e3d66.md",
-      "docs_path": "docs/frameworks/opentelemetry/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/infrastructure/opentelemetry/opentelemetry--web-2026-08-22-c0e01c8e3d66.md",
+      "docs_path": "docs/frameworks/infrastructure/opentelemetry/index.md",
+      "status": "ingested",
+      "topic_path": "infrastructure/opentelemetry"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-technologies@2026-08-22-bfd1eecedea1",
       "title": "NVIDIA Technologies & Architectures",
@@ -1509,14 +1583,14 @@
       "captured_at": "2026-08-22T08:51:47.426Z",
       "revision": "bfd1eecedea125358385fe73ac8528291d9b5b421ef45fb42b52bfc9ddab8689",
       "raw_paths": [
-        "raw/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.html",
-        "raw/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-technologies--web-2026-08-22-bfd1eecedea1.html",
+        "raw/hardware/accelerators/nvidia/nvidia-technologies--web-2026-08-22-bfd1eecedea1.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-technologies--web-2026-08-22-bfd1eecedea1.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-technologies--web-2026-08-22-bfd1eecedea1.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-blackwell-architecture@2026-08-22-b064f05f1533",
       "title": "NVIDIA Blackwell Architecture",
@@ -1528,14 +1602,14 @@
       "captured_at": "2026-08-22T10:03:46.135Z",
       "revision": "b064f05f1533fecfe618292d38bdab63db1c79bbe7e2281175ddef49a34f463f",
       "raw_paths": [
-        "raw/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.html",
-        "raw/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.html",
+        "raw/hardware/accelerators/nvidia/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-blackwell-architecture--web-2026-08-22-b064f05f1533.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-hopper-ai-computing@2026-08-22-bc6bb3040d9c",
       "title": "NVIDIA: About Us",
@@ -1547,14 +1621,14 @@
       "captured_at": "2026-08-22T10:03:54.947Z",
       "revision": "bc6bb3040d9c4bb00f9215aed3fa066cafb821d35a4a9683fa0f300718ea7370",
       "raw_paths": [
-        "raw/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.html",
-        "raw/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.html",
+        "raw/hardware/accelerators/nvidia/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-hopper-ai-computing--web-2026-08-22-bc6bb3040d9c.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "nvidia:ada-lovelace-professional-gpu-architecture",
       "title": "NVIDIA Ada Lovelace Professional GPU Architecture",
@@ -1562,11 +1636,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/nvidia-ada-lovelace-professional-gpu-architecture--nvidia.pdf"
+        "raw/hardware/accelerators/nvidia/nvidia-ada-lovelace-professional-gpu-architecture--nvidia.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/nvidia-ada-lovelace-professional-gpu-architecture/nvidia-ada-lovelace-professional-gpu-architecture.md",
-      "docs_path": "docs/hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/accelerators/nvidia/nvidia-ada-lovelace-professional-gpu-architecture/nvidia-ada-lovelace-professional-gpu-architecture.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/ada-lovelace-professional-gpu-architecture/index.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
     },
     {
       "id": "web:www.nvidia.com/nvidia-ada-lovelace-architecture@2026-08-22-7cf2d2cad874",
@@ -1579,14 +1654,14 @@
       "captured_at": "2026-08-22T10:04:03.722Z",
       "revision": "7cf2d2cad874f8d4e5eba8c22118f3b85755d555736573acfdd5b6a75bbf8e1d",
       "raw_paths": [
-        "raw/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.html",
-        "raw/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.html",
+        "raw/hardware/accelerators/nvidia/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-ada-lovelace-architecture--web-2026-08-22-7cf2d2cad874.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-ampere-architecture@2026-08-22-857b33b60a28",
       "title": "NVIDIA Ampere Architecture: The Heart of the Modern Data Center",
@@ -1598,14 +1673,14 @@
       "captured_at": "2026-08-22T10:04:12.019Z",
       "revision": "857b33b60a286ee113c160d66e2470ddb307e8489f49170d6da54849499e5e9b",
       "raw_paths": [
-        "raw/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.html",
-        "raw/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.html",
+        "raw/hardware/accelerators/nvidia/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-ampere-architecture--web-2026-08-22-857b33b60a28.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-turing-architecture@2026-08-22-1cf743be0457",
       "title": "NVIDIA RTX PRO Platform",
@@ -1617,14 +1692,14 @@
       "captured_at": "2026-08-22T10:04:20.920Z",
       "revision": "1cf743be045791b7beed824edbd057544b93c0d4df812890f3611bfcfc9742bc",
       "raw_paths": [
-        "raw/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.html",
-        "raw/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.html",
+        "raw/hardware/accelerators/nvidia/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-turing-architecture--web-2026-08-22-1cf743be0457.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:www.nvidia.com/nvidia-volta-architecture@2026-08-22-fad4883f17ca",
       "title": "NVIDIA Volta AI Architecture",
@@ -1636,14 +1711,14 @@
       "captured_at": "2026-08-22T10:04:35.173Z",
       "revision": "fad4883f17ca26c07af44303c24297593cda81e454c9890195d9cc3e47b3cccb",
       "raw_paths": [
-        "raw/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.html",
-        "raw/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.html",
+        "raw/hardware/accelerators/nvidia/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-volta-architecture--web-2026-08-22-fad4883f17ca.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:developer.nvidia.com/nvidia-hopper-architecture-in-depth@2026-08-22-a5c3f80d5822",
       "title": "NVIDIA Hopper Architecture In-Depth | NVIDIA Technical Blog",
@@ -1655,14 +1730,14 @@
       "captured_at": "2026-08-22T10:05:38.846Z",
       "revision": "a5c3f80d582287a72ef8acf297180e837d61fb94782cf8f235d578caf9d9407e",
       "raw_paths": [
-        "raw/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.html",
-        "raw/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.html",
+        "raw/hardware/accelerators/nvidia/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-hopper-architecture-in-depth--web-2026-08-22-a5c3f80d5822.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:developer.nvidia.com/nvidia-turing-architecture-in-depth@2026-08-22-9b92004c5735",
       "title": "NVIDIA Turing Architecture In-Depth | NVIDIA Technical Blog",
@@ -1674,14 +1749,14 @@
       "captured_at": "2026-08-22T10:05:47.662Z",
       "revision": "9b92004c573524ff9c0c26c519894889a1cd6e61815335cb853545a0b937d9ca",
       "raw_paths": [
-        "raw/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.html",
-        "raw/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.metadata.json"
+        "raw/hardware/accelerators/nvidia/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.html",
+        "raw/hardware/accelerators/nvidia/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.md",
-      "docs_path": "docs/hardware/nvidia/gpu-evolution-path.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/hardware/accelerators/nvidia/nvidia-turing-architecture-in-depth--web-2026-08-22-9b92004c5735.md",
+      "docs_path": "docs/hardware/accelerators/nvidia/gpu-evolution-path.md",
+      "status": "ingested",
+      "topic_path": "accelerators/nvidia"
+    },
     {
       "id": "web:handwiki.org/gray-code@2026-08-24-614922af9d5c",
       "title": "Gray code",
@@ -1693,14 +1768,14 @@
       "captured_at": "2026-08-24T12:15:49.199Z",
       "revision": "614922af9d5ca6f8ddb516e033431e03b095577e5e151b82ee9a8ab074285cc8",
       "raw_paths": [
-        "raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.html",
-        "raw/algorithms/gray-code--web-2026-08-24-614922af9d5c.metadata.json"
+        "raw/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.html",
+        "raw/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/algorithms/gray-code--web-2026-08-24-614922af9d5c.md",
+      "derived_path": "derived/web-markdown/algorithms/foundations/gray-code--web-2026-08-24-614922af9d5c.md",
       "docs_path": "docs/algorithms/foundations/gray-code/index.md",
-      "status": "ingested"
-    }
-  ,
+      "status": "ingested",
+      "topic_path": "foundations"
+    },
     {
       "id": "web:docs.vllm.ai/vllm-data-parallel-deployment@2026-08-25-f34f79a6585f",
       "title": "Data Parallel Deployment - vLLM",
@@ -1712,12 +1787,13 @@
       "captured_at": "2026-08-25T03:29:57.151Z",
       "revision": "f34f79a6585f09dac6c9406a493f5da0530600f06a6e993d7eef5d00f2b3aea9",
       "raw_paths": [
-        "raw/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.html",
-        "raw/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.metadata.json"
+        "raw/frameworks/serving/vllm/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.html",
+        "raw/frameworks/serving/vllm/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.md",
-      "docs_path": "docs/frameworks/vllm/data-parallel-deployment/index.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/vllm-data-parallel-deployment--web-2026-08-25-f34f79a6585f.md",
+      "docs_path": "docs/frameworks/serving/vllm/data-parallel-deployment/index.md",
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "github:vllm-project/vllm@8fe9317f2e401aff6e13044098ac7f59e95dce97",
@@ -1730,13 +1806,14 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-8fe9317f2e40.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-8fe9317f2e40.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/8fe9317f2e401aff6e13044098ac7f59e95dce97/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/8fe9317f2e401aff6e13044098ac7f59e95dce97/",
       "docs_paths": [
-        "docs/frameworks/vllm/data-parallel-deployment/index.md"
+        "docs/frameworks/serving/vllm/data-parallel-deployment/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "arxiv:2602.11287v1",
@@ -1745,13 +1822,13 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf"
+        "raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/hif4-format-for-language-model-inference/hif4-format-for-language-model-inference.md",
-      "docs_path": "docs/hardware/quantization/hif4/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/pdf-markdown/hardware/numerics/quantization/hif4-format-for-language-model-inference/hif4-format-for-language-model-inference.md",
+      "docs_path": "docs/hardware/numerics/quantization/hif4/index.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
+    },
     {
       "id": "web:newsletter.semianalysis.com/agentx-inferencexv3-does-cuda-moat@2026-08-25-94378a52aae4",
       "title": "AgentX - InferenceXv3: Does CUDA Moat Hold up in Agentic Inferencing?",
@@ -1763,14 +1840,14 @@
       "captured_at": "2026-08-25T11:32:19.132Z",
       "revision": "94378a52aae4bdedeb8d41844cdef8537cf1f8367ece24b4d71984c9d401bf6d",
       "raw_paths": [
-        "raw/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.html",
-        "raw/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.metadata.json"
+        "raw/frameworks/serving/agentx-inferencexv3-cuda-moat/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.html",
+        "raw/frameworks/serving/agentx-inferencexv3-cuda-moat/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.md",
-      "docs_path": "docs/frameworks/agentx-inferencexv3-cuda-moat/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/serving/agentx-inferencexv3-cuda-moat/agentx-inferencexv3-does-cuda-moat--web-2026-08-25-94378a52aae4.md",
+      "docs_path": "docs/frameworks/serving/agentx-inferencexv3-cuda-moat/index.md",
+      "status": "ingested",
+      "topic_path": "serving/agentx-inferencexv3-cuda-moat"
+    },
     {
       "id": "web:docs.nvidia.com/nvfp4-te@2026-08-25-d98d1efd9b89",
       "title": "NVFP4 — Transformer Engine 2.18.0 documentation",
@@ -1782,12 +1859,13 @@
       "captured_at": "2026-08-25T15:11:50.190Z",
       "revision": "d98d1efd9b8996020e8ae2f32afeec5c1e149d69457b181cd9bd8e416c9c3828",
       "raw_paths": [
-        "raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.html",
-        "raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json"
+        "raw/hardware/numerics/quantization/nvfp4-te--web-2026-08-25-d98d1efd9b89.html",
+        "raw/hardware/numerics/quantization/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.md",
-      "docs_path": "docs/hardware/quantization/nvfp4.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/hardware/numerics/quantization/nvfp4-te--web-2026-08-25-d98d1efd9b89.md",
+      "docs_path": "docs/hardware/numerics/quantization/nvfp4.md",
+      "status": "ingested",
+      "topic_path": "numerics/quantization"
     },
     {
       "id": "github:deepseek-ai/DeepGEMM@559d79fb6994a58b8a15b4b93bf13ccc16edf247",
@@ -1800,13 +1878,14 @@
       "provider": "github",
       "repository_url": "https://github.com/deepseek-ai/DeepGEMM",
       "raw_paths": [
-        "raw/hardware/deepgemm-codebase--github-559d79fb6994.md"
+        "raw/hardware/kernels-dataflow/deepgemm/deepgemm-codebase--github-559d79fb6994.md"
       ],
-      "derived_path": "derived/repo-analysis/hardware/deepgemm/559d79fb6994a58b8a15b4b93bf13ccc16edf247/",
+      "derived_path": "derived/repo-analysis/hardware/kernels-dataflow/deepgemm/deepgemm/559d79fb6994a58b8a15b4b93bf13ccc16edf247/",
       "docs_paths": [
-        "docs/hardware/deepgemm/index.md"
+        "docs/hardware/kernels-dataflow/deepgemm/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "kernels-dataflow/deepgemm"
     },
     {
       "id": "github:vllm-project/vllm-ascend@7702ccd7d8dea6b4dabdacb0118adb522dedbec7",
@@ -1819,14 +1898,15 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm-ascend",
       "raw_paths": [
-        "raw/frameworks/vllm-ascend-codebase--github-7702ccd7d8de.md"
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-7702ccd7d8de.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm-ascend/7702ccd7d8dea6b4dabdacb0118adb522dedbec7/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/7702ccd7d8dea6b4dabdacb0118adb522dedbec7/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md",
-        "docs/frameworks/vllm-ascend/glm-5.1-c8-950.md"
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-fp8-mxfp8-950.md",
+        "docs/frameworks/serving/vllm-ascend/glm-5.1-c8-950.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm-ascend"
     },
     {
       "id": "github:vllm-project/vllm@ca90b9e7d4e3ec670143e4b1822bb856ab0260cc",
@@ -1839,13 +1919,14 @@
       "provider": "github",
       "repository_url": "https://github.com/vllm-project/vllm",
       "raw_paths": [
-        "raw/frameworks/vllm-codebase--github-ca90b9e7d4e3.md"
+        "raw/frameworks/serving/vllm/vllm-codebase--github-ca90b9e7d4e3.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/vllm/ca90b9e7d4e3ec670143e4b1822bb856ab0260cc/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/ca90b9e7d4e3ec670143e4b1822bb856ab0260cc/",
       "docs_paths": [
-        "docs/frameworks/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-fp8-mxfp8-950.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/vllm"
     },
     {
       "id": "github:firecracker-microvm/firecracker@f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a",
@@ -1858,13 +1939,14 @@
       "provider": "github",
       "repository_url": "https://github.com/firecracker-microvm/firecracker",
       "raw_paths": [
-        "raw/frameworks/firecracker-codebase--github-f3f65a3425f6.md"
+        "raw/frameworks/infrastructure/firecracker/firecracker-codebase--github-f3f65a3425f6.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/firecracker/f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a/",
+      "derived_path": "derived/repo-analysis/frameworks/infrastructure/firecracker/firecracker/f3f65a3425f62bc9cf5f1c81f2963f230ed89f9a/",
       "docs_paths": [
-        "docs/frameworks/firecracker/index.md"
+        "docs/frameworks/infrastructure/firecracker/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "infrastructure/firecracker"
     },
     {
       "id": "arxiv:2605.23899v1",
@@ -1873,11 +1955,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf"
+        "raw/benchmarks/agent-eval/from-raw-experience-to-skill-consumption--arxiv-2605.23899v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/from-raw-experience-to-skill-consumption/from-raw-experience-to-skill-consumption.md",
       "docs_path": "docs/benchmarks/agent-eval/skilllens/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "arxiv:2605.23904v2",
@@ -1886,11 +1969,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf"
+        "raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md",
       "docs_path": "docs/benchmarks/agent-eval/skillopt/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "arxiv:2603.01145v2",
@@ -1899,11 +1983,12 @@
       "category": "benchmarks",
       "kind": "paper",
       "raw_paths": [
-        "raw/benchmarks/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf"
+        "raw/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning--arxiv-2603.01145v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/benchmarks/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md",
+      "derived_path": "derived/pdf-markdown/benchmarks/agent-eval/autoskill-experience-driven-lifelong-learning/autoskill-experience-driven-lifelong-learning.md",
       "docs_path": "docs/benchmarks/agent-eval/autoskill/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "agent-eval"
     },
     {
       "id": "paper:ascend-950-npu-architecture-white-paper",
@@ -1912,11 +1997,12 @@
       "category": "hardware",
       "kind": "paper",
       "raw_paths": [
-        "raw/hardware/ascend-950-npu-architecture-white-paper--paper.pdf"
+        "raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/hardware/ascend-950-npu-architecture-white-paper/ascend-950-npu-architecture-white-paper.md",
-      "docs_path": "docs/hardware/ascend/ascend-950/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper/ascend-950-npu-architecture-white-paper.md",
+      "docs_path": "docs/hardware/accelerators/ascend/ascend-950/index.md",
+      "status": "ingested",
+      "topic_path": "accelerators/ascend"
     },
     {
       "id": "arxiv:2409.15647v5",
@@ -1925,13 +2011,13 @@
       "category": "algorithms",
       "kind": "paper",
       "raw_paths": [
-        "raw/algorithms/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf"
+        "raw/algorithms/length-generalization/looped-transformers/looped-transformers-length-generalization--arxiv-2409.15647v5.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/algorithms/looped-transformers-length-generalization.md",
-      "docs_path": "docs/algorithms/looped-transformers-length-generalization/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/pdf-markdown/algorithms/length-generalization/looped-transformers/looped-transformers-length-generalization.md",
+      "docs_path": "docs/algorithms/length-generalization/looped-transformers/index.md",
+      "status": "ingested",
+      "topic_path": "length-generalization/looped-transformers"
+    },
     {
       "id": "web:docs.python.org/python-import-system@2026-09-09-b7c7ed32c384",
       "title": "5. The import system",
@@ -1943,14 +2029,14 @@
       "captured_at": "2026-09-09T06:13:41.360Z",
       "revision": "b7c7ed32c3844844384740a33843734f36a56e9c1c06869dec84734959e16d1a",
       "raw_paths": [
-        "raw/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.html",
-        "raw/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.metadata.json"
+        "raw/frameworks/languages/python/python-import-system--web-2026-09-09-b7c7ed32c384.html",
+        "raw/frameworks/languages/python/python-import-system--web-2026-09-09-b7c7ed32c384.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/python-import-system--web-2026-09-09-b7c7ed32c384.md",
-      "docs_path": "docs/frameworks/python/import-system.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/languages/python/python-import-system--web-2026-09-09-b7c7ed32c384.md",
+      "docs_path": "docs/frameworks/languages/python/import-system.md",
+      "status": "ingested",
+      "topic_path": "languages/python"
+    },
     {
       "id": "web:docs.python.org/python-execution-model@2026-09-09-00a7456c9112",
       "title": "4. Execution model",
@@ -1962,14 +2048,14 @@
       "captured_at": "2026-09-09T00:00:00.000Z",
       "revision": "00a7456c9112ad7ed318aa561b0879290d93df9bda7c7bc493b64ef404a78c77",
       "raw_paths": [
-        "raw/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.html",
-        "raw/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.metadata.json"
+        "raw/frameworks/languages/python/python-execution-model--web-2026-09-09-00a7456c9112.html",
+        "raw/frameworks/languages/python/python-execution-model--web-2026-09-09-00a7456c9112.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/python-execution-model--web-2026-09-09-00a7456c9112.md",
-      "docs_path": "docs/frameworks/python/execution-model.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/languages/python/python-execution-model--web-2026-09-09-00a7456c9112.md",
+      "docs_path": "docs/frameworks/languages/python/execution-model.md",
+      "status": "ingested",
+      "topic_path": "languages/python"
+    },
     {
       "id": "web:realpython.com/cpython-source-code-guide@2026-09-09-eb5f92a6dedd",
       "title": "Your Guide to the CPython Source Code",
@@ -1981,14 +2067,14 @@
       "captured_at": "2026-09-09T09:16:20.000Z",
       "revision": "eb5f92a6dedd748c9b4f252aaa212db679bd31f6f54199ea95124b69b668fef8",
       "raw_paths": [
-        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.html",
-        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.metadata.json"
+        "raw/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.html",
+        "raw/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.md",
-      "docs_path": "docs/frameworks/python/cpython-source-code-guide.md",
-      "status": "captured"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-eb5f92a6dedd.md",
+      "docs_path": "docs/frameworks/languages/python/cpython-source-code-guide.md",
+      "status": "captured",
+      "topic_path": "languages/python"
+    },
     {
       "id": "web:realpython.com/cpython-source-code-guide@2026-09-09-5a5fa6d91d40",
       "title": "Your Guide to the CPython Source Code",
@@ -2000,12 +2086,13 @@
       "captured_at": "2026-09-09T09:28:05.252Z",
       "revision": "5a5fa6d91d401a149f5eda4aa2460ea328d15613641f8c8ab7c9aa9eddac03f9",
       "raw_paths": [
-        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.html",
-        "raw/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.metadata.json"
+        "raw/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.html",
+        "raw/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.md",
-      "docs_path": "docs/frameworks/python/cpython-source-code-guide.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/frameworks/languages/python/cpython-source-code-guide--web-2026-09-09-5a5fa6d91d40.md",
+      "docs_path": "docs/frameworks/languages/python/cpython-source-code-guide.md",
+      "status": "ingested",
+      "topic_path": "languages/python"
     },
     {
       "id": "github:SemiAnalysisAI/InferenceX@7fa1d14b6624d433bd4f72a540da739b8f3808d9",
@@ -2018,13 +2105,14 @@
       "provider": "github",
       "repository_url": "https://github.com/SemiAnalysisAI/InferenceX",
       "raw_paths": [
-        "raw/frameworks/inferencex-codebase--github-7fa1d14b6624.md"
+        "raw/frameworks/serving/inferencex/inferencex-codebase--github-7fa1d14b6624.md"
       ],
-      "derived_path": "derived/repo-analysis/frameworks/inferencex/7fa1d14b6624d433bd4f72a540da739b8f3808d9/",
+      "derived_path": "derived/repo-analysis/frameworks/serving/inferencex/inferencex/7fa1d14b6624d433bd4f72a540da739b8f3808d9/",
       "docs_paths": [
-        "docs/frameworks/inferencex/index.md"
+        "docs/frameworks/serving/inferencex/index.md"
       ],
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "serving/inferencex"
     },
     {
       "id": "arxiv:2603.12201v1",
@@ -2033,11 +2121,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf"
+        "raw/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse--arxiv-2603.12201v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/indexcache-accelerating-sparse-attention-cross-layer-index-reuse.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/indexcache-accelerating-sparse-attention-cross-layer-index-reuse/indexcache-accelerating-sparse-attention-cross-layer-index-reuse.md",
       "docs_path": "docs/training/efficient-attention/indexcache/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "arxiv:2405.05254v2",
@@ -2046,11 +2135,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf"
+        "raw/training/efficient-attention/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/yoco-you-only-cache-once/yoco-you-only-cache-once.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/yoco-you-only-cache-once/yoco-you-only-cache-once.md",
       "docs_path": "docs/training/efficient-attention/yoco/index.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "arxiv:2604.01220v1",
@@ -2059,11 +2149,12 @@
       "category": "training",
       "kind": "paper",
       "raw_paths": [
-        "raw/training/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf"
+        "raw/training/efficient-attention/universal-yoco-efficient-depth-scaling--arxiv-2604.01220v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/training/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md",
+      "derived_path": "derived/pdf-markdown/training/efficient-attention/universal-yoco-efficient-depth-scaling/universal-yoco-efficient-depth-scaling.md",
       "docs_path": "docs/training/efficient-attention/yoco/universal-yoco.md",
-      "status": "ingested"
+      "status": "ingested",
+      "topic_path": "efficient-attention"
     },
     {
       "id": "arxiv:2603.20397v1",
@@ -2072,13 +2163,13 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf"
+        "raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/kv-cache-optimization-strategies/kv-cache-optimization-strategies.md",
-      "docs_path": "docs/frameworks/kv-cache-optimization/index.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/pdf-markdown/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies/kv-cache-optimization-strategies.md",
+      "docs_path": "docs/frameworks/serving/kv-cache-optimization/index.md",
+      "status": "ingested",
+      "topic_path": "serving/kv-cache-optimization"
+    },
     {
       "id": "web:iies.in/universal-references-in-c@2026-09-15-243851bb3caf",
       "title": "Universal References in C++ Explained",
@@ -2090,14 +2181,14 @@
       "captured_at": "2026-09-15T02:19:31.416Z",
       "revision": "243851bb3cafa1e33da2d384caf55d33aed2fb69378c787e15434c6fdde17ff7",
       "raw_paths": [
-        "raw/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.html",
-        "raw/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.metadata.json"
+        "raw/frameworks/languages/cpp/universal-references-in-c--web-2026-09-15-243851bb3caf.html",
+        "raw/frameworks/languages/cpp/universal-references-in-c--web-2026-09-15-243851bb3caf.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/universal-references-in-c--web-2026-09-15-243851bb3caf.md",
-      "docs_path": "docs/frameworks/cpp/universal-references.md",
-      "status": "ingested"
-    }
-  ,
+      "derived_path": "derived/web-markdown/frameworks/languages/cpp/universal-references-in-c--web-2026-09-15-243851bb3caf.md",
+      "docs_path": "docs/frameworks/languages/cpp/universal-references.md",
+      "status": "ingested",
+      "topic_path": "languages/cpp"
+    },
     {
       "id": "web:isocpp.org/cpp-references-faq@2026-09-15-4aae33c31c6c",
       "title": "Standard C++",
@@ -2109,12 +2200,13 @@
       "captured_at": "2026-09-15T07:41:08.796Z",
       "revision": "4aae33c31c6c9712708957020beb4c1d9912c0aa72626380ace54a13e9a68155",
       "raw_paths": [
-        "raw/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.html",
-        "raw/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.metadata.json"
+        "raw/frameworks/languages/cpp/cpp-references-faq--web-2026-09-15-4aae33c31c6c.html",
+        "raw/frameworks/languages/cpp/cpp-references-faq--web-2026-09-15-4aae33c31c6c.metadata.json"
       ],
-      "derived_path": "derived/web-markdown/frameworks/cpp-references-faq--web-2026-09-15-4aae33c31c6c.md",
-      "docs_path": "docs/frameworks/cpp/references.md",
-      "status": "ingested"
+      "derived_path": "derived/web-markdown/frameworks/languages/cpp/cpp-references-faq--web-2026-09-15-4aae33c31c6c.md",
+      "docs_path": "docs/frameworks/languages/cpp/references.md",
+      "status": "ingested",
+      "topic_path": "languages/cpp"
     },
     {
       "id": "arxiv:2511.11907v2",
@@ -2123,11 +2215,12 @@
       "category": "frameworks",
       "kind": "paper",
       "raw_paths": [
-        "raw/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf"
+        "raw/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/kvswap-disk-aware-kv-cache-offloading-on-device-inference/kvswap-disk-aware-kv-cache-offloading-on-device-inference.md",
-      "docs_path": "docs/frameworks/kvswap/index.md",
-      "status": "ingested"
+      "derived_path": "derived/pdf-markdown/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference/kvswap-disk-aware-kv-cache-offloading-on-device-inference.md",
+      "docs_path": "docs/frameworks/serving/kvswap/index.md",
+      "status": "ingested",
+      "topic_path": "serving/kvswap"
     }
   ]
 }

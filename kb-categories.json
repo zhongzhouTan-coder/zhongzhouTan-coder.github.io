@@ -6,7 +6,14 @@
       "derived_prefix": "derived/pdf-markdown/algorithms/",
       "web_derived_prefix": "derived/web-markdown/algorithms/",
       "repo_analysis_prefix": "derived/repo-analysis/algorithms/",
-      "docs_prefix": "docs/algorithms/"
+      "docs_prefix": "docs/algorithms/",
+      "topic_roots": [
+        "foundations",
+        "attention",
+        "distributed-inference",
+        "length-generalization",
+        "model-architectures"
+      ]
     },
     "benchmarks": {
       "description": "Benchmark construction, domains, task generation, metrics, evaluation harnesses, and empirical benchmark results.",
@@ -14,7 +21,11 @@
       "derived_prefix": "derived/pdf-markdown/benchmarks/",
       "web_derived_prefix": "derived/web-markdown/benchmarks/",
       "repo_analysis_prefix": "derived/repo-analysis/benchmarks/",
-      "docs_prefix": "docs/benchmarks/"
+      "docs_prefix": "docs/benchmarks/",
+      "topic_roots": [
+        "agent-eval",
+        "serving-performance"
+      ]
     },
     "frameworks": {
       "description": "LLM serving systems, programming frameworks, orchestration systems, and runtime architecture.",
@@ -22,7 +33,14 @@
       "derived_prefix": "derived/pdf-markdown/frameworks/",
       "web_derived_prefix": "derived/web-markdown/frameworks/",
       "repo_analysis_prefix": "derived/repo-analysis/frameworks/",
-      "docs_prefix": "docs/frameworks/"
+      "docs_prefix": "docs/frameworks/",
+      "topic_roots": [
+        "serving",
+        "compilers-kernels",
+        "languages",
+        "infrastructure",
+        "speculative-decoding"
+      ]
     },
     "hardware": {
       "description": "Numerics, quantization, accelerator features, precision formats, and hardware-aware implementation details.",
@@ -30,7 +48,12 @@
       "derived_prefix": "derived/pdf-markdown/hardware/",
       "web_derived_prefix": "derived/web-markdown/hardware/",
       "repo_analysis_prefix": "derived/repo-analysis/hardware/",
-      "docs_prefix": "docs/hardware/"
+      "docs_prefix": "docs/hardware/",
+      "topic_roots": [
+        "accelerators",
+        "numerics",
+        "kernels-dataflow"
+      ]
     },
     "training": {
       "description": "Pretraining, fine-tuning, RL, scaling, transfer learning, model-parallel training, and generalization.",
@@ -38,7 +61,15 @@
       "derived_prefix": "derived/pdf-markdown/training/",
       "web_derived_prefix": "derived/web-markdown/training/",
       "repo_analysis_prefix": "derived/repo-analysis/training/",
-      "docs_prefix": "docs/training/"
+      "docs_prefix": "docs/training/",
+      "topic_roots": [
+        "parallelism",
+        "foundation-models",
+        "model-families",
+        "efficient-attention",
+        "adaptation",
+        "architectures"
+      ]
     },
     "codex": {
       "description": "Codex product notes, agent workflows, skills, hooks, and local automation behavior.",
@@ -46,7 +77,8 @@
       "derived_prefix": null,
       "web_derived_prefix": null,
       "repo_analysis_prefix": "derived/repo-analysis/codex/",
-      "docs_prefix": null
+      "docs_prefix": null,
+      "topic_roots": []
     }
   },
   "aliases": {

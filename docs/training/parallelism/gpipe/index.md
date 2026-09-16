@@ -4,9 +4,9 @@ summary: "GPipe introduces synchronous micro-batch pipeline parallelism with re-
 layout: default
 confidence: high
 sources:
-  - raw/training/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf
-  - derived/pdf-markdown/training/gpipe-micro-batch-pipeline-parallelism.md
-updated: 2026-08-14
+  - raw/training/parallelism/gpipe-micro-batch-pipeline-parallelism--arxiv-1811.06965v5.pdf
+  - derived/pdf-markdown/training/parallelism/gpipe-micro-batch-pipeline-parallelism.md
+updated: 2026-09-16
 ---
 
 # GPipe: Micro-Batch Pipeline Parallelism

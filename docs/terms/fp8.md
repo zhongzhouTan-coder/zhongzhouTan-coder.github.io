@@ -6,39 +6,37 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - 8-bit floating point
   - float8
 mention_lint: off
 appears_in:
-  - docs/algorithms/context-parallelism/index.md
-  - docs/algorithms/attention-variants/deepseek-v2-mla.md
-  - docs/algorithms/deepseek-v3.2/index.md
-  - docs/algorithms/flashattention/flashattention-2.md
-  - docs/algorithms/flashattention/flashattention-3.md
-  - docs/algorithms/flashattention/index.md
-  - docs/algorithms/index.md
-  - docs/frameworks/deepseek/v4-attention-code-reading.md
-  - docs/frameworks/index.md
-  - docs/frameworks/triton/triton-in-vllm.md
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
-  - docs/frameworks/vllm-ascend/index.md
-  - docs/frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md
-  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
-  - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
-  - docs/hardware/quantization/flatquant/index.md
-  - docs/hardware/quantization/index.md
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-  - docs/hardware/quantization/nvfp4.md
-  - docs/hardware/deepgemm/index.md
-  - docs/hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md
-  - docs/training/deepseek/deepseek-v4/index.md
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/algorithms/attention/variants/deepseek-v2-mla.md
+  - docs/algorithms/model-architectures/deepseek-v3-2/index.md
+  - docs/algorithms/attention/flashattention/flashattention-2.md
+  - docs/algorithms/attention/flashattention/flashattention-3.md
+  - docs/algorithms/attention/flashattention/index.md
+  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
+  - docs/frameworks/serving/vllm-ascend/index.md
+  - docs/frameworks/serving/vllm-ascend/qwen3.5-qwen3.6-inference.md
+  - docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/frameworks/serving/vllm/vllm-block-management/index.md
+  - docs/frameworks/serving/vllm/vllm-kimi-k3-code-reading.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
+  - docs/hardware/numerics/quantization/index.md
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/hardware/kernels-dataflow/deepgemm/index.md
+  - docs/hardware/accelerators/nvidia/ada-lovelace-professional-gpu-architecture/index.md
+  - docs/training/model-families/deepseek/deepseek-v4/index.md
   - docs/training/efficient-attention/minimax-sparse-attention/index.md
-updated: 2026-08-26
+updated: 2026-09-16
 ---
 
 # FP8
@@ -64,32 +62,30 @@ FP8 is a numerical optimization, not a context-parallel algorithm. Scale selecti
 
 ## Where It Appears
 
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) - Uses row-wise FP8 weights in the Llama3 405B benchmark configuration.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) - Uses row-wise FP8 weights in the Llama3 405B benchmark configuration.
 
-- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention-variants/deepseek-v2-mla.md)
-- [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/deepseek-v3.2/index.md)
-- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md)
-- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../algorithms/flashattention/flashattention-3.md)
-- [FlashAttention](../algorithms/flashattention/index.md)
-- [Algorithms](../algorithms/index.md)
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md)
-- [Frameworks](../frameworks/index.md)
-- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md)
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md)
-- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md)
-- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md)
-- [vLLM Ascend](../frameworks/vllm-ascend/index.md)
-- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/vllm-ascend/qwen3.5-qwen3.6-inference.md)
-- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md)
-- [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/vllm/vllm-block-management/index.md)
-- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md)
-- [FlatQuant: Fast Learnable Affine Quantization](../hardware/quantization/flatquant/index.md)
-- [Quantization](../hardware/quantization/index.md)
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md)
-- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md)
-- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) - Uses FP8 activations, FP8 scale factors, and packed FP4 expert weights in an SM100 block-scaled MoE path.
-- [NVIDIA Ada Lovelace Professional GPU Architecture](../hardware/nvidia/ada-lovelace-professional-gpu-architecture/index.md) - Describes FP8 as a fourth-generation Tensor Core capability in a professional GPU.
-- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md)
+- [DeepSeek-V2 Multi-Head Latent Attention](../algorithms/attention/variants/deepseek-v2-mla.md)
+- [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/model-architectures/deepseek-v3-2/index.md)
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/attention/flashattention/flashattention-2.md)
+- [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../algorithms/attention/flashattention/flashattention-3.md)
+- [FlashAttention](../algorithms/attention/flashattention/index.md)
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md)
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md)
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md)
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md)
+- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md)
+- [vLLM Ascend](../frameworks/serving/vllm-ascend/index.md)
+- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](../frameworks/serving/vllm-ascend/qwen3.5-qwen3.6-inference.md)
+- [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](../frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md)
+- [vLLM Block Table Management: From PagedAttention to the V1 KV Cache Stack](../frameworks/serving/vllm/vllm-block-management/index.md)
+- [vLLM Kimi K3 Code Reading Map](../frameworks/serving/vllm/vllm-kimi-k3-code-reading.md)
+- [FlatQuant: Fast Learnable Affine Quantization](../hardware/numerics/quantization/flatquant/index.md)
+- [Quantization](../hardware/numerics/quantization/index.md)
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md)
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/numerics/quantization/nvfp4.md)
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/kernels-dataflow/deepgemm/index.md) - Uses FP8 activations, FP8 scale factors, and packed FP4 expert weights in an SM100 block-scaled MoE path.
+- [NVIDIA Ada Lovelace Professional GPU Architecture](../hardware/accelerators/nvidia/ada-lovelace-professional-gpu-architecture/index.md) - Describes FP8 as a fourth-generation Tensor Core capability in a professional GPU.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/model-families/deepseek/deepseek-v4/index.md)
 - [MiniMax Sparse Attention (MSA)](../training/efficient-attention/minimax-sparse-attention/index.md)
 
 ## Related Terms

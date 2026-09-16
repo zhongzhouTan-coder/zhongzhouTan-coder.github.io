@@ -6,28 +6,27 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/frameworks/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
+  - raw/frameworks/serving/vllm/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
 aliases:
   - paged attention
 appears_in:
-  - docs/algorithms/attention-variants/grouped-query-attention/index.md
-  - docs/algorithms/attention-variants/multi-query-attention.md
-  - docs/algorithms/flashattention/flashattention-2.md
-  - docs/algorithms/flashattention/flashattention-4.md
-  - docs/algorithms/flashattention/flashattention.md
+  - docs/algorithms/attention/variants/grouped-query-attention/index.md
+  - docs/algorithms/attention/variants/multi-query-attention.md
+  - docs/algorithms/attention/flashattention/flashattention-2.md
+  - docs/algorithms/attention/flashattention/flashattention-4.md
+  - docs/algorithms/attention/flashattention/flashattention.md
   - docs/algorithms/foundations/transformer.md
-  - docs/frameworks/dspark/index.md
-  - docs/frameworks/index.md
-  - docs/frameworks/sarathi/index.md
-  - docs/frameworks/sglang/index.md
-  - docs/frameworks/triton/triton-in-vllm.md
-  - docs/frameworks/vllm/index.md
-  - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm/vllm-continuous-batching/index.md
-  - docs/frameworks/vllm/vllm-framework.md
-  - docs/frameworks/vllm/vllm-overview.md
-  - docs/training/deepseek/deepseek-v4/index.md
-updated: 2026-08-17
+  - docs/frameworks/speculative-decoding/dspark/index.md
+  - docs/frameworks/serving/sarathi/index.md
+  - docs/frameworks/serving/sglang/index.md
+  - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
+  - docs/frameworks/serving/vllm/index.md
+  - docs/frameworks/serving/vllm/vllm-block-management/index.md
+  - docs/frameworks/serving/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/serving/vllm/vllm-framework.md
+  - docs/frameworks/serving/vllm/vllm-overview.md
+  - docs/training/model-families/deepseek/deepseek-v4/index.md
+updated: 2026-09-16
 ---
 
 # PagedAttention
@@ -57,23 +56,22 @@ Block size trades kernel parallelism against fragmentation: larger blocks read m
 
 ## Where It Appears
 
-- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) — The original paper insight: memory waste analysis, block tables, copy-on-write, scheduling.
-- [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) — How paged KV-slot allocation gates per-iteration admission in the V1 scheduler.
-- [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — The V1 code stack that implements paging: block pool, per-group managers, prefix caching, and worker block-table tensors.
-- [Grouped-Query Attention in Llama 2](../algorithms/attention-variants/grouped-query-attention/index.md) — Explains why Llama 2 uses grouped-query attention for its 34B and 70B models: it cuts KV-cache pressure like multi-query.
-- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention-variants/multi-query-attention.md) — Replaces per-head key/value projections with a single shared K/V pair across all attention heads, eliminating the heads.
-- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
-- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
-- [FlashAttention: IO-Aware Exact Attention](../algorithms/flashattention/flashattention.md) — Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension.
+- [vLLM: PagedAttention Serving Framework](../frameworks/serving/vllm/vllm-framework.md) — The original paper insight: memory waste analysis, block tables, copy-on-write, scheduling.
+- [vLLM Continuous Batching](../frameworks/serving/vllm/vllm-continuous-batching/index.md) — How paged KV-slot allocation gates per-iteration admission in the V1 scheduler.
+- [vLLM Block Table Management](../frameworks/serving/vllm/vllm-block-management/index.md) — The V1 code stack that implements paging: block pool, per-group managers, prefix caching, and worker block-table tensors.
+- [Grouped-Query Attention in Llama 2](../algorithms/attention/variants/grouped-query-attention/index.md) — Explains why Llama 2 uses grouped-query attention for its 34B and 70B models: it cuts KV-cache pressure like multi-query.
+- [Multi-Query Attention: One Write-Head is All You Need](../algorithms/attention/variants/multi-query-attention.md) — Replaces per-head key/value projections with a single shared K/V pair across all attention heads, eliminating the heads.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/attention/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/attention/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
+- [FlashAttention: IO-Aware Exact Attention](../algorithms/attention/flashattention/flashattention.md) — Original FlashAttention algorithm: tiled exact attention, online softmax, recomputation, IO complexity, block-sparse extension.
 - [The Transformer: Attention Is All You Need](../algorithms/foundations/transformer.md) — The foundational paper that introduced the Transformer architecture, dispensing with recurrence and convolutions entirely in.
-- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/dspark/index.md) — DeepSeek's DSpark speculative decoding framework, combining semi-autoregressive draft generation with hardware-aware confidence.
-- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
-- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
-- [SGLang: Structured Language Model Programs](../frameworks/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
-- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
-- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, continuous batching, and Kimi K3 code.
-- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
-- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
+- [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/speculative-decoding/dspark/index.md) — DeepSeek's DSpark speculative decoding framework, combining semi-autoregressive draft generation with hardware-aware confidence.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
+- [SGLang: Structured Language Model Programs](../frameworks/serving/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [vLLM](../frameworks/serving/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, continuous batching, and Kimi K3 code.
+- [vLLM Architecture and Code Organization Overview](../frameworks/serving/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/model-families/deepseek/deepseek-v4/index.md) — DeepSeek-V4 introduces hybrid Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA), Manifold-Constrained.
 
 ## Related Terms
 

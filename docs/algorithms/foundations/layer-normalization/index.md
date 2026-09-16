@@ -4,10 +4,10 @@ summary: "Why Transformers normalize each token across hidden features instead o
 layout: default
 confidence: medium
 sources:
-  - raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.html
-  - raw/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json
-  - derived/web-markdown/algorithms/transformer-layernorm--web-2026-08-13-a67f03dab584.md
-updated: 2026-08-13
+  - raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.html
+  - raw/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.metadata.json
+  - derived/web-markdown/algorithms/foundations/transformer-layernorm--web-2026-08-13-a67f03dab584.md
+updated: 2026-09-16
 ---
 
 # Layer Normalization in Transformers

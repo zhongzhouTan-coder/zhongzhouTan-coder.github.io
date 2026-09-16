@@ -6,22 +6,22 @@ layout: default
 confidence: high
 category: training
 sources:
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
-  - raw/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
-  - derived/web-markdown/training/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
-  - raw/algorithms/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.html
+  - raw/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.metadata.json
+  - derived/web-markdown/training/parallelism/ai-distributed-training-communication-primitives--web-2026-08-03-bc80f96db386.md
+  - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - alltoall
   - all-to-all collective
   - all_to_all
 appears_in:
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
-  - docs/frameworks/vllm-ascend/kimi-k3-moe-forward.md
-  - docs/algorithms/context-parallelism/index.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-  - docs/frameworks/vllm/dcp-attention/index.md
-updated: 2026-08-11
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md
+  - docs/algorithms/distributed-inference/context-parallelism/index.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+  - docs/frameworks/serving/vllm/dcp-attention/index.md
+updated: 2026-09-16
 ---
 
 # All-to-All
@@ -42,7 +42,7 @@ For $r$ ranks, each starting with an $r \times s$ tensor, all-to-all proceeds as
 2. Rank $i$ sends shard $j$ to rank $j$, for all $j$.
 3. After the collective, rank $i$ holds the concatenation of shard $i$ from every rank — a tensor with $r \times s$ total size, but now logically transposed.
 
-![All-to-all source figure](./assets/medium-communication-primitives-all-to-all.png)
+![All-to-all source figure](assets/medium-communication-primitives-all-to-all.png)
 
 *Source: [In-Depth Understanding of AI Distributed Training Communication Primitives](https://naddod.medium.com/in-depth-understanding-of-ai-distributed-training-communication-primitives-eb3b5fcc1f07). The diagram visualizes all-to-all as a transpose: each GPU sends different data to each peer and receives different data from each peer.*
 
@@ -56,13 +56,13 @@ In NCCL, all-to-all is implemented as a collective primitive alongside the other
 
 ## Where It Appears
 
-- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
-- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
-- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
-- [Context Parallelism for Scalable Million-Token Inference](../algorithms/context-parallelism/index.md) — Uses All-to-All to return pass-Q partial attention outputs to their source ranks before merging.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — The optional DCP A2A backend exchanges partial attention output and LSE in one payload.
+- [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [vLLM-Ascend Kimi K3 MoE Forward Insight](../frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md) — Fresh code-reading insight for how the latest vllm-ascend routed-MoE substrate would execute a Kimi K3-style forward pass.
+- [Context Parallelism for Scalable Million-Token Inference](../algorithms/distributed-inference/context-parallelism/index.md) — Uses All-to-All to return pass-Q partial attention outputs to their source ranks before merging.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) — The optional DCP A2A backend exchanges partial attention output and LSE in one payload.
 
-- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/vllm/dcp-attention/index.md) — Packs output and LSE payloads into an optional all-to-all exact-reduction path.
+- [vLLM DCP Attention: From Local LSE to Exact Global Output](../frameworks/serving/vllm/dcp-attention/index.md) — Packs output and LSE payloads into an optional all-to-all exact-reduction path.
 
 ## Related Terms
 

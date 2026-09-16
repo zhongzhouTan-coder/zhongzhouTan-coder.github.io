@@ -6,17 +6,16 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
-  - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
+  - derived/web-markdown/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
 aliases:
   - multi-dimensional banking
   - SRAM banking
   - bank assignment
 appears_in:
-  - docs/hardware/index.md
-  - docs/hardware/spatial-gemm.md
-updated: 2026-08-06
+  - docs/hardware/kernels-dataflow/spatial-gemm.md
+updated: 2026-09-16
 ---
 
 # Memory Banking
@@ -46,8 +45,7 @@ The compiler inspects all accesses to a memory and searches for a bank assignmen
 ## Where It Appears
 
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — The "Multi-dimensional Banking" section banks GEMM `tileB` under different parallelization factors and shows flat vs. hierarchical schemes.
-- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The tutorial's banking demonstration is synthesized there.
-- [Hardware and Numerics](../hardware/index.md) — Hardware and numerics pages covering accelerator features, precision formats, and related implementation details.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/kernels-dataflow/spatial-gemm.md) — The tutorial's banking demonstration is synthesized there.
 
 ## Related Terms
 

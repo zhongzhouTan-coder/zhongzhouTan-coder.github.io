@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - AGENTS.md
-updated: 2026-07-14
+updated: 2026-09-16
 ---
 
 # Knowledge Base Introduction
@@ -51,9 +51,9 @@ Create a new category only when an existing one would make the page hard to find
 ### Ingesting a new source
 
 1. Choose one canonical category from `kb-categories.json`.
-2. Name the source with the deterministic source naming policy, for example `raw/algorithms/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf`.
+2. Name the source with the deterministic source naming policy, for example `raw/algorithms/attention/flashattention/flashattention-io-aware-exact-attention--arxiv-2205.14135v2.pdf`.
 3. Add or update the corresponding `sources.json` entry.
-4. For PDFs, generate Markdown under the matching `derived/pdf-markdown/{category}/` directory.
+4. For PDFs, generate Markdown under the matching `derived/pdf-markdown/{category}/{topic_path}/` directory.
 5. Follow the repo rules in `AGENTS.md` to read the source, create or update docs pages, and update `logs/index.md` and `logs/log.md`.
 
 ### Maintaining quality

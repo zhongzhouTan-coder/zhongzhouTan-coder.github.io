@@ -4,13 +4,13 @@ summary: "Explains perplexity as exponentiated average next-token negative log l
 layout: default
 confidence: medium
 sources:
-  - raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html
-  - raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json
-  - derived/web-markdown/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md
-  - raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html
-  - raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json
-  - derived/web-markdown/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md
-updated: 2026-08-22
+  - raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html
+  - raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json
+  - derived/web-markdown/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md
+  - raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html
+  - raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json
+  - derived/web-markdown/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md
+updated: 2026-09-16
 ---
 
 # Perplexity (PPL): From Next-Token Loss to Reliable Evaluation

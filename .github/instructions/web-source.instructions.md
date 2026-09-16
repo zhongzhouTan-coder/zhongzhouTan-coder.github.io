@@ -17,6 +17,7 @@ Run:
 npm run ingest:web -- \
   --url "https://example.com/article" \
   --category frameworks \
+  --topic-path serving/example \
   --slug example-article
 ```
 
@@ -57,10 +58,10 @@ ingest that file with `--input-html`.
 The command creates one immutable source revision:
 
 ```text
-raw/{category}/{slug}--web-{capture-date}-{short-sha256}.html
-raw/{category}/{slug}--web-{capture-date}-{short-sha256}.metadata.json
-derived/web-markdown/{category}/{slug}--web-{capture-date}-{short-sha256}.md
-derived/web-markdown/{category}/{slug}--web-{capture-date}-{short-sha256}.assets/
+raw/{category}/{topic-path}/{slug}--web-{capture-date}-{short-sha256}.html
+raw/{category}/{topic-path}/{slug}--web-{capture-date}-{short-sha256}.metadata.json
+derived/web-markdown/{category}/{topic-path}/{slug}--web-{capture-date}-{short-sha256}.md
+derived/web-markdown/{category}/{topic-path}/{slug}--web-{capture-date}-{short-sha256}.assets/
 ```
 
 It also adds a `kind: "web"` entry with `status: "captured"` to `sources.json`.
@@ -76,8 +77,9 @@ reuse the exact raw snapshot recorded in `sources.json`:
 npm run ingest:web -- \
   --url "https://example.com/article" \
   --category frameworks \
+  --topic-path serving/example \
   --slug example-article \
-  --input-html raw/frameworks/example-article--web-YYYY-MM-DD-SHA.html \
+  --input-html raw/frameworks/serving/example/example-article--web-YYYY-MM-DD-SHA.html \
   --captured-at "YYYY-MM-DDTHH:MM:SS.sssZ" \
   --regenerate-derived
 ```

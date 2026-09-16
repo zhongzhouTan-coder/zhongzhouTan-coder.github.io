@@ -4,9 +4,9 @@ summary: "SkillOpt treats a portable agent skill as the trainable state of a fro
 layout: default
 confidence: medium
 sources:
-  - raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf
-  - derived/pdf-markdown/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md
-updated: 2026-08-29
+  - raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills/skillopt-executive-strategy-for-self-evolving-agent-skills.md
+updated: 2026-09-16
 ---
 
 # SkillOpt: Executive Strategy for Self-Evolving Agent Skills
@@ -16,7 +16,7 @@ updated: 2026-08-29
 **arXiv:** [2605.23904v2 (May 25, 2026)](https://arxiv.org/abs/2605.23904v2)  
 **Code:** [SkillOpt](https://aka.ms/SkillOpt)
 
-**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [From Raw Experience to Skill Consumption](../skilllens/index.md) · [AutoJudger](../autojudger.md) · [Socratic-SWE](../../../training/fine-tuning/socratic-swe/index.md)
+**Related pages:** [Agent Evaluation Benchmarks](../index.md) · [From Raw Experience to Skill Consumption](../skilllens/index.md) · [AutoJudger](../autojudger.md) · [Socratic-SWE](../../../training/adaptation/fine-tuning/socratic-swe/index.md)
 
 ## TL;DR
 
@@ -28,7 +28,7 @@ updated: 2026-08-29
 
 ![SkillOpt pipeline from rollout evidence to a validation-gated reusable skill](assets/skillopt-pipeline.jpg)
 
-*Source: [SkillOpt paper, Figure 2](../../../../raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). ① The fixed target agent runs a rollout batch on the training split. ② The optimizer reflects on failure and success minibatches and proposes atomic edits. ③ A merge/rank stage clips the update to the current edit budget. ④ A candidate skill is accepted only when it improves the validation split; rejected edits return to the buffer, while the locked test split is used only for the final report.*
+*Source: [SkillOpt paper, Figure 2](../../../../raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). ① The fixed target agent runs a rollout batch on the training split. ② The optimizer reflects on failure and success minibatches and proposes atomic edits. ③ A merge/rank stage clips the update to the current edit budget. ④ A candidate skill is accepted only when it improves the validation split; rejected edits return to the buffer, while the locked test split is used only for the final report.*
 
 The pipeline answers the first practical question: **where does improvement happen?** It happens in the text artifact between executions, not in the target model’s weights. The same `best_skill.md` can then be injected into a direct chat, Codex, or Claude Code run without invoking the optimizer at inference time.
 
@@ -75,7 +75,7 @@ flowchart TB
 
 ![Text-space optimization analogy for bounded skill updates](assets/skillopt-text-space-overview.jpg)
 
-*Source: [SkillOpt paper, Figure 1](../../../../raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The source contrasts unstable ad hoc semantic jumps with a controlled path of bounded edits, and maps parameters, gradient direction, learning rate, and validation to a skill document, edit direction, edit budget, and held-out gate.*
+*Source: [SkillOpt paper, Figure 1](../../../../raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The source contrasts unstable ad hoc semantic jumps with a controlled path of bounded edits, and maps parameters, gradient direction, learning rate, and validation to a skill document, edit direction, edit budget, and held-out gate.*
 
 ## Symbol Map
 
@@ -256,7 +256,7 @@ The six-benchmark average moves from 58.8 to 82.3, or +23.5 points. The largest 
 
 ![Training, selection, and unseen-test scores across SkillOpt epoch checkpoints](assets/skillopt-epoch-performance.jpg)
 
-*Source: [SkillOpt paper, Figure 3](../../../../raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The three panels compare training rollout, selection-best, and unseen-test scores across checkpoints for SpreadsheetBench, SearchQA, and LiveMath; the selection curve is the checkpoint-selection signal, while the green curve is the final generalization check.*
+*Source: [SkillOpt paper, Figure 3](../../../../raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The three panels compare training rollout, selection-best, and unseen-test scores across checkpoints for SpreadsheetBench, SearchQA, and LiveMath; the selection curve is the checkpoint-selection signal, while the green curve is the final generalization check.*
 
 ### The mechanism behind the numbers
 
@@ -285,7 +285,7 @@ The optimizer proposes many changes, but the deployed artifact stays small becau
 
 ![Representative procedural rules learned for six benchmarks](assets/skillopt-learned-rules.jpg)
 
-*Source: [SkillOpt paper, Figure 4](../../../../raw/benchmarks/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The examples are source-reported excerpts from the final `best_skill.md` files: canonical-entity selection, static spreadsheet values, exact office-document output, visual evidence binding, theorem-strength ranking, and frontier-aware embodied search.*
+*Source: [SkillOpt paper, Figure 4](../../../../raw/benchmarks/agent-eval/skillopt-executive-strategy-for-self-evolving-agent-skills--arxiv-2605.23904v2.pdf). The examples are source-reported excerpts from the final `best_skill.md` files: canonical-entity selection, static spreadsheet values, exact office-document output, visual evidence binding, theorem-strength ranking, and frontier-aware embodied search.*
 
 The cost picture is asymmetric. SpreadsheetBench, OfficeQA, and LiveMath reach a test-point gain with 0.6–3.6 million training tokens per point, while long trajectories or rich multimodal context make SearchQA and DocVQA much more expensive. That cost is paid during offline skill training; using the exported text adds no optimizer calls or weight updates.
 
@@ -312,6 +312,6 @@ The paper reports hard scores on held-out splits, not confidence intervals or a 
 
 - **Read:** [SkillOpt on arXiv](https://arxiv.org/abs/2605.23904v2)
 - **Build on:** [GEPA](https://arxiv.org/abs/2507.19457) for reflective prompt evolution; [Trace2Skill](https://arxiv.org/abs/2603.25158) for trajectory-local skill distillation; [SkillLens](../skilllens/index.md) for utility-grounded skill extraction and consumption.
-- **Understand the context:** [Agent Skill](../../../terms/agent-skill.md), [AutoJudger](../autojudger.md), and [Socratic-SWE](../../../training/fine-tuning/socratic-swe/index.md).
+- **Understand the context:** [Agent Skill](../../../terms/agent-skill.md), [AutoJudger](../autojudger.md), and [Socratic-SWE](../../../training/adaptation/fine-tuning/socratic-swe/index.md).
 - **Reproduce:** [SkillOpt code](https://aka.ms/SkillOpt); the paper describes the optimizer protocol, benchmark adapters, and prompt contracts, while this page records the reported source results rather than a local rerun.
 - **Editable diagram:** [skillopt-landscape.mmd](assets/skillopt-landscape.mmd)

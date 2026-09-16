@@ -6,13 +6,13 @@ layout: default
 confidence: medium
 category: hardware
 sources:
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - HiF4
 mention_lint: canonical
 appears_in:
-  - docs/hardware/quantization/hif4/index.md
-updated: 2026-08-25
+  - docs/hardware/numerics/quantization/hif4/index.md
+updated: 2026-09-16
 ---
 
 # HiFloat4 (HiF4)
@@ -33,7 +33,7 @@ HiF4's benefits depend on support for its conversion path and 64-wide integer-he
 
 ## Where It Appears
 
-- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/quantization/hif4/index.md) — Format layout, BF16 conversion, dot-product hardware flow, and LLM inference comparisons.
+- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/numerics/quantization/hif4/index.md) — Format layout, BF16 conversion, dot-product hardware flow, and LLM inference comparisons.
 
 ## Related Terms
 

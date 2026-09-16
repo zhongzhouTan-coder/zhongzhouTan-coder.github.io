@@ -61,6 +61,7 @@ class WebSourceIngestTests(unittest.TestCase):
                         "web_derived_prefix": "derived/web-markdown/frameworks/",
                         "repo_analysis_prefix": "derived/repo-analysis/frameworks/",
                         "docs_prefix": "docs/frameworks/",
+                        "topic_roots": ["serving"],
                     }
                 }
             },
@@ -68,7 +69,7 @@ class WebSourceIngestTests(unittest.TestCase):
         self.write_json(
             "sources.json",
             {
-                "schema_version": 1,
+                "schema_version": 2,
                 "naming_policy": {},
                 "sources": [],
             },
@@ -96,6 +97,8 @@ class WebSourceIngestTests(unittest.TestCase):
                 self.url,
                 "--category",
                 "frameworks",
+                "--topic-path",
+                "serving/example",
                 "--slug",
                 "automatic-web-capture",
                 "--renderer",
@@ -213,6 +216,8 @@ class WebSourceIngestTests(unittest.TestCase):
                 self.url,
                 "--category",
                 "frameworks",
+                "--topic-path",
+                "serving/example",
                 "--slug",
                 "automatic-web-capture",
                 "--renderer",
@@ -244,6 +249,8 @@ class WebSourceIngestTests(unittest.TestCase):
                 "http://127.0.0.1/article",
                 "--category",
                 "frameworks",
+                "--topic-path",
+                "serving/example",
                 "--slug",
                 "automatic-web-capture",
                 "--renderer",
@@ -360,7 +367,7 @@ process.stdout.write(JSON.stringify({ actual, expected }));
         manifest_path = self.root / "sources.json"
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         entry = manifest["sources"][0]
-        entry["docs_path"] = "docs/frameworks/automatic-web-capture.md"
+        entry["docs_path"] = "docs/frameworks/serving/example/automatic-web-capture.md"
         entry["status"] = "ingested"
         self.write_json("sources.json", manifest)
 

@@ -46,7 +46,7 @@ class RepositoryWorktreeTests(unittest.TestCase):
             }
         }
         sources = {
-            "schema_version": 1,
+            "schema_version": 2,
             "sources": [
                 {
                     "kind": "repository",
@@ -54,8 +54,9 @@ class RepositoryWorktreeTests(unittest.TestCase):
                     "repository_url": "https://github.com/owner/repo",
                     "revision": self.pinned,
                     "repo_slug": "repo",
+                    "topic_path": "serving/repo",
                     "raw_paths": [
-                        f"raw/frameworks/repo-codebase--github-{self.pinned[:12]}.md"
+                        f"raw/frameworks/serving/repo/repo-codebase--github-{self.pinned[:12]}.md"
                     ],
                 }
             ],
@@ -63,7 +64,7 @@ class RepositoryWorktreeTests(unittest.TestCase):
         (self.root / "docs/_data").mkdir(parents=True)
         self.raw_path = (
             self.root
-            / f"raw/frameworks/repo-codebase--github-{self.pinned[:12]}.md"
+            / f"raw/frameworks/serving/repo/repo-codebase--github-{self.pinned[:12]}.md"
         )
         self.raw_path.parent.mkdir(parents=True)
         self.raw_path.write_text(

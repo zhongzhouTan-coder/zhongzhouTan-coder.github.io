@@ -6,21 +6,21 @@ layout: default
 confidence: high
 category: hardware
 sources:
-  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.html
-  - raw/hardware/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json
-  - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.html
-  - raw/hardware/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json
-  - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
-  - raw/hardware/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/numerics/quantization/nvfp4-te--web-2026-08-25-d98d1efd9b89.html
+  - raw/hardware/numerics/quantization/nvfp4-te--web-2026-08-25-d98d1efd9b89.metadata.json
+  - raw/hardware/numerics/quantization/nvfp4-te--web-2026-07-28-6625830e9e9e.html
+  - raw/hardware/numerics/quantization/nvfp4-te--web-2026-07-28-6625830e9e9e.metadata.json
+  - raw/hardware/numerics/quantization/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.html
+  - raw/hardware/numerics/quantization/nvfp4-blog--web-2026-07-28-a2f3eb0ba3bb.metadata.json
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - NVIDIA FP4
 mention_lint: canonical
 appears_in:
-  - docs/hardware/quantization/nvfp4.md
-  - docs/hardware/quantization/hif4/index.md
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-updated: 2026-08-25
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/hardware/numerics/quantization/hif4/index.md
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+updated: 2026-09-16
 ---
 
 # NVFP4
@@ -46,9 +46,9 @@ Fractional scales and small blocks improve local fitting but require more scale 
 
 ## Where It Appears
 
-- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/quantization/nvfp4.md) — Public Transformer Engine and NVIDIA blog recipe, training mechanisms, layout limits, and deployment context.
-- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/quantization/hif4/index.md) — Compares NVFP4 against a 64-value shared-metadata alternative for error, hardware, and LLM accuracy.
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Places NVFP4 alongside OCP MX and related block-floating designs.
+- [NVFP4: Blackwell 4-Bit Floating Point](../hardware/numerics/quantization/nvfp4.md) — Public Transformer Engine and NVIDIA blog recipe, training mechanisms, layout limits, and deployment context.
+- [HiFloat4 (HiF4): 4-Bit Block Floating Point for LLM Inference](../hardware/numerics/quantization/hif4/index.md) — Compares NVFP4 against a 64-value shared-metadata alternative for error, hardware, and LLM accuracy.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md) — Places NVFP4 alongside OCP MX and related block-floating designs.
 
 ## Related Terms
 

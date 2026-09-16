@@ -6,10 +6,10 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
-  - raw/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
-  - derived/web-markdown/hardware/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
-  - raw/hardware/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.html
+  - raw/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.metadata.json
+  - derived/web-markdown/hardware/kernels-dataflow/spatial-gemm--web-2026-08-04-5ae8cd1f3ba2.md
+  - raw/hardware/numerics/quantization/hif4-format-for-language-model-inference--arxiv-2602.11287v1.pdf
 aliases:
   - GEMM
   - general matrix multiplication
@@ -17,40 +17,38 @@ aliases:
   - matmul
 mention_lint: off
 appears_in:
-  - docs/algorithms/flashattention/flashattention-2.md
-  - docs/algorithms/flashattention/flashattention-3.md
-  - docs/algorithms/flashattention/flashattention-4.md
-  - docs/algorithms/flashattention/index.md
-  - docs/algorithms/index.md
-  - docs/algorithms/kronecker-product.md
-  - docs/frameworks/deepseek/v4-attention-code-reading.md
-  - docs/frameworks/cuda/index.md
-  - docs/frameworks/cuda/tile-ir/index.md
-  - docs/frameworks/triton-ascend/cannbot-skills-workflow.md
-  - docs/frameworks/triton-ascend/index.md
-  - docs/frameworks/triton-ascend/operator-mechanisms.md
-  - docs/frameworks/triton/index.md
-  - docs/frameworks/triton/triton-in-vllm.md
-  - docs/frameworks/tilelang/index.md
-  - docs/frameworks/tilelang-ascend/index.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-inference.md
-  - docs/frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
-  - docs/frameworks/vllm/minimax-gqa-w4a4-quantization-path.md
-  - docs/frameworks/vllm/vllm-kimi-k3-code-reading.md
-  - docs/hardware/index.md
-  - docs/hardware/quantization/flatquant/index.md
-  - docs/hardware/quantization/index.md
-  - docs/hardware/quantization/microscaling-mx-formats/index.md
-  - docs/hardware/quantization/nvfp4.md
-  - docs/hardware/quantization/hif4/index.md
-  - docs/hardware/spatial-gemm.md
-  - docs/hardware/deepgemm/index.md
+  - docs/algorithms/attention/flashattention/flashattention-2.md
+  - docs/algorithms/attention/flashattention/flashattention-3.md
+  - docs/algorithms/attention/flashattention/flashattention-4.md
+  - docs/algorithms/attention/flashattention/index.md
+  - docs/algorithms/foundations/kronecker-product.md
+  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/compilers-kernels/cuda/index.md
+  - docs/frameworks/compilers-kernels/cuda/tile-ir/index.md
+  - docs/frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md
+  - docs/frameworks/compilers-kernels/triton-ascend/index.md
+  - docs/frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md
+  - docs/frameworks/compilers-kernels/triton/index.md
+  - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
+  - docs/frameworks/compilers-kernels/tilelang/index.md
+  - docs/frameworks/compilers-kernels/tilelang-ascend/index.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
+  - docs/frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md
+  - docs/frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md
+  - docs/frameworks/serving/vllm/vllm-kimi-k3-code-reading.md
+  - docs/hardware/numerics/quantization/flatquant/index.md
+  - docs/hardware/numerics/quantization/index.md
+  - docs/hardware/numerics/quantization/microscaling-mx-formats/index.md
+  - docs/hardware/numerics/quantization/nvfp4.md
+  - docs/hardware/numerics/quantization/hif4/index.md
+  - docs/hardware/kernels-dataflow/spatial-gemm.md
+  - docs/hardware/kernels-dataflow/deepgemm/index.md
   - docs/training/efficient-attention/gated-delta-networks/index.md
-  - docs/training/kimi/kimi-linear/index.md
-  - docs/training/mhc/index.md
+  - docs/training/model-families/kimi/kimi-linear/index.md
+  - docs/training/architectures/mhc/index.md
   - docs/training/parallelism/index.md
   - docs/training/parallelism/megatron-lm/index.md
-updated: 2026-08-26
+updated: 2026-09-16
 ---
 
 # General Matrix Multiply (GEMM)
@@ -73,7 +71,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 
 - GEMM is **compute-bound** only when tiles are large enough to amortize memory traffic; small matrices are memory-bound and need kernel fusion or batched dispatch.
 - Tiling must match the on-chip capacity ([memory banking](memory-banking.md) and SRAM size); too-large tiles spill, too-small tiles underutilize the compute units.
-- **Low-precision GEMMs (FP8, FP4, INT4)** multiply memory savings against accuracy; the [NVFP4](../hardware/quantization/nvfp4.md) format exists precisely to keep GEMM layout constraints tractable.
+- **Low-precision GEMMs (FP8, FP4, INT4)** multiply memory savings against accuracy; the [NVFP4](../hardware/numerics/quantization/nvfp4.md) format exists precisely to keep GEMM layout constraints tractable.
 
 ## Common Confusions
 
@@ -83,39 +81,37 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 
 ## Where It Appears
 
-- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/cuda/index.md) — Uses vector addition and tile programming to show how device-memory traffic and on-chip reuse shape kernel cost.
-- [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/cuda/tile-ir/index.md) — Uses dynamic GEMM to show tile-block decomposition, tensor views, partition views, and compiler-owned mapping.
+- [CUDA Programming Model: From Host to SM, Warp, and Memory](../frameworks/compilers-kernels/cuda/index.md) — Uses vector addition and tile programming to show how device-memory traffic and on-chip reuse shape kernel cost.
+- [CUDA Tile IR: The Design Philosophy of Tile Programming](../frameworks/compilers-kernels/cuda/tile-ir/index.md) — Uses dynamic GEMM to show tile-block decomposition, tensor views, partition views, and compiler-owned mapping.
 - [Spatial: General Matrix Multiply tutorial](https://spatial-lang.org/gemm/) — Builds a blocked, outer-product GEMM in the Spatial DSL and discusses inner-product and systolic-array variants plus SRAM banking.
-- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/spatial-gemm.md) — The knowledge-base insight page for the same tutorial: output tiling, MemFold/MemReduce, triple buffering, and banking.
-- [FlashAttention-3](../algorithms/flashattention/flashattention-3.md) — Measures attention against optimized GEMM kernels that reach 80–90% of H100 peak, and overlaps GEMM with softmax.
-- [MiniMax GQA W4A4 Quantization Path](../frameworks/vllm/minimax-gqa-w4a4-quantization-path.md) — W4A4 inference runs FP4 GEMM kernels (FlashInfer MXFP4, CUTLASS NVFP4) with dynamic activation quantization.
-- [FlatQuant](../hardware/quantization/flatquant/index.md) — Quantizes activations to INT4 inside a fused affine-transform kernel, then multiplies by pre-transformed INT4 weights with a CUTLASS GEMM.
-- [Triton Ascend Operator Mechanisms](../frameworks/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
-- [NVFP4](../hardware/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
-- [HiFloat4 (HiF4)](../hardware/quantization/hif4/index.md) — Designs a 64-length dot-product flow that keeps local scaling as shifts and delays shared floating-point scale work.
-- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/deepgemm/index.md) — Uses two block-scaled expert GEMMs, SwiGLU, and SM100 tensor-memory staging inside a communication-overlapped MoE kernel.
+- [Spatial GEMM: Blocked Outer-Product Matrix Multiply](../hardware/kernels-dataflow/spatial-gemm.md) — The knowledge-base insight page for the same tutorial: output tiling, MemFold/MemReduce, triple buffering, and banking.
+- [FlashAttention-3](../algorithms/attention/flashattention/flashattention-3.md) — Measures attention against optimized GEMM kernels that reach 80–90% of H100 peak, and overlaps GEMM with softmax.
+- [MiniMax GQA W4A4 Quantization Path](../frameworks/serving/vllm/minimax-gqa-w4a4-quantization-path.md) — W4A4 inference runs FP4 GEMM kernels (FlashInfer MXFP4, CUTLASS NVFP4) with dynamic activation quantization.
+- [FlatQuant](../hardware/numerics/quantization/flatquant/index.md) — Quantizes activations to INT4 inside a fused affine-transform kernel, then multiplies by pre-transformed INT4 weights with a CUTLASS GEMM.
+- [Triton Ascend Operator Mechanisms](../frameworks/compilers-kernels/triton-ascend/operator-mechanisms.md) — The Ascend Cube unit executes GEMM / QK·PV matrix multiply-accumulate.
+- [NVFP4](../hardware/numerics/quantization/nvfp4.md) — Defines GEMM layout constraints (TN-only) for 4-bit float weights and activations.
+- [HiFloat4 (HiF4)](../hardware/numerics/quantization/hif4/index.md) — Designs a 64-length dot-product flow that keeps local scaling as shifts and delays shared floating-point scale work.
+- [DeepGEMM MegaMoE: Fused Communication and Expert Compute](../hardware/kernels-dataflow/deepgemm/index.md) — Uses two block-scaled expert GEMMs, SwiGLU, and SM100 tensor-memory staging inside a communication-overlapped MoE kernel.
 - [Megatron-LM](../training/parallelism/megatron-lm/index.md) — Splits transformer GEMMs column- and row-wise across GPUs for tensor parallelism.
-- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
-- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
-- [FlashAttention](../algorithms/flashattention/index.md) — The FlashAttention algorithm and kernel family across GPU generations: IO-aware exact attention, parallelism, Hopper asynchrony.
-- [Algorithms](../algorithms/index.md) — Algorithm pages covering inference algorithms, attention kernels, and scheduling methods.
-- [Kronecker Product](../algorithms/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
-- [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/triton/index.md) — The original Triton language and compiler for expressing tiled neural network computations as portable, high-performance GPU.
-- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
-- [TileLang Design and Code Learning Path](../frameworks/tilelang/index.md) — Uses a tiled GEMM to connect TileLang's Python DSL to TIRX, target-specific lowering, and runtime adapters.
-- [TileLang-Ascend: Ascend Backend and TileLang Integration](../frameworks/tilelang-ascend/index.md) — Uses Ascend GEMM as the concrete path from TileLang IR through Ascend C/PTO codegen and the CANN runtime.
-- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
-- [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/triton-ascend/index.md) — A beginner-friendly tour of triton-ascend: how it bridges the Triton GPU kernel language to Huawei Ascend NPU hardware through a.
-- [vLLM Kimi K3 Code Reading Map](../frameworks/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
-- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
-- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How vllm-ascend quantizes the DeepSeek-V4 Lightning Indexer to 8 bits (C8): INT8 keys with FP16 scales on 910B/A2/A3, FP8 e4m3fn.
-- [Hardware and Numerics](../hardware/index.md) — Hardware and numerics pages covering accelerator features, precision formats, and related implementation details.
-- [Quantization](../hardware/quantization/index.md) — Post-training quantization methods and low-precision numeric formats for LLM inference.
-- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/quantization/microscaling-mx-formats/index.md) — Uses MX blocks as the narrow-precision operands inside matrix multiplies and describes the format's accumulation and layout boundaries.
+- [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/attention/flashattention/flashattention-2.md) — FlashAttention-2 algorithm: reduced non-matmul overhead, sequence-parallel attention blocks, warp-level work partitioning, and.
+- [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/attention/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
+- [FlashAttention](../algorithms/attention/flashattention/index.md) — The FlashAttention algorithm and kernel family across GPU generations: IO-aware exact attention, parallelism, Hopper asynchrony.
+- [Kronecker Product](../algorithms/foundations/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/compilers-kernels/triton/index.md) — The original Triton language and compiler for expressing tiled neural network computations as portable, high-performance GPU.
+- [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
+- [TileLang Design and Code Learning Path](../frameworks/compilers-kernels/tilelang/index.md) — Uses a tiled GEMM to connect TileLang's Python DSL to TIRX, target-specific lowering, and runtime adapters.
+- [TileLang-Ascend: Ascend Backend and TileLang Integration](../frameworks/compilers-kernels/tilelang-ascend/index.md) — Uses Ascend GEMM as the concrete path from TileLang IR through Ascend C/PTO codegen and the CANN runtime.
+- [CANNBot Skills: Triton Ascend Development Workflow](../frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md) — How CANNBot's seven Triton-domain skills and the triton-op-generator plugin orchestrate end-to-end Triton Ascend kernel.
+- [Triton Ascend: Ascend NPU Backend for Triton](../frameworks/compilers-kernels/triton-ascend/index.md) — A beginner-friendly tour of triton-ascend: how it bridges the Triton GPU kernel language to Huawei Ascend NPU hardware through a.
+- [vLLM Kimi K3 Code Reading Map](../frameworks/serving/vllm/vllm-kimi-k3-code-reading.md) — Code-reading map for upstream vLLM's real Kimi K3 implementation: request parsing, multimodal wrapper, KimiLinear text model.
+- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
+- [DeepSeek-V4 Lightning Indexer C8 Quantization: INT8/FP8 Indexer Cache in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How vllm-ascend quantizes the DeepSeek-V4 Lightning Indexer to 8 bits (C8): INT8 keys with FP16 scales on 910B/A2/A3, FP8 e4m3fn.
+- [Quantization](../hardware/numerics/quantization/index.md) — Post-training quantization methods and low-precision numeric formats for LLM inference.
+- [Microscaling (MX) Formats: Block Floating Point for AI Hardware](../hardware/numerics/quantization/microscaling-mx-formats/index.md) — Uses MX blocks as the narrow-precision operands inside matrix multiplies and describes the format's accumulation and layout boundaries.
 - [Gated Delta Networks: Improving Mamba2 with Delta Rule](../training/efficient-attention/gated-delta-networks/index.md) — Gated DeltaNet combines global state decay with key-targeted delta updates to improve fixed-state sequence memory while.
-- [Kimi Linear: Expressive Efficient Attention Architecture](../training/kimi/kimi-linear/index.md) — Kimi Linear is a hybrid linear attention architecture that for the first time outperforms full attention across short-context.
-- [mHC: Manifold-Constrained Hyper-Connections](../training/mhc/index.md) — DeepSeek's mHC projects Hyper-Connections' residual mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp.
+- [Kimi Linear: Expressive Efficient Attention Architecture](../training/model-families/kimi/kimi-linear/index.md) — Kimi Linear is a hybrid linear attention architecture that for the first time outperforms full attention across short-context.
+- [mHC: Manifold-Constrained Hyper-Connections](../training/architectures/mhc/index.md) — DeepSeek's mHC projects Hyper-Connections' residual mixing matrix onto the doubly stochastic manifold with Sinkhorn-Knopp.
 - [Training Parallelism](../training/parallelism/index.md) — Data, tensor, pipeline, and sequence parallelism techniques for large-model training.
 
 ## Related Terms

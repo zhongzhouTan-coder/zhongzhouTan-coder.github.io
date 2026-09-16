@@ -6,24 +6,23 @@ layout: default
 confidence: high
 category: frameworks
 sources:
-  - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html
-  - raw/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json
-  - derived/web-markdown/frameworks/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md
+  - raw/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.html
+  - raw/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.metadata.json
+  - derived/web-markdown/frameworks/serving/vllm/continuous-batching-llm-inference--web-2026-08-02-083bded3a6af.md
 aliases:
   - iteration-level scheduling
   - in-flight batching
 appears_in:
-  - docs/frameworks/index.md
-  - docs/frameworks/sarathi/index.md
-  - docs/frameworks/vllm-ascend/architecture.md
-  - docs/frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
-  - docs/frameworks/vllm/index.md
-  - docs/frameworks/vllm/vllm-block-management/index.md
-  - docs/frameworks/vllm/vllm-continuous-batching/index.md
-  - docs/frameworks/vllm/vllm-framework.md
-  - docs/frameworks/vllm/vllm-overview.md
-  - docs/frameworks/vllm/vllm-context-parallelism.md
-updated: 2026-08-10
+  - docs/frameworks/serving/sarathi/index.md
+  - docs/frameworks/serving/vllm-ascend/architecture.md
+  - docs/frameworks/serving/vllm-ascend/prefill-decode-scheduling-qwen3.5.md
+  - docs/frameworks/serving/vllm/index.md
+  - docs/frameworks/serving/vllm/vllm-block-management/index.md
+  - docs/frameworks/serving/vllm/vllm-continuous-batching/index.md
+  - docs/frameworks/serving/vllm/vllm-framework.md
+  - docs/frameworks/serving/vllm/vllm-overview.md
+  - docs/frameworks/serving/vllm/vllm-context-parallelism.md
+updated: 2026-09-16
 ---
 
 # Continuous Batching
@@ -70,20 +69,19 @@ is sparse or request lengths are uniform.
 
 ## Where It Appears
 
-- [vLLM: PagedAttention Serving Framework](../frameworks/vllm/vllm-framework.md) —
+- [vLLM: PagedAttention Serving Framework](../frameworks/serving/vllm/vllm-framework.md) —
   Relates Orca-style iteration-level scheduling to vLLM's paged KV-memory
   management.
-- [vLLM Continuous Batching](../frameworks/vllm/vllm-continuous-batching/index.md) —
+- [vLLM Continuous Batching](../frameworks/serving/vllm/vllm-continuous-batching/index.md) —
   Traces the current V1 scheduler, KV allocation, worker-batch update, finish,
   and preemption paths.
-- [vLLM Block Table Management](../frameworks/vllm/vllm-block-management/index.md) — Connects iteration-level scheduling to paged KV-block allocation.
-- [vLLM-Ascend Architecture](../frameworks/vllm-ascend/architecture.md) — Shows how the Ascend backend reuses vLLM's continuous-batching scheduler.
-- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/sarathi/index.md) — Shapes continuous work into chunked prefill and decode-maximal batches.
-- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Shows how the upstream continuous-batching plan becomes Ascend FIA/GDN execution metadata.
-- [Frameworks](../frameworks/index.md) — Framework pages covering LLM serving systems and structured language-model programming runtimes.
-- [vLLM](../frameworks/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
-- [vLLM Architecture and Code Organization Overview](../frameworks/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/vllm/vllm-context-parallelism.md) — PCP rewrites the continuous batch into rank-local prefill chunks and replicated decodes.
+- [vLLM Block Table Management](../frameworks/serving/vllm/vllm-block-management/index.md) — Connects iteration-level scheduling to paged KV-block allocation.
+- [vLLM-Ascend Architecture](../frameworks/serving/vllm-ascend/architecture.md) — Shows how the Ascend backend reuses vLLM's continuous-batching scheduler.
+- [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md) — Shapes continuous work into chunked prefill and decode-maximal batches.
+- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](../frameworks/serving/vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Shows how the upstream continuous-batching plan becomes Ascend FIA/GDN execution metadata.
+- [vLLM](../frameworks/serving/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.
+- [vLLM Architecture and Code Organization Overview](../frameworks/serving/vllm/vllm-overview.md) — A top-down code-reading map of the vLLM repository at commit a0c092ee72c0: how the V1 serving engine, model executor, config.
+- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](../frameworks/serving/vllm/vllm-context-parallelism.md) — PCP rewrites the continuous batch into rank-local prefill chunks and replicated decodes.
 
 ## Related Terms
 

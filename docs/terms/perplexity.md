@@ -6,12 +6,12 @@ layout: default
 confidence: high
 category: algorithms
 sources:
-  - raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html
-  - raw/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json
-  - derived/web-markdown/algorithms/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md
-  - raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html
-  - raw/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json
-  - derived/web-markdown/algorithms/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md
+  - raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.html
+  - raw/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.metadata.json
+  - derived/web-markdown/algorithms/foundations/perplexity-pytorch-calculation--web-2026-08-22-1786b54fa0c7.md
+  - raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.html
+  - raw/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.metadata.json
+  - derived/web-markdown/algorithms/foundations/perplexity-fixed-length-models--web-2026-08-22-32174cdba6b9.md
 aliases:
   - PPL
   - 困惑度
@@ -20,7 +20,7 @@ appears_in:
   - docs/algorithms/foundations/perplexity.md
   - docs/training/foundation-models/gpt-1.md
   - docs/training/foundation-models/gpt-2.md
-updated: 2026-08-22
+updated: 2026-09-16
 ---
 
 # Perplexity

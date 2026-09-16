@@ -4,9 +4,9 @@ summary: "YOCO splits a decoder-only language model into an efficient self-decod
 layout: default
 confidence: high
 sources:
-  - raw/training/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf
-  - derived/pdf-markdown/training/yoco-you-only-cache-once/yoco-you-only-cache-once.md
-updated: 2026-09-10
+  - raw/training/efficient-attention/yoco-you-only-cache-once--arxiv-2405.05254v2.pdf
+  - derived/pdf-markdown/training/efficient-attention/yoco-you-only-cache-once/yoco-you-only-cache-once.md
+updated: 2026-09-16
 ---
 
 # YOCO: You Only Cache Once
@@ -15,7 +15,7 @@ updated: 2026-09-10
 **Authors:** Yutao Sun, Li Dong, Yi Zhu, Shaohan Huang, Wenhui Wang, Shuming Ma, Quanlu Zhang, Jianyong Wang, Furu Wei  
 **arXiv:** [2405.05254v2](https://arxiv.org/abs/2405.05254) (May 2024)
 
-**Related pages:** [Efficient Attention Training](../index.md), [Universal YOCO](universal-yoco.md), [Gated Delta Networks](../gated-delta-networks/index.md), [SWAT](../swat-sliding-window-attention/index.md), [Linear Attention](../../../algorithms/linear-attention/index.md), [KV Cache](../../../terms/kv-cache.md)
+**Related pages:** [Efficient Attention Training](../index.md), [Universal YOCO](universal-yoco.md), [Gated Delta Networks](../gated-delta-networks/index.md), [SWAT](../swat-sliding-window-attention/index.md), [Linear Attention](../../../algorithms/attention/linear/index.md), [KV Cache](../../../terms/kv-cache.md)
 
 ## TL;DR
 
@@ -232,8 +232,8 @@ These are source-reported measurements on H100-80GB cards with a 3B model, a 1,0
 
 ## Go Deeper
 
-- **Read:** [YOCO paper (arXiv 2405.05254)](https://arxiv.org/abs/2405.05254); [extracted Markdown](../../../../derived/pdf-markdown/training/yoco-you-only-cache-once/yoco-you-only-cache-once.md)
-- **Build on:** [Retentive Network](https://arxiv.org/abs/2307.08621), [Gated Linear Attention Transformers](https://arxiv.org/abs/2312.06635), and [Transformers are RNNs: Linear Attention](../../../algorithms/linear-attention/index.md)
+- **Read:** [YOCO paper (arXiv 2405.05254)](https://arxiv.org/abs/2405.05254); [extracted Markdown](../../../../derived/pdf-markdown/training/efficient-attention/yoco-you-only-cache-once/yoco-you-only-cache-once.md)
+- **Build on:** [Retentive Network](https://arxiv.org/abs/2307.08621), [Gated Linear Attention Transformers](https://arxiv.org/abs/2312.06635), and [Transformers are RNNs: Linear Attention](../../../algorithms/attention/linear/index.md)
 - **Understand the context:** [KV Cache](../../../terms/kv-cache.md), [Gated Retention](../../../terms/gated-retention.md), [Sliding-Window Attention](../../../terms/sliding-window-attention.md), and [Chunk Parallelism context](../../parallelism/sequence-parallelism/index.md)
 - **Follow up:** [Universal YOCO for Efficient Depth Scaling](universal-yoco.md) applies parameter-shared recursion inside the self-decoder, turning the cache-once design into a depth-scaling recipe.
 - **Reproduce:** The paper links to [the YOCO code](https://aka.ms/YOCO); this repository has not run an independent reproduction.

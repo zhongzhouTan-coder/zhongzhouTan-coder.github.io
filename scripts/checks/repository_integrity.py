@@ -30,6 +30,9 @@ REPOSITORY_ID_RE = re.compile(
     r"(?P<commit>[0-9a-f]{40})$"
 )
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+TOPIC_PATH_RE = re.compile(
+    r"^[a-z0-9]+(?:-[a-z0-9]+)*(?:/[a-z0-9]+(?:-[a-z0-9]+)*)*$"
+)
 WEB_ID_RE = re.compile(
     r"^web:(?P<host>.+)/(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)@"
     r"(?P<captured>\d{4}-\d{2}-\d{2})-(?P<revision>[0-9a-f]{12})$"
@@ -137,6 +140,14 @@ def normalized_path(path: str) -> str:
     return Path(path.rstrip("/")).as_posix()
 
 
+def entry_prefix(entry: dict[str, Any], categories: dict[str, Any], key: str) -> str | None:
+    prefix = categories[entry["category"]].get(key)
+    topic_path = entry.get("topic_path")
+    if not prefix or not isinstance(topic_path, str):
+        return None
+    return f"{prefix}{topic_path}/"
+
+
 def is_safe_relative_path(path: str, prefix: str) -> bool:
     candidate = Path(path)
     return (
@@ -197,6 +208,7 @@ def validate_web_entry(
         return
 
     category = entry["category"]
+    topic_path = entry["topic_path"]
     slug = entry["slug"]
     captured_at = entry.get("captured_at")
     revision = entry.get("revision")
@@ -221,9 +233,10 @@ def validate_web_entry(
         errors.append(f"{source_id}: web status must be captured or ingested")
 
     snapshot = f"{slug}--web-{capture_date}-{revision[:12]}"
+    raw_prefix = entry_prefix(entry, categories, "raw_prefix")
     expected_raw_paths = {
-        f"raw/{category}/{snapshot}.html",
-        f"raw/{category}/{snapshot}.metadata.json",
+        f"{raw_prefix}{snapshot}.html",
+        f"{raw_prefix}{snapshot}.metadata.json",
     }
     if set(raw_paths) != expected_raw_paths or len(raw_paths) != 2:
         errors.append(
@@ -232,8 +245,8 @@ def validate_web_entry(
         )
         return
 
-    html_path = f"raw/{category}/{snapshot}.html"
-    metadata_path = f"raw/{category}/{snapshot}.metadata.json"
+    html_path = f"{raw_prefix}{snapshot}.html"
+    metadata_path = f"{raw_prefix}{snapshot}.metadata.json"
     full_html_path = root / html_path
     full_metadata_path = root / metadata_path
     if full_html_path.is_file():
@@ -260,7 +273,7 @@ def validate_web_entry(
                 f"got {metadata.get(key)}"
             )
 
-    web_derived_prefix = categories[category].get("web_derived_prefix")
+    web_derived_prefix = entry_prefix(entry, categories, "web_derived_prefix")
     expected_derived_path = (
         f"{web_derived_prefix}{snapshot}.md" if web_derived_prefix else None
     )
@@ -329,9 +342,10 @@ def validate_web_entry(
         if docs_path and not is_safe_relative_path(docs_path, "docs"):
             errors.append(f"{source_id}: invalid intended docs path: {docs_path}")
         docs_prefix = categories[category].get("docs_prefix")
-        if docs_path and docs_prefix and not docs_path.startswith(docs_prefix):
+        topic_docs_prefix = f"{docs_prefix}{topic_path}/" if docs_prefix else None
+        if docs_path and topic_docs_prefix and not docs_path.startswith(topic_docs_prefix):
             errors.append(
-                f"{source_id}: intended docs path outside category prefix: "
+                f"{source_id}: intended docs path outside topic prefix: "
                 f"{docs_path}"
             )
         return
@@ -343,8 +357,9 @@ def validate_web_entry(
     if not is_safe_relative_path(docs_path, "docs"):
         errors.append(f"{source_id}: invalid web docs path: {docs_path}")
         return
-    if docs_prefix and not docs_path.startswith(docs_prefix):
-        errors.append(f"{source_id}: docs path outside category prefix: {docs_path}")
+    topic_docs_prefix = f"{docs_prefix}{topic_path}/" if docs_prefix else None
+    if topic_docs_prefix and not docs_path.startswith(topic_docs_prefix):
+        errors.append(f"{source_id}: docs path outside topic prefix: {docs_path}")
     full_docs_path = root / docs_path
     if not full_docs_path.is_file():
         errors.append(f"{source_id}: missing docs path: {docs_path}")
@@ -478,7 +493,7 @@ def validate_repository_entry(
         if heading not in raw_text:
             errors.append(f"{source_id}: raw source record missing {heading}")
 
-    repo_analysis_prefix = categories[category].get("repo_analysis_prefix")
+    repo_analysis_prefix = entry_prefix(entry, categories, "repo_analysis_prefix")
     expected_derived_path = (
         f"{repo_analysis_prefix}{repo_slug}/{id_commit}/"
         if repo_analysis_prefix and repo_slug
@@ -528,6 +543,12 @@ def validate_repository_entry(
         ):
             errors.append(f"{source_id}: invalid repository docs path: {docs_path}")
             continue
+        docs_prefix = categories[category].get("docs_prefix")
+        if docs_prefix and not docs_path.startswith(docs_prefix):
+            errors.append(
+                f"{source_id}: repository docs path outside category prefix: "
+                f"{docs_path}"
+            )
         full_docs_path = root / docs_path
         if not full_docs_path.is_file():
             errors.append(f"{source_id}: missing docs path: {docs_path}")
@@ -584,7 +605,15 @@ def main() -> int:
     for entry in manifest:
         missing_fields = [
             field
-            for field in ("id", "title", "slug", "category", "kind", "raw_paths")
+            for field in (
+                "id",
+                "title",
+                "slug",
+                "category",
+                "topic_path",
+                "kind",
+                "raw_paths",
+            )
             if field not in entry
         ]
         if missing_fields:
@@ -604,14 +633,29 @@ def main() -> int:
         raw_prefix = categories[category]["raw_prefix"]
         derived_prefix = categories[category]["derived_prefix"]
         docs_prefix = categories[category]["docs_prefix"]
+        topic_path = entry["topic_path"]
+        if not isinstance(topic_path, str) or not TOPIC_PATH_RE.fullmatch(topic_path):
+            errors.append(f"{source_id}: invalid topic_path {topic_path!r}")
+            continue
+        topic_root = topic_path.split("/", 1)[0]
+        if topic_root not in categories[category].get("topic_roots", []):
+            errors.append(
+                f"{source_id}: topic_path root {topic_root!r} is not allowed "
+                f"for {category}"
+            )
+        raw_topic_prefix = f"{raw_prefix}{topic_path}/"
+        derived_topic_prefix = (
+            f"{derived_prefix}{topic_path}/" if derived_prefix else None
+        )
+        docs_topic_prefix = f"{docs_prefix}{topic_path}/" if docs_prefix else None
 
         for raw_path in entry.get("raw_paths", []):
             if raw_path in manifest_raw_paths:
                 errors.append(f"{source_id}: raw path reused by another source: {raw_path}")
             manifest_raw_paths.add(raw_path)
             full_raw_path = root / raw_path
-            if not raw_path.startswith(raw_prefix):
-                errors.append(f"{source_id}: raw path outside category prefix: {raw_path}")
+            if not raw_path.startswith(raw_topic_prefix):
+                errors.append(f"{source_id}: raw path outside topic prefix: {raw_path}")
             if not full_raw_path.exists():
                 errors.append(f"{source_id}: missing raw path: {raw_path}")
             expected_name = expected_raw_name(entry, raw_path)
@@ -656,9 +700,11 @@ def main() -> int:
             manifest_derived_paths.add(derived_path)
             if not derived_prefix:
                 errors.append(f"{source_id}: category has no derived prefix: {category}")
-            elif not derived_path.startswith(derived_prefix):
+            elif derived_topic_prefix and not derived_path.startswith(
+                derived_topic_prefix
+            ):
                 errors.append(
-                    f"{source_id}: derived path outside category prefix: {derived_path}"
+                    f"{source_id}: derived path outside topic prefix: {derived_path}"
                 )
             elif not (root / derived_path).exists():
                 errors.append(f"{source_id}: missing derived path: {derived_path}")
@@ -673,8 +719,8 @@ def main() -> int:
         if not docs_path:
             errors.append(f"{source_id}: non-repository entry missing docs_path")
             continue
-        if docs_prefix and not docs_path.startswith(docs_prefix):
-            errors.append(f"{source_id}: docs path outside category prefix: {docs_path}")
+        if docs_topic_prefix and not docs_path.startswith(docs_topic_prefix):
+            errors.append(f"{source_id}: docs path outside topic prefix: {docs_path}")
         full_docs_path = root / docs_path
         if not full_docs_path.exists():
             errors.append(f"{source_id}: missing docs path: {docs_path}")

@@ -1,102 +1,17 @@
 ---
 title: "Frameworks"
-summary: "Framework pages covering LLM serving systems, programming frameworks, and runtime architecture."
+summary: "Navigation hub for serving systems, compiler and kernel frameworks, languages, infrastructure, and speculative decoding."
 layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-15
+updated: 2026-09-16
 ---
 
 # Frameworks
 
-## CUDA
-
-- [CUDA Graphs in PyTorch: Capture Once, Replay Many](cuda/cuda-graphs/index.md) — Beginner-first guide to capture, stable memory addresses, warmup, replay, partial graphing, NCCL, benchmark interpretation, and failure modes.
-- [CUDA Programming Model: From Host to SM, Warp, and Memory](cuda/index.md) — Hardware-grounded guide to host/device execution, grid and block scheduling, SM and warp behavior, tile programming, and the GPU memory hierarchy.
-- [CUDA Tile IR: The Design Philosophy of Tile Programming](cuda/tile-ir/index.md) — Source-grounded explanation of tile blocks, tensor values, structured tensor views, compiler-owned mapping, and performance portability.
-
-## C++
-
-- [C++](cpp/index.md) — Reference-backed pages about modern C++ language mechanisms and generic programming.
-- [C++ References: Aliases, Binding, Lifetime, and Interface Design](cpp/references.md) — How references alias existing objects, why assignment does not reseat them, and when pointers, handles, or values make clearer contracts.
-- [C++ Universal References: Forwarding and Perfect Forwarding](cpp/universal-references.md) — How forwarding references accept lvalues and rvalues, why named parameters become lvalue expressions, and how `std::forward` restores the caller's value category.
-
-## Python
-
-- [Python](python/index.md) — Reference-backed pages about Python runtime mechanisms, execution, and import behavior.
-- [Python Import System: Cache, Finders, Loaders, and Module Specs](python/import-system.md) — How Python searches for modules, creates and executes them, caches their identities, and binds names for import statements.
-- [Python Execution Model: Code Blocks, Scopes, and Runtime State](python/execution-model.md) — How code blocks run in frames, names bind and resolve through namespaces, annotation scopes defer work, and runtime layers share state.
-- [Your Guide to the CPython Source Code](python/cpython-source-code-guide.md) — Historical CPython 3.8 source map from startup and parsing through code objects, frames, objects, the standard library, and tests.
-
-## vLLM
-
-- [vLLM](vllm/index.md) — Category hub for vLLM serving framework pages.
-- [vLLM Architecture and Code Organization Overview](vllm/vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
-- [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](vllm/glm-5.2-inference-path.md) — Upstream request trace through V1 scheduling, the CUDA runner, shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, and response cleanup.
-- [GLM-5.1 on vLLM: Expert-Parallel MoE Path](vllm/glm-5.1-expert-parallel/index.md) — GLM-5.1's shared MoE shell through EP group sizing, global-to-local expert mapping, routed dispatch, local expert compute, backend combine, and residual return.
-- [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm/vllm-mha-code-path.md) — How decoder MHA/GQA/MQA moves from tensor-parallel QKV projection through runtime cache metadata, slot-mapped paged KV writes, backend dispatch, and output projection.
-- [vLLM: PagedAttention Serving Framework](vllm/vllm-framework.md) — LLM serving framework design, [PagedAttention](../terms/pagedattention.md) KV-cache paging, [block tables](../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.
-- [vLLM Continuous Batching: Scheduler, KV Blocks, and Runtime Flow](vllm/vllm-continuous-batching/index.md) — Current V1 iteration loop ([continuous batching](../terms/continuous-batching.md)), token and sequence budgets, running/waiting admission, [chunked prefill](../terms/chunked-prefill.md), paged KV-slot allocation, persistent worker batches, completion, and preemption.
-- [vLLM Data-Parallel Deployment: Internal and External Load Balancing](vllm/data-parallel-deployment/index.md) — Deployment strategy for internal, hybrid, per-rank external, and multi-port external load balancing, including MoE synchronization and launch topologies.
-- [vLLM Mamba2 and Linear-Attention Prefix-Cache Path](vllm/mamba2-linear-attention-prefix-cache/index.md) — Recurrent-state prefix reuse from chained hash lookup and hybrid-group reconciliation through worker state migration, suffix-only execution, and checkpoint publication.
-- [vLLM Prefill/Decode Disaggregated Deployment Path](vllm/prefill-decode-disaggregated-deployment/index.md) — How one request crosses a router, prefill pool, NIXL KV-transfer plane, and decode pool, including pull/push coordination, scaling, compatibility, and failure behavior.
-- [vLLM DCP and PCP: Decode and Prefill Context Parallelism](vllm/vllm-context-parallelism.md) — How PCP partitions current-step query rows and restores token order while DCP partitions persistent KV rows and restores exact softmax normalization.
-- [vLLM DCP Attention: From Local LSE to Exact Global Output](vllm/dcp-attention/index.md) — Focused derivation of exact DCP attention reconstruction from local outputs, gathered LSE values, and final output collectives.
-- [vLLM Kimi K3 Code Reading Map](vllm/vllm-kimi-k3-code-reading.md) — Upstream vLLM Kimi K3 implementation map covering XTML request handling, multimodal wrapper, KimiLinear text model, hybrid [KDA](../terms/kimi-delta-attention.md)/MLA attention, latent [MoE](../terms/mixture-of-experts.md), DeepGEMM MegaMoE, MTP, and K3-specific kernels.
-
-## vLLM Ascend
-
-- [Qwen3.5 MTP: Drafting and Target-Model Verification](vllm-ascend/qwen3.5-mtp.md) — Beginner-oriented MTP trace: Qwen3.5 proposes tokens from target hidden states, while vLLM verifies them from target logits with greedy equality or probability-ratio rejection sampling.
-- [vLLM Ascend](vllm-ascend/index.md) — Category hub for vLLM's Ascend NPU port.
-- [GLM-5.2 on vLLM Ascend: Request-to-Backend Inference Path](vllm-ascend/glm-5.2-inference-path.md) — Ascend NPU companion to the upstream GPU trace, covering SFA shared-indexer execution, sparse attention, MoE, sampling, detokenization, and cleanup.
-- [GLM-5.1 W4A4C8 on Ascend 950: How vLLM-Ascend Turns On Sparse C8](vllm-ascend/glm-5.1-c8-950.md) — Independent SFA-C8 and Lightning-Indexer-C8 switches, packed versus key/scale cache layouts, A5 FP8/FP32 storage, and the fused Ascend 950 operator path.
-- [vLLM-Ascend Kimi K3 MoE Forward Insight](vllm-ascend/kimi-k3-moe-forward.md) — Latest-code insight for the Kimi K3-style routed-MoE forward substrate in vllm-ascend: patched FusedMoE construction, typed MoE stage contracts, Ascend routing, token dispatch, grouped MLP compute, routed-expert capture, Fused MC2, and dynamic EPLB.
-- [DeepSeek-V4 Lightning Indexer C8 Quantization](vllm-ascend/deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 [Lightning Indexer](../terms/lightning-indexer.md) runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, [FP8](../terms/fp8.md) e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.
-- [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](vllm-ascend/deepseek-v4-inference.md) — End-to-end DeepSeek-V4 serving on Ascend NPUs: the model override with mHC [hyper-connections](../terms/hyper-connections.md), hybrid c4/c128 compressor layers, the AscendDSA prefill/decode flow, the five-type heterogeneous [KV cache](../terms/kv-cache.md), the sparse-attention custom operator, and the MTP draft model.
-- [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](vllm-ascend/qwen3.5-qwen3.6-inference.md) — How the shared `qwen3_5`-family models (Qwen3.5-27B / Qwen3.6-27B dense hybrid Mamba-Transformer, multimodal; Qwen3.5/Qwen3.6-35B-A3B and Qwen3.5-397B-A17B sparse MoE) run on Ascend by reusing the `qwen3_5` / `qwen3_5_moe` model types: GDN [linear attention](../terms/linear-attention.md) plus FIA full attention, ModelSlim W8A8 quantization, `qwen3_5_mtp` speculative decoding, and ACL-graph capture at pinned revision `9a52ca5fc36c`.
-- [Qwen3.8-FP8 on Ascend 950: Why Weights Become MXFP8 at Load Time](vllm-ascend/qwen3.8-fp8-mxfp8-950.md) — Native block-wise FP8 checkpoint resolution, Ascend 950 MXFP8 re-quantization, kernel layout preparation, runtime activation quantization, and non-950 fallbacks.
-- [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](vllm-ascend/prefill-decode-scheduling-qwen3.5.md) — Token-budget scheduling, chunked prefills, mixed FIA GQA layouts, and the parallel GDN recurrent path.
-
-## Triton
-
-- [Triton: Tiled GPU Kernel Language and Compiler](triton/index.md) — Original Triton language (MAPL 2019): Triton-C tile-programming frontend, Triton-IR tile-level LLVM extensions, Triton-JIT compiler with hierarchical tiling, memory coalescing, shared memory allocation/synchronization, and auto-tuning.
-- [Triton in Practice: How vLLM and vllm-ascend Use Triton](triton/triton-in-vllm.md) — Codebase-driven tour: vLLM's triton_utils infrastructure, custom op registration, ~163 kernel files across 12 categories, universal coding patterns, and vllm-ascend's CANN-backend adaptation.
-
-## TileLang
-
-- [TileLang Design and Code Learning Path](tilelang/index.md) — Repository-backed tour of the Python tile DSL, eager/lazy TIRX elaboration, target-neutral tile operations, backend manifests, CUDA pass ordering, JIT adapters, failure surfaces, and a staged learning path.
-
-## TileLang-Ascend
-
-- [TileLang-Ascend: Ascend Backend and TileLang Integration](tilelang-ascend/index.md) — Ascend C/PTO compiler paths, CANN/Bisheng runtime boundary, and the current integration gap with upstream TileLang.
-
-## Triton Ascend
-
-- [Triton Ascend: Ascend NPU Backend for Triton](triton-ascend/index.md) — Beginner-friendly architecture tour: five-layer design, TTIR→HIVM→LLVM→Linalg→Bisheng compilation flow, SIMD/SIMT/Unstructured-in-SIMT three-mode compilation, and relationship to vllm-ascend.
-- [Triton Ascend 算子机制学习路径](triton-ascend/operator-mechanisms.md) — 图解 AIC/AIV、UB/L1/L0、MTE 和异步指令队列，并用代码追踪、容量估算、profiling 症状和分阶段练习讲解 Vector、Cube 与 CV Fusion。
-
-## SGLang
-
-- [SGLang: Structured Language Model Programs](sglang/index.md) — Framework architecture, Python-embedded programming model, RadixAttention KV cache reuse, compressed FSM decoding, API speculative execution, and performance results.
-
-## DeepSeek
-
-- [DeepSeek](deepseek/index.md) — Category hub for DeepSeek model implementation readings.
-- [DeepSeek V4 Attention: Code Reading Map](deepseek/v4-attention-code-reading.md) — Navigable implementation map of DeepSeek V4's hybrid compressed attention across vLLM (NVIDIA/AMD/XPU) and vllm-ascend (Ascend NPU).
-
-## Other Frameworks
-
-- [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](kv-cache-optimization/index.md) — Survey of cache eviction, compression, hybrid memory, alternative attention, and combination strategies, with deployment trade-offs.
-- [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](kvswap/index.md) — Disk-first long-context decoding with compact key prediction, storage-aligned KV groups, a rolling buffer, and cross-step reuse.
-- [AgentX / InferenceX v3: Does the CUDA Moat Hold?](agentx-inferencexv3-cuda-moat/index.md) - Agentic inference benchmark insight covering long-context trace replay, prefix-cache and offload behavior, routing, disaggregation, software maturity, and date-scoped NVIDIA/AMD comparisons.
-- [InferenceX: Continuous Inference Benchmark Pipeline](inferencex/index.md) — Repository-backed map of configuration validation, matrix generation, framework-specific execution, AgentX replay, result normalization, and artifact handoff.
-- [OpenTelemetry: Vendor-Neutral Observability Framework](opentelemetry/index.md) — Open-source observability framework and toolkit for generating, collecting, and exporting portable traces, metrics, and logs while leaving storage and visualization to external backends.
-- [DFlash: Block Diffusion for Flash Speculative Decoding](dflash/index.md) — Target-conditioned block-diffusion drafting, per-layer K/V injection, sparse masked-block training, and serving results across SGLang and vLLM.
-- [Sarathi: Chunked Prefills for Efficient LLM Inference](sarathi/index.md) — Chunked-prefill and decode-maximal batching that reuses prefill weight loads for decode tokens and reduces pipeline bubbles.
-- [EAGLE: Feature-Level Speculative Sampling](eagle/index.md) — Shifted-token-conditioned feature autoregression, lightweight draft training, tree verification, and lossless 2.7x-3.5x reported LLaMA2-Chat 70B latency speedup.
-- [EAGLE-2: Context-Aware Dynamic Draft Trees](eagle-2/index.md) — Calibrated draft confidence, prefix path values, expand-and-rerank tree construction, and 20%-40% reported speedup over EAGLE.
-- [EAGLE-3: Training-Time Test for Speculative Decoding](eagle-3/index.md) — Direct token prediction, multi-layer target-feature fusion, self-conditioned training, dynamic draft trees, and 3.0x-6.5x reported speedup.
-- [DSpark: Confidence-Scheduled Speculative Decoding](dspark/index.md) — Source-backed re-insight of DeepSeek's semi-autoregressive drafter, calibrated prefix survival estimates, causal two-step-delayed scheduling, and production DeepSeek-V4 throughput frontier.
-- [Firecracker: MicroVM Sandboxes for AI Agents](firecracker/index.md) — Repository-backed guide to KVM isolation, Jailer process containment, per-thread seccomp, VirtIO I/O boundaries, vsock command transport, and the outer policy layer an agent platform must provide.
-- [Harbor: Agent Evaluation Framework (Code Reading)](harbor/index.md) — Repository-backed tour of Harbor's task packaging model, `Job -> JobPlan -> TrialQueue -> Trial -> Agent/Environment/Verifier` runtime, local/git/package/registry distribution, multi-step trials, and compile/exec workflows at pinned revision `97e65926410b`.
+- [Inference Serving Systems](serving/index.md) — Serving runtimes, cache systems, and deployment pipelines.
+- [Compilers and Kernel Frameworks](compilers-kernels/index.md) — CUDA, Triton, TileLang, and Ascend compiler stacks.
+- [Programming Languages](languages/index.md) — C++ and Python semantics and runtimes.
+- [Runtime Infrastructure](infrastructure/index.md) — Sandboxing, orchestration, and observability.
+- [Speculative Decoding Systems](speculative-decoding/index.md) — EAGLE, DFlash, and DSpark method families.

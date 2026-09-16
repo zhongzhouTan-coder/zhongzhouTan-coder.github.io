@@ -4,9 +4,9 @@ summary: "A deep-dive tutorial on the softmax function covering its mathematical
 layout: default
 confidence: high
 sources:
-  - raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf
-  - derived/pdf-markdown/algorithms/softmax-function-properties-motivation-interpretation.md
-updated: 2026-07-24
+  - raw/algorithms/foundations/softmax-function-properties-motivation-interpretation--franke-degen.pdf
+  - derived/pdf-markdown/algorithms/foundations/softmax-function-properties-motivation-interpretation.md
+updated: 2026-09-16
 ---
 
 # The Softmax Function: Properties, Motivation, and Interpretation
@@ -15,7 +15,7 @@ updated: 2026-07-24
 **Authors:** Michael Franke & Judith Degen
 **arXiv:** Not available in the source PDF; this is a tutorial/educational paper.
 
-**Related pages:** [FlashAttention: IO-Aware Exact Attention](../flashattention/flashattention.md), [FlashAttention-2](../flashattention/flashattention-2.md), [FlashAttention-3](../flashattention/flashattention-3.md), [FlashAttention-4](../flashattention/flashattention-4.md)
+**Related pages:** [FlashAttention: IO-Aware Exact Attention](../attention/flashattention/flashattention.md), [FlashAttention-2](../attention/flashattention/flashattention-2.md), [FlashAttention-3](../attention/flashattention/flashattention-3.md), [FlashAttention-4](../attention/flashattention/flashattention-4.md)
 
 ## TL;DR
 
@@ -267,7 +267,7 @@ The key mathematical insight is that the exponential function converts additive 
 
 ## Go Deeper
 
-- **Read:** The original tutorial paper (`raw/algorithms/softmax-function-properties-motivation-interpretation--franke-degen.pdf`) for complete proofs (Appendices A, B) and R code for solving α from expected scores (Appendix C).
+- **Read:** The original tutorial paper (`raw/algorithms/foundations/softmax-function-properties-motivation-interpretation--franke-degen.pdf`) for complete proofs (Appendices A, B) and R code for solving α from expected scores (Appendix C).
 - **Build on:** Luce (1959) for the original choice axiom; Train (2009) for discrete choice models; Jaynes for maximum entropy foundations.
-- **Understand the context:** [FlashAttention](../flashattention/flashattention.md) — online softmax in tiled attention; [FlashAttention-2](../flashattention/flashattention-2.md) — logsumexp softmax bookkeeping in kernel optimization.
+- **Understand the context:** [FlashAttention](../attention/flashattention/flashattention.md) — online softmax in tiled attention; [FlashAttention-2](../attention/flashattention/flashattention-2.md) — logsumexp softmax bookkeeping in kernel optimization.
 - **Reproduce:** R code provided in the paper's Appendix C for numerical solution of α given expected scores.

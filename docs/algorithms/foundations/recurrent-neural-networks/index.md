@@ -4,10 +4,10 @@ summary: "A beginner-oriented explanation of recurrent hidden state, shared weig
 layout: default
 confidence: medium
 sources:
-  - raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.html
-  - raw/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.metadata.json
-  - derived/web-markdown/algorithms/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.md
-updated: 2026-07-30
+  - raw/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.html
+  - raw/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.metadata.json
+  - derived/web-markdown/algorithms/foundations/recurrent-neural-networks-rnn-lstm--web-2026-07-30-565de51c278c.md
+updated: 2026-09-16
 ---
 
 # Recurrent Neural Networks: From RNN to LSTM
@@ -16,7 +16,7 @@ updated: 2026-07-30
 **Original URL:** [Zhihu article 123211148](https://zhuanlan.zhihu.com/p/123211148)  
 **Accessible source:** [attributed mirror](https://www.cnblogs.com/aabbcc/p/14321333.html)
 
-**Related pages:** [The Transformer](../transformer.md), [Linear Attention](../../linear-attention/index.md), [Linear Attention Without Softmax](../../linear-attention/linear-attention-without-softmax.md)
+**Related pages:** [The Transformer](../transformer.md), [Linear Attention](../../attention/linear/index.md), [Linear Attention Without Softmax](../../attention/linear/linear-attention-without-softmax.md)
 
 **Capture note:** Zhihu returned HTTP 403 to both HTTP and browser-assisted capture. The local source is an accessible mirror that names the supplied Zhihu URL as its original source. Because authorship and completeness could not be verified directly against Zhihu, this page uses `confidence: medium`.
 
@@ -185,7 +185,7 @@ That is why [linear attention](../../../terms/linear-attention.md) is said to ha
 1. Understand \(h_t=f(x_t,h_{t-1})\) on this page.
 2. Understand why the same weights are reused across all sequence positions.
 3. Learn the distinction between the LSTM cell state \(c_t\) and hidden state \(h_t\).
-4. Read [Transformers Are RNNs: Linear Attention](../../linear-attention/index.md) and replace the abstract RNN state with \((S_t,z_t)\).
+4. Read [Transformers Are RNNs: Linear Attention](../../attention/linear/index.md) and replace the abstract RNN state with \((S_t,z_t)\).
 5. Compare their failure mode: both use fixed-size history summaries, while full softmax attention retains explicit token-level access.
 
 ## One Thing to Remember

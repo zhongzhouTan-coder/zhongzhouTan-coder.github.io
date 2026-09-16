@@ -78,6 +78,7 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
                     "derived_prefix": "derived/pdf-markdown/frameworks/",
                     "repo_analysis_prefix": "derived/repo-analysis/frameworks/",
                     "docs_prefix": "docs/frameworks/",
+                    "topic_roots": ["serving"],
                 }
             }
         }
@@ -86,7 +87,7 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
             encoding="utf-8",
         )
         (self.root / "sources.json").write_text(
-            json.dumps({"schema_version": 1, "sources": []}, indent=2),
+            json.dumps({"schema_version": 2, "sources": []}, indent=2),
             encoding="utf-8",
         )
 
@@ -94,7 +95,7 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         self.temporary_directory.cleanup()
 
     def run_scaffold(
-        self, docs_path: str = "docs/frameworks/repo.md"
+        self, docs_path: str = "docs/frameworks/serving/repo.md"
     ) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [
@@ -103,6 +104,8 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
                 "external-repos/repo",
                 "--category",
                 "frameworks",
+                "--topic-path",
+                "serving/repo",
                 "--docs-path",
                 docs_path,
                 "--scope",
@@ -123,11 +126,11 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         short_sha = self.commit[:12]
         raw_path = (
             self.root
-            / f"raw/frameworks/repo-codebase--github-{short_sha}.md"
+            / f"raw/frameworks/serving/repo/repo-codebase--github-{short_sha}.md"
         )
         analysis_path = (
             self.root
-            / "derived/repo-analysis/frameworks/repo"
+            / "derived/repo-analysis/frameworks/serving/repo/repo"
             / self.commit
             / "important-files.md"
         )
@@ -135,7 +138,7 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         self.assertTrue(analysis_path.is_file())
         original_raw = raw_path.read_text(encoding="utf-8")
 
-        second = self.run_scaffold("docs/algorithms/repo-kernel.md")
+        second = self.run_scaffold("docs/frameworks/other/repo-kernel.md")
         self.assertEqual(second.returncode, 0, second.stderr)
         self.assertIn("reused github:owner/repo@", second.stdout)
         self.assertEqual(raw_path.read_text(encoding="utf-8"), original_raw)
@@ -166,8 +169,8 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         self.assertEqual(
             manifest["sources"][0]["docs_paths"],
             [
-                "docs/frameworks/repo.md",
-                "docs/algorithms/repo-kernel.md",
+                "docs/frameworks/serving/repo.md",
+                "docs/frameworks/other/repo-kernel.md",
             ],
         )
 
@@ -197,7 +200,7 @@ class RepositorySourceScaffoldTests(unittest.TestCase):
         self.assertIn("created gitcode:owner/repo@", result.stdout)
         raw_path = (
             self.root
-            / f"raw/frameworks/repo-codebase--gitcode-{self.commit[:12]}.md"
+            / f"raw/frameworks/serving/repo/repo-codebase--gitcode-{self.commit[:12]}.md"
         )
         raw_text = raw_path.read_text(encoding="utf-8")
         self.assertIn("provider: gitcode", raw_text)

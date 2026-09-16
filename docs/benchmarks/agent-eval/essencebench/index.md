@@ -4,9 +4,9 @@ summary: "EssenceBench compresses an LLM benchmark into a small, leaderboard-cal
 layout: default
 confidence: medium
 sources:
-  - raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf
-  - derived/pdf-markdown/benchmarks/rethinking-llm-evaluation-200x-less-data/rethinking-llm-evaluation-200x-less-data.md
-updated: 2026-08-19
+  - raw/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf
+  - derived/pdf-markdown/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data/rethinking-llm-evaluation-200x-less-data.md
+updated: 2026-09-16
 ---
 
 # EssenceBench: LLM Evaluation with 200x Less Data
@@ -29,7 +29,7 @@ updated: 2026-08-19
 
 ![EssenceBench pipeline from leaderboard responses through redundancy filtering, genetic subset search, and attribution-guided sample refinement](assets/essencebench-pipeline.jpg)
 
-*Source: [EssenceBench paper, Figure 3](../../../../raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf). ① Coarse filtering removes a later item when its text embedding or across-model response pattern is too similar to an earlier item. ② Genetic search evolves fixed-size masks and rewards subsets whose scores reconstruct full-benchmark accuracy. ③ An explainable boosting model attributes the elite subsets' predictive value to individual items, splits them into high-, low-, and random-attribution groups, and restarts search inside the best group.*
+*Source: [EssenceBench paper, Figure 3](../../../../raw/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf). ① Coarse filtering removes a later item when its text embedding or across-model response pattern is too similar to an earlier item. ② Genetic search evolves fixed-size masks and rewards subsets whose scores reconstruct full-benchmark accuracy. ③ An explainable boosting model attributes the elite subsets' predictive value to individual items, splits them into high-, low-, and random-attribution groups, and restarts search inside the best group.*
 
 The figure's central idea is **learn the evaluation subset from a history of model-by-item outcomes**. EssenceBench is therefore an offline benchmark-design procedure, not a cheaper scoring rule that can be applied without prior full-benchmark results.
 
@@ -173,7 +173,7 @@ The paper highlights the GSM8K 500-item result as a 60.7% RMSE reduction versus 
 
 ![Distribution of HellaSwag rank displacement at a 200-item coreset for MetaBench and EssenceBench](assets/hellaswag-ranking-shifts-k200.jpg)
 
-*Source: [EssenceBench paper, Figure 5a](../../../../raw/benchmarks/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf). At $k=200$, EssenceBench's HellaSwag rank shifts fall inside the paper's 10% tolerance band, while MetaBench has a wider distribution. This panel answers how the same score budget affects individual leaderboard positions, which RMSE alone cannot show.*
+*Source: [EssenceBench paper, Figure 5a](../../../../raw/benchmarks/agent-eval/rethinking-llm-evaluation-200x-less-data--arxiv-2510.10457v1.pdf). At $k=200$, EssenceBench's HellaSwag rank shifts fall inside the paper's 10% tolerance band, while MetaBench has a wider distribution. This panel answers how the same score budget affects individual leaderboard positions, which RMSE alone cannot show.*
 
 ### The mechanism behind the numbers
 

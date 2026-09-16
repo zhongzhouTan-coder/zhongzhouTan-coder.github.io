@@ -4,8 +4,8 @@ summary: "Original long-horizon coding benchmark covering DeepSWE task design, v
 layout: default
 confidence: high
 sources:
-  - raw/benchmarks/deepswe-long-horizon-software-engineering-benchmark.md
-updated: 2026-07-15
+  - raw/benchmarks/agent-eval/deepswe-long-horizon-software-engineering-benchmark.md
+updated: 2026-09-16
 ---
 
 # DeepSWE: Long-Horizon Software Engineering Benchmark

@@ -4,9 +4,9 @@ summary: "Blockwise sparse attention co-designed with GQA: a lightweight Index B
 layout: default
 confidence: high
 sources:
-  - raw/training/minimax-sparse-attention--paper.pdf
-  - derived/pdf-markdown/training/minimax-sparse-attention.md
-updated: 2026-08-14
+  - raw/training/efficient-attention/minimax-sparse-attention--paper.pdf
+  - derived/pdf-markdown/training/efficient-attention/minimax-sparse-attention.md
+updated: 2026-09-16
 ---
 
 # MiniMax Sparse Attention (MSA)
@@ -17,7 +17,7 @@ updated: 2026-08-14
 **Code:** [github.com/MiniMax-AI/MSA](https://github.com/MiniMax-AI/MSA)
 **Model:** [MiniMax-M3 on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3)
 
-**Related pages:** [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md), [FlashAttention](../../../algorithms/flashattention/flashattention.md)
+**Related pages:** [Grouped-Query Attention](../../../algorithms/attention/variants/grouped-query-attention/index.md), [DeepSeek-V3.2 DSA](../../../algorithms/model-architectures/deepseek-v3-2/index.md), [FlashAttention](../../../algorithms/attention/flashattention/flashattention.md)
 
 ## TL;DR
 
@@ -370,9 +370,9 @@ MSA matches GQA's pretraining quality on a 109B MoE model with native multimodal
 
 - [MSA inference kernel on GitHub](https://github.com/MiniMax-AI/MSA): Open-source implementation of the exp-free TopK and KV-outer sparse attention kernels.
 - [MiniMax-M3 model on HuggingFace](https://huggingface.co/MiniMaxAI/MiniMax-M3): Production-grade natively multimodal model powered by MSA.
-- [Grouped-Query Attention](../../../algorithms/attention-variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first.
-- [DeepSeek-V3.2 DSA](../../../algorithms/deepseek-v3.2/index.md): Compare with DSA's token-level, shared-index approach to sparse attention on MLA.
-- [FlashAttention](../../../algorithms/flashattention/flashattention.md): The IO-aware attention kernel lineage that MSA's KV-outer kernel builds upon.
+- [Grouped-Query Attention](../../../algorithms/attention/variants/grouped-query-attention/index.md): The GQA backbone MSA is built on — understand the group structure first.
+- [DeepSeek-V3.2 DSA](../../../algorithms/model-architectures/deepseek-v3-2/index.md): Compare with DSA's token-level, shared-index approach to sparse attention on MLA.
+- [FlashAttention](../../../algorithms/attention/flashattention/flashattention.md): The IO-aware attention kernel lineage that MSA's KV-outer kernel builds upon.
 
 ## Assets
 

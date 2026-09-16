@@ -4,9 +4,9 @@ summary: "Scales the decoder-only Transformer to 1.5B parameters and demonstrate
 layout: default
 confidence: high
 sources:
-  - raw/training/gpt-2-unsupervised-multitask-learners--paper.pdf
-  - derived/pdf-markdown/training/gpt-2-unsupervised-multitask-learners.md
-updated: 2026-08-22
+  - raw/training/foundation-models/gpt-2-unsupervised-multitask-learners--paper.pdf
+  - derived/pdf-markdown/training/foundation-models/gpt-2-unsupervised-multitask-learners.md
+updated: 2026-09-16
 ---
 
 # GPT-2: Language Models are Unsupervised Multitask Learners
