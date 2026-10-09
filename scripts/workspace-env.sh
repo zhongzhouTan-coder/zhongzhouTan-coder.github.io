@@ -11,6 +11,7 @@ fi
 workspace_dir="$workspace_repo_root/.workspace"
 workspace_python="$workspace_dir/python"
 workspace_node="$workspace_dir/node"
+workspace_ruby="$workspace_dir/ruby"
 workspace_ruby_tools="$workspace_dir/ruby-tools"
 
 # Keep Playwright-managed browsers inside the ignored workspace directory so
@@ -42,6 +43,10 @@ if [[ -d "$workspace_repo_root/node_modules/.bin" ]]; then
   PATH="$workspace_repo_root/node_modules/.bin:$PATH"
 fi
 
+if [[ -x "$workspace_ruby/bin/ruby" ]]; then
+  PATH="$workspace_ruby/bin:$PATH"
+fi
+
 if [[ -d "$workspace_ruby_tools/bin" ]]; then
   workspace_system_gem_path=$(ruby -e 'print Gem.path.join(":")')
   export GEM_HOME="$workspace_ruby_tools"
@@ -58,5 +63,5 @@ if [[ -d "$workspace_dir" ]]; then
   export GEM_SPEC_CACHE="$workspace_dir/gem-spec-cache"
 fi
 
-unset workspace_dir workspace_python workspace_node workspace_repo_root workspace_ruby_tools
+unset workspace_dir workspace_python workspace_node workspace_repo_root workspace_ruby workspace_ruby_tools
 unset workspace_system_gem_path

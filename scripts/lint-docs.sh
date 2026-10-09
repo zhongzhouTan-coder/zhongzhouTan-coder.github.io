@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -o pipefail
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$repo_root" || exit 2
@@ -13,12 +13,19 @@ if [[ -x "$repo_root/.workspace/python/bin/python" ]]; then
   python_command="$repo_root/.workspace/python/bin/python"
 fi
 
-declare -A referenced_docs=()
-declare -A reported_links=()
+lint_tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/lint-docs.XXXXXX") || exit 2
+trap 'rm -rf "$lint_tmp_dir"' EXIT
+referenced_docs_file="$lint_tmp_dir/referenced-docs"
+reported_links_file="$lint_tmp_dir/reported-links"
+: > "$referenced_docs_file"
+: > "$reported_links_file"
 has_issue=0
 
-mapfile -t markdown_files < <(find docs -type f -name '*.md' | sort)
-mapfile -t docs_files < <(find docs -type f -name '*.md' | sort)
+markdown_files=()
+while IFS= read -r file_path; do
+  markdown_files+=("$file_path")
+done < <(find docs -type f -name '*.md' | sort)
+docs_files=("${markdown_files[@]}")
 
 if [[ ${#markdown_files[@]} -eq 0 ]]; then
   exit 0
@@ -27,6 +34,18 @@ fi
 extract_link_targets() {
   local file_path=$1
   grep -oE '\[[^][]+\]\(([^)]+)\)' "$file_path" | sed -E 's/.*\(([^)]+)\)$/\1/' || true
+}
+
+canonical_path() {
+  local input=$1
+  local parent=${input%/*}
+  local name=${input##*/}
+  [[ "$parent" == "$input" ]] && parent=.
+  [[ -z "$parent" ]] && parent=/
+  if (cd -P "$parent" 2>/dev/null && printf '%s/%s\n' "$PWD" "$name"); then
+    return 0
+  fi
+  "$python_command" -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$1"
 }
 
 check_front_matter_field() {
@@ -116,32 +135,32 @@ for file_path in "${markdown_files[@]}"; do
     fi
 
     if [[ "$target" == /* ]]; then
-      resolved_target=$(realpath -m "$repo_root/$target")
+      resolved_target=$(canonical_path "$repo_root/$target")
     else
-      resolved_target=$(realpath -m "$(dirname "$file_path")/$target")
+      resolved_target=$(canonical_path "$(dirname "$file_path")/$target")
     fi
 
     if [[ ! -e "$resolved_target" ]]; then
       issue_key="$file_path::$raw_target"
-      if [[ -z ${reported_links["$issue_key"]+x} ]]; then
+      if ! grep -Fqx -- "$issue_key" "$reported_links_file"; then
         report_issue "broken link: $file_path -> $raw_target"
-        reported_links["$issue_key"]=1
+        printf '%s\n' "$issue_key" >> "$reported_links_file"
       fi
       continue
     fi
 
     case "$resolved_target" in
       "$repo_root"/docs/*)
-        referenced_docs["$resolved_target"]=1
+        printf '%s\n' "$resolved_target" >> "$referenced_docs_file"
         ;;
     esac
   done < <(extract_link_targets "$file_path")
 done
 
 for file_path in "${docs_files[@]}"; do
-  resolved_file=$(realpath -m "$file_path")
+  resolved_file=$(canonical_path "$file_path")
 
-  if [[ -z ${referenced_docs["$resolved_file"]+x} ]]; then
+  if ! grep -Fqx -- "$resolved_file" "$referenced_docs_file"; then
     report_issue "orphan docs page: $file_path is not linked from docs/ or logs/"
   fi
 
@@ -168,7 +187,10 @@ done
 # --- Orphan image check ---
 # Find image files under docs/ (excluding Jekyll _site/ build output) and verify
 # each is referenced by at least one markdown file.
-mapfile -t image_files < <(find docs -type f \( \
+image_files=()
+while IFS= read -r file_path; do
+  image_files+=("$file_path")
+done < <(find docs -type f \( \
   -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.gif' \
   -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.drawio' \
   -o -iname '*.mmd' -o -iname '*.excalidraw' \

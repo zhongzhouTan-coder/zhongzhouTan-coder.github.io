@@ -7,6 +7,10 @@ python_env="$workspace_dir/python"
 ruby_tools="$workspace_dir/ruby-tools"
 stamps_dir="$workspace_dir/stamps"
 
+[[ -x "$workspace_dir/python/bin/python3" ]] && PATH="$workspace_dir/python/bin:$PATH"
+[[ -x "$workspace_dir/ruby/bin/ruby" ]] && PATH="$workspace_dir/ruby/bin:$PATH"
+export PATH
+
 require_command() {
   local command_name=$1
   if ! command -v "$command_name" >/dev/null 2>&1; then
@@ -49,7 +53,16 @@ fi
 if [[ ! -x "$node_env/bin/node" ]]; then
   require_command curl
   require_command tar
-  node_arch='linux-x64'
+  case "$(uname -s)-$(uname -m)" in
+    Linux-x86_64) node_arch='linux-x64' ;;
+    Linux-aarch64|Linux-arm64) node_arch='linux-arm64' ;;
+    Darwin-x86_64) node_arch='darwin-x64' ;;
+    Darwin-arm64) node_arch='darwin-arm64' ;;
+    *)
+      printf 'Unsupported Node.js platform: %s-%s\n' "$(uname -s)" "$(uname -m)" >&2
+      exit 2
+      ;;
+  esac
   node_url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-${node_arch}.tar.xz"
   printf '%s\n' "Downloading Node.js v${node_version}..."
   curl -fsSL "$node_url" | tar -xJ -C "$workspace_dir"
@@ -142,7 +155,7 @@ if [[ -z "$bundler_version" ]]; then
   exit 2
 fi
 if [[ ! -x "$ruby_tools/bin/bundle" \
-  || "$("$ruby_tools/bin/bundle" --version)" != "$bundler_version" ]]; then
+  || ! -f "$ruby_tools/specifications/bundler-$bundler_version.gemspec" ]]; then
   gem install bundler \
     --version "$bundler_version" \
     --install-dir "$ruby_tools" \
