@@ -8,7 +8,7 @@ confidence: medium
 sources:
   - raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
   - derived/pdf-markdown/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies/kv-cache-optimization-strategies.md
-updated: 2026-09-16
+updated: 2026-10-09
 ---
 
 # KV Cache Optimization Strategies for Scalable and Efficient LLM Inference
@@ -160,6 +160,7 @@ The factor 2 is for keys and values. Every strategy in the survey changes at lea
 **How it works:**
 
 - **PagedAttention** divides cache storage into non-contiguous blocks and maps logical sequence positions to physical blocks, reducing fragmentation and enabling prefix sharing with copy-on-write.
+- **SGLang HiCache with Mooncake** is a serving-system example: GPU and host tiers stay instance-private while configured L3 storage enables cross-instance prefix reuse ([implementation insight](../sglang/hicache-mooncake.md)).
 - **InfiniGen** predicts the next layer's useful KV pairs and prefetches them from CPU while the current layer computes; **LayerKV** overlaps layer-wise transfers with prefill work and uses an SLO-aware scheduler. [KV cache offloading](../../../terms/kv-cache-offloading.md) becomes disk-first in KVSwap, which adds storage-aligned grouping and reuse for iterative on-device decoding.
 - **KVPR** overlaps partial recomputation with transfer, **Oneiros** remaps parameter memory under KV pressure, and **CLO** reuses recently loaded data when adjacent queries are similar.
 - **INF2** pushes attention closer to storage with computational storage devices, trading generality for specialized hardware.

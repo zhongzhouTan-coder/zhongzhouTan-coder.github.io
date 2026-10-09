@@ -15,7 +15,8 @@ mention_lint: canonical
 appears_in:
   - docs/frameworks/serving/kvswap/index.md
   - docs/frameworks/serving/kv-cache-optimization/index.md
-updated: 2026-09-16
+  - docs/frameworks/serving/sglang/hicache-mooncake.md
+updated: 2026-10-09
 ---
 
 # KV Cache Offloading
@@ -52,6 +53,7 @@ Offloading increases the usable context or batch size, but the slower tier adds 
 
 - [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Makes disk-first iterative decoding practical with grouped prediction, overlap, a rolling buffer, and reuse slots.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/serving/kv-cache-optimization/index.md) — Places offloading in the hybrid-memory family and contrasts placement with eviction, compression, and alternative attention.
+- [SGLang HiCache with Mooncake](../frameworks/serving/sglang/hicache-mooncake.md) — Shows GPU and instance-private host tiers backed by a configurable Mooncake L3 for shared prefix reuse.
 
 ## Related Terms
 

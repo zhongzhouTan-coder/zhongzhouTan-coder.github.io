@@ -7,7 +7,7 @@ redirect_from:
 confidence: high
 sources:
   - raw/frameworks/serving/sglang/sglang-structured-language-model-programs--arxiv-2312.07104v2.pdf
-updated: 2026-09-16
+updated: 2026-10-09
 ---
 
 # SGLang: Structured Language Model Programs
@@ -167,6 +167,7 @@ SGLang's key insight is that **LLM applications are structured programs, not iso
 - **Build on:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [DSpark: Confidence-Scheduled Speculative Decoding](../../speculative-decoding/dspark/index.md)
 - **Dig into the mechanism:** [PagedAttention](../../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** [Official implementation at github.com/sgl-project/sglang](https://github.com/sgl-project/sglang)
+- **Study the current cache path:** [SGLang HiCache with Mooncake](hicache-mooncake.md) — how the runtime extends prefix reuse through a Mooncake-backed L3 tier.
 
 ## Key Takeaways
 

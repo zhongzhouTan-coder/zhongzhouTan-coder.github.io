@@ -2221,6 +2221,26 @@
       "docs_path": "docs/frameworks/serving/kvswap/index.md",
       "status": "ingested",
       "topic_path": "serving/kvswap"
+    },
+    {
+      "id": "github:sgl-project/sglang@08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1",
+      "title": "SGLang HiCache and Mooncake Integration",
+      "slug": "sglang-codebase",
+      "repo_slug": "sglang",
+      "revision": "08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1",
+      "category": "frameworks",
+      "topic_path": "serving/sglang",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/sgl-project/sglang",
+      "raw_paths": [
+        "raw/frameworks/serving/sglang/sglang-codebase--github-08fc290f48a8.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/sglang/sglang/08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1/",
+      "docs_paths": [
+        "docs/frameworks/serving/sglang/hicache-mooncake.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

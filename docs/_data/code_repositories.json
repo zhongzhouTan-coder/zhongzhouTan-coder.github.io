@@ -130,5 +130,11 @@
     "provider": "github",
     "repository_url": "https://github.com/SemiAnalysisAI/InferenceX",
     "revision": "7fa1d14b6624d433bd4f72a540da739b8f3808d9"
+  },
+  "sglang-08fc290f48a8": {
+    "local_checkout": "external-repos/sglang",
+    "provider": "github",
+    "repository_url": "https://github.com/sgl-project/sglang",
+    "revision": "08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1"
   }
 }

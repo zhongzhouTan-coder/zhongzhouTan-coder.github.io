@@ -1,0 +1,33 @@
+sequenceDiagram
+autonumber
+participant S as SGLang Scheduler
+participant R as UnifiedRadixCache
+participant C as HiCacheController
+participant A as MooncakeStore adapter
+participant L3 as Mooncake distributed store
+
+S->>R: prefetch the unmatched, page-aligned suffix
+R->>C: submit PrefetchOperation
+C->>A: query page hashes
+A->>L3: batch_is_exist(keys)
+L3-->>A: per-key presence status
+A-->>C: contiguous available prefix
+C->>A: batch_get_v1(keys, host page indices)
+A->>L3: batch_get_into(keys, registered host buffers)
+L3-->>A: status, data placed at target buffers
+A-->>C: per-page results
+C->>C: synchronize completed-prefix acknowledgements
+C-->>R: completed token count
+R->>R: validate result and insert usable pages into local tree
+S->>R: poll prefetch progress during admission
+R-->>S: completed storage-hit span
+S->>R: request admission
+R->>C: load host-resident prefix pages to device
+C-->>R: device indices and transfer completion
+R-->>S: prefix available for model execution
+opt write-through or eviction-triggered write-back
+    C->>A: batch_set_v1(keys, host page indices)
+    A->>L3: batch_put_from(keys, registered host buffers)
+    L3-->>A: per-page write status
+    A-->>C: backup completion
+end

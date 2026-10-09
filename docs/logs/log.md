@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-09-16
+updated: 2026-10-09
 ---
 
 # Wiki Log
@@ -19,6 +19,7 @@ updated: 2026-09-16
 ## 2026-05-30
 
 - Added [τ-Voice: Full-Duplex Voice Agent Benchmark](../benchmarks/agent-eval/tau-voice.md) to `docs/benchmarks/agent-eval/tau-voice.md`, sourced from the τ-Voice preprint (arXiv:2603.13686v1, Mar 2026). Covers tick-based orchestrator design, voice user simulator pipeline (7 personas, audio environment, turn-taking policy), three domains (278 total tasks), three audio-native providers, Clean vs Realistic conditions, acoustic ablation results (accents most damaging at -10pp avg), voice interaction quality metrics, qualitative error analysis (79-90% agent errors), and key conclusions.
+
 - Added [τ-bench: Tool-Agent-User Interaction Benchmark](../benchmarks/agent-eval/tau-bench.md) to `docs/benchmarks/agent-eval/tau-bench.md`, sourced from `raw/benchmarks/agent-eval/tau-bench-tool-agent-user-interaction-benchmark--paper.pdf` (arXiv:2406.12045v1). Covers benchmark architecture, two domains (τ-retail 115 tasks, τ-airline 50 tasks), three-stage construction, pass^k metric definition, full empirical results table for 12 models, method comparison, domain policy ablation, and failure analysis.
 
 ## 2026-06-02
@@ -427,3 +428,7 @@ updated: 2026-09-16
 ## 2026-09-16
 
 - Reorganized all manifested evidence under category-relative `topic_path` directories across `raw/`, `derived/`, and `docs/`; added topic-aware ingestion and integrity checks, preserved moved page URLs with redirects, introduced intermediate topic hubs, and reduced the [Wiki Index](index.md) to category and topic entry points.
+
+## 2026-10-09
+
+- Added [SGLang HiCache with Mooncake](../frameworks/serving/sglang/hicache-mooncake.md) from pinned SGLang commit `08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1`; linked it from the SGLang and KV-cache hubs and curated it as an example of [KV Cache Offloading](../terms/kv-cache-offloading.md).
