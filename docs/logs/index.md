@@ -21,7 +21,7 @@ updated: 2026-10-10
 
 - [Algorithms](../algorithms/index.md) — Category overview.
 - [Foundations](../algorithms/foundations/index.md) — Transformer, normalization, probability, sequence, and linear algebra.
-- [Attention Algorithms](../algorithms/attention/index.md) — Exact, approximate, and architecture-specific attention.
+- [Attention Algorithms](../algorithms/attention/index.md) — Exact, approximate, architecture-specific, and compressed-KV attention.
 - [Distributed Inference](../algorithms/distributed-inference/index.md) — Multi-device inference algorithms.
 - [Length Generalization](../algorithms/length-generalization/index.md) — Extrapolating computation beyond training lengths.
 - [Model Architecture Algorithms](../algorithms/model-architectures/index.md) — Model-wide algorithmic reports.

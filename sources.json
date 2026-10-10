@@ -2289,6 +2289,20 @@
         "docs/frameworks/serving/model-kv-cache/kimi-k3.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2609.36322v1",
+      "title": "Periodic Weak Spots: Phase Sensitivity from Chunked KV-Cache Compression",
+      "slug": "phase-sensitivity-chunked-kv-cache-compression",
+      "category": "algorithms",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/algorithms/attention/phase-sensitivity-chunked-kv-cache-compression--arxiv-2609.36322v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/algorithms/attention/phase-sensitivity-chunked-kv-cache-compression.md",
+      "docs_path": "docs/algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md",
+      "status": "ingested",
+      "topic_path": "attention"
     }
   ]
 }

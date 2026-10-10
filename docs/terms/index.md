@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-09-11
+updated: 2026-10-10
 ---
 
 # Terms Glossary
@@ -34,6 +34,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 ## Algorithms
 
 - [Context Parallelism](context-parallelism.md) — Distributes a long sequence and its KV state across ranks while preserving exact attention.
+- [Chunked KV-Cache Compression](chunked-kv-cache-compression.md) — Summarizes consecutive token windows into fewer cached entries at a fixed stride, with phase-dependent retention.
 - [Cross-Layer Index Reuse](cross-layer-index-reuse.md) — Reuses dynamically selected token or block indices from an anchor sparse-attention layer in subsequent layers.
 - [Gated Retention](gated-retention.md) — Uses learned head-wise decay to carry a fixed-size recurrent key-value state across tokens.
 - [Grouped-Query Attention](grouped-query-attention.md) — Shares each key/value head across a group of query heads to reduce KV-cache and communication cost.

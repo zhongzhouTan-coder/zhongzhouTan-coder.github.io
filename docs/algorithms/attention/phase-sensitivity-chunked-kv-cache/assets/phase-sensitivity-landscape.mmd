@@ -1,0 +1,8 @@
+flowchart LR
+    A["Learned compressed memories<br/>Compressive Transformer · LoMA · Activation Beacon · CAT"] --> C["DeepSeek-V4 CSA / V4.1 CSA2<br/>compressed KV plus sparse selection"]
+    B["Strided attention<br/>Sparse Transformer"] --> D["Phase sensitivity<br/>source-key position modulo stride"]
+    C --> D
+    E["Long-context retrieval failures<br/>Lost in the Middle · RULER · KV-cache compression pitfalls"] --> D
+    F["Retrieval-head interventions"] --> G["Phase specialization<br/>head contribution varies by phase"]
+    D --> G
+    G --> H["Idealized compressed-induction analysis"]

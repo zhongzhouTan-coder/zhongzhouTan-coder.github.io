@@ -8,7 +8,7 @@ confidence: high
 sources:
   - raw/training/model-families/deepseek/deepseek-v4--paper.pdf
   - derived/pdf-markdown/training/model-families/deepseek/deepseek-v4.md
-updated: 2026-09-16
+updated: 2026-10-10
 ---
 
 # DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention
@@ -17,13 +17,13 @@ updated: 2026-09-16
 **Authors:** DeepSeek-AI
 **arXiv:** Technical report, July 2026
 
-**Related pages:** [DeepSeek-V2 MLA](../../../../algorithms/attention/variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../../algorithms/model-architectures/deepseek-v3-2/index.md), [DeepSeek-V4.1-Flash](../deepseek-v4.1/index.md), [MiniMax Sparse Attention](../../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../../algorithms/attention/flashattention/flashattention.md), [Megatron-LM](../../../parallelism/megatron-lm), [vLLM-Ascend Lightning Indexer C8 Quantization](../../../../frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../../../../frameworks/serving/vllm-ascend/deepseek-v4-inference.md)
+**Related pages:** [DeepSeek-V2 MLA](../../../../algorithms/attention/variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../../algorithms/model-architectures/deepseek-v3-2/index.md), [DeepSeek-V4.1-Flash](../deepseek-v4.1/index.md), [Periodic Weak Spots](../../../../algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md), [MiniMax Sparse Attention](../../../efficient-attention/minimax-sparse-attention/index.md), [FlashAttention series](../../../../algorithms/attention/flashattention/flashattention.md), [Megatron-LM](../../../parallelism/megatron-lm), [vLLM-Ascend Lightning Indexer C8 Quantization](../../../../frameworks/serving/vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../../../../frameworks/serving/vllm-ascend/deepseek-v4-inference.md)
 
 ## TL;DR
 
 **What:** DeepSeek-V4 is a family of Mixture-of-Experts LLMs — Pro (1.6T/49B activated) and Flash (284B/13B activated) — that natively support million-token contexts through a novel hybrid attention architecture.
 
-**How:** Compressed Sparse Attention (CSA) compresses [KV cache](../../../../terms/kv-cache.md) by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained [hyper-connections](../../../../terms/hyper-connections.md), yields dramatic efficiency gains.
+**How:** Compressed Sparse Attention (CSA) uses [chunked KV-cache compression](../../../../terms/chunked-kv-cache-compression.md) to reduce the [KV cache](../../../../terms/kv-cache.md) by 4× and applies sparse top-k selection; Heavily Compressed Attention (HCA) compresses by 128× with dense attention. Interleaving them across layers, plus Muon optimizer and manifold-constrained [hyper-connections](../../../../terms/hyper-connections.md), yields dramatic efficiency gains.
 
 **The number:** At 1M-token context, DeepSeek-V4-Pro uses only 27% of DeepSeek-V3.2's single-token inference FLOPs and 10% of its KV cache size. DeepSeek-V4-Flash uses 10% FLOPs and 7% KV cache.
 

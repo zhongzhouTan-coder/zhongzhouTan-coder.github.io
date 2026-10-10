@@ -436,3 +436,5 @@ updated: 2026-10-10
 ## 2026-10-10
 
 - [Model Architecture and KV Cache Paths](../frameworks/serving/model-kv-cache/index.md) analyzes five open-weight model architectures and cache paths against released configs and pinned vLLM `02aa10539f15` and vLLM Ascend `51b0242c0d3b` revisions; Qwen3.8-Flash-Next Ascend implementation remains unverified in the pinned code.
+- Added [Periodic Weak Spots: Phase Sensitivity from Chunked KV-Cache Compression](../algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md) from arXiv:2609.36322v1 at medium confidence. Registered the normalized PDF and local PDFKit extraction (MinerU precise mode was unavailable because no API token was configured), preserved original figures, and documented phase-conditioned retrieval gaps, phase specialization, controlled-model evidence, and theory limits.
+- Added the [Chunked KV-Cache Compression](../terms/chunked-kv-cache-compression.md) glossary term and linked the phase-sensitivity insight from the attention hub and DeepSeek-V4/V4.1 pages.

@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - ../index.md
-updated: 2026-09-16
+updated: 2026-10-10
 ---
 
 # Attention Algorithms
@@ -13,3 +13,4 @@ updated: 2026-09-16
 - [FlashAttention](flashattention/index.md) — IO-aware exact-attention kernel family.
 - [Attention Variants](variants/index.md) — Multi-query, grouped-query, collaborative, and latent attention.
 - [Linear Attention](linear/index.md) — Kernelized and recurrent alternatives to quadratic attention.
+- [Phase Sensitivity in Chunked KV-Cache Compression](phase-sensitivity-chunked-kv-cache/index.md) — Shows stride-periodic retrieval gaps and phase-specialized contributions in compressed models.
