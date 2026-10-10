@@ -2304,5 +2304,45 @@
       "status": "ingested",
       "topic_path": "attention"
     }
+  ,
+    {
+      "id": "web:huggingface.co/mimo-v2-6-pro-mopd-model-card@2026-10-10-33e8a9c2cb40",
+      "title": "MiMo-V2.6-Pro-MOPD model card",
+      "slug": "mimo-v2-6-pro-mopd-model-card",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "web",
+      "source_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-MOPD",
+      "final_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-MOPD",
+      "captured_at": "2026-10-10T07:47:34.267Z",
+      "revision": "33e8a9c2cb4023142e2412ee95f120f7e6a41e5cc0801773a3a9038760a424cb",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.html",
+        "raw/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:recipes.vllm.ai/mimo-v2-6-pro-rl-vllm-recipe@2026-10-10-6d7d2094d16b",
+      "title": "MiMo-V2.6-Pro-RL on vLLM — Serve command for H200, GB300 NVL4, MI355X",
+      "slug": "mimo-v2-6-pro-rl-vllm-recipe",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "web",
+      "source_url": "https://recipes.vllm.ai/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+      "final_url": "https://recipes.vllm.ai/XiaomiMiMo/MiMo-V2.6-Pro-RL",
+      "captured_at": "2026-10-10T07:49:33.910Z",
+      "revision": "6d7d2094d16bde5e2b980d0db9e8f434bf5c6aea2766fc0dde9abe5a278fb40f",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.html",
+        "raw/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md",
+      "status": "ingested"
+    }
   ]
 }

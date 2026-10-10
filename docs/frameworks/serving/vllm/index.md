@@ -13,6 +13,7 @@ updated: 2026-10-10
 # vLLM
 
 - [Model Architecture and KV Cache Paths](../model-kv-cache/index.md) — GLM-5.3, DeepSeek-V4.1-Flash, MiniMax-M3, Qwen3.8-Flash-Next, and Kimi-K3 architecture and serving paths.
+- [MiMo-V2.6-Pro-MOPD: vLLM Inference and Deployment](mimo-v2-6-pro-mopd-deployment.md) — Version and memory requirements, H200 TP8 and MI355X TP4 launch profiles, tool parsers, and optional DFlash decoding.
 - [vLLM Architecture and Code Organization Overview](vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](glm-5.2-inference-path.md) — Complete upstream request round trip through OpenAI admission, V1 scheduling, the CUDA GPU runner, configuration-driven shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, detokenization, response emission, and cleanup.
 - [GLM-5.1 on vLLM: Expert-Parallel MoE Path](glm-5.1-expert-parallel/index.md) — Code-backed trace from the shared GLM-5.1 model shell through EP group sizing, global-to-local expert mapping, router dispatch, local expert MLPs, backend combine, and residual return.
