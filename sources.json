@@ -2241,6 +2241,54 @@
         "docs/frameworks/serving/sglang/hicache-mooncake.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/vllm-codebase--github-02aa10539f15.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/",
+      "docs_paths": [
+        "docs/frameworks/serving/model-kv-cache/glm-5.3.md",
+        "docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md",
+        "docs/frameworks/serving/model-kv-cache/minimax-m3.md",
+        "docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md",
+        "docs/frameworks/serving/model-kv-cache/kimi-k3.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@51b0242c0d3be1d3bd59e763a7d78b8553cd45e1",
+      "title": "vllm-ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "51b0242c0d3be1d3bd59e763a7d78b8553cd45e1",
+      "category": "frameworks",
+      "topic_path": "serving/vllm-ascend",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-51b0242c0d3b.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/51b0242c0d3be1d3bd59e763a7d78b8553cd45e1/",
+      "docs_paths": [
+        "docs/frameworks/serving/model-kv-cache/glm-5.3.md",
+        "docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md",
+        "docs/frameworks/serving/model-kv-cache/minimax-m3.md",
+        "docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md",
+        "docs/frameworks/serving/model-kv-cache/kimi-k3.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

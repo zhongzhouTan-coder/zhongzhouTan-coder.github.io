@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-10-09
+updated: 2026-10-10
 ---
 
 # Wiki Log
@@ -432,3 +432,7 @@ updated: 2026-10-09
 ## 2026-10-09
 
 - Added [SGLang HiCache with Mooncake](../frameworks/serving/sglang/hicache-mooncake.md) from pinned SGLang commit `08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1`; linked it from the SGLang and KV-cache hubs and curated it as an example of [KV Cache Offloading](../terms/kv-cache-offloading.md).
+
+## 2026-10-10
+
+- [Model Architecture and KV Cache Paths](../frameworks/serving/model-kv-cache/index.md) analyzes five open-weight model architectures and cache paths against released configs and pinned vLLM `02aa10539f15` and vLLM Ascend `51b0242c0d3b` revisions; Qwen3.8-Flash-Next Ascend implementation remains unverified in the pinned code.

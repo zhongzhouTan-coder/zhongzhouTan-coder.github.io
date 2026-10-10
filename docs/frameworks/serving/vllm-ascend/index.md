@@ -7,11 +7,12 @@ redirect_from:
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-16
+updated: 2026-10-10
 ---
 
 # vLLM Ascend
 
+- [Model Architecture and KV Cache Paths](../model-kv-cache/index.md) — Five model-specific architecture and cache analyses with code support boundaries.
 - [Qwen3.5 MTP: Drafting and Target-Model Verification](qwen3.5-mtp.md) — Concrete Qwen3.5 MTP path: target hidden state plus token embedding create draft proposals, target logits are aligned to each proposed position, and vLLM's rejection sampler accepts a prefix, recovers the first rejection, or appends a bonus token.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](architecture.md) — Mapped onto vLLM's six-layer stack (reuse layers 1-4, replace layers 5-6), then the five integration mechanisms (plugin registration, NPUPlatform, ModelRegistry, [monkey-patches](../../../terms/monkey-patching.md), custom backends), worker variants (NPUWorker/NPUWorker310/XliteWorker), execution flow from startup to per-step inference, ACL graph capture, HCCL communication, and what upstream vLLM code is reused as-is.
 - [GLM-5.2 on vLLM Ascend: Request-to-Backend Inference Path](glm-5.2-inference-path.md) — Ascend NPU companion to the upstream GPU trace: request admission and scheduling through the `glm_moe_dsa` model shell, SFA shared-indexer path, paged sparse attention, routed/shared MoE, sampling, response emission, and cleanup.

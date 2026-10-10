@@ -136,5 +136,17 @@
     "provider": "github",
     "repository_url": "https://github.com/sgl-project/sglang",
     "revision": "08fc290f48a865f2cd0b9cf7a90f5a1c44dc0bd1"
+  },
+  "vllm-02aa10539f15": {
+    "local_checkout": "external-repos/vllm-02aa10539f15",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb"
+  },
+  "vllm-ascend-51b0242c0d3b": {
+    "local_checkout": "external-repos/vllm-ascend-51b0242c0d3b",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "51b0242c0d3be1d3bd59e763a7d78b8553cd45e1"
   }
 }

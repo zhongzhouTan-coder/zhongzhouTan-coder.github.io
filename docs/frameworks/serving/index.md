@@ -5,13 +5,14 @@ layout: default
 confidence: high
 sources:
   - ../index.md
-updated: 2026-09-16
+updated: 2026-10-10
 ---
 
 # Inference Serving Systems
 
 - [vLLM](vllm/index.md) — GPU serving architecture, scheduling, caches, deployment, and model paths.
 - [vLLM Ascend](vllm-ascend/index.md) — Ascend NPU integration and model-specific execution paths.
+- [Model Architecture and KV Cache Paths](model-kv-cache/index.md) — Five checkpoint-specific architecture and GPU/Ascend code readings, including cache ownership, layout, and state lifetime.
 - [SGLang](sglang/index.md) — Structured language-model programming and serving.
 - [Sarathi](sarathi/index.md) — Chunked-prefill scheduling for efficient inference.
 - [KV Cache Optimization](kv-cache-optimization/index.md) — Eviction, compression, hybrid-memory, and alternative-attention strategies.
