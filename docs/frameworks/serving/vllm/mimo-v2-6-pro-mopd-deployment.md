@@ -17,7 +17,7 @@ updated: 2026-10-10
 
 **Model:** [XiaomiMiMo/MiMo-V2.6-Pro-MOPD](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-MOPD)  
 **vLLM recipe:** [MiMo-V2.6-Pro-RL on vLLM](https://recipes.vllm.ai/XiaomiMiMo/MiMo-V2.6-Pro-RL) — its current default variant and launch command target MOPD.  
-**Related pages:** [vLLM](index.md), [vLLM data-parallel deployment](data-parallel-deployment/index.md), [Mixture of Experts](../../../terms/mixture-of-experts.md), and [KV Cache](../../../terms/kv-cache.md).
+**Related pages:** [MiMo-V2.6-Flash-MOPD deployment](mimo-v2-6-flash-mopd-deployment.md), [vLLM](index.md), [vLLM data-parallel deployment](data-parallel-deployment/index.md), [Mixture of Experts](../../../terms/mixture-of-experts.md), and [KV Cache](../../../terms/kv-cache.md).
 
 The model card and vLLM recipe were captured on 2026-10-10. The recipe reports
 an update on 2026-10-07. The configurations below are source-backed reference

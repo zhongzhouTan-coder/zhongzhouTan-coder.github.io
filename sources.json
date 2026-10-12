@@ -2344,5 +2344,45 @@
       "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md",
       "status": "ingested"
     }
+  ,
+    {
+      "id": "web:huggingface.co/mimo-v2-6-flash-mopd-model-card@2026-10-10-8a6b33f38b3c",
+      "title": "MiMo-V2.6-Flash-MOPD model card",
+      "slug": "mimo-v2-6-flash-mopd-model-card",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "web",
+      "source_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
+      "final_url": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
+      "captured_at": "2026-10-10T08:02:32.676Z",
+      "revision": "8a6b33f38b3c57ae2541021630aa120c178188517f4e456f68b7ec35348508c9",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.html",
+        "raw/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-flash-mopd-deployment.md",
+      "status": "ingested"
+    }
+  ,
+    {
+      "id": "web:recipes.vllm.ai/mimo-v2-6-flash-rl-vllm-recipe@2026-10-10-cae25103d982",
+      "title": "MiMo-V2.6-Flash-RL on vLLM — Serve command for H200, GB300 NVL4, MI300X, MI325X, MI355X",
+      "slug": "mimo-v2-6-flash-rl-vllm-recipe",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "web",
+      "source_url": "https://recipes.vllm.ai/XiaomiMiMo/MiMo-V2.6-Flash-RL",
+      "final_url": "https://recipes.vllm.ai/XiaomiMiMo/MiMo-V2.6-Flash-RL",
+      "captured_at": "2026-10-10T08:03:13.408Z",
+      "revision": "cae25103d982084304d2ddcb5e404bffa0e913272c1a8aa2589e3178aa63d739",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.html",
+        "raw/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.metadata.json"
+      ],
+      "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-flash-mopd-deployment.md",
+      "status": "ingested"
+    }
   ]
 }
