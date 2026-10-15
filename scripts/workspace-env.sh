@@ -14,6 +14,15 @@ workspace_node="$workspace_dir/node"
 workspace_ruby="$workspace_dir/ruby"
 workspace_ruby_tools="$workspace_dir/ruby-tools"
 
+# A workspace-local Ruby may be needed when the host has no Ruby runtime.
+# Keep its libraries and command shims available to Bundler and Jekyll.
+workspace_ruby_base="$workspace_dir/ruby-base/usr"
+if [[ -x "$workspace_dir/ruby-shims/ruby" ]]; then
+  PATH="$workspace_dir/ruby-shims:$PATH"
+  export LD_LIBRARY_PATH="$workspace_ruby_base/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+  export RUBYLIB="$workspace_ruby_base/lib/ruby/3.2.0:$workspace_ruby_base/lib/x86_64-linux-gnu/ruby/3.2.0:$workspace_ruby_base/lib/ruby/vendor_ruby${RUBYLIB:+:$RUBYLIB}"
+fi
+
 # Keep Playwright-managed browsers inside the ignored workspace directory so
 # local agents do not depend on global or Snap browser installations.
 export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$workspace_dir/playwright}"
@@ -63,5 +72,6 @@ if [[ -d "$workspace_dir" ]]; then
   export GEM_SPEC_CACHE="$workspace_dir/gem-spec-cache"
 fi
 
-unset workspace_dir workspace_python workspace_node workspace_repo_root workspace_ruby workspace_ruby_tools
+
+unset workspace_dir workspace_python workspace_node workspace_repo_root workspace_ruby_tools workspace_ruby_base
 unset workspace_system_gem_path
