@@ -36,7 +36,6 @@ updated: 2026-10-10
 
 - [Frameworks](../frameworks/index.md) — Category overview.
 - [Inference Serving Systems](../frameworks/serving/index.md) — Runtimes, caches, and deployment pipelines.
-- [Model Architecture and KV Cache Paths](../frameworks/serving/model-kv-cache/index.md) — Five checkpoint-specific architecture and vLLM GPU/Ascend code readings.
 - [Compilers and Kernel Frameworks](../frameworks/compilers-kernels/index.md) — GPU and NPU programming stacks.
 - [Programming Languages](../frameworks/languages/index.md) — C++ and Python semantics and runtimes.
 - [Runtime Infrastructure](../frameworks/infrastructure/index.md) — Sandboxing, orchestration, and observability.

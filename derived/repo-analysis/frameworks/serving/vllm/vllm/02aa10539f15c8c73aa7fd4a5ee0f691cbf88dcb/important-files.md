@@ -40,50 +40,9 @@ To revisit model-specific cache owners, run
 Layer counts and dimensions in the docs come from the released checkpoint
 configurations rather than code-tree counts.
 
-## Required Code Evidence
-
-| Docs page | Finding | File | Symbol | Start | End |
-|---|---|---|---|---:|---:|
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | architecture-decoder | `vllm/models/qwen4_exp/nvidia/model.py` | `Qwen4ExpDecoderLayer` | 175 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | architecture-model | `vllm/models/qwen4_exp/nvidia/model.py` | `Qwen4ExpModel` | 366 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | architecture-qsa-indexer | `vllm/models/qwen4_exp/nvidia/indexer_qsa.py` | `QSAIndexer` | 90 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | architecture-ple | `vllm/models/qwen4_exp/nvidia/ple_layer.py` | `Qwen4ExpPLELayer` | 64 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | architecture-decoder | `vllm/models/kimi_k3/nvidia/model.py` | `KimiDecoderLayer` | 857 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | architecture-moe | `vllm/models/kimi_k3/nvidia/model.py` | `KimiMoE` | 540 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | architecture-decoder | `vllm/models/deepseek_v32/nvidia/model.py` | `DeepseekV32DecoderLayer` | 57 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | architecture-mla | `vllm/models/deepseek_v32/attention.py` | `DeepseekV32Attention` | 121 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | architecture-indexer | `vllm/models/deepseek_v32/attention.py` | `DeepseekV32Indexer` | 50 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | architecture-decoder | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4DecoderLayer` | 283 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | architecture-source-map | `vllm/models/deepseek_v41/attention.py` | `KV and index source mapping` | 305 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | architecture-moe | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4MoE` | 125 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | architecture-decoder | `vllm/models/minimax_m3/nvidia/model.py` | `MiniMaxM3DecoderLayer` | 678 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | architecture-moe | `vllm/models/minimax_m3/nvidia/model.py` | `MiniMaxM3MoE` | 195 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | gpu-model | `vllm/models/deepseek_v32/nvidia/model.py` | `DeepseekV32Model` | 169 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | gpu-topk | `vllm/models/deepseek_v32/nvidia/model.py` | `shared top-k buffer` | 190 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | gpu-alias | `vllm/models/deepseek_v32/__init__.py` | `GlmMoeDsa alias` | 18 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | gpu-model | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV41LLMForCausalLM` | 1537 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | gpu-source-cache | `vllm/models/deepseek_v41/attention.py` | `compressed KV cache spec` | 1138 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | gpu-index-cache | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4IndexerCache` | 1175 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | gpu-compressor-state | `vllm/models/deepseek_v41/compressor.py` | `CompressorStateCache` | 136 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | gpu-model | `vllm/models/minimax_m3/nvidia/model.py` | `MiniMaxM3SparseAttention` | 392 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | gpu-main-cache | `vllm/models/minimax_m3/nvidia/model.py` | `main KV cache spec` | 562 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | gpu-index-cache | `vllm/models/minimax_m3/common/indexer.py` | `MiniMaxM3IndexerCache` | 102 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | gpu-sparse-kernel | `vllm/models/minimax_m3/nvidia/sparse_attention_msa.py` | `MiniMaxM3SparseMSAImpl` | 185 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-layer | `vllm/models/qwen4_exp/nvidia/model.py` | `Qwen4ExpDecoderLayer` | 175 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-qsa | `vllm/models/qwen4_exp/nvidia/qsa.py` | `Qwen4ExpQSAAttention` | 333 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-main-spec | `vllm/models/qwen4_exp/nvidia/qsa.py` | `QSA main cache spec` | 541 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-raw-index | `vllm/models/qwen4_exp/common/qsa_cache.py` | `QSAKeyStateCache` | 811 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-compressed-index | `vllm/models/qwen4_exp/common/qsa_cache.py` | `QSACompressedKeyCache` | 865 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | gpu-hybrid-state | `vllm/models/qwen4_exp/nvidia/model_state.py` | `Qwen4ExpModelState` | 17 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | gpu-model | `vllm/models/kimi_k3/nvidia/model.py` | `KimiLinearForCausalLM` | 1581 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | gpu-mla | `vllm/models/kimi_k3/nvidia/mla.py` | `MultiHeadLatentAttention` | 123 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | gpu-cache-spec | `vllm/models/kimi_k3/nvidia/mla.py` | `MLA cache spec` | 417 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | gpu-kda | `vllm/models/kimi_k3/nvidia/kda.py` | `KimiK3DeltaAttention` | 544 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | gpu-kda-spec | `vllm/models/kimi_k3/nvidia/kda.py` | `KDA MambaSpec` | 829 | — |
-
 ## Scope and verification
 
-Five checkpoint pages consume this revision. The findings above are from static source reading; no model, GPU, or Ascend NPU was executed. Checkpoint dimensions in the pages were compared with the released configuration files, while physical layouts still need deployment validation.
+This pinned revision records the five-checkpoint code reading. The findings above are from static source reading; no model, GPU, or Ascend NPU was executed. Checkpoint dimensions require comparison with released configuration files, while physical layouts still need deployment validation.
 
 ## Model-specific findings
 

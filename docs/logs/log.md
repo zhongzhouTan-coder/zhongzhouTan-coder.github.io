@@ -435,8 +435,12 @@ updated: 2026-10-10
 
 ## 2026-10-10
 
-- [Model Architecture and KV Cache Paths](../frameworks/serving/model-kv-cache/index.md) analyzes five open-weight model architectures and cache paths against released configs and pinned vLLM `02aa10539f15` and vLLM Ascend `51b0242c0d3b` revisions; Qwen3.8-Flash-Next Ascend implementation remains unverified in the pinned code.
+- Model Architecture and KV Cache Paths analyzed five open-weight model architectures and cache paths against released configs and pinned vLLM `02aa10539f15` and vLLM Ascend `51b0242c0d3b` revisions; Qwen3.8-Flash-Next Ascend implementation remained unverified in the pinned code. The pages were removed on 2026-10-17.
 - Added [Periodic Weak Spots: Phase Sensitivity from Chunked KV-Cache Compression](../algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md) from arXiv:2609.36322v1 at medium confidence. Registered the normalized PDF and local PDFKit extraction (MinerU precise mode was unavailable because no API token was configured), preserved original figures, and documented phase-conditioned retrieval gaps, phase specialization, controlled-model evidence, and theory limits.
 - Added the [Chunked KV-Cache Compression](../terms/chunked-kv-cache-compression.md) glossary term and linked the phase-sensitivity insight from the attention hub and DeepSeek-V4/V4.1 pages.
 - Added [MiMo-V2.6-Pro-MOPD: vLLM Inference and Deployment](../frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md) from the captured Xiaomi model card and vLLM recipe, documenting the vLLM 0.31.0+ MXFP4 requirement, H200 TP8 and MI355X TP4 launch profiles, optional DFlash configuration, and the stale V2.5 image reference.
 - Added [MiMo-V2.6-Flash-MOPD: vLLM Inference and Deployment](../frameworks/serving/vllm/mimo-v2-6-flash-mopd-deployment.md) from the captured Xiaomi model card and vLLM recipe, documenting the 309B/15B model profile, 173 GB checkpoint and 208 GB VRAM floor, H200 TP4 and AMD backend branches, optional DFlash, and the older V2.5 image reference.
+
+## 2026-10-17
+
+- Removed the Model Architecture and KV Cache Paths pages and their wiki links. The pinned repository source records and code reading notes remain cited by the vLLM and vLLM Ascend hubs.

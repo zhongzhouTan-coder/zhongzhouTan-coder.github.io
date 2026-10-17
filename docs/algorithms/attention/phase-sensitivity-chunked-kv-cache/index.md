@@ -15,7 +15,7 @@ updated: 2026-10-10
 **Authors:** Xingyu Zhu, Pu (Luke) Yi, Ziheng Cheng, Ang Lv, Jing Liu, Lexing Ying, Yiyuan Ma, and Xin Dong  
 **arXiv:** [2609.36322v1](https://arxiv.org/abs/2609.36322v1), 28 September 2026
 
-**Related pages:** [Chunked KV-Cache Compression](../../../terms/chunked-kv-cache-compression.md), [KV Cache](../../../terms/kv-cache.md), [DeepSeek-V4](../../../training/model-families/deepseek/deepseek-v4/index.md), [DeepSeek-V4.1-Flash](../../../training/model-families/deepseek/deepseek-v4.1/index.md), [DeepSeek-V4.1 cache path](../../../frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md)
+**Related pages:** [Chunked KV-Cache Compression](../../../terms/chunked-kv-cache-compression.md), [KV Cache](../../../terms/kv-cache.md), [DeepSeek-V4](../../../training/model-families/deepseek/deepseek-v4/index.md), [DeepSeek-V4.1-Flash](../../../training/model-families/deepseek/deepseek-v4.1/index.md)
 
 **Extraction note:** MinerU precise extraction was unavailable because `MINERU_API_TOKEN` is not configured, so the supplied PDF was extracted locally with macOS PDFKit. No source was uploaded to MinerU. Text order is preserved, but equation and table layout can be lossy; the numerical claims and selected figures below were checked against the original PDF.
 

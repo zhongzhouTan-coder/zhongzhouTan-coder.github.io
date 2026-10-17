@@ -7,12 +7,15 @@ redirect_from:
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-10-10
+  - raw/frameworks/serving/vllm/vllm-codebase--github-02aa10539f15.md
+  - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/important-files.md
+updated: 2026-10-17
 ---
 
 # vLLM
 
-- [Model Architecture and KV Cache Paths](../model-kv-cache/index.md) — GLM-5.3, DeepSeek-V4.1-Flash, MiniMax-M3, Qwen3.8-Flash-Next, and Kimi-K3 architecture and serving paths.
+The pinned vLLM source record and code reading notes at commit `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb` retain the October 2026 checkpoint analysis evidence.
+
 - [MiMo-V2.6-Pro-MOPD: vLLM Inference and Deployment](mimo-v2-6-pro-mopd-deployment.md) — Version and memory requirements, H200 TP8 and MI355X TP4 launch profiles, tool parsers, and optional DFlash decoding.
 - [MiMo-V2.6-Flash-MOPD: vLLM Inference and Deployment](mimo-v2-6-flash-mopd-deployment.md) — Flash-specific TP4 launch, MXFP4 memory floor, H200 and AMD backend profiles, and optional DFlash configuration.
 - [vLLM Architecture and Code Organization Overview](vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.

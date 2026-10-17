@@ -38,40 +38,9 @@ The negative Qwen4Exp finding is scoped to the pinned model registry and model
 tree. Recheck it with `rg -n 'Qwen4Exp|qwen4_exp' external-repos/vllm-ascend-51b0242c0d3b/vllm_ascend/models`
 and `rg --files external-repos/vllm-ascend-51b0242c0d3b/vllm_ascend/models | rg 'qwen4_exp|qwen4exp'`.
 
-## Required Code Evidence
-
-| Docs page | Finding | File | Symbol | Start | End |
-|---|---|---|---|---:|---:|
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | npu-indexer-backend | `vllm_ascend/attention/indexer.py` | `AscendSFAIndexerBackend` | 97 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | npu-sparse-backend | `vllm_ascend/attention/sfa_v1.py` | `AscendSFAImpl` | 792 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-swa-spec | `vllm_ascend/models/deepseek_v41/cache_config.py` | `make_swa_cache_spec` | 36 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-mla-spec | `vllm_ascend/models/deepseek_v41/cache_config.py` | `make_mla_cache_spec` | 55 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-index-spec | `vllm_ascend/models/deepseek_v41/cache_config.py` | `make_index_cache_spec` | 76 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | npu-prefill-decode | `vllm_ascend/models/minimax_m3/msa_m3.py` | `AscendMiniMaxM3SparseImpl.forward` | 951 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | npu-kda-mla-choice | `vllm_ascend/models/kimi_k3.py` | `AscendKimiDecoderLayer` | 499 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | npu-layer-stack | `vllm_ascend/models/kimi_k3.py` | `AscendKimiLinearModel` | 757 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | architecture-npu-decoder | `vllm_ascend/models/kimi_k3.py` | `AscendKimiDecoderLayer` | 499 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | architecture-npu-moe | `vllm_ascend/models/kimi_k3.py` | `AscendKimiMoE` | 259 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | architecture-npu-decoder | `vllm_ascend/models/deepseek_v41/model.py` | `DeepseekV41DecoderLayer` | 767 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | architecture-npu-decoder | `vllm_ascend/models/minimax_m3/minimax_m3.py` | `MiniMaxM3DecoderLayer` | 866 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | npu-registration | `vllm_ascend/models/__init__.py` | `Ascend GLM registration` | 74 | — |
-| `docs/frameworks/serving/model-kv-cache/glm-5.3.md` | npu-shell | `vllm_ascend/models/deepseek_mtp.py` | `AscendGlmMoeDsaForCausalLM` | 74 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-registration | `vllm_ascend/models/__init__.py` | `DeepseekV41 registration` | 38 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-shared-state | `vllm_ascend/models/deepseek_v41/model.py` | `DeepseekV41SharedAttentionState` | 491 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-swa | `vllm_ascend/models/deepseek_v41/model.py` | `AscendDeepseekV41SWACache` | 565 | — |
-| `docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md` | npu-attention | `vllm_ascend/models/deepseek_v41/model.py` | `DeepseekV41Attention` | 675 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | npu-registration | `vllm_ascend/models/__init__.py` | `MiniMaxM3 registration` | 42 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | npu-main-cache | `vllm_ascend/models/minimax_m3/minimax_m3.py` | `MiniMaxM3SparseAttention` | 198 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | npu-index-cache | `vllm_ascend/models/minimax_m3/msa_m3.py` | `AscendMiniMaxM3IndexerCache` | 202 | — |
-| `docs/frameworks/serving/model-kv-cache/minimax-m3.md` | npu-sparse-kernel | `vllm_ascend/models/minimax_m3/msa_m3.py` | `AscendMiniMaxM3SparseImpl` | 930 | — |
-| `docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md` | npu-registration-scope | `vllm_ascend/models/__init__.py` | `Ascend model registration` | 1 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | npu-registration | `vllm_ascend/models/__init__.py` | `Kimi model registration` | 9 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | npu-mla | `vllm_ascend/models/kimi_k3.py` | `AscendKimiMLAAttention` | 389 | — |
-| `docs/frameworks/serving/model-kv-cache/kimi-k3.md` | npu-model | `vllm_ascend/models/kimi_k3.py` | `AscendKimiLinearForCausalLM` | 1107 | — |
-
 ## Scope and verification
 
-Five checkpoint pages consume this revision. The findings above are from static source reading; no model, GPU, or Ascend NPU was executed. Checkpoint dimensions quoted in the pages come from the supplied presentation brief and need deployment-config confirmation.
+This pinned revision records the five-checkpoint code reading. The findings above are from static source reading; no model, GPU, or Ascend NPU was executed. Checkpoint dimensions require confirmation against released deployment configs.
 
 ## Model-specific findings
 

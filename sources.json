@@ -2258,11 +2258,7 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/",
       "docs_paths": [
-        "docs/frameworks/serving/model-kv-cache/glm-5.3.md",
-        "docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md",
-        "docs/frameworks/serving/model-kv-cache/minimax-m3.md",
-        "docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md",
-        "docs/frameworks/serving/model-kv-cache/kimi-k3.md"
+        "docs/frameworks/serving/vllm/index.md"
       ],
       "status": "ingested"
     },
@@ -2282,11 +2278,7 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/51b0242c0d3be1d3bd59e763a7d78b8553cd45e1/",
       "docs_paths": [
-        "docs/frameworks/serving/model-kv-cache/glm-5.3.md",
-        "docs/frameworks/serving/model-kv-cache/deepseek-v4.1-flash.md",
-        "docs/frameworks/serving/model-kv-cache/minimax-m3.md",
-        "docs/frameworks/serving/model-kv-cache/qwen3.8-flash-next.md",
-        "docs/frameworks/serving/model-kv-cache/kimi-k3.md"
+        "docs/frameworks/serving/vllm-ascend/index.md"
       ],
       "status": "ingested"
     },
