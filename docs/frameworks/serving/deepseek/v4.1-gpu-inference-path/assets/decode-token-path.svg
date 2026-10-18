@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 1540 680" role="img" aria-labelledby="title desc">
+  <ns0:title id="title">One DeepSeek V4.1 GPU decode token through the FlashMLA branch</ns0:title>
+  <ns0:desc id="desc">Scheduler output enters the GPU runner and V4.1 decoder. Each attention layer writes local SWA state; configured KV source layers publish compressed KV and index K; configured index source layers update shared top-k positions. FlashMLA reads those inputs, then the decoder and GPU sampler produce a token ID returned in AsyncOutput.</ns0:desc>
+  <ns0:rect width="1540" height="680" fill="#ffffff" />
+  <ns0:text x="50" y="42" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="bold" fill="#1f2d3d">One decode token: cache ownership and handoff</ns0:text>
+  <ns0:text x="50" y="70" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#536273">Text-only · non-speculative · compressed layer · index refresh · FlashMLA branch</ns0:text>
+  <ns0:rect x="35" y="225" width="1470" height="330" rx="18" fill="#f8fafc" stroke="#c7d2df" stroke-width="2" />
+  <ns0:text x="65" y="259" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#31445c">Inside one compressed-attention layer</ns0:text>
+  <ns0:text x="65" y="547" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" fill="#536273">KV-source and index-source roles are independent; a layer may have both.</ns0:text>
+  <ns0:path d="M290 141 H380" fill="none" stroke="#55718d" stroke-width="3" stroke-linejoin="round" marker-end="url(#blue)" />
+  <ns0:path d="M680 141 H770" fill="none" stroke="#55718d" stroke-width="3" stroke-linejoin="round" marker-end="url(#blue)" />
+  <ns0:path d="M495 313 H570 V377 H650" fill="none" stroke="#a66716" stroke-width="3" stroke-linejoin="round" marker-end="url(#amber)" />
+  <ns0:path d="M495 400 H650" fill="none" stroke="#a66716" stroke-width="3" stroke-linejoin="round" marker-end="url(#amber)" />
+  <ns0:path d="M495 487 H570 V443 H650" fill="none" stroke="#a66716" stroke-width="3" stroke-linejoin="round" marker-end="url(#amber)" />
+  <ns0:path d="M950 411 H1080" fill="none" stroke="#287462" stroke-width="3" stroke-linejoin="round" marker-end="url(#green)" />
+  <ns0:path d="M1262 464 V555 H815 V585" fill="none" stroke="#287462" stroke-width="3" stroke-linejoin="round" marker-end="url(#green)" />
+  <ns0:path d="M980 618 H1080" fill="none" stroke="#55718d" stroke-width="3" stroke-linejoin="round" marker-end="url(#blue)" />
+  <ns0:defs>
+    <ns0:marker id="amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <ns0:path d="M 0 0 L 10 5 L 0 10 z" fill="#a66716" />
+    </ns0:marker>
+    <ns0:marker id="green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <ns0:path d="M 0 0 L 10 5 L 0 10 z" fill="#287462" />
+    </ns0:marker>
+    <ns0:marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <ns0:path d="M 0 0 L 10 5 L 0 10 z" fill="#55718d" />
+    </ns0:marker>
+    <ns0:marker id="purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <ns0:path d="M 0 0 L 10 5 L 0 10 z" fill="#7053a3" />
+    </ns0:marker>
+  </ns0:defs>
+  <ns0:path d="M937 184 V225" fill="none" stroke="#7053a3" stroke-width="3" marker-end="url(#purple)" />
+  <ns0:rect x="50" y="98" width="240" height="86" rx="12" fill="#e8f2ff" stroke="#2c63a1" stroke-width="2.5" />
+  <ns0:text x="68" y="131" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">SchedulerOutput</ns0:text>
+  <ns0:text x="68" y="159" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">scheduled token rows</ns0:text>
+  <ns0:rect x="380" y="98" width="300" height="86" rx="12" fill="#e8f2ff" stroke="#2c63a1" stroke-width="2.5" />
+  <ns0:text x="398" y="131" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">GPUModelRunner</ns0:text>
+  <ns0:text x="398" y="159" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">InputBatch, slots, metadata</ns0:text>
+  <ns0:rect x="770" y="98" width="335" height="86" rx="12" fill="#efeaff" stroke="#7053a3" stroke-width="2.5" />
+  <ns0:text x="788" y="131" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">V4.1 decoder layer</ns0:text>
+  <ns0:text x="788" y="159" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">attention input + position</ns0:text>
+  <ns0:rect x="65" y="278" width="430" height="70" rx="12" fill="#fff3df" stroke="#a66716" stroke-width="2.5" />
+  <ns0:text x="83" y="305" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Every attention layer</ns0:text>
+  <ns0:text x="83" y="329" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">Q + local SWA KV / cache</ns0:text>
+  <ns0:rect x="65" y="365" width="430" height="70" rx="12" fill="#fff3df" stroke="#a66716" stroke-width="2.5" />
+  <ns0:text x="83" y="392" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Configured KV source</ns0:text>
+  <ns0:text x="83" y="416" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">main KV; index K if also index source</ns0:text>
+  <ns0:rect x="65" y="452" width="430" height="70" rx="12" fill="#fff3df" stroke="#a66716" stroke-width="2.5" />
+  <ns0:text x="83" y="479" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Configured index source</ns0:text>
+  <ns0:text x="83" y="503" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">index Q + index K → shared top-k positions</ns0:text>
+  <ns0:rect x="650" y="358" width="300" height="106" rx="12" fill="#e5f5f0" stroke="#287462" stroke-width="2.5" />
+  <ns0:text x="668" y="391" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">FlashMLA sparse decode</ns0:text>
+  <ns0:text x="668" y="419" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">Q + local SWA + selected</ns0:text>
+  <ns0:text x="668" y="442" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">compressed main KV</ns0:text>
+  <ns0:rect x="1080" y="358" width="365" height="106" rx="12" fill="#e5f5f0" stroke="#287462" stroke-width="2.5" />
+  <ns0:text x="1098" y="391" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Layer output</ns0:text>
+  <ns0:text x="1098" y="419" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">projection → mHC → MoE</ns0:text>
+  <ns0:text x="1098" y="442" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">repeat through decoder stack</ns0:text>
+  <ns0:rect x="650" y="585" width="330" height="66" rx="12" fill="#e8f2ff" stroke="#2c63a1" stroke-width="2.5" />
+  <ns0:text x="668" y="611" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Logits + GPU sampler</ns0:text>
+  <ns0:text x="668" y="634" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">sampled token ID</ns0:text>
+  <ns0:rect x="1080" y="585" width="365" height="66" rx="12" fill="#e8f2ff" stroke="#2c63a1" stroke-width="2.5" />
+  <ns0:text x="1098" y="611" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1f2d3d">Worker return</ns0:text>
+  <ns0:text x="1098" y="634" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="normal" fill="#33465b">AsyncOutput / ModelRunnerOutput</ns0:text>
+  <ns0:text x="50" y="669" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" fill="#536273">Synthesized from vLLM commit 02aa10539f15; arrows show data handoffs, not kernel launch order.</ns0:text>
+</ns0:svg>

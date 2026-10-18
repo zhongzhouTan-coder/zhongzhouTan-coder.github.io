@@ -1,0 +1,60 @@
+sequenceDiagram
+    autonumber
+    participant Caller as GPU worker caller
+    participant Runner as GPUModelRunner
+    participant State as DeepseekV41ModelState
+    participant Wrapper as DeepseekV41 wrapper
+    participant Text as V4.1 text model
+    participant Layer as Decoder layer
+    participant Attn as DeepseekV4Attention
+    participant Compressor as DeepseekCompressor
+    participant Indexer as Sparse indexer
+    participant Cache as GPU cache ops
+    participant Backend as FlashMLA / FlashInfer / Mega
+    participant Sampler as GPU sampler
+
+    Caller->>Runner: SchedulerOutput with scheduled token rows
+    Runner->>Runner: Update request state and build InputBatch and slot mappings
+    Runner->>State: prepare_attn(input_batch, KV groups)
+    State-->>Runner: Attention metadata and optional replay metadata
+    Runner->>Wrapper: model_inputs (IDs, positions, optional embeddings)
+    opt Image tokens present
+        Wrapper->>Wrapper: ViT + aligner, then merge image embeddings
+    end
+    Wrapper->>Text: forward(input_ids, positions, inputs_embeds)
+    loop Each decoder layer
+        Text->>Layer: Hidden state and mHC stream state
+        Layer->>Attn: Normalized attention input and positions
+        Attn->>Cache: Prepare Q and write layer-local SWA KV
+        opt KV-source layer
+            Attn->>Compressor: Compress KV/score state
+            Compressor-->>Attn: BF16 latent
+            Compressor->>Cache: RoPE, quantize, and store compressed KV
+        end
+        opt Index-source layer
+            Attn->>Indexer: Prepare index Q and publish K if also KV source
+            Indexer->>Cache: Score candidates and write shared top-k buffer
+            Indexer-->>Attn: Shared selected positions
+        end
+        alt SM12 FlashInfer
+            Attn->>Backend: Q + selected global KV (if compressed) + SWA cache
+            Backend-->>Attn: Sparse attention output
+        else Eligible SM100 Mega
+            Attn->>Backend: Q + selected global KV (if compressed) + SWA cache
+            Backend-->>Attn: Fused attention and quantized output
+        else FlashMLA sparse fallback
+            Attn->>Backend: Q + selected global KV (if compressed) + SWA cache
+            Backend-->>Attn: Sparse attention output
+        end
+        Attn-->>Layer: Grouped output projection
+        Layer->>Layer: mHC boundary and MoE FFN
+        Layer-->>Text: Updated hidden/residual streams
+    end
+    Text-->>Wrapper: Collapsed, normalized hidden states
+    Wrapper-->>Runner: Model output
+    Runner->>Text: compute_logits(selected hidden rows)
+    Text-->>Runner: Vocabulary logits
+    Runner->>Sampler: Sample next token
+    Sampler-->>Runner: Sampled token IDs
+    Runner->>Runner: Postprocess request state and stage async output
+    Runner-->>Caller: AsyncOutput / ModelRunnerOutput

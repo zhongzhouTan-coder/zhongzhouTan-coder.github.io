@@ -2258,7 +2258,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/",
       "docs_paths": [
-        "docs/frameworks/serving/vllm/index.md"
+        "docs/frameworks/serving/vllm/index.md",
+        "docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md"
       ],
       "status": "ingested"
     },

@@ -42,6 +42,7 @@ This repository is a markdown knowledge base.
 - For docs page front matter and topic placement, read `.github/instructions/docs-front-matter.instructions.md`.
 - For paper-insight page body structure, read `.github/instructions/docs-content-structure.instructions.md`.
 - For code repository reading pages and local checkout handling, read `.github/instructions/repo-reading.instructions.md`.
+- For model serving or GPU inference path analysis, use `.agents/skills/analyze-model-inference-path/SKILL.md` alongside the repository reading instructions.
 - For term glossary pages, read `.github/instructions/docs-terms.instructions.md`.
 - For source categories, raw/derived naming, and manifest maintenance, read `.github/instructions/source-organization.instructions.md`.
 - For web capture, rendering, provenance, and synthesis, read `.github/instructions/web-source.instructions.md`.

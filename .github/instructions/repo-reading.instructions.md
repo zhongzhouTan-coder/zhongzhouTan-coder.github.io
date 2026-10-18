@@ -135,6 +135,11 @@ notes:
 - which behavior occurs offline, at load time, and at runtime;
 - hardware, configuration, fallback, and verification limitations.
 
+When several paths exist, select one supported branch for the first walkthrough.
+State the configuration, hardware, workload, and entry/return boundaries that
+select it; do not imply that an uninspected checkpoint or unexecuted backend
+was observed. Explain materially different branches after the main path.
+
 Draft concepts before implementation names. Expand important acronyms on first
 use, explain why each stage exists, and introduce concrete files and symbols
 only after the reader has a system-level map. For beginner-facing pages, keep
@@ -149,10 +154,63 @@ the initial path to these answers short:
 Plan each rich element around a reader question and a teaching job. Use prose
 for one idea, a table for exact mappings or platform differences, and a worked
 trace for runtime state changes. When a flow diagram materially improves
-hierarchy, branching, concurrency, or ownership, save its editable Mermaid
-source as a local `.mmd` asset and link it from the page. Prefer one reader
-question per visual; keep a symbol-heavy implementation map separate from the
-first conceptual visual. Omit any diagram that only restates nearby prose.
+hierarchy, branching, concurrency, or ownership, save its editable source
+locally and link it from the page (`.mmd` for Mermaid or `.drawio` for Draw.io).
+Prefer one reader question per visual; keep a symbol-heavy implementation map
+separate from the first conceptual visual. Omit any diagram that only restates
+nearby prose.
+Put a compact input/state/output path before a long sequence diagram or module
+inventory. A paper's architecture figure can explain design intent, but it is
+not evidence that the repository implements the same call path.
+
+Place a code-path figure immediately before the worked trace it prepares the
+reader to follow. State the selected workload and branch first. Beside the
+figure, give a short reading guide in visual order: entry, what each lane or
+symbol represents, the important state handoff, and the result that leaves the
+figure. Explain conditional roles and distinguish intermediate state from the
+user-visible result. Do not make readers cross a long table to find this guide.
+Use the same names in the figure and trace, and number the figure stages when
+that helps readers match them to trace steps. Caption a source figure as design
+intent or a synthesized figure as an explanation of the pinned code branch;
+name any unverified configuration or runtime assumptions. Keep revision-aware
+code links in the adjacent trace, including both producer and consumer of
+shared state; the figure itself is orientation, not code evidence.
+
+### Explain Mechanisms, Not Just Paths
+
+A call path alone does not make a professional reader understand a serving
+system. For every performance, memory, or correctness mechanism the page
+touches, answer these questions explicitly:
+
+- **Motivation before mechanics.** State the cost or correctness problem the
+  mechanism removes — in units the reader cares about (bytes read per decode
+  token, extra tokens recomputed per prefix hit, added latency per layer) —
+  before describing how it works. If removing the mechanism would silently
+  corrupt results rather than merely slow them down, say so first.
+- **Coordinate spaces and units.** For every index, offset, or length, name
+  its unit (token position, compressed or pooled state, cache slot, block id,
+  byte offset) and link the code that converts between spaces. A reader who
+  cannot tell which space an index lives in cannot follow the trace. When a
+  buffer's indices differ in resolution from the cache they address (for
+  example, compressed-group indices addressing a paged KV cache), give the
+  concrete mapping: direction, scaling factor, and the line where it happens.
+- **State hierarchies as hierarchies.** When a system keeps several caches or
+  state stores, compare them on scope (local vs global), lifetime, precision
+  or dtype, record width, and who reads each — one compact table or paragraph
+  covering every store. Do not let the reader reconstruct the hierarchy from
+  scattered mentions.
+- **Overlap and asynchrony need a reason.** When work moves to auxiliary
+  streams, background threads, or deferred sub-batches, explain what it hides
+  under and which invariant the synchronization before consumption protects.
+- **Cross-component mechanisms need both ends.** For scheduler-to-worker and
+  producer-to-consumer handoffs (a flag set at schedule time, consumed by a
+  kernel), link the assignment site, the transport (message field or shared
+  buffer), and the consumption site. State which requests or steps the
+  mechanism applies to and which it excludes (prefill vs decode, dummy or
+  capture batches, idle data-parallel ranks).
+- **Hierarchical or two-level mechanisms.** When selection, routing, or
+  filtering happens in stages, describe every stage's granularity and gate
+  configuration, or state explicitly why a stage is out of scope.
 
 ### Trace Request Round Trips
 
@@ -180,6 +238,11 @@ not code evidence. Evidence only at the deepest callee is also insufficient
 when a caller transforms, aggregates, serializes, or conditionally discards the
 returned value; link that caller-side behavior separately. Omit trivial helper
 returns that do not change state, ownership, control flow, or representation.
+Separate load-time ownership decisions from runtime writes and reads. At the
+central computation, inspect the actual callee or kernel invocation as well as
+its selector or wrapper. When a shared buffer matters, link both its producer
+and consumer; distinguish intermediate state such as selected indices from the
+attention result and externally returned token.
 
 Use a Mermaid sequence diagram when calls and returns cross three or more
 components, processes, services, or devices. Show both call and return arrows,
@@ -188,6 +251,12 @@ mark asynchronous handoffs and important branches, and keep the editable
 substitute for evidence: follow it with a numbered trace or compact table whose
 meaningful steps link to the pinned implementation and map to finding IDs in
 the derived evidence note.
+Draw optional operations as optional. If the page embeds the diagram, keep its
+Mermaid block identical to the saved `.mmd` source. Parse or render edited
+Mermaid with an available tool; `./scripts/lint-docs.sh` does not check Mermaid
+syntax. Sequence-message text must not contain unescaped statement separators
+such as `;`. If no parser is available, keep the syntax simple and report that
+rendering was not verified.
 
 Use portable Markdown callouts labeled `Evidence` and `Inference` when the
 reader could otherwise confuse direct code behavior with repository-level
@@ -216,6 +285,13 @@ Insert revision-aware links while drafting. Link the first meaningful
 occurrence of important files and symbols, every numbered runtime-flow step,
 and non-obvious implementation evidence. Repeated mentions and generic language
 constructs may remain ordinary inline code.
+
+Use a short verbatim code excerpt when the actual condition, state write, core
+call, or return helps the reader stay on the page. Pair it with a precise code
+link and a sentence explaining what to notice. Prefer decisive operations over
+incidental setup; keep excerpts contiguous, mark omissions, and compare their
+lines against the pinned checkout. When an evidence row declares an end line,
+the matching anchor must include `data-code-end-line`.
 
 Use this structure:
 

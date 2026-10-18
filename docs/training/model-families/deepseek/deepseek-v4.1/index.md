@@ -8,7 +8,7 @@ confidence: high
 sources:
   - raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf
   - derived/pdf-markdown/training/model-families/deepseek/deepseek-v4.1-technical-report.md
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
 # DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression
@@ -17,7 +17,7 @@ updated: 2026-10-10
 **Authors:** DeepSeek-AI research and engineering teams  
 **arXiv:** No identifier stated in the supplied PDF; technical report, 2026
 
-**Related pages:** [DeepSeek-V4](../deepseek-v4/index.md), [Periodic Weak Spots](../../../../algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md), [DeepSeek-V3.2](../../../../algorithms/model-architectures/deepseek-v3-2/index.md), [IndexCache](../../../efficient-attention/indexcache/index.md), [DeepSeek-V4 attention code reading](../../../../frameworks/serving/deepseek/v4-attention-code-reading.md), [DSpark](../../../../frameworks/speculative-decoding/dspark/index.md), [Kimi K3](../../kimi/kimi-k3/index.md), [KV Cache](../../../../terms/kv-cache.md), [Lightning Indexer](../../../../terms/lightning-indexer.md), [Cross-Layer Index Reuse](../../../../terms/cross-layer-index-reuse.md), [Microscaling](../../../../terms/microscaling.md)
+**Related pages:** [DeepSeek-V4](../deepseek-v4/index.md), [Periodic Weak Spots](../../../../algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md), [DeepSeek-V3.2](../../../../algorithms/model-architectures/deepseek-v3-2/index.md), [IndexCache](../../../efficient-attention/indexcache/index.md), [DeepSeek-V4 attention code reading](../../../../frameworks/serving/deepseek/v4-attention-code-reading.md), [DeepSeek-V4.1 GPU inference path](../../../../frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md), [DSpark](../../../../frameworks/speculative-decoding/dspark/index.md), [Kimi K3](../../kimi/kimi-k3/index.md), [KV Cache](../../../../terms/kv-cache.md), [Lightning Indexer](../../../../terms/lightning-indexer.md), [Cross-Layer Index Reuse](../../../../terms/cross-layer-index-reuse.md), [Microscaling](../../../../terms/microscaling.md)
 
 > **Evidence:** The page synthesizes the supplied technical report and its precise MinerU extraction. The report gives internal benchmark results and engineering ratios; it does not provide a public reproducibility package for every cache, kernel, or training claim.
 

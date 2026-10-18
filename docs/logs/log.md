@@ -444,3 +444,9 @@ updated: 2026-10-10
 ## 2026-10-17
 
 - Removed the Model Architecture and KV Cache Paths pages and their wiki links. The pinned repository source records and code reading notes remain cited by the vLLM and vLLM Ascend hubs.
+- Added [DeepSeek-V4.1-Flash on NVIDIA vLLM: GPU Inference Path](../frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md) from the existing pinned vLLM commit `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb`. The strict code-reading map covers worker input to sampled-token output, V4.1 cache/indexer ownership, FlashMLA/FlashInfer/Mega dispatch, and bounded SWA replay; it records that the checkpoint config and GPU runtime were not inspected. Linked the page from the DeepSeek and vLLM hubs and both related DeepSeek pages.
+
+## 2026-10-18
+
+- Deepened [DeepSeek-V4.1-Flash on NVIDIA vLLM: GPU Inference Path](../frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md) after a reader-comprehension review: the TL;DR now motivates cache compression (cheap top-k candidate scoring versus dense bandwidth), the mental model states the SWA / compressed-KV / index-K precision hierarchy and the compressed-state coordinate space of top-k indices, the decode trace marks index units, section 4 explains the overlap rationale and the two-level candidate-block filtering, the cache-layout table notes the FP8/MXFP4 index-K record, and the bounded SWA replay section now covers the scheduler's `replay_start` assignment, the `PAD_SLOT_ID` protection of prefix-cached KV, and the decoder replay sub-batch. All additions link the pinned vLLM commit `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb`.
+- Added an "Explain Mechanisms, Not Just Paths" section to `.github/instructions/repo-reading.instructions.md`, requiring motivation-first framing, explicit index coordinate spaces, state-hierarchy comparison, overlap rationale, both ends of cross-component handoffs, and staged-mechanism coverage in repository-backed docs.

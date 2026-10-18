@@ -12,7 +12,7 @@ sources:
   - raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-8645122088f5.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/deepseek-v4-attention.md
   - derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/deepseek-v4-attention.md
-updated: 2026-09-16
+updated: 2026-10-17
 ---
 
 # DeepSeek V4 Attention: Code Reading Map
@@ -22,7 +22,7 @@ updated: 2026-09-16
 - [vllm-project/vllm](https://github.com/vllm-project/vllm) @ `d18ed2304a2703e3211fc384a58607e754f5b723` (main, clean)
 - [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `8645122088f5cad1701205310573c5ee05c809f5` (main, clean)
 
-**Related pages:** [DeepSeek-V4 Paper](../../../training/model-families/deepseek/deepseek-v4/index.md), [DeepSeek-V2 MLA](../../../algorithms/attention/variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/model-architectures/deepseek-v3-2/index.md), [MiniMax Sparse Attention](../../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM-Ascend Lightning Indexer C8 Quantization](../vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../vllm-ascend/deepseek-v4-inference.md)
+**Related pages:** [DeepSeek-V4 Paper](../../../training/model-families/deepseek/deepseek-v4/index.md), [DeepSeek-V4.1 GPU inference path](v4.1-gpu-inference-path/index.md), [DeepSeek-V2 MLA](../../../algorithms/attention/variants/deepseek-v2-mla.md), [DeepSeek-V3.2 Sparse Attention](../../../algorithms/model-architectures/deepseek-v3-2/index.md), [MiniMax Sparse Attention](../../../training/efficient-attention/minimax-sparse-attention/index.md), [vLLM-Ascend Lightning Indexer C8 Quantization](../vllm-ascend/deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](../vllm-ascend/deepseek-v4-inference.md)
 
 ## TL;DR
 
