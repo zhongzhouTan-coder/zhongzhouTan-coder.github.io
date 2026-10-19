@@ -18,7 +18,7 @@ appears_in:
   - docs/algorithms/attention/flashattention/flashattention-2.md
   - docs/algorithms/attention/flashattention/flashattention-3.md
   - docs/algorithms/attention/flashattention/index.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
   - docs/frameworks/serving/vllm-ascend/architecture.md
   - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
@@ -69,7 +69,7 @@ FP8 is a numerical optimization, not a context-parallel algorithm. Scale selecti
 - [FlashAttention-2: Better Parallelism and Work Partitioning](../algorithms/attention/flashattention/flashattention-2.md)
 - [FlashAttention-3: Hopper Asynchrony and FP8 Attention](../algorithms/attention/flashattention/flashattention-3.md)
 - [FlashAttention](../algorithms/attention/flashattention/index.md)
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md)
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md)
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md)
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md)
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md)

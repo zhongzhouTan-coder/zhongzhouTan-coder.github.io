@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - ../index.md
-updated: 2026-10-10
+updated: 2026-10-19
 ---
 
 # Inference Serving Systems
@@ -17,5 +17,4 @@ updated: 2026-10-10
 - [KV Cache Optimization](kv-cache-optimization/index.md) — Eviction, compression, hybrid-memory, and alternative-attention strategies.
 - [KVSwap](kvswap/index.md) — Disk-aware KV-cache offloading for on-device inference.
 - [InferenceX](inferencex/index.md) — Continuous inference benchmark and execution pipeline.
-- [DeepSeek Integrations](deepseek/index.md) — Framework-level DeepSeek implementation readings.
 - [AgentX / InferenceX v3](agentx-inferencexv3-cuda-moat/index.md) — Agentic inference workload and hardware comparison.

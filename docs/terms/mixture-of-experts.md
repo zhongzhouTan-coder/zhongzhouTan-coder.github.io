@@ -19,7 +19,7 @@ appears_in:
   - docs/algorithms/attention/variants/deepseek-v2-mla.md
   - docs/algorithms/attention/variants/index.md
   - docs/algorithms/model-architectures/deepseek-v3-2/index.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/speculative-decoding/dspark/index.md
   - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
   - docs/frameworks/serving/vllm-ascend/architecture.md
@@ -79,7 +79,7 @@ MoE introduces routing instability, expert load imbalance, dispatch/combination 
 - [vLLM-Ascend Kimi K3 MoE Forward](../frameworks/serving/vllm-ascend/kimi-k3-moe-forward.md) — Follows the full routed-expert forward path on Ascend.
 - [Attention Variants](../algorithms/attention/variants/index.md) — Attention designs that reduce query/key redundancy or KV-cache pressure: multi-query, grouped-query, collaborative, and latent.
 - [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/model-architectures/deepseek-v3-2/index.md) — DeepSeek-V3.2 introduces DeepSeek Sparse Attention (DSA) for sub-quadratic long-context efficiency, a scaled GRPO recipe with.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [DSpark: Confidence-Scheduled Speculative Decoding](../frameworks/speculative-decoding/dspark/index.md) — DeepSeek's DSpark speculative decoding framework, combining semi-autoregressive draft generation with hardware-aware confidence.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
 - [vLLM](../frameworks/serving/vllm/index.md) — vLLM serving framework pages: PagedAttention paper, request-flow code learning path, continuous batching, and Kimi K3 code.

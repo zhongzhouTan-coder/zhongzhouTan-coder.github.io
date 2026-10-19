@@ -18,7 +18,7 @@ updated: 2026-09-16
 
 **Repository:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `e3bb5f570f0b7d7fef9df3190a450052bee090cc` (origin/main, clean detached worktree, inspected 2026-07-30)
 
-**Related pages:** [Kimi K3](../../../training/model-families/kimi/kimi-k3/index.md), [vLLM Kimi K3 Code Reading Map](../vllm/vllm-kimi-k3-code-reading.md), [Mixture of Experts](../../../terms/mixture-of-experts.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md)
+**Related pages:** [Kimi K3](../../../training/model-families/kimi/kimi-k3/index.md), [vLLM Kimi K3 Code Reading Map](../vllm/vllm-kimi-k3-code-reading.md), [Mixture of Experts](../../../terms/mixture-of-experts.md), [DeepSeek V4 Attention Code Reading](../vllm/deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md)
 
 ## TL;DR
 
@@ -212,5 +212,5 @@ The key serving insight is that K3-scale MoE is not static expert parallelism on
 - [Kimi K3](../../../training/model-families/kimi/kimi-k3/index.md) for the model architecture.
 - [vLLM Kimi K3 Code Reading Map](../vllm/vllm-kimi-k3-code-reading.md) for upstream model code.
 - [Mixture of Experts](../../../terms/mixture-of-experts.md) for the general sparse-routing concept.
-- [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md) for the neighboring vllm-ascend long-context attention path.
+- [DeepSeek V4 Attention Code Reading](../vllm/deepseek/v4-attention-code-reading.md) for the neighboring vllm-ascend long-context attention path.
 - [Triton in vLLM/vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md) for the plugin's Triton and custom-kernel surface.

@@ -27,8 +27,8 @@ appears_in:
   - docs/algorithms/attention/linear/index.md
   - docs/algorithms/attention/linear/linear-attention-without-softmax.md
   - docs/benchmarks/serving-performance/aisbench-vs-evalscope-perf.md
-  - docs/frameworks/serving/deepseek/index.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/index.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/serving/kv-cache-optimization/index.md
   - docs/frameworks/serving/kvswap/index.md
   - docs/frameworks/serving/sarathi/index.md
@@ -97,8 +97,8 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [Recurrent Neural Networks: From RNN to LSTM](../algorithms/foundations/recurrent-neural-networks/index.md) — A beginner-oriented explanation of recurrent hidden state, shared weights across sequence steps, long-term dependency failures.
 - [线性Attention的探索：Attention必须有个Softmax吗？](../algorithms/attention/linear/linear-attention-without-softmax.md) — Su Jianlin's influential blog survey on why softmax is the bottleneck of standard attention, how removing it enables O(n) linear.
 - [AISBench Benchmark vs. EvalScope Perf](../benchmarks/serving-performance/aisbench-vs-evalscope-perf.md) — Competitive analysis of AISBench Benchmark and EvalScope Perf across load generation, workloads, metrics, extensibility.
-- [DeepSeek](../frameworks/serving/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek](../frameworks/serving/vllm/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/serving/kv-cache-optimization/index.md) — Surveys the five main ways to reduce KV-cache pressure and maps them to deployment scenarios.
 - [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Keeps the full cache on disk and uses a compact predictor, grouped reads, and reuse to support long-context decoding on constrained devices.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.

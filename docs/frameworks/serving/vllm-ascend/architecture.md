@@ -17,7 +17,7 @@ updated: 2026-09-16
 
 **Repository:** [vllm-project/vllm-ascend](https://github.com/vllm-project/vllm-ascend) @ `32a59d4e349c12c32cdbc1916436c16e39939afc` (main, clean, inspected 2026-08-03)
 
-**Related pages:** [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md), [vLLM Ascend Hub](index.md), [vLLM-Ascend Kimi K3 MoE Forward](kimi-k3-moe-forward.md), [DeepSeek-V4 Lightning Indexer C8 Quantization](deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](deepseek-v4-inference.md), [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](qwen3.5-qwen3.6-inference.md), [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
+**Related pages:** [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md), [vLLM Ascend Hub](index.md), [vLLM-Ascend Kimi K3 MoE Forward](kimi-k3-moe-forward.md), [DeepSeek-V4 Lightning Indexer C8 Quantization](deepseek-v4-lightning-indexer-c8.md), [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](deepseek-v4-inference.md), [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](qwen3.5-qwen3.6-inference.md), [DeepSeek V4 Attention Code Reading](../vllm/deepseek/v4-attention-code-reading.md), [Triton in vLLM/vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md), [vLLM Framework](../vllm/vllm-framework.md)
 
 ## TL;DR
 
@@ -338,7 +338,7 @@ vllm-ascend is **vLLM's layers 5-6 made Ascend-native**. Everything you already 
 
 - [vLLM Architecture and Code Organization Overview](../vllm/vllm-overview.md) — the six-layer vLLM stack this page maps onto
 - [vLLM-Ascend Kimi K3 MoE Forward Insight](kimi-k3-moe-forward.md) — Deep dive into the routed-MoE path
-- [DeepSeek V4 Attention Code Reading](../deepseek/v4-attention-code-reading.md) — Cross-platform attention implementation map
+- [DeepSeek V4 Attention Code Reading](../vllm/deepseek/v4-attention-code-reading.md) — Cross-platform attention implementation map
 - [Triton in vLLM and vllm-ascend](../../compilers-kernels/triton/triton-in-vllm.md) — How Triton kernels are adapted for Ascend
 - [Triton Ascend Architecture](../../compilers-kernels/triton-ascend/index.md) — The Ascend NPU backend for Triton
 - [Continuous Batching](../../../terms/continuous-batching.md) — The scheduling algorithm reused from vLLM

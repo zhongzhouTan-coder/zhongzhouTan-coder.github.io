@@ -385,7 +385,7 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/d18ed2304a2703e3211fc384a58607e754f5b723/",
       "docs_paths": [
         "docs/frameworks/compilers-kernels/triton/triton-in-vllm.md",
-        "docs/frameworks/serving/deepseek/v4-attention-code-reading.md"
+        "docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md"
       ],
       "status": "ingested",
       "topic_path": "serving/vllm"
@@ -406,7 +406,7 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/8645122088f5cad1701205310573c5ee05c809f5/",
       "docs_paths": [
         "docs/frameworks/compilers-kernels/triton/triton-in-vllm.md",
-        "docs/frameworks/serving/deepseek/v4-attention-code-reading.md"
+        "docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md"
       ],
       "status": "ingested",
       "topic_path": "serving/vllm-ascend"
@@ -2259,7 +2259,7 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/",
       "docs_paths": [
         "docs/frameworks/serving/vllm/index.md",
-        "docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md"
+        "docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md"
       ],
       "status": "ingested"
     },

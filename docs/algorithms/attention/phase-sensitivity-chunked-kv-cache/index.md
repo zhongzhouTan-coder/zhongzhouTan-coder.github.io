@@ -29,7 +29,7 @@ updated: 2026-10-10
 
 ## The Big Picture
 
-![A fixed key-value retrieval prompt and accuracy by source-key position modulo eight across DeepSeek-V4 Flash, Pro, and V4.1 checkpoints; the base models show large phase gaps.](./assets/deepseek-v4-phase-sensitivity-figure-2.png)
+![A fixed key-value retrieval prompt and accuracy by source-key position modulo eight across DeepSeek-V4 Flash, Pro, and V4.1 checkpoints; the base models show large phase gaps.](assets/deepseek-v4-phase-sensitivity-figure-2.png)
 
 *Source: Figure 2 in [the paper](https://arxiv.org/abs/2609.36322v1). ① Keep the key-value bindings and question fixed. ② Move the target key among positions modulo eight. ③ Compare each checkpoint's best and worst residue; the arrows show the phase gap.*
 
@@ -45,7 +45,7 @@ A separate code-completion example makes the shift tangible. DeepSeek-V4-Flash-B
 
 ## The Landscape
 
-The editable diagram is [phase-sensitivity-landscape.mmd](./assets/phase-sensitivity-landscape.mmd).
+The editable diagram is [phase-sensitivity-landscape.mmd](assets/phase-sensitivity-landscape.mmd).
 
 ```mermaid
 flowchart LR
@@ -123,7 +123,7 @@ The paper uses $W$ for how many source tokens a window summarizes and $S$ for ho
 
 ### Learned gates can align heads with phases
 
-![Gate concentration trajectories, per-offset key and value gates for Layers 9, 10, and 14, and phase-dependent retrieval effects in the controlled W8/S8 model.](./assets/gate-phase-specialization-figure-5.png)
+![Gate concentration trajectories, per-offset key and value gates for Layers 9, 10, and 14, and phase-dependent retrieval effects in the controlled W8/S8 model.](assets/gate-phase-specialization-figure-5.png)
 
 *Source: Figure 5 in [the paper](https://arxiv.org/abs/2609.36322v1). ① Some key gates become statically concentrated during training. ② Layers 9, 10, and 14 favor early, middle, and late key offsets, with value gates peaking one offset later. ③ Their intervention effects align with the phases they favor.*
 

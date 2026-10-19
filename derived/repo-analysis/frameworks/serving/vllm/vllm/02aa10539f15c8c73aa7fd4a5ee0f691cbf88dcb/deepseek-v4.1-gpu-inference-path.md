@@ -43,53 +43,61 @@ generated: 2026-10-18
 
 | Docs page | Finding | File | Symbol | Start | End |
 |---|---|---|---:|---:|---:|
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | hf-config | `vllm/transformers_utils/config.py` | `deepseek_v41` config mapping | 129 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | architecture-registry | `vllm/model_executor/models/registry.py` | `DeepseekV41ForCausalLM` | 370 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | platform-entry | `vllm/models/deepseek_v41/__init__.py` | `current_platform.is_rocm` branch | 9 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | multimodal-wrapper | `vllm/models/deepseek_v41/nvidia/vl_model.py` | `DeepseekV41ForCausalLM` | 117 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | image-embeddings | `vllm/models/deepseek_v41/nvidia/vl_model.py` | `_process_image_input` | 207 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | runner-entry | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.execute_model` | 1711 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | model-state-selection | `vllm/v1/worker/gpu/model_states/__init__.py` | `resolve_model_state_cls` | 28 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | v41-state-preparation | `vllm/models/deepseek_v41/nvidia/model_state.py` | `DeepseekV41ModelState.prepare_attn` | 308 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | model-input-assembly | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.execute_model` model inputs | 1949 | 1957 |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | runner-model-call | `vllm/v1/worker/gpu/model_runner.py` | `self.model(**model_inputs)` | 2034 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | text-model | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV41LLMForCausalLM` | 1537 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | text-layer-stack | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4Model` layer construction | 765 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | decoder-layer | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4DecoderLayer.forward` | 455 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | attention-topology | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention` source-layer setup | 304 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | parallel-projections | `vllm/models/deepseek_v41/attention.py` | `_run_parallel_input_projections` | 932 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | attention-overlap | `vllm/models/deepseek_v41/attention.py` | `_prepare_and_attn` | 832 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | compressor-latent | `vllm/models/deepseek_v41/compressor.py` | `DeepseekCompressor.forward` | 250 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | compressor-kernel | `vllm/models/deepseek_v41/common/ops/fused_compress_quant_cache.py` | `fused_save_compress_norm` | 22 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | compressed-kv-write | `vllm/models/deepseek_v41/common/ops/fused_compress_quant_cache.py` | `rope_quant_insert` | 224 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | indexer-k-store | `vllm/models/deepseek_v41/common/ops/indexer_k_store.py` | `indexer_k_norm_rope_store` | 29 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | indexer-topk | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Indexer.forward` | 1470 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | indexer-to-attention | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention._sparse_indexer_and_attn` | 986 | 1009 |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | cuda-topk-buffer | `vllm/model_executor/layers/sparse_attn_indexer.py` | CUDA top-k output into shared buffer | 769 | 780 |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | main-kv-spec | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention.get_kv_cache_spec` | 1138 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | swa-kv-spec | `vllm/v1/attention/backends/mla/sparse_swa.py` | `DeepseekV4SWACache.get_kv_cache_spec` | 116 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | cache-record-format | `vllm/models/deepseek_v41/attention.py` | V4.1 packed KV record widths | 512 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | cache-family-switch | `vllm/models/deepseek_v41/attention.py` | `_use_v41_mxfp8_kv_record` | 128 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | cache-dtype-resolver | `vllm/models/deepseek_v41/attention.py` | `_resolve_dsv4_kv_cache_dtype` | 132 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | backend-selection | `vllm/models/deepseek_v41/nvidia/model.py` | `_select_dsv4_attn_cls` | 197 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-prefill | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `_forward_prefill` | 248 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-decode | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `_forward_decode` | 167 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-decode-call | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `flash_mla_with_kvcache` | 230 | 246 |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | flashinfer-sm120 | `vllm/models/deepseek_v41/nvidia/flashinfer_sparse.py` | `DeepseekV4FlashInferSM120Attention` | 590 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | mega-attention | `vllm/models/deepseek_v41/nvidia/flash_mla_mega_attn.py` | `DeepseekV4MegaAttnAttention.forward_mqa` | 240 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | mega-cache-contract | `vllm/models/deepseek_v41/nvidia/flash_mla_mega_attn.py` | `packed_kv_cache_dtype` | 202 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | sm120-cache-read | `vllm/models/deepseek_v41/nvidia/flashinfer_sparse.py` | SM120 FlashInfer decode cache arguments | 809 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | fused-kv-insert | `csrc/libtorch_stable/fused_deepseek_v4_qnorm_rope_kv_insert_kernel.cu` | `fused_deepseek_v4_qnorm_rope_kv_rope_quant_insert` | 1134 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | swa-replay-spec | `vllm/v1/kv_cache_interface.py` | `SlidingWindowMLASpec.prefix_replay_tokens` | 973 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | replay-config-gates | `vllm/models/deepseek_v41/attention.py` | `swa_bounded_replay` configuration gates | 529 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | replay-batch | `vllm/models/deepseek_v41/nvidia/model_state.py` | `_prepare_replay_batch` | 438 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | hc-collapse | `vllm/models/deepseek_v41/nvidia/model.py` | `hc_collapse_triton` call | 1070 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | logits | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV41LLMForCausalLM.compute_logits` | 1609 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | sampler | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.sample` | 1607 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | async-output-assembly | `vllm/v1/worker/gpu/model_runner.py` | `AsyncOutput` construction | 2174 | 2182 |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | output-postprocess | `vllm/v1/worker/gpu/model_runner.py` | `postprocess_sampled` | 2207 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | kv-connector-postforward | `vllm/v1/worker/gpu/model_runner.py` | `kv_connector.post_forward` | 2266 | — |
-| `docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md` | worker-return | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.sample_tokens` async return | 2270 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | hf-config | `vllm/transformers_utils/config.py` | `deepseek_v41` config mapping | 129 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | architecture-registry | `vllm/model_executor/models/registry.py` | `DeepseekV41ForCausalLM` | 370 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | platform-entry | `vllm/models/deepseek_v41/__init__.py` | `current_platform.is_rocm` branch | 9 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | multimodal-wrapper | `vllm/models/deepseek_v41/nvidia/vl_model.py` | `DeepseekV41ForCausalLM` | 117 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | image-embeddings | `vllm/models/deepseek_v41/nvidia/vl_model.py` | `_process_image_input` | 207 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | runner-entry | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.execute_model` | 1711 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | model-state-selection | `vllm/v1/worker/gpu/model_states/__init__.py` | `resolve_model_state_cls` | 28 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | v41-state-preparation | `vllm/models/deepseek_v41/nvidia/model_state.py` | `DeepseekV41ModelState.prepare_attn` | 308 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | model-input-assembly | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.execute_model` model inputs | 1949 | 1957 |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | runner-model-call | `vllm/v1/worker/gpu/model_runner.py` | `self.model(**model_inputs)` | 2034 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | text-model | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV41LLMForCausalLM` | 1537 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | text-layer-stack | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4Model` layer construction | 765 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | decoder-layer | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV4DecoderLayer.forward` | 455 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | attention-topology | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention` source-layer setup | 304 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | parallel-projections | `vllm/models/deepseek_v41/attention.py` | `_run_parallel_input_projections` | 932 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | attention-overlap | `vllm/models/deepseek_v41/attention.py` | `_prepare_and_attn` | 832 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | compressor-latent | `vllm/models/deepseek_v41/compressor.py` | `DeepseekCompressor.forward` | 250 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | compressor-kernel | `vllm/models/deepseek_v41/common/ops/fused_compress_quant_cache.py` | `fused_save_compress_norm` | 22 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | compressed-kv-write | `vllm/models/deepseek_v41/common/ops/fused_compress_quant_cache.py` | `rope_quant_insert` | 224 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | indexer-k-store | `vllm/models/deepseek_v41/common/ops/indexer_k_store.py` | `indexer_k_norm_rope_store` | 29 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | indexer-topk | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Indexer.forward` | 1470 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | indexer-to-attention | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention._sparse_indexer_and_attn` | 986 | 1009 |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | cuda-topk-buffer | `vllm/model_executor/layers/sparse_attn_indexer.py` | CUDA top-k output into shared buffer | 769 | 780 |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | main-kv-spec | `vllm/models/deepseek_v41/attention.py` | `DeepseekV4Attention.get_kv_cache_spec` | 1138 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | swa-kv-spec | `vllm/v1/attention/backends/mla/sparse_swa.py` | `DeepseekV4SWACache.get_kv_cache_spec` | 116 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | cache-record-format | `vllm/models/deepseek_v41/attention.py` | V4.1 packed KV record widths | 512 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | cache-family-switch | `vllm/models/deepseek_v41/attention.py` | `_use_v41_mxfp8_kv_record` | 128 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | cache-dtype-resolver | `vllm/models/deepseek_v41/attention.py` | `_resolve_dsv4_kv_cache_dtype` | 132 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | backend-selection | `vllm/models/deepseek_v41/nvidia/model.py` | `_select_dsv4_attn_cls` | 197 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-prefill | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `_forward_prefill` | 248 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-decode | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `_forward_decode` | 167 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | flashmla-decode-call | `vllm/models/deepseek_v41/nvidia/flashmla.py` | `flash_mla_with_kvcache` | 230 | 246 |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | flashinfer-sm120 | `vllm/models/deepseek_v41/nvidia/flashinfer_sparse.py` | `DeepseekV4FlashInferSM120Attention` | 590 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | mega-attention | `vllm/models/deepseek_v41/nvidia/flash_mla_mega_attn.py` | `DeepseekV4MegaAttnAttention.forward_mqa` | 240 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | mega-cache-contract | `vllm/models/deepseek_v41/nvidia/flash_mla_mega_attn.py` | `packed_kv_cache_dtype` | 202 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | sm120-cache-read | `vllm/models/deepseek_v41/nvidia/flashinfer_sparse.py` | SM120 FlashInfer decode cache arguments | 809 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | fused-kv-insert | `csrc/libtorch_stable/fused_deepseek_v4_qnorm_rope_kv_insert_kernel.cu` | `fused_deepseek_v4_qnorm_rope_kv_rope_quant_insert` | 1134 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | swa-replay-spec | `vllm/v1/kv_cache_interface.py` | `SlidingWindowMLASpec.prefix_replay_tokens` | 973 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | replay-config-gates | `vllm/models/deepseek_v41/attention.py` | `swa_bounded_replay` configuration gates | 529 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | replay-batch | `vllm/models/deepseek_v41/nvidia/model_state.py` | `_prepare_replay_batch` | 438 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | hc-collapse | `vllm/models/deepseek_v41/nvidia/model.py` | `hc_collapse_triton` call | 1070 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | logits | `vllm/models/deepseek_v41/nvidia/model.py` | `DeepseekV41LLMForCausalLM.compute_logits` | 1609 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | sampler | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.sample` | 1607 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | async-output-assembly | `vllm/v1/worker/gpu/model_runner.py` | `AsyncOutput` construction | 2174 | 2182 |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | output-postprocess | `vllm/v1/worker/gpu/model_runner.py` | `postprocess_sampled` | 2207 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | kv-connector-postforward | `vllm/v1/worker/gpu/model_runner.py` | `kv_connector.post_forward` | 2266 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | worker-return | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.sample_tokens` async return | 2270 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | execute-model-state | `vllm/v1/worker/gpu/model_runner.py` | `ExecuteModelState` | 2054 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | sample-tokens-entry | `vllm/v1/worker/gpu/model_runner.py` | `GPUModelRunner.sample_tokens` | 2078 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | fused-gemm-rs | `vllm/models/deepseek_v41/nvidia/model.py` | `maybe_init_gemm_rs` | 258 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | mhc-shifted-post-pre | `vllm/models/deepseek_v41/nvidia/model.py` | `mhc_shifted_post_pre` | 557 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | moe-unfinalized | `vllm/models/deepseek_v41/nvidia/model.py` | `forward_unfinalized` | 615 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | mega-gate-metadata | `vllm/models/deepseek_v41/nvidia/model.py` | `_mega_gate_metadata` | 1083 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | mega-permute-on-load | `vllm/models/deepseek_v41/nvidia/flash_mla_mega_attn.py` | `permute_on_load` | 188 | — |
+| `docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md` | flashinfer-spec-gate | `vllm/models/deepseek_v41/nvidia/flashinfer_sparse.py` | `has_flashinfer_sparse_mla_sm120_config` | 621 | — |
 
 ## Request Round Trip Evidence
 
@@ -98,7 +106,8 @@ generated: 2026-10-18
    `v41-state-preparation`.
 3. **Model handoff and layer execution:** `model-input-assembly`,
    `runner-model-call`, `text-model`,
-   `text-layer-stack`, `decoder-layer`.
+   `text-layer-stack`, `decoder-layer`, `fused-gemm-rs`, `mhc-shifted-post-pre`,
+   `moe-unfinalized`, `mega-gate-metadata`.
 4. **Attention state and computation:** `attention-topology`,
    `parallel-projections`, `attention-overlap`, `compressor-latent`,
    `compressor-kernel`, `compressed-kv-write`, `indexer-k-store`,
@@ -106,8 +115,10 @@ generated: 2026-10-18
    `swa-kv-spec`.
 5. **Backend result:** `backend-selection`, `flashmla-prefill`,
    `flashmla-decode`, `flashmla-decode-call`, `flashinfer-sm120`,
-   `mega-attention`, `fused-kv-insert`.
-6. **Hidden-state and token return:** `hc-collapse`, `logits`, `sampler`,
+   `flashinfer-spec-gate`, `mega-attention`, `mega-permute-on-load`,
+   `fused-kv-insert`.
+6. **Hidden-state and token return:** `hc-collapse`, `logits`,
+   `execute-model-state`, `sample-tokens-entry`, `sampler`,
    `async-output-assembly`, `output-postprocess`, `kv-connector-postforward`,
    `worker-return`.
 
@@ -121,15 +132,19 @@ generated: 2026-10-18
   creates an optional vision/aligner path and forwards to the text model.
 - `GPUModelRunner.execute_model` receives `SchedulerOutput`, updates request
   state, prepares input rows and cache mappings, calls the custom model state
-  for attention metadata, and invokes the model through eager or graph execution.
+  for attention metadata, and invokes the model through eager or graph execution,
+  caching `ExecuteModelState` (returning `None` on the last pipeline rank).
 - `GPUModelRunner.sample_tokens` consumes saved hidden states, computes logits,
-  samples, postprocesses request state, and returns `AsyncOutput`/worker output.
+  samples, evaluates `check_ep_fault`, postprocesses request state, and returns
+  `AsyncOutput`/worker output.
 
 ### Text layers, compression, and sparse indexing
 
 - `DeepseekV4Model` builds `config.num_hidden_layers` instances of
   `DeepseekV4DecoderLayer`. The layer forward applies mHC around attention and
-  the routed/shared MoE FFN.
+  the routed/shared MoE FFN via TileLang kernels (`mhc_shifted_post_pre`),
+  binds fused GEMM + reduce-scatter (`wo_b`) under sequence parallelism, and
+  allows deferred FFN all-reduce (`forward_unfinalized`).
 - `compress_ratios` accepts 0, 1, or 2: 0 is SWA-only; 1 writes one compressed
   entry per token without a pooling gate; 2 pools token pairs and uses
   compressor state for incomplete groups.

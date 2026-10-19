@@ -14,7 +14,7 @@ aliases:
   - index branch
 appears_in:
   - docs/algorithms/model-architectures/deepseek-v3-2/index.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/compilers-kernels/triton/triton-in-vllm.md
   - docs/frameworks/serving/vllm-ascend/architecture.md
   - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
@@ -61,7 +61,7 @@ The indexer is a heuristic: quantization or close score margins can reorder bord
 - [MiniMax Sparse Attention](../training/efficient-attention/minimax-sparse-attention/index.md) — A sibling approach with a learned index branch for block selection.
 - [IndexCache](../training/efficient-attention/indexcache/index.md) — Shows that adjacent DSA layers often produce redundant top-k selections and reuses the index tensor across layers.
 - [DeepSeek-V3.2: Sparse Attention, Scaled RL, and Thinking in Tool-Use](../algorithms/model-architectures/deepseek-v3-2/index.md) — DeepSeek-V3.2 introduces DeepSeek Sparse Attention (DSA) for sub-quadratic long-context efficiency, a scaled GRPO recipe with.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
 - [vLLM-Ascend Architecture: How the Ascend NPU Port Integrates with vLLM](../frameworks/serving/vllm-ascend/architecture.md) — A code-reading tour of how vllm-ascend maps onto vLLM's six-layer stack and extends upstream vLLM for Ascend NPU execution.
 - [vLLM Ascend](../frameworks/serving/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.

@@ -14,8 +14,8 @@ aliases:
   - mhc
   - manifold-constrained-hyper-connections
 appears_in:
-  - docs/frameworks/serving/deepseek/index.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/index.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md
   - docs/frameworks/serving/vllm-ascend/index.md
   - docs/training/model-families/deepseek/deepseek-v4/index.md
@@ -60,8 +60,8 @@ Each mapping is a sum of a dynamic (input-dependent) term and a static bias term
 - [mHC: Manifold-Constrained Hyper-Connections](../training/architectures/mhc/index.md) — The paper that introduces mHC and analyzes HC's instability.
 - [DeepSeek-V4: Million-Token Context via Hybrid Compressed Attention](../training/model-families/deepseek/deepseek-v4/index.md) — Deploys mHC as the residual mechanism in a 1.6T/284B MoE.
 - [DeepSeek-V4.1-Flash](../training/model-families/deepseek/deepseek-v4.1/index.md) — Uses Single-Pass mHC and Mega-mHC to halve residual activation memory traffic at deployment.
-- [DeepSeek](../frameworks/serving/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek](../frameworks/serving/vllm/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack in vllm-ascend](../frameworks/serving/vllm-ascend/deepseek-v4-inference.md) — How vllm-ascend runs DeepSeek-V4 end to end on Ascend NPUs: model override with mHC hyper-connections, hybrid c4/c128 compressor.
 - [vLLM Ascend](../frameworks/serving/vllm-ascend/index.md) — vLLM's Ascend NPU port: code-reading notes and MoE forward implementation insights.
 - [DeepSeek](../training/model-families/deepseek/index.md) — DeepSeek model training papers: V4 hybrid compressed attention and V3.2 sparse attention with scaled RL.

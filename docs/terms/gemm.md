@@ -22,7 +22,7 @@ appears_in:
   - docs/algorithms/attention/flashattention/flashattention-4.md
   - docs/algorithms/attention/flashattention/index.md
   - docs/algorithms/foundations/kronecker-product.md
-  - docs/frameworks/serving/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
   - docs/frameworks/compilers-kernels/cuda/index.md
   - docs/frameworks/compilers-kernels/cuda/tile-ir/index.md
   - docs/frameworks/compilers-kernels/triton-ascend/cannbot-skills-workflow.md
@@ -97,7 +97,7 @@ The full product is $M \times N \times K$ multiply-accumulate operations. Becaus
 - [FlashAttention-4: Blackwell Attention Kernel Co-Design](../algorithms/attention/flashattention/flashattention-4.md) — FlashAttention-4 algorithm and kernel-pipeline techniques for faster exact attention on NVIDIA Blackwell GPUs.
 - [FlashAttention](../algorithms/attention/flashattention/index.md) — The FlashAttention algorithm and kernel family across GPU generations: IO-aware exact attention, parallelism, Hopper asynchrony.
 - [Kronecker Product](../algorithms/foundations/kronecker-product.md) — The block-structured matrix product A⊗B (matrix direct product), foundational to tensor factorization and the Kronecker.
-- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
+- [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [Triton: Tiled GPU Kernel Language and Compiler](../frameworks/compilers-kernels/triton/index.md) — The original Triton language and compiler for expressing tiled neural network computations as portable, high-performance GPU.
 - [Triton in Practice: How vLLM and vllm-ascend Use Triton](../frameworks/compilers-kernels/triton/triton-in-vllm.md) — A codebase-driven tour of Triton kernel development in vLLM (NVIDIA GPU) and vllm-ascend (Ascend NPU), covering infrastructure.
 - [TileLang Design and Code Learning Path](../frameworks/compilers-kernels/tilelang/index.md) — Uses a tiled GEMM to connect TileLang's Python DSL to TIRX, target-specific lowering, and runtime adapters.
