@@ -11,7 +11,7 @@ sources:
   - raw/frameworks/serving/vllm/vllm-codebase--github-02aa10539f15.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/deepseek-v4.1-gpu-inference-path.md
   - raw/training/model-families/deepseek/deepseek-v4.1-technical-report--paper.pdf
-updated: 2026-10-19
+updated: 2026-10-20
 ---
 
 # DeepSeek-V4.1-Flash on NVIDIA vLLM: GPU Inference Path
@@ -28,6 +28,7 @@ and HTTP response layer are outside this map.
 
 **Related pages:** [DeepSeek-V4.1-Flash report](../../../../../training/model-families/deepseek/deepseek-v4.1/index.md),
 [DeepSeek V4 attention code map](../v4-attention-code-reading.md),
+[MiMo-V2.6-MOPD GPU inference path](../../mimo-v2-6-gpu-inference-path/index.md),
 [vLLM hub](../../index.md).
 
 ## TL;DR

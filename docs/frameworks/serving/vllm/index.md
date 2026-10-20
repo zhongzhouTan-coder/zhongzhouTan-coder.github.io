@@ -10,15 +10,15 @@ sources:
   - raw/frameworks/serving/vllm/vllm-codebase--github-02aa10539f15.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/important-files.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/deepseek-v4.1-gpu-inference-path.md
-updated: 2026-10-19
+  - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/mimo-v2-6-flash-gpu-inference-path.md
+updated: 2026-10-20
 ---
 
 # vLLM
 
 The pinned vLLM source record and code reading notes at commit `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb` retain the October 2026 checkpoint analysis evidence.
 
-- [MiMo-V2.6-Pro-MOPD: vLLM Inference and Deployment](mimo-v2-6-pro-mopd-deployment.md) — Version and memory requirements, H200 TP8 and MI355X TP4 launch profiles, tool parsers, and optional DFlash decoding.
-- [MiMo-V2.6-Flash-MOPD: vLLM Inference and Deployment](mimo-v2-6-flash-mopd-deployment.md) — Flash-specific TP4 launch, MXFP4 memory floor, H200 and AMD backend profiles, and optional DFlash configuration.
+- [MiMo-V2.6-MOPD on NVIDIA vLLM: GPU Inference Path](mimo-v2-6-gpu-inference-path/index.md) — Worker-boundary trace through the shared Flash/Pro checkpoint path, local-versus-global KV lifetimes and per-rank record arithmetic, DiffKV attention and MXFP4 expert selection on SM100 versus SM120, optional DFlash, and bounded local-KV retention.
 - [vLLM Architecture and Code Organization Overview](vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [DeepSeek Integrations](deepseek/index.md) — DeepSeek V4 and V4.1 implementation readings across vLLM and vllm-ascend.
 - [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](glm-5.2-inference-path.md) — Complete upstream request round trip through OpenAI admission, V1 scheduling, the CUDA GPU runner, configuration-driven shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, detokenization, response emission, and cleanup.

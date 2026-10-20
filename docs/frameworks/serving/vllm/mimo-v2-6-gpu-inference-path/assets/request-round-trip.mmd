@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant Scheduler
+    participant Runner as GPU runner
+    participant Model as MiMo V2 decoder
+    participant Cache as Per-layer paged KV
+    participant Sampler as Sampler
+
+    Scheduler->>Runner: SchedulerOutput with one decode token
+    Runner->>Runner: Map each cache group block table to slots
+    Runner->>Model: Token row, positions, attention metadata
+    loop Every configured decoder layer
+        Model->>Cache: Pack K and V into one record at the slot
+        alt Local layer
+            Cache-->>Model: Read the trailing 128-token window
+        else Global layer
+            Cache-->>Model: Read the full visible history
+        end
+        Model->>Model: Dense MLP or routed MXFP4 experts
+    end
+    Model-->>Runner: Final hidden state
+    Note over Runner: execute_model computes logits and returns state
+    Scheduler->>Runner: sample_tokens
+    Runner->>Sampler: Logits and sampling metadata
+    Sampler-->>Runner: Sampled token ID
+    Runner-->>Scheduler: ModelRunnerOutput or AsyncOutput

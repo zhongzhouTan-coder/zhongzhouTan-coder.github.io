@@ -2259,7 +2259,8 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/",
       "docs_paths": [
         "docs/frameworks/serving/vllm/index.md",
-        "docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md"
+        "docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md",
+        "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md"
       ],
       "status": "ingested"
     },
@@ -2314,7 +2315,7 @@
         "raw/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.metadata.json"
       ],
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.md",
-      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
     }
   ,
@@ -2334,7 +2335,7 @@
         "raw/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.metadata.json"
       ],
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.md",
-      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-pro-mopd-deployment.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
     }
   ,
@@ -2354,7 +2355,7 @@
         "raw/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.metadata.json"
       ],
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.md",
-      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-flash-mopd-deployment.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
     }
   ,
@@ -2374,7 +2375,7 @@
         "raw/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.metadata.json"
       ],
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.md",
-      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-flash-mopd-deployment.md",
+      "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
     }
   ]
