@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-10-19
+updated: 2026-10-20
 ---
 
 # Wiki Index
@@ -35,7 +35,7 @@ updated: 2026-10-19
 ## Frameworks
 
 - [Frameworks](../frameworks/index.md) — Category overview.
-- [Inference Serving Systems](../frameworks/serving/index.md) — Runtimes, caches, DeepSeek integrations, and deployment pipelines.
+- [Inference Serving Systems](../frameworks/serving/index.md) — Runtimes, model-specific GPU paths, caches, and deployment pipelines.
 - [Compilers and Kernel Frameworks](../frameworks/compilers-kernels/index.md) — GPU and NPU programming stacks.
 - [Programming Languages](../frameworks/languages/index.md) — C++ and Python semantics and runtimes.
 - [Runtime Infrastructure](../frameworks/infrastructure/index.md) — Sandboxing, orchestration, and observability.

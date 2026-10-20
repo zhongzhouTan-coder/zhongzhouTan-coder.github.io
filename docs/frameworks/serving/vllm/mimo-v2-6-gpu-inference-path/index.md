@@ -33,7 +33,7 @@ updated: 2026-10-20
 **Inspection:** 2026-10-20; static code reading only.  
 **Scope:** the NVIDIA GPU worker path from a `SchedulerOutput` handed to `GPUModelRunner.execute_model` through the MiMo V2 decoder forward pass, DiffKV attention, dense or MXFP4 routed feed-forward layers, logits computation, and sampling in `GPUModelRunner.sample_tokens`, returning `ModelRunnerOutput` / `AsyncOutput`. Request rendering, scheduling policy, detokenization, and HTTP response assembly are outside this map.
 
-**Related pages:** [vLLM hub](../index.md), [DeepSeek-V4.1-Flash GPU inference path](../deepseek/v4.1-gpu-inference-path/index.md), [vLLM MHA code path](../vllm-mha-code-path.md), [KV cache](../../../../terms/kv-cache.md), [sliding-window attention](../../../../terms/sliding-window-attention.md), and [mixture-of-experts](../../../../terms/mixture-of-experts.md).
+**Related pages:** [vLLM hub](../index.md), [Qwen3.8-Flash-Next GPU inference path](../qwen3-8-flash-next-gpu-inference-path/index.md), [DeepSeek-V4.1-Flash GPU inference path](../deepseek/v4.1-gpu-inference-path/index.md), [vLLM MHA code path](../vllm-mha-code-path.md), [KV cache](../../../../terms/kv-cache.md), [sliding-window attention](../../../../terms/sliding-window-attention.md), and [mixture-of-experts](../../../../terms/mixture-of-experts.md).
 
 ## TL;DR
 

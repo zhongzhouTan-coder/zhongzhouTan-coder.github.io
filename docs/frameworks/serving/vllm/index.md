@@ -11,6 +11,9 @@ sources:
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/important-files.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/deepseek-v4.1-gpu-inference-path.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb/mimo-v2-6-flash-gpu-inference-path.md
+  - raw/frameworks/serving/vllm/vllm-codebase--github-fce64bc5c2c9.md
+  - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/important-files.md
+  - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/qwen3-8-flash-next-gpu-inference-path.md
 updated: 2026-10-20
 ---
 
@@ -18,7 +21,10 @@ updated: 2026-10-20
 
 The pinned vLLM source record and code reading notes at commit `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb` retain the October 2026 checkpoint analysis evidence.
 
+The Qwen3.8-Flash-Next NVIDIA path uses the release-specific Qwen4Exp source snapshot at commit `fce64bc5c2c939a4521bfb9b462c8c74c1c13893`; the earlier model paths remain pinned to their own revisions.
+
 - [MiMo-V2.6-MOPD on NVIDIA vLLM: GPU Inference Path](mimo-v2-6-gpu-inference-path/index.md) — Worker-boundary trace through the shared Flash/Pro checkpoint path, local-versus-global KV lifetimes and per-rank record arithmetic, DiffKV attention and MXFP4 expert selection on SM100 versus SM120, optional DFlash, and bounded local-KV retention.
+- [Qwen3.8-Flash-Next on NVIDIA vLLM: GPU Inference Path](qwen3-8-flash-next-gpu-inference-path/index.md) — Qwen4Exp model registration, V2 runner state handoff, PLE/GDN recurrent state, QSA side caches and top-k selection, sparse reads from main K/V, and async sampled-token return.
 - [vLLM Architecture and Code Organization Overview](vllm-overview.md) — Start here: the six-layer mental model, the `vllm/` and `vllm/v1/` directory maps, component-by-component responsibilities, the request lifecycle across processes, and the main extension points.
 - [DeepSeek Integrations](deepseek/index.md) — DeepSeek V4 and V4.1 implementation readings across vLLM and vllm-ascend.
 - [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](glm-5.2-inference-path.md) — Complete upstream request round trip through OpenAI admission, V1 scheduling, the CUDA GPU runner, configuration-driven shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, detokenization, response emission, and cleanup.

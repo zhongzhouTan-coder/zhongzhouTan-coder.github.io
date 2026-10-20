@@ -148,5 +148,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm-ascend",
     "revision": "51b0242c0d3be1d3bd59e763a7d78b8553cd45e1"
+  },
+  "vllm-fce64bc5c2c9": {
+    "local_checkout": "external-repos/vllm-fce64bc5c2c9",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "fce64bc5c2c939a4521bfb9b462c8c74c1c13893"
   }
 }

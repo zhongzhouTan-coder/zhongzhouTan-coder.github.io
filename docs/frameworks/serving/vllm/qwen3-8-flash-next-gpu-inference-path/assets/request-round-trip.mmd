@@ -1,0 +1,44 @@
+sequenceDiagram
+    participant Scheduler
+    participant Worker as GPU worker V2
+    participant State as Qwen4Exp model state
+    participant Model as Qwen4Exp model
+    participant PLE as PLE layer and embedding table
+    participant Mamba as GDN or PLE recurrent state
+    participant Indexer as QSA indexer
+    participant Side as QSA side caches
+    participant MainKV as Main paged K/V
+    participant Sparse as QSA Triton attention
+    participant Sampler as Logits and sampler
+
+    Scheduler->>Worker: execute_model with four one-token decode requests
+    Worker->>State: prepare_inputs from InputBatch and RequestState
+    State-->>Worker: query_start_loc and ngram_context
+    Worker->>Model: input_ids, positions, embeddings, attention metadata
+    loop Each configured decoder layer
+        opt Layer has PLE
+            Model->>PLE: hash request n-grams and look up embeddings
+            PLE->>Mamba: read or update short-convolution state
+            PLE-->>Model: PLE-enriched hidden state
+        end
+        alt linear_attention layer
+            Model->>Mamba: CUDA GDN reads or updates recurrent state
+            Mamba-->>Model: linear-attention output
+        else QSA layer with indexer enabled
+            Model->>Indexer: project Q/K/V and indexer Q/K
+            Indexer->>Side: update raw-key ring and compressed-key history
+            Indexer->>Indexer: score groups and expand selected positions
+            alt Fused QSA preparation
+                Indexer->>MainKV: prepare and write current K/V
+            else Separate QSA preparation
+                Indexer->>MainKV: write current K/V after selection
+            end
+            Sparse->>MainKV: read selected K/V using indices and block table
+            Sparse-->>Model: gated sparse-attention output
+        end
+        Model->>Model: routed MoE and hyperconnection
+    end
+    Model-->>Worker: final sample hidden state
+    Worker->>Sampler: compute logits on selected rows
+    Sampler-->>Worker: sampled token IDs
+    Worker-->>Scheduler: AsyncOutput

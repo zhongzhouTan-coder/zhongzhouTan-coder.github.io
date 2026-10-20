@@ -2377,6 +2377,27 @@
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-rl-vllm-recipe--web-2026-10-10-cae25103d982.md",
       "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@fce64bc5c2c939a4521bfb9b462c8c74c1c13893",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "fce64bc5c2c939a4521bfb9b462c8c74c1c13893",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/vllm-codebase--github-fce64bc5c2c9.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm/qwen3-8-flash-next-gpu-inference-path/index.md",
+        "docs/frameworks/serving/vllm/index.md"
+      ],
+      "status": "ingested"
     }
   ]
 }
