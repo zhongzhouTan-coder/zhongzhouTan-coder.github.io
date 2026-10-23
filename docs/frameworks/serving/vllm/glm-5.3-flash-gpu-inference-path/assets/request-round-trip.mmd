@@ -1,0 +1,49 @@
+sequenceDiagram
+    autonumber
+    participant S as V1 Scheduler
+    participant W as GPUWorker
+    participant R as V1 GPUModelRunner
+    participant M as GLM5Next model
+    participant I as Kpool indexer
+    participant A as Sparse MLA and FlashMLA
+    participant K as KDA recurrent path
+    participant E as MLP path
+    participant Sam as Sampler
+
+    S->>W: SchedulerOutput with one decode row
+    W->>R: execute_model with SchedulerOutput
+    R->>R: Prepare token ID, position, cache slot, and attention metadata
+    R->>M: forward with input_ids, positions, and forward context
+    loop Configured decoder layers
+        alt Layer uses linear_attention
+            M->>K: Project qkv and select recurrent-state row
+            K->>K: Update convolution state and recurrent state
+            K-->>M: KDA attention output
+        else MLA layer with sparse indexing configured
+            M->>I: Project index query, key, and pool gate
+            I->>I: Update tail ring and compress a completed pool
+            I->>I: Score pooled keys and select pool IDs
+            I->>I: Expand pools to token positions and append incomplete tail
+            I-->>M: Logical token positions in top-k buffer
+            M->>A: Write main latent KV and prepare MLA query
+            A->>A: Map selected positions and run sparse attention
+            A-->>M: Latent attention output
+        end
+        alt Sparse MoE configured
+            M->>E: Normalized row and router input
+            E-->>M: Routed and shared expert output
+        else Dense MLP configured
+            M->>E: Normalized row
+            E-->>M: Dense MLP output
+        end
+    end
+    M-->>R: Final normalized hidden row
+    R->>M: compute_logits for selected hidden rows
+    M-->>R: Vocabulary logits
+    R-->>W: None, execution state saved for sample_tokens
+    W->>R: sample_tokens
+    R->>Sam: Logits and sampling metadata
+    Sam-->>R: Sampled next-token ID
+    R->>R: Update request state and assemble output
+    R-->>W: ModelRunnerOutput with sampled_token_ids
+    W-->>S: Sampled token IDs

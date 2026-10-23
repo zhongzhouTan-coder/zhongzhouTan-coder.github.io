@@ -2260,7 +2260,8 @@
       "docs_paths": [
         "docs/frameworks/serving/vllm/index.md",
         "docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md",
-        "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md"
+        "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
+        "docs/frameworks/serving/vllm/glm-5.3-flash-gpu-inference-path/index.md"
       ],
       "status": "ingested"
     },
