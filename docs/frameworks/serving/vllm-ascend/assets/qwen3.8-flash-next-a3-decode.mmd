@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant S as EngineCore scheduler
+    participant R as Ascend V1 runner
+    participant P as PLE input adapter
+    participant D as Qwen4Exp decoder
+    participant I as QSA indexer
+    participant A as GBSA backend
+    participant O as Sampler and output
+    S->>R: Scheduled token rows and block tables
+    R->>P: Request token history and query starts
+    P-->>R: PLE context in stable buffers
+    R->>D: Token IDs, positions, metadata, PLE context
+    D->>I: QSA hidden row and position
+    I->>I: Write raw key and completed compressed key
+    I-->>D: Selected compressed group IDs
+    D->>A: Write main K/V then read selected groups
+    A-->>D: Sparse attention vector
+    D-->>R: Final sampled hidden row
+    R->>O: Logits and sampling metadata
+    O-->>R: Sampled token IDs per request
+    R-->>S: ModelRunnerOutput

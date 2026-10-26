@@ -27,6 +27,12 @@ generated: 2026-10-10
 
 ## Evidence Map
 
+### Required Code Evidence
+
+| Docs page | Finding | File | Symbol | Start | End |
+| --- | --- | --- | --- | --- | --- |
+| docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md | prior-pin-registry | vllm_ascend/models/__init__.py | register_model | 4 | — |
+
 - `vllm_ascend/models/deepseek_mtp.py` — GLM-5.3 family registration
 - `vllm_ascend/models/deepseek_v41/model.py` — DeepSeek-V4.1 cache path
 - `vllm_ascend/models/minimax_m3/minimax_m3.py` — MiniMax-M3 sparse attention

@@ -2281,7 +2281,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/51b0242c0d3be1d3bd59e763a7d78b8553cd45e1/",
       "docs_paths": [
-        "docs/frameworks/serving/vllm-ascend/index.md"
+        "docs/frameworks/serving/vllm-ascend/index.md",
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md"
       ],
       "status": "ingested"
     },
@@ -2298,8 +2299,7 @@
       "docs_path": "docs/algorithms/attention/phase-sensitivity-chunked-kv-cache/index.md",
       "status": "ingested",
       "topic_path": "attention"
-    }
-  ,
+    },
     {
       "id": "web:huggingface.co/mimo-v2-6-pro-mopd-model-card@2026-10-10-33e8a9c2cb40",
       "title": "MiMo-V2.6-Pro-MOPD model card",
@@ -2318,8 +2318,7 @@
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-mopd-model-card--web-2026-10-10-33e8a9c2cb40.md",
       "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
-    }
-  ,
+    },
     {
       "id": "web:recipes.vllm.ai/mimo-v2-6-pro-rl-vllm-recipe@2026-10-10-6d7d2094d16b",
       "title": "MiMo-V2.6-Pro-RL on vLLM — Serve command for H200, GB300 NVL4, MI355X",
@@ -2338,8 +2337,7 @@
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-pro-rl-vllm-recipe--web-2026-10-10-6d7d2094d16b.md",
       "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
-    }
-  ,
+    },
     {
       "id": "web:huggingface.co/mimo-v2-6-flash-mopd-model-card@2026-10-10-8a6b33f38b3c",
       "title": "MiMo-V2.6-Flash-MOPD model card",
@@ -2358,8 +2356,7 @@
       "derived_path": "derived/web-markdown/frameworks/serving/vllm/mimo-v2-6-flash-mopd-model-card--web-2026-10-10-8a6b33f38b3c.md",
       "docs_path": "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
       "status": "ingested"
-    }
-  ,
+    },
     {
       "id": "web:recipes.vllm.ai/mimo-v2-6-flash-rl-vllm-recipe@2026-10-10-cae25103d982",
       "title": "MiMo-V2.6-Flash-RL on vLLM — Serve command for H200, GB300 NVL4, MI300X, MI325X, MI355X",
@@ -2397,6 +2394,46 @@
       "docs_paths": [
         "docs/frameworks/serving/vllm/qwen3-8-flash-next-gpu-inference-path/index.md",
         "docs/frameworks/serving/vllm/index.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:shaopeng-666/vllm-ascend@adc05909ea0125d058c2c9eb3131e761929f2551",
+      "title": "vllm-ascend Codebase",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "adc05909ea0125d058c2c9eb3131e761929f2551",
+      "category": "frameworks",
+      "topic_path": "serving/vllm-ascend",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/shaopeng-666/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-adc05909ea01.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/adc05909ea0125d058c2c9eb3131e761929f2551/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@a98247ab4db686ee03c66d5feb3c761e52a2f8ab",
+      "title": "vllm Codebase",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "a98247ab4db686ee03c66d5feb3c761e52a2f8ab",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/vllm-codebase--github-a98247ab4db6.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/a98247ab4db686ee03c66d5feb3c761e52a2f8ab/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md"
       ],
       "status": "ingested"
     }

@@ -154,5 +154,17 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm",
     "revision": "fce64bc5c2c939a4521bfb9b462c8c74c1c13893"
+  },
+  "vllm-ascend-adc05909ea01": {
+    "local_checkout": "external-repos/vllm-ascend-qwen38-pr",
+    "provider": "github",
+    "repository_url": "https://github.com/shaopeng-666/vllm-ascend",
+    "revision": "adc05909ea0125d058c2c9eb3131e761929f2551"
+  },
+  "vllm-a98247ab4db6": {
+    "local_checkout": "external-repos/vllm-qwen38-upstream",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "a98247ab4db686ee03c66d5feb3c761e52a2f8ab"
   }
 }

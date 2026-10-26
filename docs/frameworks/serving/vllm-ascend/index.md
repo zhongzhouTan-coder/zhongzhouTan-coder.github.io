@@ -9,7 +9,7 @@ sources:
   - logs/index.md
   - raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-51b0242c0d3b.md
   - derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/51b0242c0d3be1d3bd59e763a7d78b8553cd45e1/important-files.md
-updated: 2026-10-17
+updated: 2026-10-23
 ---
 
 # vLLM Ascend
@@ -24,6 +24,7 @@ The pinned vLLM Ascend source record and code reading notes at commit `51b0242c0
 - [DeepSeek-V4 Lightning Indexer C8 Quantization](deepseek-v4-lightning-indexer-c8.md) — How the DeepSeek-V4 [Lightning Indexer](../../../terms/lightning-indexer.md) runs on an 8-bit key cache and query in vllm-ascend: INT8 + FP16 scales on 910B/A2/A3, [FP8](../../../terms/fp8.md) e4m3 + FP32 scales on A5, the quantized top-k custom operators, and the C4-vs-C8 naming.
 - [DeepSeek-V4 Inference on Ascend: The DSA Serving Stack](deepseek-v4-inference.md) — End-to-end DeepSeek-V4 serving on Ascend NPUs: the model override with mHC [hyper-connections](../../../terms/hyper-connections.md), hybrid c4/c128 compressor layers, the AscendDSA prefill/decode flow, the five-type heterogeneous [KV cache](../../../terms/kv-cache.md), the sparse-attention custom operator, and the MTP draft model.
 - [Qwen3.5 / Qwen3.6 Inference Path on vLLM Ascend](qwen3.5-qwen3.6-inference.md) — How the shared `qwen3_5`-family models (Qwen3.5-27B / Qwen3.6-27B dense hybrid Mamba-Transformer, multimodal; Qwen3.5/Qwen3.6-35B-A3B and Qwen3.5-397B-A17B sparse MoE) run on Ascend by reusing the `qwen3_5` / `qwen3_5_moe` model types: patched hybrid decoder forward, GDN [linear attention](../../../terms/linear-attention.md) plus FIA full attention, ModelSlim W8A8 quantization, `qwen3_5_mtp` speculative decoding, and ACL-graph capture at pinned revision `9a52ca5fc36c`.
+- [Qwen3.8-Flash-Next on Atlas A3: vLLM-Ascend Inference Path](qwen3.8-flash-next-a3-inference-path.md) — Provisional reading of the unmerged Qwen4Exp Ascend PR: W8A8 load, PLE and GDN state, QSA Lightning Indexer side caches, GBSA main-K/V read, and sampled-token handoff on A3.
 - [Qwen3.8-FP8 on Ascend 950: Why Weights Become MXFP8 at Load Time](qwen3.8-fp8-mxfp8-950.md) — How native Qwen/Qwen3.8-27B-FP8 block-wise FP8 weights are reconstructed, re-quantized to E4M3 + E8M0 MXFP8 on Ascend 950, and repacked for `npu_quant_matmul`, with dense fallbacks on other Ascend generations.
 - [vLLM-Ascend Prefill and Decode Scheduling: Qwen3.5 GQA](prefill-decode-scheduling-qwen3.5.md) — Token-budget scheduling, chunked prefills, mixed FIA GQA layouts, and the parallel GDN recurrent path.
 

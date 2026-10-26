@@ -466,3 +466,15 @@ updated: 2026-10-10
 ## 2026-10-21
 
 - Added [GLM-5.3-Flash on NVIDIA vLLM: GPU Inference Path](../frameworks/serving/vllm/glm-5.3-flash-gpu-inference-path/index.md) using the existing clean vLLM pin `02aa10539f15c8c73aa7fd4a5ee0f691cbf88dcb`. The static V1 worker trace separates KDA recurrent state, pooled index keys, the incomplete-pool tail, main MLA latent KV, and temporary top-k positions; it follows the explicit SM90 `FLASHMLA_SPARSE` decode branch through sampled-token return. A scoped upstream refresh found relevant changes but deferred a new evidence revision until 2026-10-24; no checkpoint or GPU runtime was exercised.
+
+## 2026-10-23
+
+- Added [Qwen3.8-Flash-Next on Atlas A3: vLLM-Ascend Inference Path](../frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md) from the open Ascend PR head `adc05909ea0125d058c2c9eb3131e761929f2551` and its upstream vLLM dependency `a98247ab4db686ee03c66d5feb3c761e52a2f8ab`. The provisional static trace covers W8A8 method selection, PLE/GDN and QSA state, Lightning Indexer, GBSA, and target-token return; the local registered Ascend pin predates this code and no NPU run was performed here.
+
+## 2026-10-24
+
+- Expanded the [Qwen3.8-Flash-Next A3 inference path](../frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md) with a runner-to-sampler sequence and the BF16 QSA cache calculation: 12.75 KiB of growing payload per token per NPU at TP4 or TP8, separate from the six-region allocator reservation. Added a pinned negative-registration evidence link for the older local Ascend checkout; the A3 PR remains unmerged and was not rerun on an NPU here.
+
+## 2026-10-26
+
+- Expanded the [Qwen3.8-Flash-Next A3 inference path](../frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md) using pinned Ascend PR `adc05909ea01` and upstream vLLM `a98247ab4db6` source records. Added a worker-level request round trip, cache-coordinate example, Lightning Indexer and GBSA handoffs, conditional six-region allocation, MTP and graph branches, and revision-aware evidence maps. The code path was read statically; this PR head was not run on an NPU here.
