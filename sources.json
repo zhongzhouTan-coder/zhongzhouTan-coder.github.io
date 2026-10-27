@@ -1903,7 +1903,8 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/7702ccd7d8dea6b4dabdacb0118adb522dedbec7/",
       "docs_paths": [
         "docs/frameworks/serving/vllm-ascend/qwen3.8-fp8-mxfp8-950.md",
-        "docs/frameworks/serving/vllm-ascend/glm-5.1-c8-950.md"
+        "docs/frameworks/serving/vllm-ascend/glm-5.1-c8-950.md",
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md"
       ],
       "status": "ingested",
       "topic_path": "serving/vllm-ascend"
@@ -2282,7 +2283,8 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/51b0242c0d3be1d3bd59e763a7d78b8553cd45e1/",
       "docs_paths": [
         "docs/frameworks/serving/vllm-ascend/index.md",
-        "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md"
+        "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md",
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md"
       ],
       "status": "ingested"
     },
@@ -2434,6 +2436,26 @@
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/a98247ab4db686ee03c66d5feb3c761e52a2f8ab/",
       "docs_paths": [
         "docs/frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@8405ff749d05aee320923d7d1dd9ad24c9246d4c",
+      "title": "vLLM Ascend Codebase (DeepSeek-V4 C4/C128 main-KV compression)",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "8405ff749d05aee320923d7d1dd9ad24c9246d4c",
+      "category": "frameworks",
+      "topic_path": "serving/vllm-ascend",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-8405ff749d05.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/8405ff749d05aee320923d7d1dd9ad24c9246d4c/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md"
       ],
       "status": "ingested"
     }
