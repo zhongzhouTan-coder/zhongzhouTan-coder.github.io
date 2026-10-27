@@ -478,3 +478,8 @@ updated: 2026-10-10
 ## 2026-10-26
 
 - Expanded the [Qwen3.8-Flash-Next A3 inference path](../frameworks/serving/vllm-ascend/qwen3.8-flash-next-a3-inference-path.md) using pinned Ascend PR `adc05909ea01` and upstream vLLM `a98247ab4db6` source records. Added a worker-level request round trip, cache-coordinate example, Lightning Indexer and GBSA handoffs, conditional six-region allocation, MTP and graph branches, and revision-aware evidence maps. The code path was read statically; this PR head was not run on an NPU here.
+
+## 2026-10-27
+
+- Added [GLM-5.3-Flash on Ascend A3 and A5](../frameworks/serving/vllm-ascend/glm-5.3-flash-a3-a5-inference/index.md) using Ascend commit `8405ff749d05aee320923d7d1dd9ad24c9246d4c`. The static V1 decode trace covers KDA state, pooled index and tail, C8 main KV, hardware-specific attention and MoE choices, and sampled-token output. No checkpoint or NPU runtime was exercised.
+- Expanded the GLM-5.3-Flash A3/A5 trace with pinned code snapshots for slot mapping, decoder state, KDA, cache writes, index selection, C8 attention, MoE routing, sampling, and the floating-cache device gate.

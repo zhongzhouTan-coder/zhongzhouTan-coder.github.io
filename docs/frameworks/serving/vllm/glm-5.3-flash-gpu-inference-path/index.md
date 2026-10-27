@@ -356,6 +356,7 @@ ID is a different object entirely.
 ## Go Deeper
 
 - **Understand the neighboring GLM path:** [GLM-5.2 on vLLM](../glm-5.2-inference-path.md) follows its own architecture registration through the request/API boundary and sparse MLA.
+- **Compare Ascend A3 and A5:** [GLM-5.3-Flash on Ascend](../../vllm-ascend/glm-5.3-flash-a3-a5-inference/index.md) follows the Ascend-specific KDA, pooled indexer, sparse attention, and C8 paths at a different source revision.
 - **Understand the MoE path:** [GLM-5.1 on vLLM](../glm-5.1-expert-parallel/index.md) focuses on expert-parallel routing and dispatch.
 - **Compare sparse MLA implementations:** [DeepSeek-V4.1-Flash on NVIDIA vLLM](../deepseek/v4.1-gpu-inference-path/index.md) is a different model path; its cache roles and layer pattern are not GLM-5.3-Flash facts.
 - **Navigate the serving code:** [vLLM hub](../index.md).

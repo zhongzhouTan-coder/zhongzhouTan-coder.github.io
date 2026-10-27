@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant R as V1 runner
+    participant M as GLM decoder
+    participant K as KDA state
+    participant I as Pool indexer
+    participant A as Sparse attention
+    R->>M: Token row, position and cache metadata
+    M->>K: Project QKV and update recurrent history
+    K-->>M: Linear attention output
+    M->>I: Project index query and update pooled keys and tail
+    I-->>M: Selected token positions
+    M->>A: Query, selected positions and main latent KV
+    A-->>M: Sparse attention output
+    M-->>R: Final normalized hidden row
+    R->>R: Compute logits and sample
+    R-->>R: Return ModelRunnerOutput with token ID

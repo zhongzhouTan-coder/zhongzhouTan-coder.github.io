@@ -2455,7 +2455,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/8405ff749d05aee320923d7d1dd9ad24c9246d4c/",
       "docs_paths": [
-        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md"
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4-inference.md",
+        "docs/frameworks/serving/vllm-ascend/glm-5.3-flash-a3-a5-inference/index.md"
       ],
       "status": "ingested"
     }
