@@ -54,15 +54,13 @@
     "MD029": { "style": "ordered" }
   },
 
-  // Only lint markdown files under docs/ and the root READMEs.
+  // Lint maintained docs, instructions, and repository evidence; exclude
+  // third-party checkouts and generated site output.
   "globs": [
     "docs/**/*.md",
     "README.md",
     "AGENTS.md",
-    ".github/instructions/repo-reading.instructions.md",
-    ".github/instructions/repository-evidence-template.md",
-    ".github/instructions/source-organization.instructions.md",
-    ".github/instructions/web-source.instructions.md",
+    ".github/instructions/**/*.md",
     "raw/**/*codebase--*-*.md",
     "derived/repo-analysis/**/*.md"
   ],

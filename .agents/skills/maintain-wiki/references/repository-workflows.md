@@ -14,6 +14,7 @@ Read each selected instruction file completely before editing its governed artif
 | Source naming, category, derived path, or manifest | `.github/instructions/source-organization.instructions.md` |
 | Web capture or web-derived synthesis | `.github/instructions/web-source.instructions.md` |
 | Repository-backed evidence | `.github/instructions/repo-reading.instructions.md` |
+| Repository-backed model inference path | `.github/instructions/model-inference-path.instructions.md` |
 | Wiki index or chronological log | `.github/instructions/logs-maintenance.instructions.md` |
 
 Treat `AGENTS.md` as authoritative when this reference and the repository diverge.

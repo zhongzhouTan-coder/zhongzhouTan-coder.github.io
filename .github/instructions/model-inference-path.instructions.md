@@ -1,22 +1,21 @@
 ---
-name: analyze-model-inference-path
-description: Trace a model's serving or inference implementation from a request or scheduled batch through model layers, attention backends, caches, sampling, and returned output. Use for repository-backed inference code analysis or reader-facing code-path docs, not paper-only model architecture summaries.
+description: "Use for repository-backed model serving or inference-path analysis, including reader-facing code-path docs. Not for paper-only architecture summaries."
+applyTo: "docs/**/*inference-path*/**, docs/**/*inference-path*.md"
 ---
 
-# Analyze Model Inference Path
+# Model Inference Path Instructions
 
-Produce a code-evidenced path that lets a reader answer: what enters the model,
-which state changes, which implementation branch runs, and what reaches the
-caller? Select one concrete workload and device/backend branch for the first
-walkthrough, then explain important alternatives.
+Use these rules to trace what enters a model, which state changes, which
+implementation branch runs, and what reaches the caller. Select one concrete
+workload and device/backend branch for the first walkthrough, then explain
+important alternatives.
 
 ## Establish the Boundary and Evidence
 
 - Follow the user's requested outcome. A one-off explanation does not itself
-  authorize new wiki artifacts. For maintained repository-backed pages here,
-  read `AGENTS.md` and `.github/instructions/repo-reading.instructions.md` for
-  pinned revisions, read-only checkouts, derived evidence, and `code-link`
-  requirements.
+  authorize new wiki artifacts. For maintained repository-backed pages, read
+  [repo-reading.instructions.md](repo-reading.instructions.md) for pinned
+  revisions, read-only checkouts, derived evidence, and `code-link` rules.
 - State the entry and return boundaries, workload (for example prefill or one
   ordinary decode token), hardware, relevant configuration, and what was only
   inferred from code. Do not present a selected static branch as a measured GPU
@@ -73,10 +72,10 @@ explain how to read it immediately beside it. Label a paper architecture image
 as design intent and a synthesized flow as a pinned-code explanation. Preserve
 local editable diagram sources and a readable render as required by `AGENTS.md`.
 
-The [DeepSeek V4.1 GPU inference path](../../../docs/frameworks/serving/deepseek/v4.1-gpu-inference-path/index.md)
+The [DeepSeek V4.1 GPU inference path](../../docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md)
 is an example of the method, not a required page template or a source of facts
-for another model. In particular, its SM100/SM120 cache records and layer-role
-names are model-specific.
+for another model. Its SM100/SM120 cache records and layer-role names are
+model-specific.
 
 Before finishing, check that every selected path reaches the stated return
 boundary, every cache write has a corresponding read or justified lifetime,
