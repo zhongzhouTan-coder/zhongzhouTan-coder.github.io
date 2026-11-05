@@ -8,7 +8,7 @@ confidence: medium
 sources:
   - raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
   - derived/pdf-markdown/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies/kv-cache-optimization-strategies.md
-updated: 2026-10-09
+updated: 2026-10-31
 ---
 
 # KV Cache Optimization Strategies for Scalable and Efficient LLM Inference
@@ -272,3 +272,7 @@ These are reported headline values collected from different original papers, mod
 - **Build on the serving path:** [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md) and [vLLM Block Table Management](../vllm/vllm-block-management/index.md)
 - **Build on alternative attention:** [Transformers Are RNNs: Linear Attention](../../../algorithms/attention/linear/index.md), [DeepSeek-V2 Multi-Head Latent Attention](../../../algorithms/attention/variants/deepseek-v2-mla.md), and [Kimi Linear](../../../training/model-families/kimi/kimi-linear/index.md)
 - **Reproduce:** The survey does not provide a single implementation or unified benchmark; reproduce a chosen method from its original paper under a fixed model, hardware, cache budget, and quality protocol.
+
+## System-Level Context
+
+[CAICT 2026: Inference Optimization as a System](../inference-optimization/caict-2026/index.md) connects these state-management choices to cross-instance cache routing, prefill/decode separation, and service objectives. Its distinction between saved computation and state-transfer cost is useful when choosing a memory-tier strategy.

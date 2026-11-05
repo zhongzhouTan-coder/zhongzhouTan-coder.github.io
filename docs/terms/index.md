@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-10-10
+updated: 2026-10-31
 ---
 
 # Terms Glossary
@@ -87,6 +87,9 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 - [PagedAttention](pagedattention.md) — An attention algorithm that stores a sequence's KV cache in fixed-size non-contiguous blocks addressed through a per-request block table, enabling paged memory management.
 - [Speculative Decoding](speculative-decoding.md) — Drafts several tokens cheaply and has the target model verify them in parallel without changing the target distribution under strict acceptance.
 - [Tree Attention](tree-attention.md) — Evaluates speculative draft branches together while restricting every token to its own root-to-node ancestry.
+- [Prefill-Decode Disaggregation](prefill-decode-disaggregation.md) — Separating prompt processing and autoregressive generation onto independently scheduled execution resources.
+- [Attention-FFN Disaggregation](attention-ffn-disaggregation.md) — Placing attention and feedforward modules on separately provisioned resources, exchanging representations across their execution boundary.
+- [Prefix Caching](prefix-caching.md) — Reusing compatible attention state for a previously processed token prefix to avoid repeated prompt computation.
 
 ## Benchmarks
 

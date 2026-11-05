@@ -2459,6 +2459,21 @@
         "docs/frameworks/serving/vllm-ascend/glm-5.3-flash-a3-a5-inference/index.md"
       ],
       "status": "ingested"
+    },
+    {
+      "id": "caict:llm-inference-optimization-2026",
+      "title": "大模型推理优化关键技术及应用实践研究报告（2026年）",
+      "slug": "llm-inference-optimization-practices-2026",
+      "category": "frameworks",
+      "topic_path": "serving/inference-optimization",
+      "kind": "report",
+      "source_suffix": "caict",
+      "raw_paths": [
+        "raw/frameworks/serving/inference-optimization/llm-inference-optimization-practices-2026--caict.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/serving/inference-optimization/llm-inference-optimization-practices-2026/llm-inference-optimization-practices-2026.md",
+      "docs_path": "docs/frameworks/serving/inference-optimization/caict-2026/index.md",
+      "status": "ingested"
     }
   ]
 }

@@ -483,3 +483,7 @@ updated: 2026-10-10
 
 - Added [GLM-5.3-Flash on Ascend A3 and A5](../frameworks/serving/vllm-ascend/glm-5.3-flash-a3-a5-inference/index.md) using Ascend commit `8405ff749d05aee320923d7d1dd9ad24c9246d4c`. The static V1 decode trace covers KDA state, pooled index and tail, C8 main KV, hardware-specific attention and MoE choices, and sampled-token output. No checkpoint or NPU runtime was exercised.
 - Expanded the GLM-5.3-Flash A3/A5 trace with pinned code snapshots for slot mapping, decoder state, KDA, cache writes, index selection, C8 attention, MoE routing, sampling, and the floating-cache device gate.
+
+## 2026-10-31
+
+- Ingested the CAICT/AIIA March 2026 report from `raw/frameworks/serving/inference-optimization/llm-inference-optimization-practices-2026--caict.pdf` into [CAICT 2026: Inference Optimization as a System](../frameworks/serving/inference-optimization/caict-2026/index.md), at medium confidence. Preserved a complete MinerU extraction and three original figures; distinguished PD/AF boundaries, workload-specific results, and source inconsistencies. Added an inference-optimization hub, three glossary terms, serving/wiki navigation, and a KV-cache survey cross-link.

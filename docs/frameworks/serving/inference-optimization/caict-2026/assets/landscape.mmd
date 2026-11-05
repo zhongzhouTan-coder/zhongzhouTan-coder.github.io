@@ -1,0 +1,15 @@
+flowchart TD
+    Service["Functional model serving"] --> Engine["Engine efficiency"]
+    Engine --> Paged["vLLM: paged KV allocation"]
+    Engine --> Chunk["Sarathi: chunked prefill and mixed batches"]
+    Engine --> Prefix["Prefix reuse and cache-aware routing"]
+    Paged --> State["KV state management across instances"]
+    Prefix --> State
+    State --> PD["PD separation: cache handoff between phases"]
+    PD --> Cache["Mooncake / Dynamo / UCM: cache and scheduling coordination"]
+    MoE["Sparse MoE models"] --> AF["MegaScale-Infer / Step-3: attention and FFN separation"]
+    PD --> AF
+    Model["Compression and attention architecture"] --> Report["CAICT 2026: model-engine-system coordination under SLOs"]
+    Chunk --> Report
+    Cache --> Report
+    AF --> Report
