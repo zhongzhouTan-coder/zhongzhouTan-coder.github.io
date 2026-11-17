@@ -2474,6 +2474,20 @@
       "derived_path": "derived/pdf-markdown/frameworks/serving/inference-optimization/llm-inference-optimization-practices-2026/llm-inference-optimization-practices-2026.md",
       "docs_path": "docs/frameworks/serving/inference-optimization/caict-2026/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "arxiv:2512.16148v1",
+      "title": "FlexKV: Flexible Index Offloading for Memory-Disaggregated Key-Value Store",
+      "slug": "flexkv",
+      "category": "frameworks",
+      "topic_path": "infrastructure/flexkv",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/infrastructure/flexkv/flexkv--arxiv-2512.16148v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/infrastructure/flexkv/flexkv/flexkv.md",
+      "docs_path": "docs/frameworks/infrastructure/flexkv/index.md",
+      "status": "ingested"
     }
   ]
 }

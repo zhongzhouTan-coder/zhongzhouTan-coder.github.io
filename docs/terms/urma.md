@@ -9,7 +9,7 @@ sources:
   - raw/hardware/accelerators/ascend/ascend-950-npu-architecture-white-paper--paper.pdf
 appears_in:
   - docs/hardware/accelerators/ascend/ascend-950/index.md
-updated: 2026-09-16
+updated: 2026-11-16
 ---
 
 # URMA
@@ -31,7 +31,7 @@ RTP provides stronger reliability but has different port/bandwidth limits than C
 ## Common Confusions
 
 - **URMA vs. UB Memory:** URMA is asynchronous queue-based communication; UB Memory is synchronous remote Load/Store/Atomic access.
-- **URMA vs. RDMA:** URMA is the Ascend Unified Bus semantic described by this white paper; the shared idea is remote memory access, not identical protocol behavior.
+- **URMA vs. [RDMA](remote-direct-memory-access.md):** URMA is the Ascend Unified Bus semantic described by this white paper; the shared idea is remote memory access, not identical protocol behavior.
 
 ## Where It Appears
 
@@ -40,5 +40,6 @@ RTP provides stronger reliability but has different port/bandwidth limits than C
 ## Related Terms
 
 - [Unified Bus (UB)](unified-bus.md) — The interconnect family that exposes URMA.
+- [Remote Direct Memory Access (RDMA)](remote-direct-memory-access.md) — A distinct network mechanism for accessing remote memory.
 - [All-to-All](all-to-all.md) — A distributed exchange pattern that can use asynchronous movement.
 - [All-Reduce](all-reduce.md) — A reduction pattern that can be offloaded through CCU.

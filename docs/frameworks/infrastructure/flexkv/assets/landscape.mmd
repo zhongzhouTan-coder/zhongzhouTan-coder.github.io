@@ -1,0 +1,9 @@
+flowchart TD
+    DM["Memory-disaggregated key-value stores"] --> Meta["Metadata-server index: Clover"]
+    DM --> Remote["Memory-node index: FUSEE and Aceso"]
+    Remote --> IndexCache["Address-only cache: remote value access"]
+    DM --> Owner["Ownership-partitioned caching: DINOMO and DEX"]
+    Remote --> Flex["FlexKV: partial compute-node index proxying"]
+    IndexCache --> Flex
+    Owner --> Flex
+    Flex --> Shared["Directory-coherent value copies on compute nodes"]

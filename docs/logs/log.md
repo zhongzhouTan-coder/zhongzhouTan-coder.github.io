@@ -487,3 +487,7 @@ updated: 2026-10-10
 ## 2026-10-31
 
 - Ingested the CAICT/AIIA March 2026 report from `raw/frameworks/serving/inference-optimization/llm-inference-optimization-practices-2026--caict.pdf` into [CAICT 2026: Inference Optimization as a System](../frameworks/serving/inference-optimization/caict-2026/index.md), at medium confidence. Preserved a complete MinerU extraction and three original figures; distinguished PD/AF boundaries, workload-specific results, and source inconsistencies. Added an inference-optimization hub, three glossary terms, serving/wiki navigation, and a KV-cache survey cross-link.
+
+## 2026-11-16
+
+- Ingested [FlexKV](../frameworks/infrastructure/flexkv/index.md) from `raw/frameworks/infrastructure/flexkv/flexkv--arxiv-2512.16148v1.pdf` at medium confidence, preserving the MinerU extraction and original figures. Documented proxy placement, coherent caching, commit and recovery, workload-specific results, and the incomplete-rank ambiguity; added infrastructure navigation and an [RDMA glossary term](../terms/remote-direct-memory-access.md).

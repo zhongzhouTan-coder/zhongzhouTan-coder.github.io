@@ -5,7 +5,7 @@ layout: default
 confidence: high
 sources:
   - logs/index.md
-updated: 2026-09-16
+updated: 2026-11-16
 ---
 
 # Frameworks
@@ -13,5 +13,5 @@ updated: 2026-09-16
 - [Inference Serving Systems](serving/index.md) — Serving runtimes, cache systems, and deployment pipelines.
 - [Compilers and Kernel Frameworks](compilers-kernels/index.md) — CUDA, Triton, TileLang, and Ascend compiler stacks.
 - [Programming Languages](languages/index.md) — C++ and Python semantics and runtimes.
-- [Runtime Infrastructure](infrastructure/index.md) — Sandboxing, orchestration, and observability.
+- [Runtime Infrastructure](infrastructure/index.md) — Storage, sandboxing, orchestration, and observability.
 - [Speculative Decoding Systems](speculative-decoding/index.md) — EAGLE, DFlash, and DSpark method families.

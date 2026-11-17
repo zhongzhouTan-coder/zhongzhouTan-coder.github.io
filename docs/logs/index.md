@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-10-31
+updated: 2026-11-16
 ---
 
 # Wiki Index
@@ -38,7 +38,7 @@ updated: 2026-10-31
 - [Inference Serving Systems](../frameworks/serving/index.md) — Runtimes, model-specific GPU paths, caches, deployment pipelines, and cross-layer inference optimization.
 - [Compilers and Kernel Frameworks](../frameworks/compilers-kernels/index.md) — GPU and NPU programming stacks.
 - [Programming Languages](../frameworks/languages/index.md) — C++ and Python semantics and runtimes.
-- [Runtime Infrastructure](../frameworks/infrastructure/index.md) — Sandboxing, orchestration, and observability.
+- [Runtime Infrastructure](../frameworks/infrastructure/index.md) — Storage, sandboxing, orchestration, and observability.
 - [Speculative Decoding Systems](../frameworks/speculative-decoding/index.md) — Draft-model and diffusion-based acceleration.
 
 ## Hardware and Numerics

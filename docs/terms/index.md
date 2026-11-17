@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/docs-terms.instructions.md
-updated: 2026-10-31
+updated: 2026-11-16
 ---
 
 # Terms Glossary
@@ -79,6 +79,7 @@ Quick-lookup definitions for technical concepts that appear across multiple pape
 
 ## Frameworks
 
+- [Remote Direct Memory Access (RDMA)](remote-direct-memory-access.md) — A network mechanism for one-sided access to registered remote memory without per-operation remote CPU handling.
 - [Chunked Prefill](chunked-prefill.md) — Splits a long prompt into causal chunks so prompt work can share iterations with decode work.
 
 - [Continuous Batching](continuous-batching.md) — Rebuilds the active LLM-serving batch at each model iteration so finished work can leave and newly ready work can enter.
