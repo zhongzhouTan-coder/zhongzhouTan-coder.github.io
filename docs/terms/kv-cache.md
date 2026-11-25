@@ -14,6 +14,7 @@ sources:
   - raw/frameworks/serving/vllm/vllm-pagedattention-serving-framework--arxiv-2309.06180v1.pdf
   - raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
   - raw/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
+  - raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf
   - raw/algorithms/distributed-inference/context-parallelism/context-parallelism-scalable-million-token-inference--arxiv-2411.01783v3.pdf
 aliases:
   - key-value cache
@@ -29,6 +30,7 @@ appears_in:
   - docs/benchmarks/serving-performance/aisbench-vs-evalscope-perf.md
   - docs/frameworks/serving/vllm/deepseek/index.md
   - docs/frameworks/serving/vllm/deepseek/v4-attention-code-reading.md
+  - docs/frameworks/serving/hisparse/index.md
   - docs/frameworks/serving/kv-cache-optimization/index.md
   - docs/frameworks/serving/kvswap/index.md
   - docs/frameworks/serving/sarathi/index.md
@@ -58,7 +60,7 @@ appears_in:
   - docs/frameworks/serving/vllm/vllm-context-parallelism.md
   - docs/frameworks/serving/vllm/prefill-decode-disaggregated-deployment/index.md
   - docs/frameworks/serving/vllm/dcp-attention/index.md
-updated: 2026-09-16
+updated: 2026-11-25
 ---
 
 # KV Cache
@@ -100,6 +102,7 @@ Long contexts can make the cache the dominant memory consumer and constrain batc
 - [DeepSeek](../frameworks/serving/vllm/deepseek/index.md) — DeepSeek model implementation readings that span vLLM and vllm-ascend codebases.
 - [DeepSeek V4 Attention: Code Reading Map](../frameworks/serving/vllm/deepseek/v4-attention-code-reading.md) — A navigable map of the DeepSeek V4 hybrid compressed attention implementation across vLLM (NVIDIA/AMD/XPU) and vllm-ascend.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/serving/kv-cache-optimization/index.md) — Surveys the five main ways to reduce KV-cache pressure and maps them to deployment scenarios.
+- [HiSparse](../frameworks/serving/hisparse/index.md) — Decouples complete host-backed history from a bounded GPU-hot working set for top-k sparse attention.
 - [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Keeps the full cache on disk and uses a compact predictor, grouped reads, and reuse to support long-context decoding on constrained devices.
 - [Sarathi: Chunked Prefills for Efficient LLM Inference](../frameworks/serving/sarathi/index.md) — Sarathi improves LLM serving by splitting prefills into compute-sized chunks and piggybacking decode tokens on them to raise.
 - [SGLang: Structured Language Model Programs](../frameworks/serving/sglang/index.md) — SGLang framework architecture, programming model, runtime optimizations, and evaluation results for efficient structured LLM.

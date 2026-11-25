@@ -1,0 +1,2362 @@
+[
+    {
+        "type": "text",
+        "text": "HiSparse: Scaling Sparse-Attention Decoding with Hierarchical KV Cache Management",
+        "text_level": 1,
+        "bbox": [
+            192,
+            122,
+            803,
+            172
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Zhiqiang Xie<sup>∗</sup> Stanford University & Meta",
+        "bbox": [
+            223,
+            226,
+            411,
+            255
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Zhangheng Huang Alibaba Group",
+        "bbox": [
+            468,
+            226,
+            604,
+            253
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Ziyi Xu Shanghai Jiao Tong University",
+        "bbox": [
+            181,
+            275,
+            388,
+            304
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Tingwei Huang Ant Group",
+        "bbox": [
+            661,
+            224,
+            774,
+            255
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Ruiyang Ma Peking University",
+        "bbox": [
+            403,
+            275,
+            524,
+            304
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Christos Kozyrakis Stanford University & NVIDIA Research",
+        "bbox": [
+            539,
+            275,
+            815,
+            304
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract",
+        "text_level": 2,
+        "bbox": [
+            460,
+            339,
+            537,
+            356
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Top-k sparse attention makes long-context LLM decoding cheap to compute: each step reads only a few thousand selected KV entries rather than the full context. Serving systems, however, typically keep the entire KV cache in GPU HBM so that every position stays selectable, so a request’s memory bill still grows with its full context length—decoding hits a capacity wall long before it runs out of compute, and a context whose KV cache exceeds HBM cannot be served at all. We present HiSparse, an exact, indexer-agnostic hierarchical KV cache for sparseattention serving. HiSparse keeps each request’s full KV history in host memory and bounds its decode footprint with a small, fixed-size GPU cache; a fused CUDA kernel resolves each layer’s selections—hit detection, LRU replacement, and host to-device fetches—inside the decode CUDA graph; and, for models that share selections across layers, exact layer-wise prefetching hides roughly half of the remaining miss overhead. Because only KV placement changes, model outputs are unchanged. HiSparse is merged into upstream SGLang and evaluated across three sparse-attention families (DSA, NSA, and Quest) on H200, B200, and GH200 platforms: it improves peak generation throughput by up to 4.7 on long-context workloads while preserving comparable per-token latency and reducing time-tofirst-token at high load—and a no-IO oracle shows the resolution mechanism itself adds no measurable per-token cost, leaving host–device IO as the only price of bounded residency.",
+        "bbox": [
+            230,
+            368,
+            769,
+            646
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1 Introduction",
+        "text_level": 2,
+        "bbox": [
+            173,
+            667,
+            313,
+            683
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Long-context inference is becoming a standard LLM workload: coding agents inspect entire reposito ries, assistants synthesize across long documents, and recent models target context windows from tens of thousands to millions of tokens [12, 14, 26]. Serving these contexts remains expensive, because each live decoding request carries a KV cache that grows with its full history.",
+        "bbox": [
+            169,
+            696,
+            826,
+            755
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Top-k sparse attention offers a promising path to scaling long contexts. Instead of attending to every previous token, each decode step attends to a small, query-dependent set of k selected KV entries—typically a few thousand tokens, one to two orders of magnitude below the contexts these models target. DeepSeek-V3.2 demonstrates that a learned top-k selection preserves model quality while sharply reducing long-context attention cost [10, 11]; the same pattern appears in trained architectures such as DeepSeek Sparse Attention (DSA) and Native Sparse Attention (NSA) [38] and in training-free selectors such as Quest [31]. Once the selected set is fixed, the attention kernel reads only k KV entries rather than the full context, suggesting that long-context decoding should become much cheaper to serve.",
+        "bbox": [
+            169,
+            758,
+            826,
+            885
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "arXiv:2608.07009v1 [cs.DC] 7 Aug 2026",
+        "bbox": [
+            27,
+            354,
+            65,
+            792
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "<sup>∗</sup>Corresponding author: xiezhq@cs.stanford.edu",
+        "bbox": [
+            187,
+            892,
+            475,
+            905
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "footer",
+        "text": "Preprint.",
+        "bbox": [
+            173,
+            924,
+            222,
+            936
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "chart",
+        "img_path": "images/2972c0feafee94d26489d05b5e953f7996ba66e1684dd87b7b8eedda21375816.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            196,
+            95,
+            495,
+            255
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "chart",
+        "img_path": "images/821747c1ba495b58f2f02b6f08ecad2d7d117e647ab464e9e4b7751fa409827d.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 1: HiSparse decouples decoding throughput from GPU memory capacity on long-context workloads. (a) Decoding throughput vs. concurrency: the baseline plateaus once HBM saturates; HiSparse continues to scale. Longer contexts hit the same wall at proportionally lower concurrency. (b) Mean TTFT vs. throughput in PD-colocated mode: HiSparse sustains lower TTFT at higher throughput. GLM-5.1-FP8 (DSA, k=2048), 8 H200, 32K input, 8K output."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            500,
+            95,
+            797,
+            253
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Sparse attention, however, does not shrink the KV capacity bottleneck. The selected set changes across generated tokens and layers—an entry skipped now may be selected later—so serving systems typically keep the full KV cache resident in GPU HBM to keep every logical position addressable. The result is a lopsided serving economics: each decode step reads only k entries, yet every entry of the full context pays for HBM residency so that it might be read—attention became orders of magnitude cheaper, while its memory bill did not drop by a byte. The bill is substantial even for compressed KV layouts: a 128K-token GLM-5.1 request holds 13.09 GB of BF16 KV state, and a single 1M-token request would claim an entire H200—more than 100 GB of its 141 GB HBM before counting weights; with weights resident, it cannot be admitted at all, capping the servable context well below the model’s window. In practice the wall binds on the product of context length and concurrency: at 32K tokens per request, a few dozen concurrent requests exhaust HBM (Figure 1), and at 128K the same HBM admits 4 fewer. Long-context sparse decoding therefore runs out of memory capacity long before it runs out of attention compute.",
+        "bbox": [
+            169,
+            380,
+            826,
+            561
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Figure 1 shows the serving consequence: decoding throughput plateaus once HBM fills, and in colocated serving the time-to-first-token (TTFT) climbs as decode KV caches crowd out prefill work. Yet full-KV serving ignores a free oracle. The sparse selector announces, at every layer of every decode step, exactly which k positions attention will read—a precise, per-step demand signal for KV placement that no dense-attention system ever had. That demand also has structure: consecutive decode steps reselect largely overlapping positions [6], and nearby layers select correlated positions, a locality that recent models make explicit by sharing indexer outputs across layers [2, 39]. Sparse selections behave like memory accesses with strong temporal locality—exactly the regime in which a small fast cache backed by a larger, slower tier works. This observation motivates HiSparse, an exact hierarchical KV cache system for top-k sparse-attention serving: HBM should pay for what attention reads, not for everything it might read.",
+        "bbox": [
+            169,
+            566,
+            828,
+            720
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "HiSparse keeps each request’s complete KV history in host memory and gives it a small, fixed-size GPU cache in HBM. Each layer’s top-k selections are resolved against this cache before its attention kernel launches: resident entries are used in place, and the few that miss are fetched from the host copy in one batched transfer. Selected positions, attention scores, and outputs are unchanged, and because HiSparse consumes only the selected positions each layer emits, it is indexer-agnostic: it slots beneath DSA, NSA, or Quest without retraining or model changes. A request’s decode-time HBM consumption therefore scales with the GPU-cache size rather than with its context length.",
+        "bbox": [
+            169,
+            724,
+            826,
+            824
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The crux of HiSparse is keeping this hierarchy off the decode critical path; its design contributions answer three challenges. First, what to keep resident: staging only the current top-k set discards locality—on a LongBenchV2 selection trace it misses 30% of each step’s selections—so HiSparse manages the cache with LRU, turning selection locality into an 87% hit rate at twice the top-k size (§4.3). Second, hiding the misses that remain: each miss stalls that layer’s attention on a host-memory fetch, and at high batch size the misses of concurrent requests contend for the same host link (§4.4); HiSparse makes each fetch bandwidth-efficient with GPU-assisted IO and, when models share selections across layers, overlaps the remaining transfers with the intervening layers’ computation via exact prefetch (§3.5). Third, making resolution itselfcheap: hit detection, victim selection, metadata updates, and host fetches recur at every sparse layer of every decode step, so HiSparse fuses them into a single CUDA kernel captured inside the decode CUDA graph (§3.4).",
+        "bbox": [
+            169,
+            828,
+            826,
+            912
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "2",
+        "bbox": [
+            493,
+            935,
+            504,
+            948
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            90,
+            826,
+            162
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "HiSparse is not a research prototype: our implementation is merged into upstream SGLang [42], a widely deployed open-source serving framework, and released as a supported serving feature [28, 35] (Appendix A details the integration). We evaluate it across three sparse-attention families (DSA, NSA, and Quest) on three hardware platforms (H200, B200, and GH200). HiSparse improves peak generation throughput by up to 4.7 on long-context workloads, preserves a comparable time per output token (TPOT) in the overlapping throughput range, reduces TTFT at high load, and does so without changing model outputs. All of these gains come from one lever: bounded residency lets HiSparse run much larger decode batches in the same HBM. The same lever can be pulled the other way—serving a fixed batch with substantially less HBM (§4.2), or serving contexts that HBM alone could never hold (§5).",
+        "bbox": [
+            169,
+            167,
+            826,
+            306
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "This paper makes the following contributions:",
+        "bbox": [
+            171,
+            311,
+            478,
+            328
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "• We identify the capacity wall in long-context top-k sparse-attention serving: active KV reads scale with k, but the HBM-resident KV footprint still scales with the full context length (§2).",
+        "bbox": [
+            215,
+            335,
+            825,
+            378
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "• We introduce HiSparse, an exact, indexer-agnostic hierarchical KV cache that keeps full KV state available in host memory while bounding per-request decode HBM with a fixed-size GPU cache (§3).",
+        "bbox": [
+            215,
+            382,
+            825,
+            424
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "• We design a locality-preserving miss-resolution path: LRU management that turns selection locality into cache hits, layer-wise prefetching that hides residual miss latency, and a fused CUDA resolve kernel that keeps resolution cheap on the decode critical path (§3.4, §3.5).",
+        "bbox": [
+            217,
+            428,
+            825,
+            470
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "• We evaluate HiSparse on DSA, NSA, and Quest workloads across H200, B200, and GH200 platforms, showing large long-context throughput gains and analyzing the cache-policy, kernel, and host-device bandwidth tradeoffs that determine performance (§4).",
+        "bbox": [
+            215,
+            474,
+            826,
+            517
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2 Background and Motivation",
+        "text_level": 2,
+        "bbox": [
+            171,
+            534,
+            442,
+            551
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2.1 Top-k Sparse Attention",
+        "text_level": 2,
+        "bbox": [
+            171,
+            565,
+            377,
+            580
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Top-k sparse attention replaces full attention over the entire context with attention over a small, query-dependent set of keys. At decode step t, an indexer produces a selected set $S _ { t } \\subseteq \\{ 1 , \\dots , L _ { \\mathrm { c t x } } \\}$ with $\\left. \\boldsymbol { S } _ { t } \\right. = k$ , and the attention kernel reads only the corresponding key and value entries. The resulting sparse attention is still exact with respect to the model’s sparse-attention rule: once $S _ { t }$ is fixed, unselected entries do not participate in the current attention computation.",
+        "bbox": [
+            169,
+            590,
+            825,
+            661
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Recent systems differ mainly in how they produce $S _ { t }$ (Table 1). DeepSeek Sparse Attention (DSA) introduces a learned “lightning indexer” co-trained with the backbone and used by DeepSeek-V3.2 and GLM-5.1 [10, 11, 14, 35]: it keeps one compact indexer key per token and scores the full history with a lightweight kernel before taking a token-level top-k. Native Sparse Attention (NSA) combines compressed, selected, and sliding-window branches in a trainable architecture; its selected branch keeps one compressed key per block of tokens and takes a top-k over block scores [38]. Quest is a training-free, page-granular selector for dense pretrained models: it maintains per-page min/max summaries of keys and selects the pages with the highest query-aware upper bounds [31]. The selectors thus differ in the state they maintain, the scoring they perform, and their selection granularity—token, block, or page.",
+        "bbox": [
+            169,
+            666,
+            826,
+            806
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Despite these differences, the selectors share three properties that define a common systems interface. First, the state needed to choose is compact: indexer keys, block keys, and page summaries are all far smaller than the KV records that attention reads, so selection state can stay HBM-resident even at long context. Second, selection completes before the attention kernel touches any KV record, creating a natural interposition point between choosing and reading. Third, the output has the same form everywhere: a set of logical token positions per layer, which we write ${ S } _ { t } ^ { ( \\ell ) }$ for layer ℓ at step t. Each sparse layer ordinarily selects its own set, though recent models amortize indexer cost by letting groups of consecutive layers share one layer’s selection [2, 39]—a design HiSparse later exploits for prefetching (§3.5). HiSparse builds on exactly these properties (§3): it leaves selection state and computation untouched on the GPU, interposes at the position interface, and applies hierarchical placement only to the bulky KV records—which is what makes it indexer-agnostic.",
+        "bbox": [
+            169,
+            811,
+            826,
+            912
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "3",
+        "bbox": [
+            493,
+            936,
+            504,
+            948
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "table",
+        "img_path": "images/5d8d7a165ea5d6a1ba80c812b29da3fe9646f23b2382185d7797eb14faa7e8e2.jpg",
+        "table_caption": [
+            "Table 1: Query-dependent top-k selectors. Each maintains compact, HBM-resident selection state and emits logical token positions; the KV records read by attention dominate memory and are what HiSparse manages hierarchically."
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>Selector</td><td>Selection state (memory)</td><td>Selection compute</td><td>Notes</td></tr><tr><td>DSA [11]</td><td>compact indexer key per token</td><td>score history, top-k tokens</td><td>token-level; co-trained</td></tr><tr><td>NSA [38]</td><td>compressed key per token block</td><td>score blocks, top blocks</td><td>block-level; trained</td></tr><tr><td>Quest [31]</td><td>min/max key vectors per page</td><td>bound pages, top pages</td><td>page-level; training-free</td></tr></table>",
+        "bbox": [
+            192,
+            137,
+            803,
+            203
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            231,
+            826,
+            289
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "2.2 KV Cache and the Capacity Wall",
+        "text_level": 2,
+        "bbox": [
+            171,
+            304,
+            446,
+            319
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "During autoregressive decoding, the keys and values of every previous token are retained as the KV cache. Top-k sparse attention narrows what one step reads, not what must remain available: $S _ { t }$ is drawn from the full history and drifts from step to step, so an entry skipped now may be selected later, and serving systems typically keep the entire cache HBM-resident to keep every position addressable by the indexer and attention backend (§1). The resulting admission constraint is the quantitative form of the capacity wall: a decode batch of $N _ { \\mathrm { b a t c h } }$ requests at context length $L _ { \\mathrm { c t x } }$ <sub>x</sub> must fit $N _ { \\mathrm { b a t c h } } \\times L _ { \\mathrm { c t x } }$ tokens of KV state in whatever HBM remains after model weights, while each decode step’s attention reads only $N _ { \\mathrm { b a t c h } } \\times k$ of those tokens.",
+        "bbox": [
+            169,
+            329,
+            826,
+            441
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The wall hits both common deployment modes. Adding concurrent requests improves throughput only until KV storage fills HBM, after which the scheduler cannot admit more decode work even though the attention kernels have compute headroom—the plateau in Figure 1(a). In PD-disaggregated serving, where prefill and decode run on separate GPU pools, HBM capacity directly caps decodepool throughput. In PD-colocated serving, prefill and decode share GPUs and HBM: full-context decode KV caches consume memory that prefill chunks need, so incoming requests wait for both memory and decode slots before producing their first token, and mean TTFT becomes dominated by queueing and rises sharply with load (Figure 1(b)).",
+        "bbox": [
+            169,
+            446,
+            826,
+            560
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Our GLM-5.1 deployment (§4.1: 8 H200, 1.1 TB aggregate HBM) makes the numbers concrete. At 32K input / 8K output, each request holds up to 4 GB of KV state, and the full-KV baseline saturates at about 60 concurrent requests—roughly 240 GB of KV, the share of HBM left once weights, activations, and CUDA-graph state are resident (Figure 1(a)). Colocated, this saturation point is where TTFT starts to climb; disaggregated, it caps a decode pool built from the same hardware at the corresponding decode-only rate (777 tokens/s in our measurements), no matter how much prefill capacity stands in front of it. At 128K, the same arithmetic admits only 15 requests.",
+        "bbox": [
+            169,
+            564,
+            826,
+            662
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "2.3 Decoupling Availability from Residency",
+        "text_level": 2,
+        "bbox": [
+            171,
+            678,
+            490,
+            694
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The capacity wall comes from tying together two requirements that need not be identical. The model needs every past KV entry to be logically available, because a future top-k selection may refer to any position in the history. The GPU, however, only needs the entries actually read by the current step. Full-HBM serving treats “may be selected later” as “must stay in HBM now,” which is simple but overly strong. A serving system only needs to ensure that, once the indexer emits ${ S } _ { t } ^ { ( \\ell ) }$ , the selected KV entries are on device before that layer’s attention runs; entries outside $S _ { t } ^ { ( \\ell ) }$ can reside elsewhere without changing the selected positions, attention scores, or outputs.",
+        "bbox": [
+            169,
+            704,
+            826,
+            810
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Decoupling alone, however, does not make offloading viable: the CPU–GPU interconnect would immediately become the bottleneck. If every layer’s k selections had to be fetched from host memory at every step, a GLM-5.1 request would move roughly 200 MB of KV records per generated token (k=2048 at 100 KB of KV per token summed across layers)—about 7 GB/s of sustained hostto-device traffic per request at a TPOT of 30 ms, so a dozen concurrent requests per GPU would saturate a PCIe Gen5 16 link ( 64 GB/s per direction) on misses alone. What closes this gap is locality in the selections themselves, the structure noted in §1: consecutive decode steps reselect largely overlapping positions [6], and adjacent layers select correlated positions, which newer models make explicit by sharing indexer outputs across layers [2, 39]. On a LongBenchV2 selection trace, a modest LRU cache (twice the top-k size) turns 87% of selections into device hits (§4.3). This locality enables the entire design: caching works because most selected records were selected recently, and prefetching works because upcoming selections are predictable—or, with shared indexers, known outright.",
+        "bbox": [
+            169,
+            814,
+            826,
+            912
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "4",
+        "bbox": [
+            493,
+            936,
+            504,
+            946
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "table",
+        "img_path": "images/f299618acb709d8cde9d3b175031a451033379dabc17978a5044677bb87fa81e.jpg",
+        "table_caption": [
+            "Table 2: Notation."
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>Symbol</td><td>Meaning</td></tr><tr><td> $L_{\\text{ctx}}$ </td><td>context length of a request (tokens)</td></tr><tr><td>k</td><td>tokens selected per query by the sparse indexer</td></tr><tr><td> $S_t^{(\\ell)}$ </td><td>selected set at decode step t, layer  $\\ell$ ;  $|S_t^{(\\ell)}| = k$ </td></tr><tr><td>B</td><td>GPU-cache capacity per request and layer (KV-record slots); B ≥ k</td></tr><tr><td> $N_{\\text{batch}}$ </td><td>number of concurrent decode requests</td></tr><tr><td> $N_\\ell$ </td><td>number of sparse-attention layers</td></tr><tr><td> $W_{\\text{KV}}$ </td><td>KV elements stored per token per layer</td></tr><tr><td>s</td><td>bytes per KV element</td></tr></table>",
+        "bbox": [
+            263,
+            107,
+            733,
+            239
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            265,
+            826,
+            349
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Realizing this separation without giving back its gains means bounding each request’s cache while preserving the locality above, hiding residual miss latency behind computation, and doing both through an interface that consumes only the emitted positions—the challenges outlined in §1. The next section presents the design that meets them; §4 quantifies each mechanism.",
+        "bbox": [
+            169,
+            354,
+            825,
+            412
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3 HiSparse Design",
+        "text_level": 2,
+        "bbox": [
+            171,
+            430,
+            346,
+            448
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.1 Design Goals and Invariants",
+        "text_level": 2,
+        "bbox": [
+            171,
+            460,
+            411,
+            477
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "HiSparse realizes the separation introduced in §2.3: every KV entry remains logically available to the sparse-attention algorithm, but only a bounded working set is resident in GPU memory. The design is guided by the following goals and invariants; Table 2 defines the notation used throughout.",
+        "bbox": [
+            169,
+            486,
+            825,
+            531
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Complete KV availability. For every active request, HiSparse maintains a complete copy of the KV cache outside the decode GPU’s HBM. Any logical KV position selected by the sparse indexer can therefore be recovered without recomputation.",
+        "bbox": [
+            169,
+            537,
+            826,
+            580
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Bounded device footprint. For each request and layer, HiSparse reserves a fixed-size GPU cache of B logical KV-record slots in HBM, which caches the KV records most recently selected for that request and layer. B is a serving configuration parameter with $B \\geq k ,$ independent of $L _ { \\mathrm { c t x } } .$ If the model stores $W _ { \\mathrm { K V } }$ elements per token per layer, the decode-side KV footprint scales as $N _ { \\mathrm { b a t c h } } N _ { \\ell } B W _ { \\mathrm { K V } } .$ s rather than $N _ { \\mathrm { b a t c h } } N _ { \\ell } L _ { \\mathrm { c t x } } W _ { \\mathrm { K V } } s ,$ , up to metadata.",
+        "bbox": [
+            169,
+            589,
+            826,
+            660
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Exact sparse-attention outputs. Before a layer’s sparse-attention kernel runs, all KV entries in that layer’s selected set ${ S } _ { t } ^ { ( \\ell ) }$ must be materialized on device. HiSparse may change where unselected KV entries reside, but it does not change the selected positions, attention scores, or attention outputs.",
+        "bbox": [
+            169,
+            667,
+            826,
+            714
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Indexer-agnostic interface. HiSparse does not assume how the selected set is produced. DSA, NSA, and Quest can use different indexers; HiSparse only consumes the selected positions emitted for each request and layer.",
+        "bbox": [
+            169,
+            720,
+            826,
+            763
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Miss latency off the critical path. Bounding residency must not trade throughput for per-token latency. Selected-set misses add work to every sparse-attention layer, so HiSparse treats their cost as a first-class goal: cache management preserves the selection locality of §2.3 so that most selections hit (§3.2), resolving the remainder is a single fused kernel launch (§3.4), and prefetching overlaps host-to-device transfers with computation in earlier layers (§3.5).",
+        "bbox": [
+            169,
+            772,
+            826,
+            843
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.2 KV Hierarchy and Metadata",
+        "text_level": 2,
+        "bbox": [
+            171,
+            857,
+            415,
+            873
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "HiSparse organizes KV state as a two-level hierarchy (Figure 2). The host KV pool, allocated in pinned host DRAM, stores the authoritative full KV cache for active requests. In colocated serving, prefill writes into the local host pool. In disaggregated serving, prefill sends KV state to the decode instance’s host pool over the prefill-decode transfer path.",
+        "bbox": [
+            169,
+            883,
+            826,
+            912
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "5",
+        "bbox": [
+            493,
+            936,
+            504,
+            948
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            90,
+            823,
+            121
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "The decode GPU stores only a GPU cache—introduced in §1 and labeled “hot device buffer” in Figures 2 and 3. Conceptually, there is a B-slot cache for each request and layer; each slot holds the layer-local KV record for one logical position. The cache is more than a top-k staging area: the selected entries for the current step must be present before attention runs, while the remaining B k slots keep recently useful records that are likely to be hit by future selections. The number of resident records per request and layer is thus at most B and, once the cache warms, typically above k; $B \\geq k$ is required so that the current selection always fits. A page table maps each layer-local logical position either to a slot in the cache or to a sentinel indicating that the record is host-only. LRU metadata records the recency of resident slots and directly drives replacement when selected entries miss. The metadata is small relative to KV tensors, but every sparse layer must consult and update it before its attention kernel can launch, so its latency adds directly to every decode step; HiSparse therefore keeps it GPU-resident and folds its updates into the fused kernel of §3.4.",
+        "bbox": [
+            169,
+            126,
+            826,
+            294
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Selection state, in contrast, never moves. The compact indexer state identified in §2.1—DSA’s pertoken indexer keys, NSA’s compressed block keys, Quest’s page summaries—remains GPU-resident for the lifetime of a request, as do HiSparse’s page tables and LRU metadata; HiSparse does not page any of them to host memory. This always-resident state still grows with context length, but at a per-token cost two to three orders of magnitude below the KV records themselves: indexer keys and page-table entries together occupy at most a few hundred bytes per token, versus 100 KB of KV records (§2.3). In our deployments it amounts to hundreds of megabytes in total, small next to the multi-GB per-request KV caches it replaces in HBM. Only attention KV records travel through the hierarchy, so the indexer’s own computation is untouched.",
+        "bbox": [
+            169,
+            297,
+            826,
+            424
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Replacement policy. Each request-layer cache is managed independently with LRU, with one deliberate refinement: within a step, entries that hit are promoted above the newly fetched misses in the recency order. A record selected repeatedly across steps therefore outranks a first-time selection, so under eviction pressure one-off selections leave first and the cache accumulates the positions with demonstrated multi-step reuse. §4.3 validates the choice: recency is a good online proxy for future sparse selections, tracking the trend of the offline Bélády optimum. Caches are managed independently per layer: KV records are layer-local by nature, and coordinating residency across layers adds little over what LRU already captures (§4.6); HiSparse instead exploits cross-layer selection structure through prefetching (§3.5).",
+        "bbox": [
+            169,
+            431,
+            826,
+            558
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Sizing the cache. B trades capacity against latency. Total decode KV HBM is $N _ { \\mathrm { b a t c h } } N _ { \\ell } B W _ { \\mathrm { K V } } s .$ , so a larger B raises the hit rate but consumes HBM that could otherwise admit more concurrent requests, and lengthens the resolve kernel’s metadata scans. In practice $B \\in [ 2 k , 4 k ]$ is the useful range (§4.4), and faster host-device links shift the optimum toward B=2k (§4.5).",
+        "bbox": [
+            169,
+            564,
+            826,
+            622
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.3 Request Lifecycle",
+        "text_level": 2,
+        "bbox": [
+            171,
+            636,
+            338,
+            652
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "A request moves through four phases, shown in Figure 2. The flow is identical in PD-colocated and PD-disaggregated deployments; the two differ only in how prefill KV reaches the host pool—written locally or sent over the prefill–decode transfer path (§3.2).",
+        "bbox": [
+            169,
+            662,
+            825,
+            705
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "(1) Prefill and staging. The prefill engine processes the prompt using the model’s ordinary prefill path. As each layer’s KV state is produced, HiSparse writes it to the host KV pool. Compact indexer state that must be consulted at every decode step, such as DSA’s lightning-indexer representation, remains on device.",
+        "bbox": [
+            169,
+            713,
+            826,
+            768
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "(2) Admission. A request becomes schedulable for decode once its host KV state is available and HiSparse has reserved its per-layer GPU caches and metadata. The reserved KV capacity per request is $N _ { \\ell } B W _ { \\mathrm { K V } } { \\varepsilon }$ —proportional to the configured cache size B, a small multiple of k—rather than $N _ { \\ell } L _ { \\mathrm { c t x } } W _ { \\mathrm { K V } } s ,$ so long-context requests no longer consume decode HBM in proportion to their full history length (for GLM-5.1 at B=4096, about 0.4 GB per request instead of 13.09 GB at 128K context—a 30 reduction).",
+        "bbox": [
+            169,
+            777,
+            826,
+            861
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "(3) Layer decode. At decode step t and layer ℓ, the indexer emits its selected set. The miss-resolution path checks which selected logical positions are already resident, fetches the missing layer-local KV records from the host pool, updates the page table and LRU state, and emits a dense vector of physical device slots aligned with the selected positions. The sparse-attention kernel for that layer runs after this resolution completes. This describes the synchronous path; §3.5 overlaps part of the fetch work with computation in preceding layers.",
+        "bbox": [
+            169,
+            869,
+            826,
+            912
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "6",
+        "bbox": [
+            493,
+            936,
+            504,
+            948
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "image",
+        "img_path": "images/2b7872fe231d116deed4dc119513d4263e5063d96ff70e46ecb6343958557427.jpg",
+        "image_caption": [
+            "Figure 2: HiSparse overview. Host memory keeps the authoritative full KV cache of every active request; the GPU keeps only compact state (indexer state, per-request-per-layer GPU caches with page-table and LRU metadata) and runs all compute. (1) Prefill writes each layer’s KV records to the host pool. During decode, (2) the sparse indexer emits selected logical positions; the fused RESOLVE kernel probes the GPU cache, (3) fetches missing records from the host pool while evicting LRU victims, and (4) hands physical cache slots to the sparse-attention backend. (5) KV records of newly generated tokens are written through to the host pool."
+        ],
+        "image_footnote": [],
+        "content": "",
+        "bbox": [
+            194,
+            97,
+            797,
+            325
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            470,
+            825,
+            515
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "(4) Write-through of generated KV. Each newly generated token’s KV record is produced directly into a reserved slot of the request’s GPU cache, so the newest position is always resident for upcoming selections. A dedicated backup stream then writes the record through to the host pool, overlapped with the next step’s computation and ordered by events so that the backing copy is complete before any later fetch can reference it.",
+        "bbox": [
+            169,
+            521,
+            826,
+            593
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "3.4 Fused Miss-Resolution Kernel",
+        "text_level": 2,
+        "bbox": [
+            171,
+            614,
+            424,
+            630
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Miss resolution is on the critical path of every sparse-attention layer. Given a layer’s selected set, HiSparse must identify hits, choose victims for misses, fetch missing KV records, update metadata, and return physical device slots to the attention backend. Splitting these operations across multiple CUDA launches would repeatedly materialize transient state to HBM and add launch latency at every layer. The intermediate state is also tightly coupled: hit/miss marks, victim assignments, LRU updates, and the output device-location vector all depend on the same selected set and resident-buffer metadata. HiSparse therefore performs miss resolution with a single fused CUDA kernel, RESOLVE, launched once per sparse layer with one CUDA block handling each request’s work item (Figure 3) and captured inside SGLang’s steady-state decode CUDA graph [42], into which our implementation is integrated. Because resolution consumes only the emitted logical positions and HiSparse’s own metadata, this one kernel serves DSA, NSA, and Quest alike—logical indices in, physical slots out, much like a software-managed TLB.",
+        "bbox": [
+            169,
+            643,
+            828,
+            811
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Phase 1: stage selected positions. Threads cooperatively load the selected positions into a sharedmemory hash table. This gives the rest of the kernel fast membership tests for the selected set without repeatedly rereading the top-k vector from HBM.",
+        "bbox": [
+            169,
+            819,
+            826,
+            862
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Phase 2: mark GPU-cache slots. As shown in Figure 3, threads probe the hash table for the logical position currently stored in each of the B GPU-cache slots. The kernel writes a compact mark for each slot: hit if the resident entry is in the current selected set, and evictable otherwise.",
+        "bbox": [
+            169,
+            869,
+            826,
+            912
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "7",
+        "bbox": [
+            493,
+            936,
+            504,
+            948
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "image",
+        "img_path": "images/cd1cfe4f342e41aa1a7b610500587d65786bccbb68fb9df25dec6391c65b1505.jpg",
+        "image_caption": [
+            "Figure 3: The fused miss-resolution kernel. For one request and layer, RESOLVE first builds a shared-memory hash table for the selected logical positions. It then probes every GPU-cache slot against the hash table in parallel, marks resident entries as hits or eviction candidates, uses a parallel scan over those marks to choose victims and update LRU metadata, fetches missing KV records from pinned host memory, and emits physical device slots in top-k order for the sparse-attention backend."
+        ],
+        "image_footnote": [],
+        "content": "",
+        "bbox": [
+            236,
+            101,
+            761,
+            439
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Phase 3: scan marks and update LRU. The kernel then performs a parallel scan over the per-slot marks. The scan compacts evictable slots, selects enough victims for the missing selected positions, and produces the updated LRU metadata for the post-step buffer state. Hit slots are retained and promoted to the most-recently-used end, victim slots are assigned to misses, and the fetched misses are ordered just behind the hits, per the replacement policy of §3.2.",
+        "bbox": [
+            169,
+            582,
+            826,
+            654
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Phase 4: fetch missing KV records. Threads responsible for misses copy the corresponding layerlocal KV records from the pinned host pool into their claimed device slots. HiSparse adopts the GPUassisted IO technique of Strata [36]: instead of staging DMA copies, GPU threads issue vectorized non-coherent loads directly against pinned host memory (ld.global.nc.v2.b64), which tolerates the scattered addresses of cache misses and reduces transaction overhead on PCIe and NVLink-C2C systems [23]. The per-thread transfer block size is tuned so that fragmented miss reads still approach link bandwidth.",
+        "bbox": [
+            169,
+            660,
+            826,
+            758
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Phase 5: publish attention inputs. Finally, the kernel updates the page table and emits top\\_k\\_device\\_locs, a dense vector of physical device offsets aligned with the selected logical positions. The downstream sparse-attention gather can then read the selected KV records directly from the GPU cache.",
+        "bbox": [
+            169,
+            766,
+            826,
+            823
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "3.5 Layer-wise Prefetch",
+        "text_level": 2,
+        "bbox": [
+            171,
+            842,
+            354,
+            857
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Even with a fused resolve kernel, selected entries that miss in the GPU cache may expose hostmemory latency. HiSparse hides this cost by prefetching across layers, targeting models that make cross-layer selection locality explicit by reusing indexer outputs. IndexCache [2] partitions layers into what we call anchor layers, which run the top-k indexer, and shared layers, which reuse the selection of their preceding anchor; GLM-5.2 ships this design natively as IndexShare, sharing one indexer across each group of four layers [39]. For such models, HiSparse does not need to guess: the moment an anchor layer emits its selected set, the selected positions of every shared layer in its group are known, several layers before their attention runs.",
+        "bbox": [
+            169,
+            869,
+            826,
+            914
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "8",
+        "bbox": [
+            493,
+            935,
+            504,
+            948
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            90,
+            826,
+            162
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Exact prefetch with shared selections. HiSparse exploits this with a plan-then-IO scheme: the anchor’s RESOLVE additionally records its miss plan—which host records move into which cache slots—and a copy-only kernel on a side stream replays that plan into each shared layer’s cache, overlapping the transfers with the intervening layers’ computation. Because every shared layer’s cache follows its anchor’s slot layout in lockstep, a shared layer reuses the anchor’s slot table outright: it waits on its prefetch-completion event and skips resolution entirely—no probing, no LRU update, no synchronous host-memory load, and no speculative traffic wasted. The copies themselves reuse the demand path’s GPU-assisted IO (§3.4), so scattered prefetch reads run near link bandwidth—which matters because prefetching shifts IO earlier rather than eliminating it, drawing on the same host link that serves demand misses (§4.5).",
+        "bbox": [
+            169,
+            170,
+            826,
+            310
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "A speculative alternative. For models without shared indices, we also explored a speculative variant that uses layer ℓ’s selected positions as a hint for layer ℓ+1—adjacent layers often select overlapping positions, and a wrong hint costs only wasted transfers, never correctness. In our evaluation it produced little end-to-end gain (§4.6): the LRU-managed GPU cache already captures most implicit cross-layer reuse, so hinted records are usually resident, while the misses that remain are precisely those the hints fail to predict. This negative result is part of why we consider shared-index model co-design, rather than deeper speculation, the right path to hiding miss latency.",
+        "bbox": [
+            169,
+            316,
+            826,
+            417
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "4 Evaluation",
+        "text_level": 2,
+        "bbox": [
+            171,
+            431,
+            297,
+            449
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Our evaluation asks four questions: (1) Does HiSparse improve end-to-end serving across context lengths, models, sparse selectors, and hardware platforms? (2) Does the GPU cache exploit enough locality to keep miss counts low? (3) What determines miss-resolution overhead and the choice of GPU-cache size? and (4) how do faster host-device links and layer-wise prefetching interact with emerging hardware and model-design trends?",
+        "bbox": [
+            169,
+            462,
+            826,
+            534
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "4.1 Setup",
+        "text_level": 2,
+        "bbox": [
+            171,
+            547,
+            254,
+            563
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Models. We evaluate three sparse-attention families: DeepSeek-V4-Flash, whose hybrid attention applies NSA-style top-k selection over compressed KV entries (termed Compressed Sparse Attention by DeepSeek) [12, 38], GLM-5.1-FP8 with DeepSeek Sparse Attention (DSA) [11, 14, 35], and Qwen3-30B-A3B-Thinking-2507 [26, 37] with Quest as a training-free sparse selector [31]. The layer-wise prefetch study (§4.6) additionally uses GLM-5.2-FP8, which shares DSA indexer selections across groups of layers (IndexShare) [2, 39]. All experiments select k=2048 tokens per query. For DeepSeek-V4-Flash, selection operates at the granularity of 4-token compressed KV entries, so its top-512 selection covers 2048 tokens; HiSparse manages these compressed KV entries, which dominate the model’s KV footprint, while the remaining branch state stays GPU-resident. For the other models, selection is token-level with k=2048; Quest requires no architectural sparsity and serves as a training-free selector, applied at every layer, over the ordinary dense-attention KV cache of the smaller Qwen3 model. All models serve with BF16 KV caches; the FP8 tag in model names refers to weight precision.",
+        "bbox": [
+            169,
+            575,
+            826,
+            756
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Platforms. End-to-end serving experiments use the platform indicated in each figure: DeepSeek-V4- Flash on 2 B200, GLM-5.1-FP8 and GLM-5.2-FP8 on 8 H200, and Qwen3+Quest on a GH200 node. The H200 node pairs its eight GPUs with 2 TB of host DRAM; at the largest operating point (§4.6, 256 concurrent requests at 32K input / 8K output), the host KV pool grows to roughly 1 TB of pinned host memory.",
+        "bbox": [
+            169,
+            763,
+            826,
+            835
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Baseline. All experiments compare against unmodified SGLang v0.5.11 with the full KV cache resident in HBM, under an otherwise identical deployment configuration (model, parallelism, precision, and scheduler settings). We compare against no offloading system: the closest efforts, ESS [6] and ECHO [21], are concurrent work—the former a prototype evaluated in simulation, the latter specific to NSA (§6).",
+        "bbox": [
+            169,
+            842,
+            826,
+            912
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "9",
+        "bbox": [
+            493,
+            935,
+            504,
+            946
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "chart",
+        "img_path": "images/8ca8a6279f70323a7fa9071fbbca94048bbb9e4823198937312316a48b72fee6.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            181,
+            90,
+            393,
+            224
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "chart",
+        "img_path": "images/c83460929f248a7cff4f05228ce1609a0adcd6b4b3e89fae5d707cb7a89a8c36.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            395,
+            94,
+            604,
+            224
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "chart",
+        "img_path": "images/9ed756244afe5cf473da24b843edde39b3b9bbbe8fa90dc141c67111f936c640.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 4: End-to-end serving of DeepSeek-V4-Flash (NSA) on 2 B200 in PD-colocated mode, 32K input / 8K output; selection covers 2048 tokens per step (top-512 over 4-token compressed KV entries). (a) Generation throughput vs. closed-loop concurrency (solid: prefill+decode; dashed: decode-only, indicative of PD-disaggregated decode-pool throughput); (b) mean TTFT and (c) mean TPOT vs. achieved generation throughput."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            609,
+            94,
+            812,
+            224
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Workloads and metrics. We first evaluate end-to-end serving with SGLang’s standard bench\\_serving harness [27, 42]. For each model, we sweep the input lengths shown in the corresponding figures under fixed output lengths and closed-loop concurrency. Concurrency sweeps (Figures 1, 4, and 8) fix 32K input / 8K output: the length is representative of long-context serving, and it is the regime where the comparison is most informative—the full-KV baseline can still admit a range of concurrencies at 32K, so both systems trace complete curves, whereas at much longer contexts the baseline collapses to a few low-concurrency points and leaves little of the trend to compare. Longer contexts, up to 200K, are therefore reported as peak-throughput comparisons (Fig ure 5). These runs report generation throughput (generated tokens/s), TTFT, and TPOT. Generation throughput measures system output rate; TPOT measures per-output-token latency after the first token. We then use ablations to explain where the end-to-end gains come from: cache-policy experiments replay sparse-selection traces from LongBenchV2 [1] and kernel experiments report miss-resolution time.",
+        "bbox": [
+            169,
+            354,
+            826,
+            535
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "4.2 End-to-End Benchmarks",
+        "text_level": 2,
+        "bbox": [
+            171,
+            554,
+            388,
+            569
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Figure 4 shows the end-to-end benchmark for DeepSeek-V4-Flash at 32K input / 8K output. At low concurrency, the baseline and HiSparse have similar throughput because the baseline can still keep all active KV caches in HBM. Once concurrency rises, the baseline saturates: additional requests cannot be admitted without more KV capacity, so throughput remains nearly flat—the same wall Figure 1(a) shows for GLM-5.1. HiSparse reduces the per-request decode HBM footprint and continues to scale, lifting generation throughput from 600 to 1257 tokens/s at concurrency 64 (2.1 )—and from 1511 to 4308 tokens/s (2.9 ) in decode-only terms. The gain is entirely a batch-size effect: HiSparse does not make an individual decode step faster—it admits a larger decode batch into the same HBM. At 32K input the baseline can still hold a few dozen requests, so the headroom here is moderate; with longer inputs and outputs the baseline’s feasible batch shrinks further and the same effect becomes much more pronounced (Figure 5).",
+        "bbox": [
+            169,
+            580,
+            826,
+            734
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "The latency panels show why this matters for colocated serving. In the baseline, decode saturation causes prefill chunks and new requests to queue, so TTFT grows rapidly even though the per-token decode latency has not collapsed: mean TTFT climbs from 26 s at concurrency 8 to 829 s at 64, where HiSparse sits at 171 s. HiSparse leaves more HBM headroom and drains decode work faster, keeping TTFT much lower at higher achieved throughput. TPOT rises as HiSparse pushes into higher-throughput operating points, but in the overlapping range it remains comparable to the baseline (15.9 vs. 16.0 ms at concurrency 16), indicating that miss-resolution overhead is smaller than the capacity benefit in the long-context regime.",
+        "bbox": [
+            169,
+            738,
+            826,
+            852
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Figure 5 extends the result along two axes at once: to other models, selectors, and platforms, and— most importantly—to much longer contexts, sweeping input length up to 200K (Qwen3+Quest on GH200) and 160K (GLM-5.1+DSA on H200). At 4K, the full-KV baseline already fits a useful batch in HBM, so HiSparse has little room to help: Qwen changes from 2430 to 2668 tokens/s and GLM remains essentially unchanged (2288 vs. 2280 tokens/s). At longer contexts, the baseline becomes capacity-bound, while HiSparse keeps decode memory proportional to the configured GPU-cache size. The resulting gains are large and grow with context length: Qwen improves by 3.6 at 32K and 4.7 at 200K (511 to 1824 and 111 to 520 tokens/s), while GLM improves by 3.1 at 32K and 2.9 at 160K (624 to 1919 and 232 to 680 tokens/s). The GLM 32K point summarizes the sweep already shown in Figure 1, whose panels trace the full concurrency and TTFT behavior at that operating point. This is the regime where separating logical KV availability from GPU residency translates into higher serving throughput. The decode-only curves carry the same message for PD-disaggregated serving: with prefill time excluded, the dashed curves in Figure 4(a) estimate what a dedicated decode pool could sustain. A full-KV decode pool is capped by the batch its HBM can admit, and HiSparse raises exactly that ceiling—the 2.9 decode-only gain above. We do not run a physically disaggregated deployment, due to our testbeds’ capacity; the decode-only rate serves as its proxy.",
+        "bbox": [
+            169,
+            854,
+            826,
+            912
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "10",
+        "bbox": [
+            490,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "chart",
+        "img_path": "images/6f4a557c457a8aab4de2ad8fdc74a0a2e2f0fc31e7678c0fe9f63a13fd0428e0.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            174,
+            89,
+            496,
+            256
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "chart",
+        "img_path": "images/0d3d0a73c4e2e12e6a9c6ac3176c73b84de9a71fdf70478d003edaf2edfaa562.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 5: Peak generation throughput across input lengths for two additional sparse-attention families, both with k=2048 selected tokens. Left: Qwen3-30B-A3B with Quest on GH200. Right: GLM-5.1- FP8 with DSA on 8 H200."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            500,
+            89,
+            821,
+            255
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            359,
+            826,
+            527
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "The capacity dividend is fungible: an operator who does not need more throughput can take it as hardware savings instead. At matched batch size, HiSparse shrinks the decode KV budget by the same multiplier that otherwise raised concurrency—for GLM-5.1’s 60-request batch at 32K, from 240 GB of HBM to 25 GB at B=4096, a gap that widens with context (13.09 vs. 0.4 GB per request at 128K, §3.3). In KV-dominated long-context deployments, the same workload therefore fits in fewer GPUs or cheaper, lower-HBM parts, at the cost of the per-token IO overhead of §4.6.",
+        "bbox": [
+            169,
+            532,
+            826,
+            618
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "4.3 GPU-Cache Locality and LRU",
+        "text_level": 2,
+        "bbox": [
+            171,
+            645,
+            426,
+            661
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "HiSparse deliberately uses the GPU cache as a hot KV cache, not merely as a temporary top-k staging area. Figure 6 demonstrates why this choice matters and why HiSparse manages the cache with LRU. The trace comes from a GLM-5.1 request serving a 100,384-token LongBenchV2 prompt and decoding 1,799 steps across all 78 sparse layers; every policy replays the identical per-layer top-k selection stream (the figure and the means below cover the first 1,000 decode steps), so differences reflect replacement decisions alone. Throughout, recall that B counts KV-record slots per request and layer (Table 2), so B=4096 is twice the k=2048 selection. Keeping exactly the current top-k entries resident (B=k) misses 30% of each step’s selections on average, because the selected set drifts across steps. Doubling the cache immediately cuts misses, but the replacement policy determines how much locality is preserved: at B=4096, LRU averages a 13.4% miss rate, consistently below FIFO (17.2%) and random (16.1%) replacement, and tracks the shape of the offline-optimal Bélády policy [3], indicating that recency is a good online proxy for future sparse selections. This is also why the miss-resolution kernel in §3.4 preserves resident hits and updates LRU in place instead of rebuilding the cache from only the current top-k set. The same figure also shows what is left on the table: doubling the LRU cache to B=8192 halves the miss rate to 6.7%, while Bélády reaches 8.2% already at B=4096 (and lower still at B=8192, also shown), bounding what a smarter, predictive replacement policy could still recover at the same capacity.",
+        "bbox": [
+            169,
+            676,
+            826,
+            914
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "11",
+        "bbox": [
+            488,
+            935,
+            508,
+            948
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "chart",
+        "img_path": "images/3cdcbf6b93fb0de1426c6dd16976e19df1fa53d0d7369a18f5761b85fbb7cc8a.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 6: Per-step top-k miss rate (averaged across layers, smoothed) when replaying the same LongBenchV2 sparse-selection trace of GLM-5.1 (k=2048) under seven cache configurations; B counts KV-record slots per request and layer. Top-k-only staging (Swap-vanilla, $\\scriptstyle B = 2 0 4 8 )$ misses 30% of each step’s selections on average because it retains no extra hot entries. With the same B=4096 budget, LRU (13.4% mean) consistently outperforms FIFO (17.2%) and random (16.1%) replacement and follows the trend of the offline Bélády optimum (8.2%). Doubling the LRU cache to $scriptstyle B = 8 1 9 2$ halves the miss rate again (6.7%), showing that retained locality translates directly into fewer host-memory loads."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            176,
+            90,
+            818,
+            266
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "4.4 Miss-Resolution Cost and Cache-Size Tradeoff",
+        "text_level": 2,
+        "bbox": [
+            171,
+            435,
+            540,
+            450
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "A low miss rate is only half the story: resolving the misses that remain still costs time, and that cost shifts with cache size and batch size. A larger GPU cache retains more locality but lengthens metadata scans and consumes more HBM per request; at high batch size, the misses of concurrent requests contend for host-memory bandwidth. We therefore break the fused resolve kernel’s time into phases, to locate both the practical cache-size range and the bottleneck that emerges once misses are rare.",
+        "bbox": [
+            169,
+            463,
+            826,
+            547
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Figure 7 shows this tuning tradeoff across the three end-to-end models plus DeepSeek-V4-Pro (tokenlevel selection, $k { = } 1 0 2 4 )$ , each at its native selection granularity. A larger GPU cache reduces the number of misses and therefore the IO portion of the resolve kernel. It is not free: the kernel must probe and scan more resident slots, and a larger cache also consumes more HBM per request—HBM that could otherwise hold more concurrent requests, larger model weights, or more resident MoE experts. Across the models in the figure, the useful region is typically a small multiple of the selected set size, around 2k–4k. This range keeps enough hot entries to exploit locality without turning metadata scans or HBM capacity into the new bottleneck. For scale, the sparse-attention kernel itself takes 60 µs per layer in our GLM-5.2 decode profiles on H200 (per-GPU batch of 8), so an unhidden 100–200 µs resolve would more than double a layer’s attention critical path—which is why keeping misses rare (§4.3) and hiding the remainder (§4.6) both matter.",
+        "bbox": [
+            169,
+            551,
+            826,
+            705
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "The bottom row isolates the batch-size effect at B=2k. The probe-and-scan component is comparatively stable, while the IO component grows quickly with batch size because more requests issue miss loads concurrently. This result motivates the rest of the IO-side design: making each fetch efficient with GPU-assisted IO and tuned block sizes (§3.4, §3.5), benefiting from faster host-device links where the platform offers them (§4.5), and hiding the remaining latency behind computation with layer-wise prefetch (§4.6).",
+        "bbox": [
+            169,
+            710,
+            826,
+            795
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "4.5 Bandwidth Sensitivity",
+        "text_level": 2,
+        "bbox": [
+            171,
+            814,
+            367,
+            829
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "The previous experiment shows that host-memory IO can dominate miss-resolution cost at high batch size. This raises a hardware-facing question: if the CPU–GPU path becomes much faster, should HiSparse still spend HBM on large GPU caches to avoid misses, or should it accept more misses and reserve memory for concurrency? We study this question on a GH200-class high-bandwidth host-device path [23].",
+        "bbox": [
+            169,
+            842,
+            826,
+            912
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "12",
+        "bbox": [
+            490,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "chart",
+        "img_path": "images/6aad50f301be3704bc1217d442e6c9c40597e5ad11cf644c87625c9dd129ef82.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 7: Miss-resolution breakdown across models, GPU-cache sizes, and platforms: H200 with a PCIe Gen5 host-device link (wide light lines, filled markers) and GH200 with NVLink-C2C (dark dashed lines, open markers). Panel titles give each model’s top-k in KV-record granularity (§4.1). IO is the host-memory fetch phase; probe & scan covers the metadata phases and is nearly platform-independent—the dashed GH200 curve tracks the H200 band within 5%; the residual phase (hash-table build and output publication) is 1–4 µs everywhere and omitted. Top row: perkernel-call time at batch size 16 while varying the cache ratio B/k—larger caches reduce IO by lowering misses but increase probe-and-scan work over resident slots. Bottom row: per-kernel-call time at B=2k while varying batch size—at high batch, IO dominates on the PCIe link, while the faster NVLink-C2C path compresses it."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            183,
+            109,
+            815,
+            297
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "The dashed GH200 curves in Figure 7 repeat the microbenchmark with only the platform changed and show that the IO component compresses substantially—for GLM-5.1 at B=2k and batch size 16, from 112 to 29 µs per call—so the benefit of very large GPU caches diminishes: fetching a miss is cheaper, while scanning a larger cache still costs time and consumes HBM. This shifts the practical operating point toward smaller caches such as B=2k, which preserves more device memory for larger decode batches. The result reinforces the central systems lesson: HiSparse converts a capacity bottleneck into a tunable latency/bandwidth problem, and platforms with faster host-device links make that tradeoff more favorable.",
+        "bbox": [
+            169,
+            496,
+            826,
+            609
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "In HiSparse this tuning is deliberately simple and static: B is a serving-configuration parameter fixed at deployment, chosen by profiling sweeps like Figure 7 for the target platform, with B=2k a robust default. In our experiments the preferred setting depended primarily on the platform’s host-link bandwidth (contrast the solid and dashed IO curves in Figure 7) rather than on the workload. Because caches are allocated per request, admission-time or dynamic resizing is mechanically straightforward, but we leave dynamic policies to future work. The next experiment studies the complementary model-side opportunity: using cross-layer selection locality to hide the remaining miss latency.",
+        "bbox": [
+            169,
+            614,
+            826,
+            713
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "4.6 Layer-wise Prefetching",
+        "text_level": 2,
+        "bbox": [
+            171,
+            731,
+            375,
+            747
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Even on faster host-device links, a miss still lies on the critical path unless its KV transfer can be overlapped with useful computation. We evaluate HiSparse’s exact prefetch path (§3.5) on GLM-5.2-FP8, which shares DSA indexer selections across layers via IndexShare [2, 39]: of its 78 layers, 21 anchor layers run the indexer and the remaining 57 layers reuse the selection of their preceding anchor. Once an anchor layer emits its selected set, HiSparse issues the host-to-device loads for the following shared layers’ KV records and overlaps them with the computation of the intervening layers. We compare four settings on 8 H200 in PD-colocated mode at 32K input / 8K output with closed-loop concurrency from 8 to 256: the full-KV baseline, HiSparse with synchronous miss resolution (prefetch disabled), HiSparse with exact prefetch, and a no-IO oracle—HiSparse with the resolve kernel’s host-memory IO skipped entirely. The oracle serves stale KV records on misses, so its outputs are invalid; because the benchmark fixes output lengths, its timing remains a valid upper bound on any IO-hiding scheme—stronger than perfectly overlapped prefetching, which still places the same traffic on the host link. All HiSparse configurations use k=2048 and B=4096 (B=2k), within the 2k–4k range identified in §4.4.",
+        "bbox": [
+            169,
+            758,
+            828,
+            914
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "13",
+        "bbox": [
+            488,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "chart",
+        "img_path": "images/c485e337b8b5e79be89effa2557fb53ad80366d0da739f67c164b06fb1bf7552.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            181,
+            90,
+            395,
+            224
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "chart",
+        "img_path": "images/ab10531ede89222f034cb047f653fc564a29756046f16298ca1a61a81f7149c8.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            397,
+            94,
+            607,
+            224
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "chart",
+        "img_path": "images/d1273152b7175aeb3e3eca84c9a3c1e0682199165b9deb401a542294f9a47f75.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 8: Layer-wise exact prefetching with IndexCache-shared selections: GLM-5.2-FP8 (DSA) on 8 H200 in PD-colocated mode, 32K input, 8K output, k=2048, B=4096. The gray dotted curve is the no-IO oracle, which skips host-memory IO entirely (outputs invalid; a performance bound on any IO-hiding scheme). (a) Generation throughput vs. closed-loop concurrency (darker: prefill+decode; lighter: decode-only, indicative of PD-disaggregated decode-pool throughput). The full-KV baseline saturates once KV caches fill HBM; all HiSparse variants continue to scale to 256 requests. (b) Mean TTFT vs. achieved generation throughput; point labels give the concurrency. (c) Mean TPOT vs. achieved generation throughput: the oracle matches the baseline’s TPOT at low concurrency—HiSparse’s entire overhead is IO—and exact prefetch lowers TPOT by 13–15% at matched concurrency, closing roughly half of the gap between synchronous resolution and the oracle."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            612,
+            94,
+            816,
+            224
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            421,
+            825,
+            464
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Figure 8 shows the same capacity trend as §4.2: the baseline saturates once full-context KV caches fill HBM—mean TTFT jumps from 16 s at concurrency 16 to 91 s at 32 and 275 s at 64—while the HiSparse variants scale to 256 concurrent requests. Panel (b) also shows that prefill-side staging is effectively free: at low concurrency, where TTFT contains no queueing, writing prefill KV through to the host pool leaves mean TTFT unchanged (10.7 s for the baseline vs. 10.7–10.8 s for all HiSparse variants at concurrency 8). Prefetching then recovers much of the remaining miss-resolution cost. At matched concurrency, exact prefetch lowers mean TPOT by 13–15% and raises generation throughput by 14–17% across the entire sweep, lifting peak generation throughput from 618 (baseline) and 1515 (no prefetch) to 1727 tokens/s, a 2.8 end-to-end gain over the full-KV baseline. The no-IO oracle bounds what any IO-hiding scheme could reach at 2034 tokens/s: exact prefetch attains 85% of this ceiling, up from 74% without prefetch. The decode-only curves give the same bound for PD-disaggregated serving: the oracle’s decode rate reaches 4671 tokens/s and exact prefetch 3410 (73%)—a wider gap than in colocated mode, where prefill time dilutes the relative cost of decode-side IO.",
+        "bbox": [
+            169,
+            469,
+            826,
+            665
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Panel (c) quantifies the overhead against this explicit upper bound. At low concurrency the oracle tracks the full-KV baseline’s TPOT (24.1 vs. 24.8 ms at concurrency 8), showing that the resolve mechanism itself—hash probes, victim scans, LRU updates, and the KV gather—adds no measurable per-token cost: HiSparse’s entire TPOT overhead is host-memory IO. Against this bound, synchronous resolution exposes 7.7 ms of IO per token at concurrency 8 and 22.0 ms at 256; exact prefetch cuts the exposure to 3.0 ms and 11.2 ms respectively, hiding roughly half of the IO overhead at matched concurrency across the sweep. Much of the residual is structural: anchor layers’ own selections are not known in advance, so their misses—21 of 78 layers, roughly 27% of the IO under a uniform per-layer split—remain synchronous by construction. Discounting this floor, prefetch hides two thirds to four fifths of the IO it can act on; the remainder is overlap shortfall, since prefetching repositions transfers rather than eliminating them and the traffic still contends with demand misses on the same host link at high batch.",
+        "bbox": [
+            169,
+            670,
+            826,
+            838
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "We also evaluated the speculative variant of §3.5, which uses layer ℓ’s selection as a hint for layer ℓ+1 in models without shared indices. It raised the GPU-cache hit rate only marginally and produced no measurable end-to-end gain: the hinted positions are usually resident already, while the misses that remain—positions newly entering the top-k—are precisely those the hints cannot predict, so speculation adds host-link traffic without removing critical-path loads. The takeaway is about dependencies: overlapping miss IO with computation requires knowing a layer’s selections well before that layer runs, and speculation cannot reliably supply them. Model co-design can—sharing selections across layers removes the dependency outright and makes prefetch exact: the difference between no measurable gain and the 13–15% TPOT reduction above.",
+        "bbox": [
+            169,
+            842,
+            826,
+            912
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "14",
+        "bbox": [
+            490,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            90,
+            826,
+            148
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "5 Discussion and Limitations",
+        "text_level": 2,
+        "bbox": [
+            171,
+            165,
+            434,
+            183
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "TPOT overhead from exposed IO. HiSparse trades HBM capacity for host-memory traffic, which surfaces as a TPOT overhead: 7–8 ms per token at matched low concurrency when misses are resolved synchronously (§4.6). The design layers mitigations—LRU caching (§4.3), GPU-assisted IO (§3.4), faster links (§4.5)—and model co-design hides roughly half of what remains: with shared selections, exact prefetch cuts the exposed IO to about 3 ms per token at low concurrency, against a no-IO oracle showing the resolve mechanism itself costs nothing (§4.6). When serving is not capacity-bound— short contexts or low concurrency—HiSparse offers no benefit to offset this overhead and can simply be disabled.",
+        "bbox": [
+            169,
+            198,
+            828,
+            310
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Beyond throughput: contexts that do not fit in HBM. The capacity benefit is not only a batch-size multiplier. Under full-KV serving, a request whose KV cache exceeds free HBM cannot be admitted at any concurrency—device memory, not the model’s context window, caps the servable context (a 1M-token GLM-5.1 request needs over 100 GB of KV, §1). Because HiSparse bounds decode-side HBM by the GPU-cache size regardless of context length, the same mechanism that converts capacity into batch size at moderate contexts converts it into feasibility at extreme ones: the maximum servable context is set by host-tier capacity instead. This follows directly from the footprint bound (§3.3), so we do not evaluate it separately.",
+        "bbox": [
+            169,
+            318,
+            826,
+            430
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Host-memory capacity. The more fundamental limitation today is the size of the second tier, not the overhead. HiSparse presumes host DRAM is much larger than HBM—true on terabyte-class PCIe H200 servers, but not on Grace-based GB200/GB300 systems, where each Grace CPU’s 480 GB of LPDDR is comparable to (for GB300, smaller than) the paired GPUs’ aggregate HBM. When the second tier is no bigger than the first, the capacity multiplier that HiSparse converts into batch size shrinks. NVMe or network-attached tiers recover capacity at higher latency, raising the stakes for locality and overlap.",
+        "bbox": [
+            169,
+            438,
+            826,
+            536
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Co-design implications. We hope this exploration informs future co-design. Models that reserve headroom for overlap—sharing selections across layers or emitting them early [2, 39]—turn KV placement from a latency problem into a scheduling one; platforms with larger host memory and faster CPU–GPU interconnects convert directly into smaller GPU caches and larger batches (§4.5). Sparse attention makes per-step KV demand small and predictable; modest accommodations in models and hardware would compound what HiSparse already exploits today.",
+        "bbox": [
+            169,
+            542,
+            826,
+            628
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "6 Related Work",
+        "text_level": 2,
+        "bbox": [
+            171,
+            645,
+            323,
+            661
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "LLM serving and KV memory management. PagedAttention and vLLM manage KV memory in fixed-size pages to reduce fragmentation and enable higher serving throughput [18]. SGLang provides a high-throughput serving runtime with KV-reuse optimizations for structured LLM programs [42]. Serving systems also split or coordinate prefill and decode because the two phases stress different resources [24, 43], and IO-aware attention kernels reduce compute-side memory traffic without shrinking the resident KV footprint [8, 9]. HiSparse is complementary to all of these: it reduces the decode-side HBM footprint of each long-context sparse-attention request, which helps both disaggregated decode pools and colocated prefill/decode deployments.",
+        "bbox": [
+            169,
+            675,
+            826,
+            789
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "KV compression and eviction. A large body of work shrinks the KV cache by discarding or approximating entries: eviction policies such as H2O, StreamingLLM, and SnapKV permanently drop tokens deemed unimportant [20, 33, 41], and quantization reduces bytes per entry [22]. These methods trade output fidelity for capacity. HiSparse is orthogonal: it relocates KV entries rather than discarding or approximating them, leaving sparse-attention outputs unchanged.",
+        "bbox": [
+            169,
+            799,
+            826,
+            872
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Hierarchical and offloaded KV caches. Systems such as FlexGen, HiCache, CachedAttention, and Mooncake place model or KV state across GPU, host, and storage tiers for throughput-oriented or cross-turn serving [13, 25, 29, 34]; HiSparse borrows Strata’s GPU-assisted IO technique for its host-memory fetch path [36]. Closer to HiSparse, several systems offload KV state to host memory and fetch or use it selectively during decode: InfiniGen speculatively prefetches entries predicted to be important [19], ShadowKV selects via low-rank keys kept on GPU and offloads values [30], MagicPIG samples KV entries with CPU-resident LSH [7], ArkVale evicts cold pages but recalls them by page summaries [5], and PQCache retrieves entries via product quantization [40]; NEO and FastDecode instead offload attention computation itself to the CPU [15, 16]. The retrieval-based systems graft their own approximate selector onto dense-attention models, so outputs deviate from the underlying model; the CPU-compute systems remain exact but place attention on the CPU. HiSparse instead serves the model’s own top-k selections—exact by construction—and keeps all compute on the GPU. Closest to HiSparse are two concurrent systems. The ESS prototype offloads DeepSeek-V3.2’s latent cache to host memory behind a GPU hot cache, with an architecture specialized to that model and evaluated in simulation [6]. ECHO offloads KV state for NSA models and centers on prefetching, whose benefit hinges on accurately predicting upcoming selections [21]. HiSparse spans trained and training-free selectors (DSA, NSA, Quest) through an indexer-agnostic interface, puts locality first—the LRU-managed cache keeps most selections resident, reducing IO load rather than overlapping it—resolves misses with a single fused kernel captured in the decode CUDA graph, and reserves prefetching for models whose shared selections make it exact rather than predictive.",
+        "bbox": [
+            169,
+            883,
+            826,
+            912
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "15",
+        "bbox": [
+            488,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            169,
+            92,
+            826,
+            342
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Sparse attention. Early architectures constrain attention with fixed patterns, content-based bucketing, or low-rank projection [4, 17, 32]. Trained query-dependent sparse-attention architectures such as DSA/NSA and hybrid attention models reduce attention compute and active KV reads [11, 12, 14, 38], and training-free methods such as Quest select query-dependent KV pages at inference time [31]. HiSparse is not a new sparse-attention algorithm; it is a serving-system layer that makes these algorithms’ inactive state cheap in HBM capacity.",
+        "bbox": [
+            169,
+            369,
+            826,
+            454
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "7 Conclusion",
+        "text_level": 2,
+        "bbox": [
+            171,
+            486,
+            300,
+            503
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Top-k sparse attention leaves serving systems paying full-context HBM rent for KV entries that each decode step barely reads. HiSparse ends this mismatch by decoupling logical availability from physical residency: each request’s complete KV history lives in host memory, its decode footprint is bounded by a small GPU cache whose LRU management turns selection locality into hits, a fused kernel resolves each layer’s selections inside the decode CUDA graph, and models that share selections across layers make prefetching exact, overlapping much of the remaining IO with computation. Because only KV placement changes, model outputs are unchanged. Across DSA, NSA, and Quest on H200, B200, and GH200 platforms, HiSparse improves peak long-context generation throughput by up to 4.7 at comparable per-token latency; a no-IO oracle shows the resolution mechanism itself adds no measurable cost and that exact prefetch reaches 85% of the throughput any IO-hiding scheme could attain.",
+        "bbox": [
+            169,
+            526,
+            826,
+            680
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Beyond throughput, bounding decode-side HBM extends the servable context past what HBM alone can hold, with the ceiling set by host-tier capacity instead. HiSparse ships in upstream SGLang, and its broader lesson is one of co-design: sparse attention makes per-step KV demand small and predictable, and modest accommodations in models and hardware—selections shared or announced early, faster host–device links—compound what hierarchical KV placement already delivers today.",
+        "bbox": [
+            169,
+            684,
+            826,
+            756
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Acknowledgements",
+        "text_level": 2,
+        "bbox": [
+            171,
+            789,
+            339,
+            805
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "We would like to thank the Alibaba Cloud TairKVCache team, the Ant Group SCT Inference team, the Baidu Baige AI team and Zhipu AI for their open-source contributions to HiSparse. We are grateful to Shangming Cai, Teng Ma, and Xingyu Ling from Alibaba Cloud for their constructive feedback. This research was supported in part by the Stanford Platform Lab and its affiliates. Zhiqiang Xie was supported by the NVIDIA Graduate Fellowship. We thank RadixArk for providing computational resources.",
+        "bbox": [
+            169,
+            827,
+            826,
+            912
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "16",
+        "bbox": [
+            490,
+            936,
+            509,
+            948
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "References",
+        "text_level": 2,
+        "bbox": [
+            173,
+            89,
+            269,
+            106
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[1] Yushi Bai, Shangqing Tu, Jiajie Zhang, Hao Peng, Xiaozhi Wang, Xin Lv, Shulin Cao, Jiazheng Xu, Lei Hou, Yuxiao Dong, Jie Tang, and Juanzi Li. LongBench v2: Towards deeper understanding and reasoning on realistic long-context multitasks. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 3639–3664, 2025. doi: 10.18653/v1/2025.acl-long.183. URL https://aclanthology.org/2025.acl-long.183/.",
+        "bbox": [
+            179,
+            114,
+            826,
+            196
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[2] Yushi Bai, Qian Dong, Ting Jiang, Xin Lv, Zhengxiao Du, Aohan Zeng, Jie Tang, and Juanzi Li. IndexCache: Accelerating sparse attention via cross-layer index reuse, 2026. URL https: //arxiv.org/abs/2603.12201.",
+        "bbox": [
+            181,
+            205,
+            826,
+            248
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[3] Laszlo A. Belady. A study of replacement algorithms for a virtual-storage computer. IBM Systems Journal, 5(2):78–101, 1966. doi: 10.1147/sj.52.0078.",
+        "bbox": [
+            181,
+            257,
+            825,
+            286
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[4] Iz Beltagy, Matthew E. Peters, and Arman Cohan. Longformer: The long-document transformer, 2020. URL https://arxiv.org/abs/2004.05150.",
+        "bbox": [
+            181,
+            295,
+            826,
+            324
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[5] Renze Chen, Zhuofeng Wang, Beiquan Cao, Tong Wu, Size Zheng, Xiuhong Li, Xuechao Wei, Shengen Yan, Meng Li, and Yun Liang. ArkVale: Efficient generative LLM inference with recallable key-value eviction. In Advances in Neural Information Processing Systems, 2024.",
+        "bbox": [
+            181,
+            332,
+            825,
+            375
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[6] Xinhang Chen, Chao Zhang, Jiahuan He, Wei Liu, Jianming Zhang, Wenlong Zhou, Xiao Li, Pai Zeng, Shiyong Li, Yuanpan Qian, Dong Li, and Zhaogeng Li. ESS: An offloadcentric latent-cache management architecture for DeepSeek-V3.2-Exp, 2025. URL https: //arxiv.org/abs/2512.10576.",
+        "bbox": [
+            181,
+            383,
+            826,
+            440
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[7] Zhuoming Chen, Ranajoy Sadhukhan, Zihao Ye, Yang Zhou, Jianyu Zhang, Niklas Nolte, Yuandong Tian, Matthijs Douze, Leon Bottou, Zhihao Jia, and Beidi Chen. MagicPIG: LSH sampling for efficient LLM generation. In International Conference on Learning Representations, 2025.",
+        "bbox": [
+            181,
+            448,
+            826,
+            492
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[8] Tri Dao. FlashAttention-2: Faster attention with better parallelism and work partitioning. In International Conference on Learning Representations, 2024. URL https://openreview. net/forum?id=mZn2Xyh9Ec.",
+        "bbox": [
+            181,
+            500,
+            826,
+            542
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[9] Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, and Christopher Ré. FlashAttention: Fast and memory-efficient exact attention with IO-awareness. In Advances in Neural Information Processing Systems, 2022. URL https://openreview.net/forum?id=H4DqfPSibmx.",
+        "bbox": [
+            181,
+            551,
+            825,
+            594
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[10] DeepSeek-AI. DeepSeek-V3.2: Efficient reasoning & agentic AI. Hugging Face model card, 2025. URL https://huggingface.co/deepseek-ai/DeepSeek-V3.2. Accessed 2026-05-04.",
+        "bbox": [
+            173,
+            602,
+            825,
+            643
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[11] DeepSeek-AI. DeepSeek-V3.2: Pushing the frontier of open large language models, 2025. URL https://arxiv.org/abs/2512.02556.",
+        "bbox": [
+            173,
+            654,
+            825,
+            683
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[12] DeepSeek-AI. DeepSeek-V4: Towards highly efficient million-token context intelligence, 2026. URL https://arxiv.org/abs/2606.19348.",
+        "bbox": [
+            173,
+            691,
+            826,
+            720
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[13] Bin Gao, Zhuomin He, Puru Sharma, Qingxuan Kang, Djordje Jevdjic, Junbo Deng, Xingkun Yang, Zhou Yu, and Pengfei Zuo. Cost-efficient large language model serving for multi-turn conversations with CachedAttention. In USENIX Annual Technical Conference (ATC), 2024. URL https://www.usenix.org/conference/atc24/presentation/gao-bin-cost.",
+        "bbox": [
+            173,
+            729,
+            826,
+            786
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[14] GLM-5 Team. GLM-5: from vibe coding to agentic engineering, 2026. URL https://arxiv. org/abs/2602.15763.",
+        "bbox": [
+            173,
+            794,
+            826,
+            823
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[15] Jiaao He and Jidong Zhai. FastDecode: High-throughput GPU-efficient LLM serving using heterogeneous pipelines, 2024. URL https://arxiv.org/abs/2403.11421.",
+        "bbox": [
+            173,
+            832,
+            823,
+            859
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[16] Xuanlin Jiang, Yang Zhou, Shiyi Cao, Ion Stoica, and Minlan Yu. NEO: Saving GPU memory crisis with CPU offloading for online LLM inference. In Proceedings of Machine Learning and Systems (MLSys), 2025.",
+        "bbox": [
+            174,
+            869,
+            825,
+            911
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "page_number",
+        "text": "17",
+        "bbox": [
+            490,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "ref_text",
+        "text": "[17] Nikita Kitaev, Lukasz Kaiser, and Anselm Levskaya. Reformer: The efficient transformer. In International Conference on Learning Representations, 2020.",
+        "bbox": [
+            173,
+            90,
+            825,
+            119
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[18] Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin Zheng, Cody Hao Yu, Joseph E. Gonzalez, Hao Zhang, and Ion Stoica. Efficient memory management for large language model serving with PagedAttention. In Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP), pages 611–626, 2023. doi: 10.1145/3600006.3613165. URL https://arxiv.org/abs/2309.06180.",
+        "bbox": [
+            173,
+            131,
+            826,
+            203
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[19] Wonbeom Lee, Jungi Lee, Junghwan Seo, and Jaewoong Sim. InfiniGen: Efficient generative inference of large language models with dynamic KV cache management. In 18th USENIX Symposium on Operating Systems Design and Implementation (OSDI), 2024.",
+        "bbox": [
+            173,
+            214,
+            825,
+            257
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[20] Yuhong Li, Yingbing Huang, Bowen Yang, Bharat Venkitesh, Acyr Locatelli, Hanchen Ye, Tianle Cai, Patrick Lewis, and Deming Chen. SnapKV: LLM knows what you are looking for before generation. In Advances in Neural Information Processing Systems, 2024.",
+        "bbox": [
+            173,
+            268,
+            826,
+            311
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[21] Guangda Liu, Wenhao Chen, Chengwei Li, Zhenyu Ning, Jing Lin, Yiwu Yao, Quan Chen, Shixuan Sun, Jieru Zhao, and Minyi Guo. ECHO: Efficient KV cache offloading with lossless prefetching for serving native sparse attention LLMs. In 20th USENIX Symposium on Operating Systems Design and Implementation (OSDI), 2026.",
+        "bbox": [
+            173,
+            323,
+            826,
+            380
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[22] Zirui Liu, Jiayi Yuan, Hongye Jin, Shaochen Zhong, Zhaozhuo Xu, Vladimir Braverman, Beidi Chen, and Xia Hu. KIVI: A tuning-free asymmetric 2bit quantization for KV cache. In International Conference on Machine Learning, pages 32332–32344, 2024.",
+        "bbox": [
+            173,
+            391,
+            826,
+            435
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[23] NVIDIA. NVIDIA GH200 Grace Hopper superchip. Product page, 2026. URL https: //www.nvidia.com/en-us/data-center/grace-hopper-superchip/. Accessed 2026- 05-04.",
+        "bbox": [
+            173,
+            445,
+            826,
+            488
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[24] Pratyush Patel, Esha Choukse, Chaojie Zhang, Aashaka Shah, Íñigo Goiri, Saeed Maleki, and Ricardo Bianchini. Splitwise: Efficient generative LLM inference using phase splitting. In Proceedings of the 51st Annual International Symposium on Computer Architecture (ISCA), 2024. doi: 10.1109/ISCA59077.2024.00019.",
+        "bbox": [
+            173,
+            500,
+            826,
+            556
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[25] Ruoyu Qin, Zheming Li, Weiran He, Jialei Cui, Feng Ren, Mingxing Zhang, Yongwei Wu, Weimin Zheng, and Xinran Xu. Mooncake: Trading more storage for less computation—a KVCache-centric architecture for serving LLM chatbot. In 23rd USENIX Conference on File and Storage Technologies (FAST), 2025.",
+        "bbox": [
+            173,
+            568,
+            826,
+            626
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[26] Qwen Team. Qwen3-30B-A3B-Thinking-2507. Hugging Face model card, 2025. URL https://huggingface.co/Qwen/Qwen3-30B-A3B-Thinking-2507. Accessed 2026-06- 18.",
+        "bbox": [
+            173,
+            637,
+            826,
+            679
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[27] SGLang Project. Bench serving guide. SGLang Documentation, 2026. URL https://docs. sglang.io/docs/developer\\_guide/bench\\_serving. Accessed 2026-06-18.",
+        "bbox": [
+            173,
+            691,
+            826,
+            720
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[28] SGLang Project. HiSparse: Hierarchical sparse attention. SGLang Documentation, 2026. URL https://docs.sglang.io/docs/advanced\\_features/hisparse\\_guide. Accessed 2026-05-04.",
+        "bbox": [
+            173,
+            732,
+            826,
+            773
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[29] Ying Sheng, Lianmin Zheng, Binhang Yuan, Zhuohan Li, Max Ryabinin, Beidi Chen, Percy Liang, Christopher Ré, Ion Stoica, and Ce Zhang. FlexGen: High-throughput generative inference of large language models with a single GPU. In International Conference on Machine Learning, pages 31094–31116, 2023. URL https://proceedings.mlr.press/v202/ sheng23a.html.",
+        "bbox": [
+            173,
+            787,
+            826,
+            858
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[30] Hanshi Sun, Li-Wen Chang, Wenlei Bao, Size Zheng, Ningxin Zheng, Xin Liu, Harry Dong, Yuejie Chi, and Beidi Chen. ShadowKV: KV cache in shadows for high-throughput long-context LLM inference. In International Conference on Machine Learning, pages 57355–57373, 2025.",
+        "bbox": [
+            173,
+            869,
+            826,
+            912
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "page_number",
+        "text": "18",
+        "bbox": [
+            490,
+            936,
+            509,
+            948
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "ref_text",
+        "text": "[31] Jiaming Tang, Yilong Zhao, Kan Zhu, Guangxuan Xiao, Baris Kasikci, and Song Han. Quest: Query-aware sparsity for efficient long-context LLM inference. In International Conference on Machine Learning, pages 47901–47911, 2024. URL https://proceedings.mlr.press/ v235/tang24l.html.",
+        "bbox": [
+            173,
+            90,
+            826,
+            148
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[32] Sinong Wang, Belinda Z. Li, Madian Khabsa, Han Fang, and Hao Ma. Linformer: Self-attention with linear complexity, 2020. URL https://arxiv.org/abs/2006.04768.",
+        "bbox": [
+            173,
+            161,
+            825,
+            190
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[33] Guangxuan Xiao, Yuandong Tian, Beidi Chen, Song Han, and Mike Lewis. Efficient streaming language models with attention sinks. In International Conference on Learning Representations, 2024.",
+        "bbox": [
+            173,
+            203,
+            826,
+            244
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[34] Zhiqiang Xie. SGLang HiCache: Fast hierarchical KV caching with your favorite storage backends. LMSYS Blog, 2025. URL https://lmsys.org/blog/ 2025-09-10-sglang-hicache/. Accessed 2026-05-04.",
+        "bbox": [
+            173,
+            258,
+            826,
+            303
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[35] Zhiqiang Xie, Zhangheng Huang, and Tingwei Huang. HiSparse: Turbocharging sparse attention with hierarchical memory. LMSYS Blog, April 2026. URL https://www.lmsys.org/blog/ 2026-04-10-sglang-hisparse/. Accessed 2026-05-04.",
+        "bbox": [
+            173,
+            316,
+            826,
+            359
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[36] Zhiqiang Xie, Ziyi Xu, Mark Zhao, Yuwei An, Vikram Sharma Mailthody, Scott Mahlke, Michael Garland, and Christos Kozyrakis. Strata: Hierarchical context caching for long context language model serving. In 20th USENIX Symposium on Operating Systems Design and Implementation (OSDI), 2026. URL https://arxiv.org/abs/2508.18572.",
+        "bbox": [
+            173,
+            371,
+            826,
+            429
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[37] An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao, et al. Qwen3 technical report, 2025. URL https://arxiv.org/abs/2505.09388.",
+        "bbox": [
+            173,
+            441,
+            825,
+            470
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[38] Jingyang Yuan, Huazuo Gao, Damai Dai, Junyu Luo, Liang Zhao, Zhengyan Zhang, Zhenda Xie, Yuxing Wei, Lean Wang, Zhiping Xiao, Yuqing Wang, Chong Ruan, Ming Zhang, Wenfeng Liang, and Wangding Zeng. Native sparse attention: Hardware-aligned and natively trainable sparse attention. In Proceedings ofthe 63rd Annual Meeting ofthe Associationfor Computational Linguistics (Volume 1: Long Papers), pages 23078–23097, 2025. doi: 10.18653/v1/2025. acl-long.1126. URL https://aclanthology.org/2025.acl-long.1126/.",
+        "bbox": [
+            173,
+            483,
+            826,
+            569
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[39] Z.ai. GLM-5.2: Built for long-horizon tasks. Hugging Face Blog, June 2026. URL https: //huggingface.co/blog/zai-org/glm-52-blog. Accessed 2026-06-18.",
+        "bbox": [
+            173,
+            580,
+            826,
+            612
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[40] Hailin Zhang, Xiaodong Ji, Yilin Chen, Fangcheng Fu, Xupeng Miao, Xiaonan Nie, Weipeng Chen, and Bin Cui. PQCache: Product quantization-based KVCache for long context LLM inference. Proceedings ofthe ACM on Management ofData, 3(3):201:1–201:30, 2025. doi: 10.1145/3725338.",
+        "bbox": [
+            173,
+            623,
+            826,
+            680
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[41] Zhenyu Zhang, Ying Sheng, Tianyi Zhou, Tianlong Chen, Lianmin Zheng, Ruisi Cai, Zhao Song, Yuandong Tian, Christopher Ré, Clark Barrett, Zhangyang Wang, and Beidi Chen. H2O: Heavy-hitter oracle for efficient generative inference of large language models. In Advances in Neural Information Processing Systems, 2023.",
+        "bbox": [
+            173,
+            693,
+            826,
+            751
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[42] Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Sun, Jeff Huang, Cody Hao Yu, Shiyi Cao, Christos Kozyrakis, Ion Stoica, Joseph E. Gonzalez, Clark W. Barrett, and Ying Sheng. SGLang: Efficient execution of structured language model programs. In Advances in Neural Information Processing Systems, 2024. URL https://openreview.net/forum?id= VqkAKQibpq.",
+        "bbox": [
+            173,
+            763,
+            825,
+            834
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "ref_text",
+        "text": "[43] Yinmin Zhong, Shengyu Liu, Junda Chen, Jianbo Hu, Yibo Zhu, Xuanzhe Liu, Xin Jin, and Hao Zhang. DistServe: Disaggregating prefill and decoding for goodput-optimized large language model serving. In 18th USENIX Symposium on Operating Systems Design and Implementation (OSDI), 2024.",
+        "bbox": [
+            173,
+            847,
+            825,
+            902
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "page_number",
+        "text": "19",
+        "bbox": [
+            490,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "A Implementation in SGLang",
+        "text_level": 2,
+        "bbox": [
+            171,
+            89,
+            441,
+            108
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "This appendix summarizes what HiSparse adds to SGLang and where it attaches to the existing engine. The feature is enabled by a single flag and otherwise leaves the serving stack unchanged; it comprises roughly 2,200 lines of new Python across six modules plus a CUDA kernel header, together with integration changes to the scheduler, model runner, attention backends, and the disaggregation path.",
+        "bbox": [
+            169,
+            119,
+            826,
+            179
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "New components. The coordinator (managers/hisparse\\_coordinator.py, 1,000 lines) owns the request lifecycle of §3.3: it stages prefill KV to the host pool, allocates and grows the per-request per-layer GPU caches, performs the write-through of newly generated KV, and orchestrates swap-in, including the plan-then-IO prefetch groups of §3.5. The fused kernels (jit\\_kernel/hisparse.py with csrc/hisparse.cuh) implement RESOLVE for token-level and compressed KV layouts—with optional recording of the miss plan—plus the copy-only kernel that replays a recorded plan for shared layers. The memory layer (mem\\_cache/allocator/hisparse.py, hisparse\\_memory\\_pool.py, pool\\_host/hisparse.py) provides paged host-pool allocation, the device-side cache pool, and a mixin over SGLang’s existing host KV cache class (below). A small configuration module (arg\\_groups/hisparse\\_hook.py) applies backend defaults and validates attention-backend and KV-dtype compatibility.",
+        "bbox": [
+            169,
+            185,
+            828,
+            339
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Engine integration. Beyond the mechanisms of §3, the engineering work concentrates in three places. Concurrency: staging, write-through, and prefetch each run on their own CUDA stream, ordered against the compute stream by events; the scheduler admits a request only once its staging acknowledgment arrives, and its retract and pause paths release HiSparse state alongside ordinary KV state. Graph capture: RESOLVE and the prefetch fork are captured inside SGLang’s steady-state decode CUDA graph, which requires all metadata updates and IO issue to be replayable without host-side branching. Compatibility: the model runner auto-enables exact prefetch for models that declare selection-sharing groups, falls back to synchronous swap-in under pipeline parallelism or speculative decoding, and a HIP kernel variant supports AMD GPUs; in disaggregated mode, prefill instances write KV directly into the decode host’s DRAM pool over the existing transfer backend.",
+        "bbox": [
+            169,
+            345,
+            826,
+            487
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Relationship to HiCache. SGLang’s HiCache [34] is a hierarchical prefix cache: host and storage tiers that let finished requests’ KV be reused by later requests with shared prefixes. HiSparse reuses HiCache’s host-tier infrastructure—the pinned host KV pool and its IO backends—through a mixin, but manages a different object: a per-request decode working set governed by the model’s own sparse selections. In deployment the two compose as a prefill–decode dual: HiCache on the prefill node reuses prefixes to cut prefill work, while HiSparse on the decode node bounds per-request residency to scale decode batches. The GPU-assisted IO path follows Strata [36].",
+        "bbox": [
+            169,
+            493,
+            826,
+            593
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Configuration. HiSparse is enabled with –enable-hisparse; a JSON –hisparse-config sets top\\_k, device\\_buffer\\_size (B), host\\_to\\_device\\_ratio (host-pool capacity relative to the device KV budget), and the swap-in transfer block size of §3.4. Exact prefetch enables itself for shared-index models and can be disabled for ablation via an environment variable; all experiments in §4 use these switches and no code changes.",
+        "bbox": [
+            171,
+            599,
+            826,
+            670
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "page_number",
+        "text": "20",
+        "bbox": [
+            488,
+            935,
+            509,
+            948
+        ],
+        "page_idx": 19
+    }
+]

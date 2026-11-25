@@ -8,6 +8,7 @@ category: frameworks
 sources:
   - raw/frameworks/serving/kvswap/kvswap-disk-aware-kv-cache-offloading-on-device-inference--arxiv-2511.11907v2.pdf
   - raw/frameworks/serving/kv-cache-optimization/kv-cache-optimization-strategies--arxiv-2603.20397v1.pdf
+  - raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf
 aliases:
   - KV offloading
   - key/value cache offloading
@@ -15,8 +16,9 @@ mention_lint: canonical
 appears_in:
   - docs/frameworks/serving/kvswap/index.md
   - docs/frameworks/serving/kv-cache-optimization/index.md
+  - docs/frameworks/serving/hisparse/index.md
   - docs/frameworks/serving/sglang/hicache-mooncake.md
-updated: 2026-10-09
+updated: 2026-11-25
 ---
 
 # KV Cache Offloading
@@ -53,6 +55,7 @@ Offloading increases the usable context or batch size, but the slower tier adds 
 
 - [KVSwap: Disk-Aware KV Cache Offloading for Long-Context On-Device Inference](../frameworks/serving/kvswap/index.md) — Makes disk-first iterative decoding practical with grouped prediction, overlap, a rolling buffer, and reuse slots.
 - [KV Cache Optimization Strategies for Scalable and Efficient LLM Inference](../frameworks/serving/kv-cache-optimization/index.md) — Places offloading in the hybrid-memory family and contrasts placement with eviction, compression, and alternative attention.
+- [HiSparse](../frameworks/serving/hisparse/index.md) — Uses exact sparse selections to drive a bounded GPU LRU cache backed by the complete host-memory KV history.
 - [SGLang HiCache with Mooncake](../frameworks/serving/sglang/hicache-mooncake.md) — Shows GPU and instance-private host tiers backed by a configurable Mooncake L3 for shared prefix reuse.
 
 ## Related Terms

@@ -168,6 +168,7 @@ SGLang's key insight is that **LLM applications are structured programs, not iso
 - **Dig into the mechanism:** [PagedAttention](../../../terms/pagedattention.md) for the paged KV-cache layout behind the vLLM serving framework.
 - **Reproduce:** [Official implementation at github.com/sgl-project/sglang](https://github.com/sgl-project/sglang)
 - **Study the current cache path:** [SGLang HiCache with Mooncake](hicache-mooncake.md) — how the runtime extends prefix reuse through a Mooncake-backed L3 tier.
+- **Extend it to sparse decoding:** [HiSparse](../hisparse/index.md) — an upstream SGLang feature that bounds decode HBM with a host-backed sparse-attention KV cache.
 
 ## Key Takeaways
 

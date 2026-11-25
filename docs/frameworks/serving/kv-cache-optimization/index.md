@@ -17,7 +17,7 @@ updated: 2026-10-31
 **Authors:** Yichun Xu, Navjot K. Khaira, and Tejinder Singh
 **arXiv:** 2603.20397v1 (March 24, 2026)
 
-**Related pages:** [KV Cache](../../../terms/kv-cache.md), [PagedAttention](../../../terms/pagedattention.md), [Linear Attention](../../../terms/linear-attention.md), [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [Kimi Linear](../../../training/model-families/kimi/kimi-linear/index.md)
+**Related pages:** [KV Cache](../../../terms/kv-cache.md), [PagedAttention](../../../terms/pagedattention.md), [Linear Attention](../../../terms/linear-attention.md), [HiSparse](../hisparse/index.md), [vLLM: PagedAttention Serving Framework](../vllm/vllm-framework.md), [Kimi Linear](../../../training/model-families/kimi/kimi-linear/index.md)
 
 ## TL;DR
 
@@ -161,6 +161,7 @@ The factor 2 is for keys and values. Every strategy in the survey changes at lea
 
 - **PagedAttention** divides cache storage into non-contiguous blocks and maps logical sequence positions to physical blocks, reducing fragmentation and enabling prefix sharing with copy-on-write.
 - **SGLang HiCache with Mooncake** is a serving-system example: GPU and host tiers stay instance-private while configured L3 storage enables cross-instance prefix reuse ([implementation insight](../sglang/hicache-mooncake.md)).
+- **HiSparse** uses sparse attention's exact selected positions as a cache trace: the full KV history stays in host memory while a bounded LRU GPU cache serves DSA, NSA, or Quest decode ([implementation insight](../hisparse/index.md)).
 - **InfiniGen** predicts the next layer's useful KV pairs and prefetches them from CPU while the current layer computes; **LayerKV** overlaps layer-wise transfers with prefill work and uses an SLO-aware scheduler. [KV cache offloading](../../../terms/kv-cache-offloading.md) becomes disk-first in KVSwap, which adds storage-aligned grouping and reuse for iterative on-device decoding.
 - **KVPR** overlaps partial recomputation with transfer, **Oneiros** remaps parameter memory under KV pressure, and **CLO** reuses recently loaded data when adjacent queries are similar.
 - **INF2** pushes attention closer to storage with computational storage devices, trading generality for specialized hardware.

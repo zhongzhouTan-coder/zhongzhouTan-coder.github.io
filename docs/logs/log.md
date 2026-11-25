@@ -495,3 +495,8 @@ updated: 2026-11-18
 ## 2026-11-18
 
 - Added [vLLM Router: Repository Insight](../frameworks/serving/vllm-router/index.md) and [vLLM Router: Service Discovery and IGW Code Path](../frameworks/serving/vllm-router/service-discovery-and-igw.md) from the pinned vLLM Router commit `aaad26899d0052cb62c0998346380db80d54d24a` at medium confidence. Documented regular and P/D request round trips, HTTP/gRPC transport boundaries, Kubernetes and vLLM-native discovery, IGW delegation, policy and KV-placement layers, failure recovery, response cleanup, and static-analysis limitations; registered immutable source evidence and added serving navigation.
+
+## 2026-11-25
+
+- Ingested `raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf` into [HiSparse: Hierarchical KV Caching for Sparse-Attention Decoding](../frameworks/serving/hisparse/index.md) at medium confidence. The precise extraction preserves the source architecture and throughput figures; the page covers exact host-backed KV availability, bounded LRU GPU residency, fused miss resolution, shared-selection prefetch, reported 4.7x peak throughput, and the host-link/second-tier limitations.
+- Linked HiSparse from the serving and KV-cache optimization hubs and strengthened the KV Cache, KV Cache Offloading, and Cross-Layer Index Reuse glossary entries with the new source.

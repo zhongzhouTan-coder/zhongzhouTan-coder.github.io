@@ -2172,6 +2172,20 @@
       "topic_path": "serving/kv-cache-optimization"
     },
     {
+      "id": "arxiv:2608.07009v1",
+      "title": "HiSparse: Scaling Sparse-Attention Decoding with Hierarchical KV Cache Management",
+      "slug": "hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management",
+      "category": "frameworks",
+      "kind": "paper",
+      "raw_paths": [
+        "raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf"
+      ],
+      "derived_path": "derived/pdf-markdown/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.md",
+      "docs_path": "docs/frameworks/serving/hisparse/index.md",
+      "status": "ingested",
+      "topic_path": "serving/hisparse"
+    },
+    {
       "id": "web:iies.in/universal-references-in-c@2026-09-15-243851bb3caf",
       "title": "Universal References in C++ Explained",
       "slug": "universal-references-in-c",

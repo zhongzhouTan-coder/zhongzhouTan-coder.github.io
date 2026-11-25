@@ -1,0 +1,28 @@
+flowchart TD
+    Dense["Dense full-HBM KV serving"]
+    Paged["PagedAttention<br/>logical block mapping"]
+    Offload["Hybrid-memory KV serving<br/>FlexGen / HiCache / KVSwap"]
+    Sparse["Top-k sparse attention"]
+    Selectors["DSA / NSA / Quest<br/>query-dependent selections"]
+    Reuse["Cross-layer index reuse<br/>shared selections"]
+    HiSparse["HiSparse<br/>host-full + GPU-hot KV hierarchy"]
+    Future["Model/hardware co-design<br/>early selections + faster host links"]
+
+    Dense --> Paged
+    Dense --> Offload
+    Dense --> Sparse
+    Sparse --> Selectors
+    Paged --> HiSparse
+    Offload --> HiSparse
+    Selectors --> HiSparse
+    Reuse --> HiSparse
+    HiSparse --> Future
+
+    classDef root fill:#d9edf0,stroke:#315c63,color:#111
+    classDef branch fill:#f8e6cc,stroke:#88633a,color:#111
+    classDef method fill:#edf0f2,stroke:#5d6870,color:#111
+    classDef focus fill:#c8e6c9,stroke:#1b5e20,stroke-width:3px,color:#111
+    class Dense root
+    class Paged,Offload,Sparse,Selectors,Reuse branch
+    class Future method
+    class HiSparse focus

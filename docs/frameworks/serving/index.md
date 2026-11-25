@@ -16,6 +16,7 @@ updated: 2026-11-18
 - [SGLang](sglang/index.md) — Structured language-model programming and serving.
 - [Sarathi](sarathi/index.md) — Chunked-prefill scheduling for efficient inference.
 - [KV Cache Optimization](kv-cache-optimization/index.md) — Eviction, compression, hybrid-memory, and alternative-attention strategies.
+- [HiSparse](hisparse/index.md) — Bounded GPU-hot KV caching backed by exact host-memory history for sparse-attention decoding.
 - [KVSwap](kvswap/index.md) — Disk-aware KV-cache offloading for on-device inference.
 - [InferenceX](inferencex/index.md) — Continuous inference benchmark and execution pipeline.
 - [AgentX / InferenceX v3](agentx-inferencexv3-cuda-moat/index.md) — Agentic inference workload and hardware comparison.
