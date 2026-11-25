@@ -172,5 +172,11 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/vllm-ascend",
     "revision": "8405ff749d05aee320923d7d1dd9ad24c9246d4c"
+  },
+  "router-aaad26899d00": {
+    "local_checkout": "external-repos/router",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/router",
+    "revision": "aaad26899d0052cb62c0998346380db80d54d24a"
   }
 }

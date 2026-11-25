@@ -2488,6 +2488,27 @@
       "derived_path": "derived/pdf-markdown/frameworks/infrastructure/flexkv/flexkv/flexkv.md",
       "docs_path": "docs/frameworks/infrastructure/flexkv/index.md",
       "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/router@aaad26899d0052cb62c0998346380db80d54d24a",
+      "title": "vLLM Router Codebase",
+      "slug": "router-codebase",
+      "repo_slug": "router",
+      "revision": "aaad26899d0052cb62c0998346380db80d54d24a",
+      "category": "frameworks",
+      "topic_path": "serving/vllm-router",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/router",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm-router/router-codebase--github-aaad26899d00.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-router/router/aaad26899d0052cb62c0998346380db80d54d24a/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-router/index.md",
+        "docs/frameworks/serving/vllm-router/service-discovery-and-igw.md"
+      ],
+      "status": "ingested"
     }
   ]
 }

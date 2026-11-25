@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-10-10
+updated: 2026-11-18
 ---
 
 # Wiki Log
@@ -491,3 +491,7 @@ updated: 2026-10-10
 ## 2026-11-16
 
 - Ingested [FlexKV](../frameworks/infrastructure/flexkv/index.md) from `raw/frameworks/infrastructure/flexkv/flexkv--arxiv-2512.16148v1.pdf` at medium confidence, preserving the MinerU extraction and original figures. Documented proxy placement, coherent caching, commit and recovery, workload-specific results, and the incomplete-rank ambiguity; added infrastructure navigation and an [RDMA glossary term](../terms/remote-direct-memory-access.md).
+
+## 2026-11-18
+
+- Added [vLLM Router: Repository Insight](../frameworks/serving/vllm-router/index.md) and [vLLM Router: Service Discovery and IGW Code Path](../frameworks/serving/vllm-router/service-discovery-and-igw.md) from the pinned vLLM Router commit `aaad26899d0052cb62c0998346380db80d54d24a` at medium confidence. Documented regular and P/D request round trips, HTTP/gRPC transport boundaries, Kubernetes and vLLM-native discovery, IGW delegation, policy and KV-placement layers, failure recovery, response cleanup, and static-analysis limitations; registered immutable source evidence and added serving navigation.

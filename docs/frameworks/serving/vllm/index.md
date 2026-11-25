@@ -15,7 +15,7 @@ sources:
   - raw/frameworks/serving/vllm/vllm-codebase--github-fce64bc5c2c9.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/important-files.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/qwen3-8-flash-next-gpu-inference-path.md
-updated: 2026-10-21
+updated: 2026-11-18
 ---
 
 # vLLM
@@ -45,3 +45,6 @@ The Qwen3.8-Flash-Next NVIDIA path uses the release-specific Qwen4Exp source sna
 - [MiniMax GQA W4A4 Quantization Path: GPU (vLLM) and NPU (vllm-ascend)](minimax-gqa-w4a4-quantization-path.md) — Beginner-oriented W4A4 mental model, layer placement, offline/load/runtime lifecycle, GPU and NPU implementation paths, hardware fallbacks, and pinned code evidence.
 
 Related: [vLLM Ascend](../vllm-ascend/index.md) — the Ascend NPU port of vLLM.
+
+Related: [vLLM Router](../vllm-router/index.md) — the separate request-control
+plane for replica placement, P/D coordination, discovery, and resiliency.

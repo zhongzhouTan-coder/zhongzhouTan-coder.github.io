@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Server as Axum server
+    participant Router as Routing policy
+    participant Worker as vLLM worker
+    participant P as Prefill worker
+    participant D as Decode worker
+
+    Client->>Server: POST OpenAI-compatible request
+    Server->>Router: Authorize and admit
+    alt Regular mode
+        Router->>Worker: HTTP JSON or gRPC token IDs
+        Worker-->>Router: JSON or token stream
+    else Prefill and decode mode
+        Router->>P: Prompt plus KV transfer parameters
+        P-->>Router: Prefill result and KV handoff metadata
+        Router->>D: Original request plus KV handoff metadata
+        D-->>Router: Generated token stream
+    end
+    Router-->>Client: Buffered or streamed response
+    Note over Router,Worker: Capacity is released after completion, cancellation, or stream drop

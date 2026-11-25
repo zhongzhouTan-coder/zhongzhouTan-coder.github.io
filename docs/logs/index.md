@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-11-16
+updated: 2026-11-18
 ---
 
 # Wiki Index
@@ -36,6 +36,7 @@ updated: 2026-11-16
 
 - [Frameworks](../frameworks/index.md) — Category overview.
 - [Inference Serving Systems](../frameworks/serving/index.md) — Runtimes, model-specific GPU paths, caches, deployment pipelines, and cross-layer inference optimization.
+- [vLLM Router](../frameworks/serving/vllm-router/index.md) — Repository-backed request routing, P/D coordination, policies, discovery, and resilience.
 - [Compilers and Kernel Frameworks](../frameworks/compilers-kernels/index.md) — GPU and NPU programming stacks.
 - [Programming Languages](../frameworks/languages/index.md) — C++ and Python semantics and runtimes.
 - [Runtime Infrastructure](../frameworks/infrastructure/index.md) — Storage, sandboxing, orchestration, and observability.
