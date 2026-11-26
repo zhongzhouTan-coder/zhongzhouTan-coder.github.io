@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant Config as vLLM config
+    participant V41 as DeepSeek V4.1 layer
+    participant DSA as DSA backend
+    participant SFA as SFA backend
+    participant HS as HiSparse runtime
+    participant Host as Mapped host KV
+    participant NPU as NPU hot cache
+
+    Config->>V41: Model construction
+    V41->>V41: Choose C4, C128, or SWA role
+    V41->>DSA: Select DSA backend directly
+    alt DSA on V4.1
+        DSA-->>V41: AscendDSAImpl or DSA-CP
+        Note over DSA,V41: No HiSparse implementation branch here
+    else Generic SFA model
+        Config->>SFA: hisparse_config is present
+        SFA->>HS: Select AscendHiSparse metadata and impl
+        HS->>Host: Keep source KV rows mapped
+        HS->>NPU: Resolve logical top-k into hot slots
+        NPU-->>SFA: Physical top-k cache indices
+    end

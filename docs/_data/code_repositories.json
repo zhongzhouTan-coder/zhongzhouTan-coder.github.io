@@ -178,5 +178,17 @@
     "provider": "github",
     "repository_url": "https://github.com/vllm-project/router",
     "revision": "aaad26899d0052cb62c0998346380db80d54d24a"
+  },
+  "vllm-ascend-cc10dddf5b5b": {
+    "local_checkout": "external-repos/vllm-ascend-cc10dddf5b5b",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm-ascend",
+    "revision": "cc10dddf5b5bba8b81a5c80d657ca388c2fd9de2"
+  },
+  "vllm-9e8b3fb83ed4": {
+    "local_checkout": "external-repos/vllm-9e8b3fb83ed4",
+    "provider": "github",
+    "repository_url": "https://github.com/vllm-project/vllm",
+    "revision": "9e8b3fb83ed4f3da1ed5376083027b14994939fc"
   }
 }

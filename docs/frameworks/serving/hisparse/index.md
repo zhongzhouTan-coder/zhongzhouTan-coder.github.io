@@ -5,6 +5,7 @@ layout: default
 confidence: medium
 sources:
   - raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf
+  - derived/pdf-markdown/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management.md
 updated: 2026-11-25
 ---
 
@@ -14,7 +15,7 @@ updated: 2026-11-25
 **Authors:** Zhiqiang Xie, Zhangheng Huang, Tingwei Huang, Ziyi Xu, Ruiyang Ma, Christos Kozyrakis  
 **arXiv:** 2608.07009v1 (August 2026)
 
-**Related pages:** [KV Cache Optimization](../kv-cache-optimization/index.md), [KVSwap](../kvswap/index.md), [SGLang](../sglang/index.md), [IndexCache](../../../training/efficient-attention/indexcache/index.md)
+**Related pages:** [KV Cache Optimization](../kv-cache-optimization/index.md), [KVSwap](../kvswap/index.md), [SGLang](../sglang/index.md), [vLLM-Ascend compatibility boundary](../vllm-ascend/deepseek-v4.1-hisparse.md), [IndexCache](../../../training/efficient-attention/indexcache/index.md)
 
 ## TL;DR
 
@@ -216,7 +217,7 @@ Exact prefetch improves a different part of the curve: at matched concurrency, i
 ### Warning: how to read these numbers
 
 > **Warning:** The decode-only curves are a proxy for a prefill/decode-disaggregated decode pool; the paper did not run a physically disaggregated deployment. The strongest generalization is that bounded decode residency raises the admission ceiling, while the exact throughput ratio depends on the colocated-versus-disaggregated workload mix.
-
+>
 > **Evidence:** The no-I/O oracle serves stale KV on misses, so its outputs are invalid. The paper uses it only as a timing upper bound to isolate resolver overhead from unavoidable host traffic.
 
 ## Where It Breaks

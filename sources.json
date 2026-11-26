@@ -2180,7 +2180,7 @@
       "raw_paths": [
         "raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf"
       ],
-      "derived_path": "derived/pdf-markdown/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.md",
+      "derived_path": "derived/pdf-markdown/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management.md",
       "docs_path": "docs/frameworks/serving/hisparse/index.md",
       "status": "ingested",
       "topic_path": "serving/hisparse"
@@ -2521,6 +2521,46 @@
       "docs_paths": [
         "docs/frameworks/serving/vllm-router/index.md",
         "docs/frameworks/serving/vllm-router/service-discovery-and-igw.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm-ascend@cc10dddf5b5bba8b81a5c80d657ca388c2fd9de2",
+      "title": "vLLM Ascend HiSparse Runtime",
+      "slug": "vllm-ascend-codebase",
+      "repo_slug": "vllm-ascend",
+      "revision": "cc10dddf5b5bba8b81a5c80d657ca388c2fd9de2",
+      "category": "frameworks",
+      "topic_path": "serving/vllm-ascend",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm-ascend",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm-ascend/vllm-ascend-codebase--github-cc10dddf5b5b.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/cc10dddf5b5bba8b81a5c80d657ca388c2fd9de2/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md"
+      ],
+      "status": "ingested"
+    },
+    {
+      "id": "github:vllm-project/vllm@9e8b3fb83ed4f3da1ed5376083027b14994939fc",
+      "title": "vLLM HiSparse Runtime",
+      "slug": "vllm-codebase",
+      "repo_slug": "vllm",
+      "revision": "9e8b3fb83ed4f3da1ed5376083027b14994939fc",
+      "category": "frameworks",
+      "topic_path": "serving/vllm",
+      "kind": "repository",
+      "provider": "github",
+      "repository_url": "https://github.com/vllm-project/vllm",
+      "raw_paths": [
+        "raw/frameworks/serving/vllm/vllm-codebase--github-9e8b3fb83ed4.md"
+      ],
+      "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/9e8b3fb83ed4f3da1ed5376083027b14994939fc/",
+      "docs_paths": [
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md"
       ],
       "status": "ingested"
     }
