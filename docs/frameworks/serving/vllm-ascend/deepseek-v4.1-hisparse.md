@@ -10,7 +10,7 @@ sources:
   - derived/repo-analysis/frameworks/serving/vllm-ascend/vllm-ascend/cc10dddf5b5bba8b81a5c80d657ca388c2fd9de2/important-files.md
   - raw/frameworks/serving/vllm/vllm-codebase--github-9e8b3fb83ed4.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/9e8b3fb83ed4f3da1ed5376083027b14994939fc/important-files.md
-updated: 2026-11-25
+updated: 2026-11-26
 ---
 
 # DeepSeek-V4.1-Flash and HiSparse on vLLM-Ascend
@@ -26,6 +26,7 @@ sampling are outside this page.
 reading; no DeepSeek-V4.1 checkpoint or Ascend NPU run was exercised.
 
 **Related pages:** [HiSparse paper insight](../hisparse/index.md),
+[DeepSeek-V4.1-Flash HiSparse on SM120](../vllm/deepseek/v4.1-hisparse-sm120/index.md),
 [DeepSeek-V4.1 model report](../../../training/model-families/deepseek/deepseek-v4.1/index.md),
 [DeepSeek-V4.1 NVIDIA vLLM path](../vllm/deepseek/v4.1-gpu-inference-path/index.md),
 [vLLM-Ascend](index.md).

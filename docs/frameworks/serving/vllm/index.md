@@ -15,7 +15,7 @@ sources:
   - raw/frameworks/serving/vllm/vllm-codebase--github-fce64bc5c2c9.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/important-files.md
   - derived/repo-analysis/frameworks/serving/vllm/vllm/fce64bc5c2c939a4521bfb9b462c8c74c1c13893/qwen3-8-flash-next-gpu-inference-path.md
-updated: 2026-11-18
+updated: 2026-11-26
 ---
 
 # vLLM
@@ -31,6 +31,7 @@ The Qwen3.8-Flash-Next NVIDIA path uses the release-specific Qwen4Exp source sna
 - [GLM-5.2 on vLLM: Request-to-GPU Backend Inference Path](glm-5.2-inference-path.md) — Complete upstream request round trip through OpenAI admission, V1 scheduling, the CUDA GPU runner, configuration-driven shared sparse indexers, Hopper/Blackwell sparse-MLA kernels, routed/shared MoE, sampling, detokenization, response emission, and cleanup.
 - [GLM-5.3-Flash on NVIDIA vLLM: GPU Inference Path](glm-5.3-flash-gpu-inference-path/index.md) — Worker-boundary decode trace through hybrid KDA and kpool-indexed sparse MLA, distinct recurrent/index/main-cache state, SM90 FlashMLA eligibility, and sampled-token return.
 - [DeepSeek-V4.1-Flash on NVIDIA vLLM: GPU Inference Path](deepseek/v4.1-gpu-inference-path/index.md) — Worker-boundary trace through model resolution, V4.1 cache/indexer ownership, sparse-MLA backend selection, mHC/MoE, and sampled-token output.
+- [DeepSeek-V4.1-Flash HiSparse on SM120: Compatibility Boundary](deepseek/v4.1-hisparse-sm120/index.md) — Pinned selector and cache-ownership reading of why the V4.1 DSA layer bypasses vLLM's generic HiSparse host-resident path on SM120.
 - [GLM-5.1 on vLLM: Expert-Parallel MoE Path](glm-5.1-expert-parallel/index.md) — Code-backed trace from the shared GLM-5.1 model shell through EP group sizing, global-to-local expert mapping, router dispatch, local expert MLPs, backend combine, and residual return.
 - [vLLM MHA Code Path: From QKV to Paged KV Cache](vllm-mha-code-path.md) — Decoder self-attention from tensor-parallel QKV projection and RoPE through per-step metadata, slot-mapped KV writes, paged backend execution, and the output projection.
 - [vLLM: PagedAttention Serving Framework](vllm-framework.md) — LLM serving framework design, [PagedAttention](../../../terms/pagedattention.md) KV-cache paging, [block tables](../../../terms/block-table.md), copy-on-write sharing, scheduling/preemption, distributed execution, and throughput results.

@@ -2276,7 +2276,8 @@
         "docs/frameworks/serving/vllm/index.md",
         "docs/frameworks/serving/vllm/deepseek/v4.1-gpu-inference-path/index.md",
         "docs/frameworks/serving/vllm/mimo-v2-6-gpu-inference-path/index.md",
-        "docs/frameworks/serving/vllm/glm-5.3-flash-gpu-inference-path/index.md"
+        "docs/frameworks/serving/vllm/glm-5.3-flash-gpu-inference-path/index.md",
+        "docs/frameworks/serving/vllm/deepseek/v4.1-hisparse-sm120/index.md"
       ],
       "status": "ingested"
     },
@@ -2560,7 +2561,8 @@
       ],
       "derived_path": "derived/repo-analysis/frameworks/serving/vllm/vllm/9e8b3fb83ed4f3da1ed5376083027b14994939fc/",
       "docs_paths": [
-        "docs/frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md"
+        "docs/frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md",
+        "docs/frameworks/serving/vllm/deepseek/v4.1-hisparse-sm120/index.md"
       ],
       "status": "ingested"
     }

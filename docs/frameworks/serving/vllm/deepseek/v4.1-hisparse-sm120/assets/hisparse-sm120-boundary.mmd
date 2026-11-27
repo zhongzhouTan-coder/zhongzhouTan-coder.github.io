@@ -1,0 +1,11 @@
+flowchart TD
+    cfg["hisparse_config is set"] --> gate{"DSA index_topk gate"}
+    gate -->|"passes"| choose{"Which attention layer?"}
+    choose -->|"DeepSeek V4.1"| v41["DeepseekV4Attention subclass"]
+    v41 --> sm120["DeepseekV4FlashInferSM120Attention"]
+    sm120 --> own["Layer-owned C4/C128/SWA paged caches"]
+    own --> nohs["No HiSparse cache handle"]
+    choose -->|"generic sparse MLA"| mla["MLAAttention"]
+    mla --> group{"index_group is HiSparseMLAIndexGroup?"}
+    group -->|"yes"| hs["HiSparse host + resident + hot cache"]
+    group -->|"no"| plain["Ordinary paged cache"]

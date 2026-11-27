@@ -6,7 +6,7 @@ confidence: high
 sources:
   - AGENTS.md
   - .github/instructions/logs-maintenance.instructions.md
-updated: 2026-11-18
+updated: 2026-11-26
 ---
 
 # Wiki Log
@@ -500,4 +500,8 @@ updated: 2026-11-18
 
 - Ingested `raw/frameworks/serving/hisparse/hisparse-scaling-sparse-attention-decoding-hierarchical-kv-cache-management--arxiv-2608.07009v1.pdf` into [HiSparse: Hierarchical KV Caching for Sparse-Attention Decoding](../frameworks/serving/hisparse/index.md) at medium confidence. The precise extraction preserves the source architecture and throughput figures; the page covers exact host-backed KV availability, bounded LRU GPU residency, fused miss resolution, shared-selection prefetch, reported 4.7x peak throughput, and the host-link/second-tier limitations.
 - Linked HiSparse from the serving and KV-cache optimization hubs and strengthened the KV Cache, KV Cache Offloading, and Cross-Layer Index Reuse glossary entries with the new source.
-- Added [DeepSeek-V4.1-Flash and HiSparse on vLLM-Ascend](../frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md), pinned to clean vLLM-Ascend `cc10dddf5b5b` and vLLM `9e8b3fb83ed4`. The static compatibility insight records that the 2026-10-17 V4.1 path predates HiSparse and that the current SFA HiSparse adapter is still bypassed by V4.1's dedicated C4/C128/SWA DSA selectors.
+- Added [DeepSeek-V4.1-Flash and HiSparse on vLLM-Ascend](../frameworks/serving/vllm-ascend/deepseek-v4.1-hisparse.md), pinned to clean vLLM-Ascend `cc10dddf5b5b` and vLLM `9e8b3fb83ed4`. The static compatibility insight records that the 2026-10-17 V4.1 path predates the Ascend HiSparse adapter and that the current SFA HiSparse adapter is still bypassed by V4.1's dedicated C4/C128/SWA DSA selectors.
+
+## 2026-11-26
+
+- Added [DeepSeek-V4.1-Flash HiSparse on SM120: Compatibility Boundary](../frameworks/serving/vllm/deepseek/v4.1-hisparse-sm120/index.md) at medium confidence, backed by vLLM `02aa10539f15` (the 1017 snapshot) and `9e8b3fb83ed4`. The static reading separates the generic sparse-MLA HiSparse binding from V4.1's own DSA attention layer, records the SM120 backend's later `supports_hisparse()` rejection, and notes that upstream HiSparse already existed at the 1017 pin.
